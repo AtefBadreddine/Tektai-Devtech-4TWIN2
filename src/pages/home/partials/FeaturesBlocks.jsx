@@ -13,15 +13,15 @@ function FeaturesBlocks() {
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-            <h2 className="h2 mb-4">How Simple works</h2>
-            <p className="text-xl text-gray-600">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p>
+            <h2 className="h2 mb-4">How <span className="px-2 text-white bg-blue-600 rounded ">TektAI</span> works</h2>
+            <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TecktAI</span> simplifies the process of participating in data science competitions, accessing datasets, and collaborating with peers through its user-friendly platform</p>
           </div>
 
           {/* Items */}
           <div className="max-w-sm mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-3 items-start md:max-w-2xl lg:max-w-none">
 
             {/* 1st item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full">
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -33,12 +33,12 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Initial Contact</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Participate in competitions</h4>
+              <p className="text-gray-600 text-center">to solve real-world problems and showcase your predictive modeling skills.</p>
             </div>
 
             {/* 2nd item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full">
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -49,12 +49,12 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Discovery Session</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Explore and download datasets</h4>
+              <p className="text-gray-600 text-center">across various domains to conduct research, analysis, and machine learning experiments.</p>
             </div>
 
             {/* 3rd item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full">
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -64,12 +64,12 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Contracting</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Notebooks</h4>
+              <p className="text-gray-600 text-center">Utilize Notebooks to write and execute code in Python or R, enabling interactive data analysis, model development, and visualization</p>
             </div>
 
             {/* 4th item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full">
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -81,12 +81,12 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>              
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Fast Prototyping</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Community</h4>
+              <p className="text-gray-600 text-center">through Discussions, where you can ask questions, share insights, and collaborate with fellow data scientists.</p>
             </div>
 
             {/* 5th item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full">
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -96,12 +96,12 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Design Phase</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Showcase your projects</h4>
+              <p className="text-gray-600 text-center">and contributions on your profile, building a portfolio to demonstrate your skills to potential employers or collaborators.</p>
             </div>
 
             {/* 6th item */}
-            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl">
+            <div className="relative flex flex-col items-center p-6 bg-white rounded shadow-xl h-full" >
               <svg className="w-16 h-16 p-1 -mt-1 mb-2" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
                 <g fill="none" fillRule="evenodd">
                   <rect className="fill-current text-blue-600" width="64" height="64" rx="32" />
@@ -113,8 +113,8 @@ function FeaturesBlocks() {
                   </g>
                 </g>
               </svg>
-              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Develop & Launch</h4>
-              <p className="text-gray-600 text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <h4 className="text-xl font-bold leading-snug tracking-tight mb-1">Knowledge</h4>
+              <p className="text-gray-600 text-center"> gain knowledge and hone your data science expertise.</p>
             </div>
 
           </div>

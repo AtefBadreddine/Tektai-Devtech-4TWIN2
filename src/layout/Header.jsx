@@ -5,7 +5,11 @@ import {useAuth} from "../auth/AuthProvider";
 function Header() {
 
   const [top, setTop] = useState(true);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };  
   // detect whether user has scrolled the page down by 10px 
   useEffect(() => {
     const scrollHandler = () => {
@@ -45,36 +49,63 @@ function Header() {
           </div>
 
           {/* Site navigation */}
-          {
-            !auth.user ?
-                <nav className="flex flex-grow" >
-                  <ul className="flex flex-grow justify-end flex-wrap items-center">
-                    <li>
-                      <Link to="/signin" className="font-medium text-gray-600 hover:text-gray-900 px-5 py-3 flex items-center transition duration-150 ease-in-out">Sign in</Link>
-                    </li>
-                    <li>
-                      <Link to="/signup" className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
-                        <span>Sign up</span>
-                        <svg className="w-3 h-3 fill-current text-gray-400 flex-shrink-0 ml-2 -mr-1" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M11.707 5.293L7 .586 5.586 2l3 3H0v2h8.586l-3 3L7 11.414l4.707-4.707a1 1 0 000-1.414z" fillRule="nonzero" />
-                        </svg>
-                      </Link>
-                    </li>
-                  </ul>
-
-                </nav>
-                :  <nav className="flex flex-grow" >
-                  <ul className="flex flex-grow justify-end flex-wrap items-center">
-                    <h1>Welcome, { auth.user.username }</h1>
-                    <li>
-                      <button onClick={logout} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800 ml-3">
-                        <span>Log out</span>
-                      </button>
-                    </li>
-                  </ul>
-
-                </nav>
-          }
+          
+            {/* !auth.user ? */}
+            <nav className="flex flex-grow items-center justify-between">
+            {/* <div className="flex items-center flex-shrink-0 mr-6">
+              <Link to="/" className="font-semibold text-xl tracking-tight">Your Logo/Brand</Link>
+            </div> */}
+            <div></div>
+            <div className="block lg:hidden">
+              <button className="navbar-burger flex items-center py-2 px-3 text-indigo-500 rounded border border-indigo-500">
+                <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <title>Mobile menu</title>
+                  <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                </svg>
+              </button>
+            </div>
+            <div className="hidden lg:flex lg:items-center lg:w-auto">
+              <div className="text-sm lg:flex-grow">
+                <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Home
+                </Link>
+                <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Competitions
+                </Link>
+                <Link to="/datasets" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Datasets
+                </Link>
+                <Link to="/rankings" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Rankings
+                </Link>
+                <Link to="/discussions" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Discussions
+                </Link>
+              </div>
+              <div className="flex items-center">
+                <input type="text" placeholder="Search..." className="border border-gray-300 rounded-lg py-1 px-3 mr-4 focus:outline-none focus:border-indigo-500"/>
+                {!auth.user ? (
+                  <div>
+                    <Link to="/signin" className="text-gray-700 hover:text-gray-900 mr-4">
+                      Sign in
+                    </Link>
+                    <Link to="/signup" className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800">
+                      Sign up
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <h1 className="text-gray-700 mr-4">Welcome, {auth.user.role}</h1>
+                    <button onClick={logout} className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800">
+                      Log out
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </nav>
+          
+          
 
 
         </div>

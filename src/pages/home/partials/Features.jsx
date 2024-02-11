@@ -1,7 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../../utils/Transition';
 
-import FeaturesBg from '../../../images/features-bg.png';
+import FeaturesBg from '../../../images/Google_Hero.jpg';
+import notebooks from '../../../images/notebooks.png';
+import discussion from '../../../images/discussion.jpg';
+
+
 import FeaturesElement from '../../../images/features-element.png';
 
 function Features() {
@@ -33,8 +37,8 @@ function Features() {
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h1 className="h2 mb-4">Explore the solutions</h1>
-            <p className="text-xl text-gray-600">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat.</p>
+            <h1 className="h2 mb-4">Explore challenges and solutions</h1>
+            <p className="text-xl text-gray-600">Test your skills and prove yourself among your peers </p>
           </div>
 
           {/* Section content */}
@@ -43,8 +47,8 @@ function Features() {
             {/* Content */}
             <div className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6 md:mt-6" data-aos="fade-right">
               <div className="md:pr-4 lg:pr-12 xl:pr-16 mb-8">
-                <h3 className="h3 mb-3">Powerful suite of tools</h3>
-                <p className="text-xl text-gray-600">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa.</p>
+                <h3 className="h3 mb-3">Competitions</h3>
+                <p className="text-xl text-gray-600">Competitions are data science challenges where participants compete to produce the best predictive models for real-world problems</p>
               </div>
               {/* Tabs buttons */}
               <div className="mb-8 md:mb-0">
@@ -54,8 +58,8 @@ function Features() {
                   onClick={(e) => { e.preventDefault(); setTab(1); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">Datasets</div>
+                    <div className="text-gray-600">Datasets provide a vast collection of freely accessible data spanning various domains, These datasets serve as valuable resources for research, analysis, and machine learning model training.</div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -69,8 +73,8 @@ function Features() {
                   onClick={(e) => { e.preventDefault(); setTab(2); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">Notebooks</div>
+                    <div className="text-gray-600">Notebooks are interactive coding environments where data scientists can analyze data, create machine learning models.</div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -84,8 +88,8 @@ function Features() {
                   onClick={(e) => { e.preventDefault(); setTab(3); }}
                 >
                   <div>
-                    <div className="font-bold leading-snug tracking-tight mb-1">Building the Simple ecosystem</div>
-                    <div className="text-gray-600">Take collaboration to the next level with security and administrative features built for teams.</div>
+                    <div className="font-bold leading-snug tracking-tight mb-1">Discussion</div>
+                    <div className="text-gray-600">Discussions provide a platform for data scientists to ask questions, share insights, and collaborate on projects, fostering a vibrant community of knowledge exchange.</div>
                   </div>
                   <div className="flex justify-center items-center w-8 h-8 bg-white rounded-full shadow flex-shrink-0 ml-3">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
@@ -113,7 +117,7 @@ function Features() {
                 >
                   <div className="relative inline-flex flex-col">
                     <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
                 </Transition>
                 {/* Item 2 */}
@@ -129,8 +133,8 @@ function Features() {
                   leaveEnd="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    <img className="md:max-w-none mx-auto rounded" src={notebooks} width="500" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
                 </Transition>
                 {/* Item 3 */}
@@ -146,8 +150,8 @@ function Features() {
                   leaveEnd="opacity-0 -translate-y-16"
                 >
                   <div className="relative inline-flex flex-col">
-                    <img className="md:max-w-none mx-auto rounded" src={FeaturesBg} width="500" height="462" alt="Features bg" />
-                    <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} />
+                    <img className="md:max-w-none mx-auto rounded" src={discussion} width="500" height="462" alt="Features bg" />
+                    {/* <img className="md:max-w-none absolute w-full left-0 transform animate-float" src={FeaturesElement} width="500" height="44" alt="Element" style={{ top: '30%' }} /> */}
                   </div>
                 </Transition>
               </div>

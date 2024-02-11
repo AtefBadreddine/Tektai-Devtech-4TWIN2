@@ -14,7 +14,6 @@ function SignIn() {
 
   const handleInput = (e) => {
     const { name, value } = e.target;
-    console.log( name)
     setInput((prev) => ({
       ...prev,
       [name]: value,

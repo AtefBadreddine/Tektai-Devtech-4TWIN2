@@ -17,6 +17,7 @@ import ResetPassword from './pages/resetPassword/ResetPassword';
 import AuthProvider from "./auth/AuthProvider";
 import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
 import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
+import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/challenges" element={<ListChallenges />} />
+        <Route path="/challenges/new" element={<CreateChallenge />} />
         <Route path="/challenges/detail/1" element={<ChallengeDetails />} />
       </Routes>
       </AuthProvider>
