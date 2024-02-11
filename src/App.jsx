@@ -41,7 +41,7 @@ function App() {
   }, [location.pathname]); // triggered on route change
 
   return (
-    <>
+    <div classname="roboto-regular">
       <AuthProvider>
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -54,7 +54,7 @@ function App() {
         
       </Routes>
       </AuthProvider>
-    </>
+    </div>
   );
 }
 

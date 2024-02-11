@@ -1,53 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCrown, faUser, faMedal,faFireAlt,faBrain,faSeedling } from '@fortawesome/free-solid-svg-icons'; // Import icons from Font Awesome
+import { faCrown, faMedal, faFireAlt, faBrain, faSeedling } from '@fortawesome/free-solid-svg-icons'; // Import icons from Font Awesome
+import axios from 'axios'; // Import axios for making HTTP requests
+import userData from './users.json'; // Import users data directly
+import GoldCoin from './goldcoin'; // Import GoldCoin component
 
-// Predefined list of user names
-const userNames = [
-  'John Doe',
-  'Jane Smith',
-  'Michael Johnson',
-  'Emily Brown',
-  'David Wilson',
-  'Sarah Taylor',
-  // Add more names as needed
-];
-
-function RankingTable() {
-  // Simulated data with 100 users
-  const users = Array.from({ length: 100 }, (_, index) => ({
-    name: userNames[Math.floor(Math.random() * userNames.length)], // Random user name from the list
-    goldBadges: Math.max(10, Math.floor(Math.random() * 14)), // Random gold badges count (at least 10)
-    silverBadges: Math.max(10, Math.floor(Math.random() * 14)), // Random silver badges count (at least 10)
-    bronzeBadges: Math.max(10, Math.floor(Math.random() * 14)) // Random bronze badges count (at least 10)
-  }));
-
-  // Assign weights to badge types
-  const goldWeight = 3;
-  const silverWeight = 2;
-  const bronzeWeight = 1;
-
-  // Calculate weighted total for each user and sort by it
-  const sortedUsers = users.sort((a, b) => {
-    const totalA = a.goldBadges * goldWeight + a.silverBadges * silverWeight + a.bronzeBadges * bronzeWeight;
-    const totalB = b.goldBadges * goldWeight + b.silverBadges * silverWeight + b.bronzeBadges * bronzeWeight;
-    return totalB - totalA;
-  });
+// Badge descriptions component
+function BadgeDescriptions() {
+  const badgeStyle = {
+    fontSize: '3rem', // Define the desired font size
+  };
 
   return (
-    <div className="w-full h-full flex justify-center items-center">
+    <div className="flex justify-center mb-2">
+  <div className="flex items-center mr-4">
+    <FontAwesomeIcon icon={faFireAlt} className="text-red-500 mr-1" style={badgeStyle} />
+    <span className="text-red-500 font-custom mr-1" style={badgeStyle}>Gold Badge</span>
+    <span className="text-gray-500">(+3 points)</span> {/* Added points for gold badge */}
+  </div>
+  <div className="flex items-center mr-4">
+    <FontAwesomeIcon icon={faBrain} className="text-purple-300 mr-1" style={badgeStyle} />
+    <span className="text-purple-300 font-custom mr-1" style={badgeStyle}>Silver Badge</span>
+    <span className="text-gray-500">(+2 points)</span> {/* Added points for silver badge */}
+  </div>
+  <div className="flex items-center">
+    <FontAwesomeIcon icon={faSeedling} className="text-green-500 mr-1" style={badgeStyle} />
+    <span className="text-green-500 font-custom mr-1" style={badgeStyle}>Bronze Badge</span>
+    <span className="text-gray-500">(+1 point)</span> {/* Added points for bronze badge */}
+  </div>
+</div>
+
+  );
+}
+
+function RankingTable() {
+  const [users, setUsers] = useState([]); // State to store user data
+
+  useEffect(() => {
+    // Sort users by total points (descending order)
+    const sortedUsers = [...userData].sort((a, b) => {
+      const totalPointsA = (a.goldBadges * 3) + (a.silverBadges * 2) + a.bronzeBadges;
+      const totalPointsB = (b.goldBadges * 3) + (b.silverBadges * 2) + b.bronzeBadges;
+      return totalPointsB - totalPointsA;
+    });
+
+    // Set sorted user data
+    setUsers(sortedUsers);
+  }, []); // Empty dependency array ensures this effect runs only once on component mount
+
+  return (
+    <div className="w-full h-full flex justify-center items-center flex-col">
+      {/* Badge descriptions */}
+      <BadgeDescriptions />
+      
       {/* Container with full width and height */}
-      <div className="w-full mx-auto px-4 sm:px-6">
+      <div className=" mx-auto px-4 sm:px-6" style={{ width:'1400px', height: '500px', overflowY: 'auto' }}>
         <table className="w-full">
           <thead>
             <tr className="bg-gray-200">
               <th className="py-2 px-4 text-center">Rank</th>
               <th className="py-2 px-4 text-center">User</th>
               <th className="py-2 px-4 text-center">Badges</th>
+              <th className="py-2 px-4 text-center">Total Points</th> {/* New column for total points */}
             </tr>
           </thead>
           <tbody>
-            {sortedUsers.map((user, index) => (
+            {users.map((user, index) => (
               <tr key={user.name} className={index < 3 ? 'font-bold' : ''}>
                 <td className="py-2 px-4 text-center">
                   {index < 3 ? <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mr-2" /> : index + 1}
@@ -60,17 +78,17 @@ function RankingTable() {
                       className="rounded-full h-8 w-8 mr-2"
                     />
                     {user.name}
-                    {user.goldBadges >= 10 && (
+                    {user.goldBadges >= 100 && (
                       <span title="Gold Badge" className="ml-2">
                         <FontAwesomeIcon icon={faFireAlt} className="text-red-500" />
                       </span>
                     )}
-                    {user.silverBadges >= 10 && (
+                    {user.silverBadges >= 100 && (
                       <span title="Silver Badge" className="ml-2">
                         <FontAwesomeIcon icon={faBrain} className="text-purple-300" />
                       </span>
                     )}
-                    {user.bronzeBadges >= 10 && (
+                    {user.bronzeBadges >= 100 && (
                       <span title="Bronze Badge" className="ml-2">
                         <FontAwesomeIcon icon={faSeedling} className="text-green-500" />
                       </span>
@@ -96,6 +114,15 @@ function RankingTable() {
                         <FontAwesomeIcon icon={faMedal} className="text-orange-500 mr-1" />
                         bronze: {user.bronzeBadges}
                       </span>
+                    )}
+                  </div>
+                </td>
+                <td className="py-2 px-4 text-center">
+                  {/* Total Points */}
+                  <div className="gold-coin-container">
+                    <GoldCoin points={(user.goldBadges * 3) + (user.silverBadges * 2) + user.bronzeBadges} />
+                    {index < 3 && (
+                      <div className="gold-coin-hover"></div>
                     )}
                   </div>
                 </td>
