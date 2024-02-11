@@ -17,6 +17,8 @@ import ResetPassword from './pages/resetPassword/ResetPassword';
 import AuthProvider from "./auth/AuthProvider";
 import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
 import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
+import Ranking from "./pages/ranking/ranking ";
+
 
 
 function App() {
@@ -48,6 +50,8 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/challenges" element={<ListChallenges />} />
         <Route path="/challenges/detail/1" element={<ChallengeDetails />} />
+        <Route path="/ranking" element={<Ranking />} />
+        
       </Routes>
       </AuthProvider>
     </>
