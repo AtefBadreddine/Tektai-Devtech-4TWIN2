@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-
+import ChallengerImg from "../../images/dev.jpg";
+import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
 import {useAuth} from "../../auth/AuthProvider";
 
@@ -221,7 +222,7 @@ const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div onClick={() => handleRole('challenger')} className="cursor-pointer max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div>
-              <img className="rounded-t-lg" src="/src/images/dev.jpg" alt="" />
+              <img className="rounded-t-lg" src={ChallengerImg} alt="" />
             </div>
             <div className="p-5">
               <div>
@@ -232,7 +233,7 @@ const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
           </div>
           <div onClick={() => handleRole('company') } className="cursor-pointer max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
             <div>
-              <img className="rounded-t-lg" src="/src/images/business.jpg" alt="" />
+              <img className="rounded-t-lg" src={CompanyImg} alt="" />
             </div>
             <div className="p-5">
               <div>
