@@ -8,31 +8,55 @@ import GoldCoin from './goldcoin'; // Import GoldCoin component
 // Badge descriptions component
 function BadgeDescriptions() {
   const badgeStyle = {
-    fontSize: '3rem', // Define the desired font size
+    fontSize: '1.5rem', // Define the desired font size
+  };
+  const badgeT = {
+    fontSize: '2rem', // Define the desired font size
+  };
+  return (
+    <div className="flex justify-center mb-2">
+  <div className="flex items-center mr-4">
+    <FontAwesomeIcon icon={faFireAlt} className="text-red-500 mr-1" style={badgeT} />
+    <span className="text-500 font-custom mr-1" style={badgeStyle}>100+<span className="text-500 font-custom mr-1" style={badgeStyle}></span> Gold medals</span>
+  </div>
+  <div className="flex items-center mr-4">
+    <FontAwesomeIcon icon={faBrain} className="text-purple-300 mr-1" style={badgeT} />
+    <span className="text-300 font-custom mr-1" style={badgeStyle}> 100+ Silver medals  </span>
+  </div>
+  <div className="flex items-center">
+    <FontAwesomeIcon icon={faSeedling} className="text-green-500 mr-1" style={badgeT} />
+    <span className="text-500 font-custom mr-1" style={badgeStyle}> 100+ Bronze medals  </span>
+  </div>
+</div>
+
+  );
+}
+function BadgeDescriptions2() {
+  const badgeStyle = {
+    fontSize: '1rem', // Define the desired font size
   };
 
   return (
     <div className="flex justify-center mb-2">
   <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faFireAlt} className="text-red-500 mr-1" style={badgeStyle} />
-    <span className="text-red-500 font-custom mr-1" style={badgeStyle}>Gold Badge</span>
+    <FontAwesomeIcon icon={faMedal} className="text-yellow-500 mr-1" style={badgeStyle} />
+    <span className="text-gold-500 font-custom mr-1" style={badgeStyle}>Gold Badge</span>
     <span className="text-gray-500">(+3 points)</span> {/* Added points for gold badge */}
   </div>
   <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faBrain} className="text-purple-300 mr-1" style={badgeStyle} />
-    <span className="text-purple-300 font-custom mr-1" style={badgeStyle}>Silver Badge</span>
+    <FontAwesomeIcon icon={faMedal} className="text-gray-300 mr-1" style={badgeStyle} />
+    <span className="text-300 font-custom mr-1" style={badgeStyle}>Silver Badge</span>
     <span className="text-gray-500">(+2 points)</span> {/* Added points for silver badge */}
   </div>
   <div className="flex items-center">
-    <FontAwesomeIcon icon={faSeedling} className="text-green-500 mr-1" style={badgeStyle} />
-    <span className="text-green-500 font-custom mr-1" style={badgeStyle}>Bronze Badge</span>
+    <FontAwesomeIcon icon={faMedal} className="text-orange-500 mr-1" style={badgeStyle} />
+    <span className="text-500 font-custom mr-1" style={badgeStyle}>Bronze Badge</span>
     <span className="text-gray-500">(+1 point)</span> {/* Added points for bronze badge */}
   </div>
 </div>
 
   );
 }
-
 function RankingTable() {
   const [users, setUsers] = useState([]); // State to store user data
 
@@ -52,6 +76,8 @@ function RankingTable() {
     <div className="w-full h-full flex justify-center items-center flex-col">
       {/* Badge descriptions */}
       <BadgeDescriptions />
+      <BadgeDescriptions2 />
+      
       
       {/* Container with full width and height */}
       <div className=" mx-auto px-4 sm:px-6" style={{ width:'1400px', height: '500px', overflowY: 'auto' }}>
