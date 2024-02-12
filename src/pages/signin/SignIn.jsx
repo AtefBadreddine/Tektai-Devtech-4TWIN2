@@ -9,11 +9,13 @@ function SignIn() {
   const [input, setInput] = useState({
     email: "",
     password: "",
+    role : "challenger"
   });
   const auth = useAuth();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
+    console.log( name)
     setInput((prev) => ({
       ...prev,
       [name]: value,

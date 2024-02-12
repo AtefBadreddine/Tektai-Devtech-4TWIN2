@@ -1,0 +1,122 @@
+[
+    {
+        "id": 1,
+        "image": "https://picsum.photos/200/300",
+        "name": "Titanic - Machine Learning from Disaster",
+        "host": "Challenge Host",
+        "price": 400,
+        "status": "Ongoing"
+    },
+    {
+        "id": 2,
+        "image": "https://source.unsplash.com/random/800x600",
+        "name": "Second Challenge",
+        "host": "Another Host",
+        "price": 500,
+        "status": "Upcoming"
+    },
+    {
+        "id": 3,
+        "image": "https://source.unsplash.com/featured/?nature",
+        "name": "Third Challenge",
+        "host": "Third Host",
+        "price": 300,
+        "status": "Completed"
+    },
+    {
+        "id": 4,
+        "image": "https://source.unsplash.com/1600x900/?travel",
+        "name": "Fourth Challenge",
+        "host": "Fourth Host",
+        "price": 600,
+        "status": "Upcoming"
+    },
+    {
+        "id": 5,
+        "image": "https://source.unsplash.com/collection/190727/1600x900",
+        "name": "Fifth Challenge",
+        "host": "Fifth Host",
+        "price": 700,
+        "status": "Ongoing"
+    },
+    {
+        "id": 6,
+        "image": "https://source.unsplash.com/1600x900/?technology",
+        "name": "Sixth Challenge",
+        "host": "Sixth Host",
+        "price": 800,
+        "status": "Upcoming"
+    },
+    {
+        "id": 7,
+        "image": "https://source.unsplash.com/daily?water",
+        "name": "Seventh Challenge",
+        "host": "Seventh Host",
+        "price": 400,
+        "status": "Completed"
+    },
+    {
+        "id": 8,
+        "image": "https://source.unsplash.com/1600x900/?city",
+        "name": "Eighth Challenge",
+        "host": "Eighth Host",
+        "price": 900,
+        "status": "Ongoing"
+    },
+    {
+        "id": 9,
+        "image": "https://source.unsplash.com/1600x900/?food",
+        "name": "Ninth Challenge",
+        "host": "Ninth Host",
+        "price": 1000,
+        "status": "Ongoing"
+    },
+    {
+        "id": 10,
+        "image": "https://source.unsplash.com/random/800x600",
+        "name": "Tenth Challenge",
+        "host": "Tenth Host",
+        "price": 1100,
+        "status": "Ongoing"
+    },
+    {
+        "id": 11,
+        "image": "https://source.unsplash.com/1600x900/?architecture",
+        "name": "Eleventh Challenge",
+        "host": "Eleventh Host",
+        "price": 1200,
+        "status": "Completed"
+    },
+    {
+        "id": 12,
+        "image": "https://source.unsplash.com/1600x900/?cars",
+        "name": "Twelfth Challenge",
+        "host": "Twelfth Host",
+        "price": 1300,
+        "status": "Ongoing"
+    },
+    {
+        "id": 13,
+        "image": "https://source.unsplash.com/1600x900/?music",
+        "name": "Thirteenth Challenge",
+        "host": "Thirteenth Host",
+        "price": 1400,
+        "status": "Ongoing"
+    },
+    {
+        "id": 14,
+        "image": "https://source.unsplash.com/1600x900/?sports",
+        "name": "Fourteenth Challenge",
+        "host": "Fourteenth Host",
+        "price": 1500,
+        "status": "Completed"
+    },
+    {
+        "id": 15,
+        "image": "https://source.unsplash.com/1600x900/?animals",
+        "name": "Fifteenth Challenge",
+        "host": "Fifteenth Host",
+        "price": 1600,
+        "status": "Ongoing"
+    }
+]
