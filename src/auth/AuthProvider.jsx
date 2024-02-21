@@ -10,11 +10,16 @@ const AuthProvider = ( {children} ) => {
     const navigate = useNavigate();
 
     const login =  (data) => {
+        console.log(data)
         try {
             setUser({
-                "id" : 1,
-                "username" : "Atef",
-                "email" : data.email
+                id : 1,
+                username : data.username || 'Atef',
+                companyName : data.companyName || 'Meta',
+                email : data.email,
+                password: data.password,
+                role : data.role
+
             });
             setToken("token123")
             localStorage.setItem("site", "res.token");

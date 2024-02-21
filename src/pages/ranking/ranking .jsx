@@ -16,24 +16,20 @@ function Home() {
       <Header />
 
       {/*  Page content */}
-      <main className="flex-grow">
+      <main className="flex-grow  pb-12  md:pb-20">
 
-        <div className="pt-32 pb-12 md:pt-40 md:pb-20">
+        <div className="pt-32  md:pt-40 ">
           <div className="text-center pb-12 md:pb-16">
             <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">
               User <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Rankings</span>
             </h1>
             
           </div>
-          </div>
-          
-          
-        {/* <FeaturesHome/> */}
-        {/* <FeaturesBlocks /> */}
-        {/* <Testimonials /> */}
+        </div>
+
         <RankingTable/>
 
-        <Newsletter />
+
 
       </main>
 

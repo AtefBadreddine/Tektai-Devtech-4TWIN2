@@ -9,6 +9,7 @@ function SignIn() {
   const [input, setInput] = useState({
     email: "",
     password: "",
+    role : "challenger"
   });
   const auth = useAuth();
 

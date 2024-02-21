@@ -18,6 +18,7 @@ import AuthProvider from "./auth/AuthProvider";
 import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
 import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
 import Ranking from "./pages/ranking/ranking ";
+import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
 
 
 
@@ -41,7 +42,7 @@ function App() {
   }, [location.pathname]); // triggered on route change
 
   return (
-    <div classname="roboto-regular">
+    <div>
       <AuthProvider>
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -49,7 +50,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/challenges" element={<ListChallenges />} />
-        <Route path="/challenges/detail/1" element={<ChallengeDetails />} />
+        <Route path="/challenges/new" element={<CreateChallenge />} />
+        <Route path="/challenges/:id" element={<ChallengeDetails />} />
         <Route path="/ranking" element={<Ranking />} />
         
       </Routes>

@@ -1,13 +1,9 @@
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
-import HeroHome from "../../home/partials/HeroHome";
-import FeaturesHome from "../../home/partials/Features";
-import FeaturesBlocks from "../../home/partials/FeaturesBlocks";
-import Testimonials from "../../home/partials/Testimonials";
-import Newsletter from "../../home/partials/Newsletter";
 import React from "react";
 import ChallengeDetails from "../challengeDetails/challengeDetails";
 import Challenges from "./challenge";
+import {Link} from "react-router-dom";
 
 
 function listChallenges() {
@@ -49,9 +45,9 @@ function listChallenges() {
                 </form>
             </div>
             <div>
-                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                <Link to="/challenges/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                     Create Challenge
-                </button>
+                </Link>
             </div>
         </div>
     </div>
@@ -63,7 +59,7 @@ function listChallenges() {
 <Challenges></Challenges>
                         {/* </section> */}
                         <div className="mx-auto max-w-screen-2xl py-12 px-4 md:px-8">
-                            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
 
                                 <a href="#"
                                    className="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80">
