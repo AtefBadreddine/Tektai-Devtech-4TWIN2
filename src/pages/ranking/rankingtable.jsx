@@ -7,56 +7,38 @@ import GoldCoin from './goldcoin'; // Import GoldCoin component
 
 // Badge descriptions component
 function BadgeDescriptions() {
-  const badgeStyle = {
-    fontSize: '1.5rem', // Define the desired font size
-  };
-  const badgeT = {
-    fontSize: '2rem', // Define the desired font size
-  };
-  return (
-    <div className="flex justify-center mb-2">
-  <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faFireAlt} className="text-red-500 mr-1" style={badgeT} />
-    <span className="text-500 font-custom mr-1" style={badgeStyle}>100+<span className="text-500 font-custom mr-1" style={badgeStyle}></span> Gold medals</span>
-  </div>
-  <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faBrain} className="text-purple-300 mr-1" style={badgeT} />
-    <span className="text-300 font-custom mr-1" style={badgeStyle}> 100+ Silver medals  </span>
-  </div>
-  <div className="flex items-center">
-    <FontAwesomeIcon icon={faSeedling} className="text-green-500 mr-1" style={badgeT} />
-    <span className="text-500 font-custom mr-1" style={badgeStyle}> 100+ Bronze medals  </span>
-  </div>
-</div>
 
+  return (
+    <div className="flex flex-wrap justify-center mb-2">
+      <BadgeIcon icon={faFireAlt} color="text-red-500" label="Gold medals" />
+      <BadgeIcon icon={faBrain} color="text-purple-300" label="Silver medals" />
+      <BadgeIcon icon={faSeedling} color="text-green-500" label="Bronze medals" />
+    </div>
   );
 }
+
 function BadgeDescriptions2() {
-  const badgeStyle = {
-    fontSize: '1rem', // Define the desired font size
-  };
-
   return (
-    <div className="flex justify-center mb-2">
-  <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faMedal} className="text-yellow-500 mr-1" style={badgeStyle} />
-    <span className="text-gold-500 font-custom mr-1" style={badgeStyle}>Gold Badge</span>
-    <span className="text-gray-500">(+3 points)</span> {/* Added points for gold badge */}
-  </div>
-  <div className="flex items-center mr-4">
-    <FontAwesomeIcon icon={faMedal} className="text-gray-300 mr-1" style={badgeStyle} />
-    <span className="text-300 font-custom mr-1" style={badgeStyle}>Silver Badge</span>
-    <span className="text-gray-500">(+2 points)</span> {/* Added points for silver badge */}
-  </div>
-  <div className="flex items-center">
-    <FontAwesomeIcon icon={faMedal} className="text-orange-500 mr-1" style={badgeStyle} />
-    <span className="text-500 font-custom mr-1" style={badgeStyle}>Bronze Badge</span>
-    <span className="text-gray-500">(+1 point)</span> {/* Added points for bronze badge */}
-  </div>
-</div>
-
+    <div className="flex flex-wrap justify-center mb-2">
+      <BadgeIcon icon={faMedal} color="text-yellow-500" label="Gold Badge (+3 points)" />
+      <BadgeIcon icon={faMedal} color="text-gray-300" label="Silver Badge (+2 points)" />
+      <BadgeIcon icon={faMedal} color="text-orange-500" label="Bronze Badge (+1 point)" />
+    </div>
   );
 }
+
+function BadgeIcon({ icon, color, label }) {
+  return (
+    <div className="flex items-center mr-4">
+      <FontAwesomeIcon icon={icon} className={`${color} mr-1`} style={{ fontSize: '1.5rem' }} />
+      <span className="text-500 font-custom mr-1">{label}</span>
+    </div>
+  );
+}
+
+
+
+
 function RankingTable() {
   const [users, setUsers] = useState([]); // State to store user data
 
@@ -73,37 +55,43 @@ function RankingTable() {
   }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
-    <div className="w-full h-full flex justify-center items-center flex-col">
+
+    <div className="w-full h-full flex flex-col items-center">
+
       {/* Badge descriptions */}
       <BadgeDescriptions />
       <BadgeDescriptions2 />
-      
-      
-      {/* Container with full width and height */}
-      <div className=" mx-auto px-4 sm:px-6" style={{ width:'1400px', height: '500px', overflowY: 'auto' }}>
+
+      {/* Container with full width and scrollable */}
+      <div className="overflow-x-auto mx-auto" style={{ maxWidth: '100%' }}>
         <table className="w-full">
           <thead>
             <tr className="bg-gray-200">
-              <th className="py-2 px-4 text-center">Rank</th>
-              <th className="py-2 px-4 text-center">User</th>
-              <th className="py-2 px-4 text-center">Badges</th>
-              <th className="py-2 px-4 text-center">Total Points</th> {/* New column for total points */}
+              <th className="py-2 px-2 sm:px-4 text-center">Rank</th>
+              <th className="py-2 px-2 sm:px-4 text-center">User</th>
+              <th className="py-2 px-2 sm:px-4 text-center">Badges</th>
+              <th className="py-2 px-2 sm:px-4 text-center">Total Points</th> {/* New column for total points */}
+
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
               <tr key={user.name} className={index < 3 ? 'font-bold' : ''}>
-                <td className="py-2 px-4 text-center">
-                  {index < 3 ? <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mr-2" /> : index + 1}
+
+                <td className="py-2 px-2 sm:px-4 text-center">
+                  {index < 3 ? <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mr-1 sm:mr-2" /> : index + 1}
                 </td>
-                <td className="py-2 px-4 text-center"> {/* Center the user name */}
+                <td className="py-2 px-2 sm:px-4 text-center"> {/* Center the user name */}
+
                   <div className="flex justify-center items-center">
                     <img
                       src={`https://i.pravatar.cc/50?u=${user.name}`} // Random user image
                       alt="User"
                       className="rounded-full h-8 w-8 mr-2"
                     />
-                    {user.name}
+
+                    <span className="text-sm">{user.name}</span>
+
                     {user.goldBadges >= 100 && (
                       <span title="Gold Badge" className="ml-2">
                         <FontAwesomeIcon icon={faFireAlt} className="text-red-500" />
@@ -121,7 +109,9 @@ function RankingTable() {
                     )}
                   </div>
                 </td>
-                <td className="py-2 px-4 text-center"> {/* Center the badges */}
+
+                <td className="py-2 px-2 sm:px-4 text-center"> {/* Center the badges */}
+
                   <div className="flex justify-center">
                     {user.goldBadges > 0 && (
                       <span className="text-yellow-500 mr-1">
@@ -143,7 +133,9 @@ function RankingTable() {
                     )}
                   </div>
                 </td>
-                <td className="py-2 px-4 text-center">
+
+                <td className="py-2 px-2 sm:px-4 text-center">
+
                   {/* Total Points */}
                   <div className="gold-coin-container">
                     <GoldCoin points={(user.goldBadges * 3) + (user.silverBadges * 2) + user.bronzeBadges} />
