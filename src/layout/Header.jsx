@@ -28,6 +28,7 @@ function Header() {
   };
 
   return (
+
     <header className={`fixed w-full z-30 md:bg-opacity-90 bg-white transition duration-300 ease-in-out ${!top && 'bg-white backdrop-blur-sm shadow-lg'}`}>
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -93,6 +94,7 @@ function Header() {
             </div>
           </nav>
 
+
           <div className={`lg:hidden absolute top-16 left-0 w-full bg-white z-20 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
           <div className="text-sm">
   <Link to="/" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
@@ -121,9 +123,9 @@ function Header() {
             
           </div>
 
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
   );
 }
 

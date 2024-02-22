@@ -7,6 +7,7 @@ import GoldCoin from './goldcoin'; // Import GoldCoin component
 
 // Badge descriptions component
 function BadgeDescriptions() {
+
   return (
     <div className="flex flex-wrap justify-center mb-2">
       <BadgeIcon icon={faFireAlt} color="text-red-500" label="Gold medals" />
@@ -35,6 +36,9 @@ function BadgeIcon({ icon, color, label }) {
   );
 }
 
+
+
+
 function RankingTable() {
   const [users, setUsers] = useState([]); // State to store user data
 
@@ -51,11 +55,13 @@ function RankingTable() {
   }, []); // Empty dependency array ensures this effect runs only once on component mount
 
   return (
+
     <div className="w-full h-full flex flex-col items-center">
+
       {/* Badge descriptions */}
       <BadgeDescriptions />
       <BadgeDescriptions2 />
-      
+
       {/* Container with full width and scrollable */}
       <div className="overflow-x-auto mx-auto" style={{ maxWidth: '100%' }}>
         <table className="w-full">
@@ -65,22 +71,27 @@ function RankingTable() {
               <th className="py-2 px-2 sm:px-4 text-center">User</th>
               <th className="py-2 px-2 sm:px-4 text-center">Badges</th>
               <th className="py-2 px-2 sm:px-4 text-center">Total Points</th> {/* New column for total points */}
+
             </tr>
           </thead>
           <tbody>
             {users.map((user, index) => (
               <tr key={user.name} className={index < 3 ? 'font-bold' : ''}>
+
                 <td className="py-2 px-2 sm:px-4 text-center">
                   {index < 3 ? <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mr-1 sm:mr-2" /> : index + 1}
                 </td>
                 <td className="py-2 px-2 sm:px-4 text-center"> {/* Center the user name */}
+
                   <div className="flex justify-center items-center">
                     <img
                       src={`https://i.pravatar.cc/50?u=${user.name}`} // Random user image
                       alt="User"
                       className="rounded-full h-8 w-8 mr-2"
                     />
+
                     <span className="text-sm">{user.name}</span>
+
                     {user.goldBadges >= 100 && (
                       <span title="Gold Badge" className="ml-2">
                         <FontAwesomeIcon icon={faFireAlt} className="text-red-500" />
@@ -98,7 +109,9 @@ function RankingTable() {
                     )}
                   </div>
                 </td>
+
                 <td className="py-2 px-2 sm:px-4 text-center"> {/* Center the badges */}
+
                   <div className="flex justify-center">
                     {user.goldBadges > 0 && (
                       <span className="text-yellow-500 mr-1">
@@ -120,7 +133,9 @@ function RankingTable() {
                     )}
                   </div>
                 </td>
+
                 <td className="py-2 px-2 sm:px-4 text-center">
+
                   {/* Total Points */}
                   <div className="gold-coin-container">
                     <GoldCoin points={(user.goldBadges * 3) + (user.silverBadges * 2) + user.bronzeBadges} />

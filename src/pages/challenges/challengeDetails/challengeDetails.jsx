@@ -77,6 +77,7 @@ function challengeDetails() {
                             }
 
 
+
 <div className="flex flex-wrap gap-8">
     <div className="flex-1">
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
@@ -110,6 +111,7 @@ function challengeDetails() {
         </div>
     </div>
 </div>
+
 
 
                         </div>
