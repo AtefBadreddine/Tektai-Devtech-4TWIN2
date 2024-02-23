@@ -12,6 +12,9 @@ export class UsersService {
   async findByUsername(username: string): Promise<User> {
     return this.userModel.findOne({username})
   }
+   async findByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({ email });
+  }
   async createUser(email: string, password: string , username: string): Promise<User> {
     const user = new this.userModel({ email, password , username });
     return user.save();

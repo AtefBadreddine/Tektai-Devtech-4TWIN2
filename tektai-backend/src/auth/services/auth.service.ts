@@ -2,7 +2,9 @@ import { ConflictException, Injectable, Logger } from "@nestjs/common";
 import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
-
+import * as nodemailer from 'nodemailer';
+import { NotFoundException } from '@nestjs/common';
+import * as smtpTransport from 'nodemailer-smtp-transport';
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger();
@@ -34,4 +36,34 @@ export class AuthService {
 
     return await this.usersService.createUser(email, hashedPassword , username);
   }
+  async forgetPassword(email: string): Promise<void> {
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Générer un jeton de réinitialisation de mot de passe avec une durée de validité limitée (par exemple, 1 heure)
+    const resetToken = this.jwtService.sign({ email }, { expiresIn: '1h' });
+
+    // Configurer le transporteur SMTP pour envoyer des e-mails
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'alaedineibrahim@gmail.com',
+        pass: 'sabouna123',
+      },
+    });
+
+    // Envoyer un e-mail de réinitialisation de mot de passe à l'utilisateur
+    await transporter.sendMail({
+      from: 'alaedineibrahim@gmail.com',
+      to: email,
+      subject: 'Reset Your Password',
+      html: `<p>Please click <a href="http://localhost:3000/reset-password?token=${resetToken}">here</a> to reset your password.</p>`,
+    });
+
+   
+  }
+
+  
 }

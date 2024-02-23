@@ -1,5 +1,5 @@
 import { AuthService } from "./services/auth.service";
-import { Controller, Request, Post, UseGuards, Body, Logger, Get } from "@nestjs/common";
+import { Controller, Request, Post, UseGuards, Body, Logger, Get, UnauthorizedException } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 
@@ -18,5 +18,11 @@ export class AuthController {
     const { email , username , password} = signUpDto;
     return this.authService.signup(email, password , username);
   }
-
+   @Post('forget-password')
+  async forgetPassword(@Body() body: { email: string }) {
+    await this.authService.forgetPassword(body.email);
+    return { message: 'Password reset email sent successfully' };
+  }
+  
+ 
 }
