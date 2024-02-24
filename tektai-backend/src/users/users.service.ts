@@ -24,4 +24,16 @@ export class UsersService {
       this.logger.error(`Error fetching all users: ${error.message}`);
       throw error;
     }}
+    async findUserByUsername(username: string): Promise<User> {
+      try {
+        const user = await this.userModel.findOne({ username }).exec();
+        if (!user) {
+          throw new Error(`User with username ${username} not found`);
+        }
+        return JSON.parse(JSON.stringify(user));
+      } catch (error) {
+        this.logger.error(`Error fetching user by username ${username}: ${error.message}`);
+        throw error;
+      }
+    }
 }

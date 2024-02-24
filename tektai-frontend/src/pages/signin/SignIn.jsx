@@ -22,7 +22,7 @@ function SignIn() {
       try {
         // Extract email and password from input state
         const { email, password } = input;
-
+  
         // Make a POST request to get the token
         const response = await fetch('http://localhost:3000/auth/login', {
           method: 'POST',
@@ -31,17 +31,31 @@ function SignIn() {
           },
           body: JSON.stringify({ username: email, password: password }), // Send username and password
         });
-
+  
         // Parse response
         const data = await response.json();
-
+  
         // Check if token exists in response
         if (data && data.access_token) {
           const { access_token } = data;
-
+  
           // Save token to localStorage
           localStorage.setItem('token', access_token);
-
+  
+          // Fetch user data using the token
+          const userResponse = await fetch(`http://localhost:3000/auth/getuser?username=${encodeURIComponent(email)}`, {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
+          });
+  
+          // Parse user data
+          const userData = await userResponse.json();
+  
+          // Save user data to localStorage
+          localStorage.setItem('user', JSON.stringify(userData));
+  
           // Redirect to admin page after successful login
           window.location.href = '/admin';
         } else {
@@ -54,6 +68,7 @@ function SignIn() {
       alert('Please provide a valid input');
     }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
