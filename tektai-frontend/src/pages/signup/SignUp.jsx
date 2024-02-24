@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
-import {useAuth} from "../../auth/AuthProvider";
+import AuthProvider from "../../auth/AuthProvider";
 
 
 function SignUp() {
@@ -249,7 +249,7 @@ const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
 
 const StepThree = ( { formData, handleInput, handleNext, handlePrevious } ) => {
   console.log("step 3" ,formData)
-  const auth = useAuth();
+  const auth = AuthProvider();
   const [submitted,setSubmitted] = useState(false);
 
   useEffect(() => {
