@@ -7,6 +7,8 @@ import {
 
 import 'aos/dist/aos.css';
 import './css/style.css';
+import './css/additional-styles/satoshi.css'; // Import the CSS file
+
 
 import AOS from 'aos';
 
@@ -19,6 +21,9 @@ import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
 import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
 import Ranking from "./pages/ranking/ranking ";
 import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
+import DefaultLayout from './layout/DefaultLayout';
+import Dashhome from './pages/dashboard/dashhome';
+
 
 
 
@@ -53,6 +58,8 @@ function App() {
         <Route path="/challenges/new" element={<CreateChallenge />} />
         <Route path="/challenges/:id" element={<ChallengeDetails />} />
         <Route path="/ranking" element={<Ranking />} />
+        <Route path="/admin" element={<Dashhome />} />
+
         
       </Routes>
       </AuthProvider>
