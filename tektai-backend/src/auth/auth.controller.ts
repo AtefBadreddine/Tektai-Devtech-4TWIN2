@@ -1,5 +1,5 @@
 import { AuthService } from "./services/auth.service";
-import { Controller, Request, Post, UseGuards, Body, Logger, Get } from "@nestjs/common";
+import { Controller, Request, Post, UseGuards, Body, Logger, Get, Req } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { UsersService } from "src/users/users.service";
@@ -24,4 +24,10 @@ export class AuthController {
   async getAllUsers(): Promise<any[]> {
     return this.userService.getAllUsers();
   }
+  @UseGuards(JwtAuthGuard)
+  @Get('getuser')
+  async getProfile(@Req() req) {
+    return req.user;
+  }
+  
 }
