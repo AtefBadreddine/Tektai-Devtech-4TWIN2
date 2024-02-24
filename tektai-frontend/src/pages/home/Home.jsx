@@ -28,8 +28,7 @@ function Home() {
 
       </main>
 
-
-
+{/*  Site footer */}
       {/*  Site footer */}
       <Footer />
 
