@@ -14,13 +14,16 @@ export class UsersService {
     const users = await this.userModel.find();
     return users;
   }
+  
   async findByUsername(username: string): Promise<User> {
     return this.userModel.findOne({username})
   }
+
   async createUser(email: string, password: string, username: string, phoneNumber?: string, image?: string, birthdate?: Date): Promise<User> {
     const user = new this.userModel({ email, password, username, phoneNumber, image, birthdate });
     return user.save();
   }
+
   async addUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new this.userModel(createUserDto);
     return user.save();
