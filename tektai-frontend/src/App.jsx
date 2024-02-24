@@ -23,6 +23,8 @@ import Ranking from "./pages/ranking/ranking ";
 import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
 import DefaultLayout from './layout/DefaultLayout';
 import Dashhome from './pages/dashboard/dashhome';
+import Profile from './components/Profile';
+import Settings from './components/Settings';
 
 
 
@@ -59,6 +61,8 @@ function App() {
         <Route path="/challenges/:id" element={<ChallengeDetails />} />
         <Route path="/ranking" element={<Ranking />} />
         <Route path="/admin" element={<Dashhome />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/pages/settings" element={<Settings />} />
 
         
       </Routes>
