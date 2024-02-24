@@ -16,4 +16,12 @@ export class UsersService {
     const user = new this.userModel({ email, password , username });
     return user.save();
   }
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const users = await this.userModel.find().exec();
+      return JSON.parse(JSON.stringify(users));
+    } catch (error) {
+      this.logger.error(`Error fetching all users: ${error.message}`);
+      throw error;
+    }}
 }
