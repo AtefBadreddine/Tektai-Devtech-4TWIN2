@@ -19,6 +19,8 @@ const DropdownUser = () => {
 
   const handleLogout = () => {
     logout(); 
+    localStorage.removeItem('user');
+
     window.location.href = '/signin';
     // Call the logout function
   };
