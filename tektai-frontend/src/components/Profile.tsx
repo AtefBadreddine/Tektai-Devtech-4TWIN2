@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 // import CoverOne from '../images/cover/cover-01.png';
 // import userSix from '../images/user/user-06.png';
 import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
-
+interface UserData {
+  username: string;
+  email: string;
+  image: string;
+  password: string;
+  role: string;
+  // Add other properties if necessary
+}
 const Profile = () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  useEffect(() => {
+    // Retrieve data from local storage
+    const localStorageData = localStorage.getItem('user');
+
+    if (localStorageData) {
+      // Parse the data if necessary
+      const parsedData = JSON.parse(localStorageData);
+      // Set the user data to state
+      setUserData(parsedData);
+    } else {
+      // Handle the case where no user data is found
+      console.log('No user data found in local storage');
+    }
+  }, []);
   return (
     <>
     <Header />
@@ -94,27 +116,26 @@ const Profile = () => {
           </div>
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              Danish Heilium
-            </h3>
-            <p className="font-medium">Ui/Ux Designer</p>
+            {userData?.username ?? 'Loading...'} </h3>
+            <p className="font-medium">            {userData?.role ?? 'Loading...'}</p>
             <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
                   259
                 </span>
-                <span className="text-sm">Posts</span>
+                <span className="text-sm">Gold</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
                   129K
                 </span>
-                <span className="text-sm">Followers</span>
+                <span className="text-sm">Silver</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
                   2K
                 </span>
-                <span className="text-sm">Following</span>
+                <span className="text-sm">Bronze</span>
               </div>
             </div>
 
