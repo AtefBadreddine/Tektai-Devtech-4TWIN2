@@ -1,9 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import Header from '../layout/Header';
-
+interface UserData {
+  username: string;
+  email: string;
+  image: string;
+  password: string;
+  role: string;
+  bio: string;
+  
+  gpts: number;
+  spts: number;
+  bpts: number;
+  phoneNumber:number;
+  
+  // Add other properties if necessary
+}
 const Settings = () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  useEffect(() => {
+    // Retrieve data from local storage
+    const localStorageData = localStorage.getItem('user');
+
+    if (localStorageData) {
+      // Parse the data if necessary
+      const parsedData = JSON.parse(localStorageData);
+      // Set the user data to state
+      setUserData(parsedData);
+    } else {
+      // Handle the case where no user data is found
+      console.log('No user data found in local storage');
+    }
+  }, []);
   return (
     <><Header /><div className="mx-auto max-w-270">
     <div style={{ height: '100px' }}></div>
@@ -57,8 +86,8 @@ const Settings = () => {
                         name="fullName"
                         id="fullName"
                         placeholder="Devid Jhon"
-                        defaultValue="Devid Jhon" />
-                    </div>
+                        defaultValue={userData?.username} />
+                        </div>
                   </div>
 
                   <div className="w-full sm:w-1/2">
@@ -73,8 +102,8 @@ const Settings = () => {
                       type="text"
                       name="phoneNumber"
                       id="phoneNumber"
-                      placeholder="+990 3343 7865"
-                      defaultValue="+990 3343 7865" />
+                      defaultValue={userData?.phoneNumber}
+                      />
                   </div>
                 </div>
 
@@ -115,25 +144,26 @@ const Settings = () => {
                       name="emailAddress"
                       id="emailAddress"
                       placeholder="devidjond45@gmail.com"
-                      defaultValue="devidjond45@gmail.com" />
+                      defaultValue={userData?.email}
+                      />
                   </div>
                 </div>
 
-                <div className="mb-5.5">
-                  <label
-                    className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="Username"
-                  >
-                    Username
-                  </label>
-                  <input
-                    className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                    type="text"
-                    name="Username"
-                    id="Username"
-                    placeholder="devidjhon24"
-                    defaultValue="devidjhon24" />
-                </div>
+                  {/* <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="Username"
+                    >
+                      Username
+                    </label>
+                    <input
+                      className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                      type="text"
+                      name="Username"
+                      id="Username"
+                      placeholder="devidjhon24"
+                      defaultValue="devidjhon24" />
+                  </div> */}
 
                 <div className="mb-5.5">
                   <label
@@ -178,7 +208,8 @@ const Settings = () => {
                       id="bio"
                       rows={6}
                       placeholder="Write your bio here"
-                      defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque posuere fermentum urna, eu condimentum mauris tempus ut. Donec fermentum blandit aliquet."
+                                           defaultValue={userData?.bio}
+
                     ></textarea>
                   </div>
                 </div>

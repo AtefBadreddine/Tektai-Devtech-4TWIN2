@@ -13,9 +13,12 @@ interface UserData {
   image: string;
   password: string;
   role: string;
+  bio: string;
+  
   gpts: number;
   spts: number;
   bpts: number;
+  phoneNumber:number;
   
   // Add other properties if necessary
 }
@@ -166,11 +169,7 @@ Gold</span>
                 About Me
               </h4>
               <p className="mt-4.5">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Pellentesque posuere fermentum urna, eu condimentum mauris
-                tempus ut. Donec fermentum blandit aliquet. Etiam dictum dapibus
-                ultricies. Sed vel aliquet libero. Nunc a augue fermentum,
-                pharetra ligula sed, aliquam lacus.
+              {userData?.bio ?? 'Loading...'}
               </p>
             </div>
 
