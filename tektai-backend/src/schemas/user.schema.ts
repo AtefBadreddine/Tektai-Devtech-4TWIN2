@@ -4,15 +4,15 @@ import {
   Prop
 } from "@nestjs/mongoose";
 import {
-  Document
+  Document, Types
 } from 'mongoose';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop()
-  userId : number;
+  @Prop({ type: String, default: () => new Types.ObjectId().toString() })
+  userId :number ;
 
   @Prop({ required: true})
   email: string;

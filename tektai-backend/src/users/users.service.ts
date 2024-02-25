@@ -1,6 +1,6 @@
 import {  Injectable, Logger } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { User } from "../schemas/user.schema";
 import { CreateUserDto } from "./dto/createUser.dto";
 
@@ -14,7 +14,7 @@ export class UsersService {
     const users = await this.userModel.find();
     return users;
   }
-  
+
   async findByUsername(username: string): Promise<User> {
     return this.userModel.findOne({username})
   }
@@ -28,8 +28,12 @@ export class UsersService {
     const user = new this.userModel(createUserDto);
     return user.save();
   } 
-  async updateUser(userId: number, updateUserDto: Partial<User>): Promise<User> {
-    const updatedUser = await this.userModel.findOneAndUpdate({ userId }, updateUserDto, { new: true });
+  async updateUser(userId: string, updateUserDto: Partial<User>): Promise<User> {
+    console.log('Update DTO:', updateUserDto);
+    const objectId = new Types.ObjectId(userId);
+    const updatedUser = await this.userModel.findByIdAndUpdate(objectId, updateUserDto, { new: true });
+    console.log('Updated User:', updatedUser);
     return updatedUser;
   }
+  
 }
