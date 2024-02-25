@@ -13,7 +13,7 @@ export type UserDocument = User & Document;
 export class User {
   @Prop()
   userId : string;
-
+ 
   @Prop({ required: true})
   email: string;
 
@@ -22,6 +22,7 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
     @Prop()
   resetPasswordToken: string; // Champ pour stocker le token de réinitialisation
 
