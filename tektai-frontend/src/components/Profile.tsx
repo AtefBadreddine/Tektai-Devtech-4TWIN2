@@ -26,21 +26,33 @@ interface UserData {
   // Add other properties if necessary
 }
 const Profile = () => {
+  let gptss: number = 0;
+  let sptss: number = 0;
+  let bptss: number = 0;
   const [userData, setUserData] = useState<UserData | null>(null);
+  
   useEffect(() => {
     // Retrieve data from local storage
     const localStorageData = localStorage.getItem('user');
+    
 
     if (localStorageData) {
       // Parse the data if necessary
       const parsedData = JSON.parse(localStorageData);
       // Set the user data to state
       setUserData(parsedData);
+      console.log('gpts:', userData?.gpts);
+      console.log('spts:', userData?.spts);
+      console.log('bpts:', userData?.bpts);
+      let gptss: number = userData?.gpts ?? 0;
+      let sptss: number = userData?.spts ?? 0;
+      let bptss: number = userData?.bpts ?? 0;
     } else {
       // Handle the case where no user data is found
       console.log('No user data found in local storage');
     }
   }, []);
+  
   return (
     <>
     <Header />
@@ -140,7 +152,9 @@ const Profile = () => {
                     }`}>            {userData?.role ?? 'Loading...'}</p>
 {/* <ChartOne/>  */}
 {/* <Chartcercle></Chartcercle> */}
-<Doura/>           <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+{/* <div style={{ height: '150px' ,width:'100px'}}  >
+<Doura gpts={33} spts={22} bpts={11} /></div> */}
+         <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
                 {userData?.gpts ?? 'Loading...'} 
