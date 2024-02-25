@@ -25,6 +25,7 @@
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
   import Settings from './components/Settings';
+import TermsAndConditions from './components/terms/terms';
 
 
 
@@ -63,6 +64,8 @@
           <Route path="/admin" element={<Dashhome />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/pages/settings" element={<Settings />} />
+          <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+
 
           
         </Routes>
