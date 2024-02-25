@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
+import ChartOne from './charts/chartone';
+import Chartcercle from './charts/cercelchart';
+import Doura from './charts/doura';
 interface UserData {
   username: string;
   email: string;
@@ -135,7 +138,9 @@ const Profile = () => {
                         ? 'bg-purple-500 text-purple-500'
                         : 'bg-warning text-warning'
                     }`}>            {userData?.role ?? 'Loading...'}</p>
-            <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
+{/* <ChartOne/>  */}
+{/* <Chartcercle></Chartcercle> */}
+<Doura/>           <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
                 {userData?.gpts ?? 'Loading...'} 
