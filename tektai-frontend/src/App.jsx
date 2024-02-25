@@ -1,4 +1,4 @@
-  import React, { useEffect } from 'react';
+  import React, { useEffect, useState } from 'react';
   import {
     Routes,
     Route,
@@ -26,6 +26,8 @@
   import Profile from './components/Profile';
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
+import Spinner from './components/spinner/spinner';
+import SpinnerWithBackground from './components/spinner/spinner';
 
 
 
@@ -33,6 +35,7 @@ import TermsAndConditions from './components/terms/terms';
   function App() {
 
     const location = useLocation();
+    const [loading, setLoading] = useState(true); // State to track loading status
 
     useEffect(() => {
       AOS.init({
@@ -47,11 +50,17 @@ import TermsAndConditions from './components/terms/terms';
       document.querySelector('html').style.scrollBehavior = 'auto'
       window.scroll({ top: 0 })
       document.querySelector('html').style.scrollBehavior = ''
+
+      const timeout = setTimeout(() => setLoading(false), 3000); // Simulate 2 seconds loading time
+    return () => clearTimeout(timeout);
     }, [location.pathname]); // triggered on route change
 
     return (
       <div>
         <AuthProvider>
+        {loading ? (
+          <SpinnerWithBackground />
+        ) : (
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
@@ -68,7 +77,7 @@ import TermsAndConditions from './components/terms/terms';
 
 
           
-        </Routes>
+        </Routes>)}
         </AuthProvider>
       </div>
     );
