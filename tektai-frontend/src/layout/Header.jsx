@@ -2,7 +2,7 @@
   import { Link } from 'react-router-dom';
   import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-  import { faHome, faChartBar, faDatabase, faMedal } from '@fortawesome/free-solid-svg-icons';
+  import { faHome, faChartBar, faDatabase, faMedal, faAngleDown } from '@fortawesome/free-solid-svg-icons';
   import DropdownUser from '../components/Header/DropdownUser';
   import './Header.css'; // Import CSS file for Header styles
 
@@ -123,6 +123,34 @@
 
             <div className={`lg:hidden absolute top-16 left-0 w-full bg-white z-20 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
               <div className="text-sm">
+              {loading ? (
+        <div className="spinner" style={{ 
+          border: '4px solid rgba(0, 0, 0, 0.1)',
+          borderLeftColor: '#7986cb',
+          borderRadius: '50%',
+          width: '24px',
+          height: '24px',
+          animation: 'spin 1s linear infinite'
+        }}></div> // Render spinner animation while loading
+          ) : !user ? (
+          <div>
+            <Link to="/signin" className="text-gray-700 hover:text-gray-900 mr-4">
+              Sign in
+            </Link>
+            <Link to="/signup" className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800">
+              Sign up
+            </Link>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between">
+  <h1 className="text-gray-700 mr-4">{user.role === 'challenger' ? user.username : user.companyName}</h1>
+  <div className=''>
+  <FontAwesomeIcon icon={faAngleDown} className='text-black' />
+  <DropdownUser></DropdownUser>
+  </div>
+</div>
+
+        )}
                 <Link to="/" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
                   <FontAwesomeIcon icon={faHome} className="mr-2" />
                   Home
@@ -139,12 +167,7 @@
                   <FontAwesomeIcon icon={faMedal} className="mr-2" />
                   Rankings
                 </Link>
-                <Link to="/signin" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center mr-4">
-                  Sign in
-                </Link>
-                <Link to="/signup" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center bg-gray-900 text-white hover:bg-gray-800">
-                  Sign up
-                </Link>
+             
               </div>
             </div>
 
