@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
-// import CoverOne from '../images/cover/cover-01.png';
-// import userSix from '../images/user/user-06.png';
+import coverImage from '../images/cover/cover-01.png';
+import profileImage from '../images/user/user-06.png'
 import { Link } from 'react-router-dom';
 import Header from '../layout/Header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMedal } from '@fortawesome/free-solid-svg-icons';
 interface UserData {
   username: string;
   email: string;
   image: string;
   password: string;
   role: string;
+  gpts: number;
+  spts: number;
+  bpts: number;
+  
   // Add other properties if necessary
 }
 const Profile = () => {
@@ -39,7 +45,7 @@ const Profile = () => {
       <div className="overflow-hidden rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="relative z-20 h-35 md:h-65">
           <img
-            src='../images/cover/cover-01.png'
+            src={coverImage}
             alt="profile cover"
             className="h-full w-full rounded-tl-sm rounded-tr-sm object-cover object-center"
           />
@@ -79,7 +85,7 @@ const Profile = () => {
         <div className="px-4 pb-6 text-center lg:pb-8 xl:pb-11.5">
           <div className="relative z-30 mx-auto -mt-22 h-30 w-full max-w-30 rounded-full bg-white/20 p-1 backdrop-blur sm:h-44 sm:max-w-44 sm:p-3">
             <div className="relative drop-shadow-2">
-              <img src='../images/user/user-06.png' alt="profile" />
+              <img src={profileImage} alt="profile" />
               <label
                 htmlFor="profile"
                 className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
@@ -117,25 +123,41 @@ const Profile = () => {
           <div className="mt-4">
             <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
             {userData?.username ?? 'Loading...'} </h3>
-            <p className="font-medium">            {userData?.role ?? 'Loading...'}</p>
+            <p className={`font-medium${
+                           userData?.role === 'admin'
+                        ? 'bg-success text-success'
+                        : userData?.role === 'challenger'
+                        ? 'bg-danger text-danger'
+                        : userData?.role === 'company'
+                        ? 'bg-purple-500 text-purple-500'
+                        : 'bg-warning text-warning'
+                    }`}>            {userData?.role ?? 'Loading...'}</p>
             <div className="mx-auto mt-4.5 mb-5.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  259
+                {userData?.gpts ?? 'Loading...'} 
+
                 </span>
-                <span className="text-sm">Gold</span>
+                <span className="text-sm">                                                 <FontAwesomeIcon icon={faMedal} className="text-yellow-500 mr-1" />
+<span></span>
+Gold</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  129K
+                {userData?.spts ?? 'Loading...'} 
+
                 </span>
-                <span className="text-sm">Silver</span>
+                <span className="text-sm">                         <FontAwesomeIcon icon={faMedal} className="text-gray-300 mr-1" />
+<span></span>Silver</span>
               </div>
               <div className="flex flex-col items-center justify-center gap-1 px-4 xsm:flex-row">
                 <span className="font-semibold text-black dark:text-white">
-                  2K
+                {userData?.bpts ?? 'Loading...'} 
+
                 </span>
-                <span className="text-sm">Bronze</span>
+                <span className="text-sm">                                                <FontAwesomeIcon icon={faMedal} className="text-orange-500 mr-1" />
+
+<span></span>Bronze</span>
               </div>
             </div>
 
