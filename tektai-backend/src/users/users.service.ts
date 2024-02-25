@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import {  Injectable, InternalServerErrorException, Logger, NotFoundException } from "@nestjs/common";
-=======
-import {  Injectable, Logger } from "@nestjs/common";
->>>>>>> da6bbd93e8b938c1f3f6d101e0357d1c72940aa3
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User } from "../schemas/user.schema";
@@ -23,7 +19,6 @@ export class UsersService {
     const user = new this.userModel({ email, password , username });
     return user.save();
   }
-<<<<<<< HEAD
   async deleteUser(userId: string): Promise<User | null> {
     try {
       const user = await this.userModel.findByIdAndDelete(userId);
@@ -35,17 +30,43 @@ export class UsersService {
       throw new InternalServerErrorException('Failed to delete user');
     }
   }
-  async findByResetToken(token: string): Promise<User | undefined> {
-    return this.userModel.findOne({ resetToken: token }).exec();
-  }
-
-  async updatePassword(userId: string, newPassword: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(userId, { password: newPassword }).exec();
+ async findByResetToken(token: string): Promise<User | undefined> {
+    this.logger.log(`Searching for user with reset token: ${token}`);
+    const user = await this.userModel.findOne({ resetPasswordToken: token }).exec();
+    if (!user) {
+      this.logger.error(`User not found for reset token: ${token}`);
+    }
+    return user;
   }
 
   async clearResetToken(userId: string): Promise<void> {
-    await this.userModel.findByIdAndUpdate(userId, { resetToken: null }).exec();
+    this.logger.log(`Clearing reset token for user: ${userId}`);
+    await this.userModel.findByIdAndUpdate(userId, { resetPasswordToken: null }).exec();
+    this.logger.log(`Reset token cleared successfully for user: ${userId}`);
   }
-=======
->>>>>>> da6bbd93e8b938c1f3f6d101e0357d1c72940aa3
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    this.logger.log(`Updating password for user: ${userId}`);
+    await this.userModel.findByIdAndUpdate(userId, { password: newPassword }).exec();
+    this.logger.log(`Password updated successfully for user: ${userId}`);
+  }
+
+  async updateResetToken(userId: string, token: string, expirationDate: Date): Promise<void> {
+    this.logger.log(`Updating reset token for user: ${userId}`);
+    await this.userModel.findByIdAndUpdate(userId, { resetPasswordToken: token, resetPasswordTokenExpiry: expirationDate }).exec();
+    this.logger.log(`Reset token updated successfully for user: ${userId}`);
+  }
+
+async getUserIdByResetToken(token: string): Promise<string | undefined> {
+  const user = await this.findByResetToken(token);
+  return user?.userId.toString(); // Convertissez userId en string
+}
+async findById(userId: string): Promise<User | null> {
+    try {
+      const user = await this.userModel.findById(userId).exec();
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to find user by ID');
+    }
+  }
 }

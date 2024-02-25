@@ -12,7 +12,7 @@ export type UserDocument = User & Document;
 @Schema()
 export class User {
   @Prop()
-  userId : number;
+  userId : string;
 
   @Prop({ required: true})
   email: string;
@@ -22,6 +22,12 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+    @Prop()
+  resetPasswordToken: string; // Champ pour stocker le token de réinitialisation
+
+  @Prop()
+  resetPasswordTokenExpiry: Date; // Champ pour stocker la date d'expiration du token
+
 
 }
 
