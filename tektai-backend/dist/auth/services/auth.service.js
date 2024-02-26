@@ -89,7 +89,7 @@ let AuthService = class AuthService {
     }
     async resetPassword(token, newPassword) {
         const user = await this.usersService.findByResetToken(token);
-        if (!user) {
+        if (!(token)) {
             throw new common_2.NotFoundException('Invalid or expired token');
         }
         const hashedPassword = await this.hashService.hashPassword(newPassword);

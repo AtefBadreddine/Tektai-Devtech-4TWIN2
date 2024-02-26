@@ -51,6 +51,8 @@ async forgetPassword(email: string): Promise<void> {
       throw new NotFoundException('User not found');
     }
     const resetToken = uuidv4();
+     const st = await this.usersService.storePwdToken(resetToken,user._id);
+
     // Créer le lien de réinitialisation de mot de passe avec le jeton
  const resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
     // Créer un objet Sendinblue
@@ -69,12 +71,12 @@ async forgetPassword(email: string): Promise<void> {
     };
 
     // Envoyer l'e-mail
-    try {
-      await sendinblue.sendTransacEmail(emailParams);
-    } catch (error) {
-      console.error('Error sending email:', error);
-      throw new Error('Failed to send email');
-    }
+  try {
+       await sendinblue.sendTransacEmail(emailParams);
+     } catch (error) {
+       console.error('Error sending email:', error);
+       throw new Error('Failed to send email');
+     }
   }
 async generateResetToken(userId: string): Promise<string> {
   const token = uuidv4();
@@ -102,10 +104,10 @@ async resetPassword(token: string, newPassword: string): Promise<void> {
     const hashedPassword = await this.hashService.hashPassword(newPassword);
 
     // Mettre à jour le mot de passe de l'utilisateur dans la base de données
-    await this.usersService.updatePassword(user.userId.toString(), hashedPassword);
+    await this.usersService.updatePassword(user._id, hashedPassword);
 
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
-    await this.usersService.clearResetToken(user.userId.toString());
+    await this.usersService.clearResetToken(user._id);
    }
 
 

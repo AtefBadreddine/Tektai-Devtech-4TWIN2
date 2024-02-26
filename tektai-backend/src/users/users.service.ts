@@ -2,6 +2,7 @@ import {  Injectable, InternalServerErrorException, Logger, NotFoundException } 
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User } from "../schemas/user.schema";
+const mongo = require('mongodb');
 
 
 @Injectable()
@@ -19,6 +20,13 @@ export class UsersService {
     const user = new this.userModel({ email, password , username });
     return user.save();
   }
+    async storePwdToken(token: string, id: string) {
+      const user = await this.userModel.findById(new mongo.ObjectId(id)).exec();
+      user.resetPasswordToken = token;
+      return  await user.save();
+
+    }
+
   async deleteUser(userId: string): Promise<User | null> {
     try {
       const user = await this.userModel.findByIdAndDelete(userId);
