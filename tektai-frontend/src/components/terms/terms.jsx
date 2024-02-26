@@ -4,7 +4,14 @@ import Footer from '../../layout/Footer';
 import DefaultLayout from '../../layout/DefaultLayout';
 import CoverOne from '../../images/cover/cover-01.png';
 import { Link } from 'react-router-dom';
-
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+} from '@chakra-ui/react'
+import TermsOfUse from './tos';
 const TermsAndConditions = () => {
   return (
     <div className="container mx-auto px-4 py-8">
@@ -26,15 +33,45 @@ const TermsAndConditions = () => {
             Terms and Conditions            </h3>
           
 
-            <div className="mx-auto max-w-180">
+            {/* <div className="mx-auto max-w-180">
               <h4 className="font-semibold text-black dark:text-white">
               </h4>
               <p className="mt-11">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id metus non magna tincidunt faucibus.
-        Proin euismod varius libero, vitae mattis magna tincidunt a. Nam sit amet turpis vel est fringilla tincidunt.
-      
+              Welcome to TektAI! These Terms of Use govern your access to and use of the TektAI platform and services. By accessing or using TektAI, you agree to comply with these terms. If you do not agree with any part of these terms, you may not access or use TektAI.
+
+1. Account Registration:
+
+You may be required to create an account to access certain features of TektAI. You are responsible for maintaining the confidentiality of your account credentials and for any activities that occur under your account.
+2. Use of Services:
+
+You agree to use TektAI solely for lawful purposes and in accordance with these terms. You may not use TektAI in any manner that could damage, disable, overburden, or impair the platform.
+3. Intellectual Property:
+
+TektAI and its content, features, and functionality are owned by TektAI and are protected by intellectual property laws. You may not reproduce, distribute, modify, or create derivative works of TektAI without our prior written consent.
+4. User Content:
+
+By submitting content to TektAI, you grant us a worldwide, non-exclusive, royalty-free license to use, reproduce, modify, adapt, publish, translate, distribute, and display such content.
+5. Privacy:
+
+Your use of TektAI is subject to our Privacy Policy, which governs the collection, use, and disclosure of your personal information.
+6. Additional Restrictions:
+
+We reserve the right to impose additional restrictions on your use of TektAI as deemed necessary to protect the integrity of the platform and its users.
+7. Your Rights:
+
+You retain all rights to any content you submit to TektAI. By submitting content, you grant us the right to use and distribute such content as described in these terms.
+8. Termination:
+
+We reserve the right to terminate or suspend your access to TektAI at any time for any reason without prior notice.
+9. Governing Law:
+
+These terms shall be governed by and construed in accordance with the laws of [Jurisdiction], without regard to its conflict of law provisions.
+10. Changes to Terms:
+
+We reserve the right to modify or revise these terms at any time. Any changes will be effective immediately upon posting on TektAI. Continued use of TektAI after any such changes constitutes your acceptance of the revised terms.
               </p>
-            </div>
+            </div> */}
+      <TermsOfUse />
 
             <div className="mt-6.5">
               <h4 className="mb-3.5 font-medium text-black dark:text-white">

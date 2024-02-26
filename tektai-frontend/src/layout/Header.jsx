@@ -6,6 +6,15 @@
   import DropdownUser from '../components/Header/DropdownUser';
   import './Header.css'; // Import CSS file for Header styles
   import { Tooltip } from '@chakra-ui/react'
+  import {
+    Drawer,
+    DrawerBody,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
+  } from '@chakra-ui/react'
   function Header() {
     const { login, logout } = useContext(AuthContext); // Access authentication context
     const [top, setTop] = useState(true);
@@ -100,7 +109,7 @@
                 <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
                   Rankings</Tooltip>
                 </Link>  
-
+               
               </div>
               <div className="flex items-center">
         <input type="text" placeholder="Search..." className="border border-gray-300 rounded-lg py-1 px-3 mr-4 focus:outline-none focus:border-indigo-500" />

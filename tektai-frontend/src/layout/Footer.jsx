@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import DrawerExample from './drawer';
 
 function Footer() {
   const currentYear = new Date().getFullYear();
-
+  
   return (
     <footer>
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -156,7 +157,7 @@ function Footer() {
           {/* Copyrights note */}
           <div className="text-sm text-gray-600 mr-4">      <span className="text-blue-600 hover:underline cursor-pointer">TEKTAI</span>. All rights reserved &copy; {currentYear}.
 </div>
-
+<DrawerExample></DrawerExample>
         </div>
 
       </div>
