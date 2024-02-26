@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from '../../auth/AuthProvider';
 
 // import UserOne from '../../images/user/user-01.png';
-
+interface UserData {
+  username: string;
+  role: string;
+  // Add other properties as needed
+}
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null); // Explicitly define the type
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -14,35 +19,41 @@ const DropdownUser = () => {
 
   const handleLogout = () => {
     logout(); 
+    localStorage.removeItem('user');
+
     window.location.href = '/signin';
     // Call the logout function
   };
-  // close on click outside
-  useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
-      if (!dropdown.current) return;
-      if (
-        !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
-        return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener('click', clickHandler);
-    return () => document.removeEventListener('click', clickHandler);
-  });
+  //close on click outside
+useEffect(() => {
+  const storedUserData = localStorage.getItem('user');
+  if (storedUserData) {
+    setUserData(JSON.parse(storedUserData));
+  }
 
-  // close if the esc key is pressed
-  useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!dropdownOpen || keyCode !== 27) return;
-      setDropdownOpen(false);
-    };
-    document.addEventListener('keydown', keyHandler);
-    return () => document.removeEventListener('keydown', keyHandler);
-  });
+  const clickHandler = ({ target }: MouseEvent) => {
+    if (!dropdown.current) return;
+    if (
+      !dropdownOpen ||
+      dropdown.current.contains(target) ||
+      trigger.current.contains(target)
+    )
+      return;
+    setDropdownOpen(false);
+  };
+  document.addEventListener('click', clickHandler);
+  return () => document.removeEventListener('click', clickHandler);
+}, [dropdownOpen]); // Add dropdownOpen as a dependency
 
+// close if the esc key is pressed
+useEffect(() => {
+  const keyHandler = ({ keyCode }: KeyboardEvent) => {
+    if (!dropdownOpen || keyCode !== 27) return;
+    setDropdownOpen(false);
+  };
+  document.addEventListener('keydown', keyHandler);
+  return () => document.removeEventListener('keydown', keyHandler);
+}, [dropdownOpen]); // Add dropdownOpen as a dependency
   return (
     <div className="relative">
       <Link
@@ -51,12 +62,24 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
-          </span>
-          <span className="block text-xs">UX Designer</span>
-        </span>
+       <span className="hidden text-right lg:block">
+  <span className="block text-sm font-medium text-black dark:text-white">
+    {userData && userData.username && userData.username.charAt(0).toUpperCase() + userData.username.substring(1)}
+
+  </span>
+  <span className={`block text-xs ${
+                           userData && userData.role === 'admin'
+                        ? ' text-success'
+                        : userData && userData.role === 'challenger'
+                        ? ' text-danger'
+                        :userData &&  userData.role === 'company'
+                        ? ' text-purple-500'
+                        : ' text-warning'
+                    }`}>
+    {userData && userData.role && userData.role.charAt(0).toUpperCase() + userData.role.substring(1)}
+  </span>
+</span>
+
 
         <span className="h-12 w-12 rounded-full">
           {/* <img src={UserOne} alt="User" /> */}

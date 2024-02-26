@@ -66,7 +66,7 @@ const TableComponent = ({ data }) => {
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
                            packageItem.role === 'admin'
                         ? 'bg-success text-success'
-                        : packageItem.status === 'challenger'
+                        : packageItem.role === 'challenger'
                         ? 'bg-danger text-danger'
                         : packageItem.role === 'company'
                         ? 'bg-purple-500 text-purple-500'
