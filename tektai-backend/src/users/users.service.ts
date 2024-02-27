@@ -2,7 +2,7 @@ import {  Injectable, InternalServerErrorException, Logger, NotFoundException } 
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { User } from "../schemas/user.schema";
-const mongo = require('mongodb');
+import mongo from 'mongodb';
 
 
 @Injectable()

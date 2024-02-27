@@ -2,7 +2,6 @@ import { AuthService } from "./services/auth.service";
 
 import { Controller, Request, Post, UseGuards, Body, Logger, Get, UnauthorizedException,Delete, Param, NotFoundException, Query, Res, InternalServerErrorException, Patch } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
-import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { UsersService } from "src/users/users.service";
 import { ResetPasswordDto } from "src/schemas/reset-password.dto";
 import { User } from "src/schemas/user.schema";
