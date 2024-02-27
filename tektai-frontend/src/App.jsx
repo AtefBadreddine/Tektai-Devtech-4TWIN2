@@ -29,6 +29,8 @@ import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
 import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
+import NotFound from './components/notfound/notfound';
+import NotAdmin from './components/NotAdmin/NotAdmin';
 
 
 
@@ -71,6 +73,9 @@ import SpinnerWithBackground from './components/spinner/spinner';
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+          <Route path="/NotAdmin" element={<NotAdmin />} />
+          <Route path="*" element={<NotFound />} />
+
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
