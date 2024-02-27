@@ -22,6 +22,11 @@
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [clickCount, setClickCount] = useState(0);
+
+    const handleLogoClick = () => {
+      setClickCount(prevCount => prevCount + 1);
+    };
     const auth = useAuth();
 
     const toggleMobileMenu = () => {
@@ -74,7 +79,7 @@
         <div className="max-w-6xl mx-auto px-5 sm:px-6">
           <div className="flex items-center justify-between h-16 md:h-20">
             <div className="flex-shrink-0 mr-4">
-            <Link to="/" className="flex gap-x-1 logo" aria-label="Cruip">
+            <Link to="/" className="flex gap-x-1 logo" aria-label="Cruip" onClick={handleLogoClick}>
         <svg className="w-8 h-8" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient cx="21.152%" cy="86.063%" fx="21.152%" fy="86.063%" r="79.941%" id="header-logo">
@@ -87,6 +92,12 @@
         </svg>
         <h1 className="font-bold text-xl">TEKTAI</h1>
       </Link>
+      {clickCount >= 7 && (
+          <Link to="/Cow" className="red-button">
+          {/* Red button content */}
+          Go to Cow
+        </Link>
+      )}
             </div>
 
             <div className="lg:hidden">
