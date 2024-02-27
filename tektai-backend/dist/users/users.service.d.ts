@@ -31,6 +31,9 @@ export declare class UsersService {
     findByUsername(username: string): Promise<User>;
     findByEmail(email: string): Promise<User>;
     createUser(email: string, password: string, username: string): Promise<User>;
+    storePwdToken(token: string, id: string): Promise<import("mongoose").Document<unknown, {}, User> & User & Required<{
+        _id: string;
+    }>>;
     deleteUser(userId: string): Promise<User | null>;
     findByResetToken(token: string): Promise<User | undefined>;
     clearResetToken(userId: string): Promise<void>;

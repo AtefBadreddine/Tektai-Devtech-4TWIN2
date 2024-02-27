@@ -5,6 +5,7 @@ import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { JwtAuthGuard } from "./guards/jwt-auth.guard";
 import { UsersService } from "src/users/users.service";
 import { ResetPasswordDto } from "src/schemas/reset-password.dto";
+import { User } from "src/schemas/user.schema";
 
 
 @Controller('auth')
@@ -38,7 +39,18 @@ async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
   await this.authService.resetPassword(resetPasswordDto.token, resetPasswordDto.newPassword);
   return { message: 'Password reset successfully' };
 }
-
+ @Delete(':userId')
+  async deleteUser(@Param('userId') userId: string): Promise<User | null> {
+    try {
+      const user = await this.usersService.deleteUser(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+      return user;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to delete user');
+    }
+  }
  
   
  

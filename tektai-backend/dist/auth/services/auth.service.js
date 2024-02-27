@@ -53,6 +53,7 @@ let AuthService = class AuthService {
             throw new common_2.NotFoundException('User not found');
         }
         const resetToken = (0, uuid_1.v4)();
+        const st = await this.usersService.storePwdToken(resetToken, user._id);
         const resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
         const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
         const apiKey = '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';
@@ -89,12 +90,12 @@ let AuthService = class AuthService {
     }
     async resetPassword(token, newPassword) {
         const user = await this.usersService.findByResetToken(token);
-        if (!(token)) {
+        if (!user) {
             throw new common_2.NotFoundException('Invalid or expired token');
         }
         const hashedPassword = await this.hashService.hashPassword(newPassword);
-        await this.usersService.updatePassword(user.userId.toString(), hashedPassword);
-        await this.usersService.clearResetToken(user.userId.toString());
+        await this.usersService.updatePassword(user._id, hashedPassword);
+        await this.usersService.clearResetToken(user._id);
     }
 };
 exports.AuthService = AuthService;
