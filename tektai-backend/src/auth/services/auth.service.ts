@@ -2,6 +2,7 @@ import { ConflictException, Injectable, Logger } from "@nestjs/common";
 import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
+import {UserDto} from "../../users/user.dto";
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
     if (user && await this.hashService.comparePassword(pass,user.password)) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
       return result;
     }
@@ -24,14 +26,14 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
-  async signup(email: string, password: string , username: string): Promise<any> {
-    const existingUser = await this.usersService.findByUsername(username);
+  async signup(userDTO : UserDto): Promise<any> {
+    const existingUser = await this.usersService.findByUsername(userDTO.username);
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
 
-    const hashedPassword = await this.hashService.hashPassword(password);
+    userDTO.password = await this.hashService.hashPassword(userDTO.password);
 
-    return await this.usersService.createUser(email, hashedPassword , username);
+    return await this.usersService.createUser(userDTO);
   }
 }
