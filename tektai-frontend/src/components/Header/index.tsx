@@ -3,6 +3,7 @@ import DropdownMessage from './DropdownMessage';
 import DropdownNotification from './DropdownNotification';
 import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher';
+// @ts-ignore
 import React from 'react';
 
 const Header = (props: {

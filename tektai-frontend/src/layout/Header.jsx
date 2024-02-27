@@ -15,29 +15,35 @@
     DrawerContent,
     DrawerCloseButton,
   } from '@chakra-ui/react'
+  import {useAuth} from "../auth/useAuth";
   function Header() {
     const { login, logout } = useContext(AuthContext); // Access authentication context
     const [top, setTop] = useState(true);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const auth = useAuth();
 
     const toggleMobileMenu = () => {
       setIsMobileMenuOpen(!isMobileMenuOpen);
     };
     const handleLogout = () => {
-      logout(); 
-      localStorage.removeItem('user');
-  
-      window.location.href = '/signin';
-      // Call the logout function
+      logout();
     };
     // detect whether user has scrolled the page down by 10px
     useEffect(() => {
       
-      const storedUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem('user') || null;
+
       if (storedUser) {
-        setUser(JSON.parse(storedUser));
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUser(parsedUser);
+        } catch (error) {
+          console.error('Error parsing user data:');
+          setUser(null);
+          // Handle the error (e.g., clear invalid data from localStorage)
+        }
       }
       setLoading(false); // Set loading to false after checking local storage
       const logo = document.querySelector('.logo');
@@ -101,14 +107,17 @@
                   Challenges              
                   </Tooltip>
                 </Link>
-                <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
-                <Tooltip label='Check our community datasets'>
-                  Datasets
-                  </Tooltip>
-                </Link>
                 <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
                   Rankings</Tooltip>
-                </Link>  
+                </Link>
+                <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
+                  Datasets</Tooltip>
+                </Link>
+                {user?.role === 'admin' && (
+                <Link to="/admin" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Admin Dashboard
+                </Link>
+                )}
                
               </div>
               <div className="flex items-center">

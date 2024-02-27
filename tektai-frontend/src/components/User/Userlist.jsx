@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 import TableComponent from '../Tables/TableComponent';
-
+import userService from "../../services/userService";
+import {useAuth} from "../../auth/useAuth";
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [token, setToken] = useState('');
-
-  useEffect(() => {
+    const auth = useAuth();
+  useEffect( () => {
     const token = localStorage.getItem('token');
-    console.log(token)
-    
+    console.log(auth.user);
     if (token) {
       setToken(token);
       fetchUsers(token);
@@ -17,25 +17,10 @@ const UserList = () => {
   }, []);
 
   const fetchUsers = async (token) => {
-    try {
-      // Step 3: Fetch users using the obtained token
-      const response = await fetch('http://localhost:3000/auth/users', {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
 
-      if (!response.ok) {
-        throw new Error(`Failed to fetch users: ${response.statusText}`);
-      }
-
-      const userData = await response.json();
-      console.log('Response:', userData);
+      const userData = await userService.getAll(token);
+      if (!userData.error)
       setUsers(userData);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
   };
 
   return (
