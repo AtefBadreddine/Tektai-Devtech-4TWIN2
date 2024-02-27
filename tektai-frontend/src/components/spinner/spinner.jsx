@@ -5,12 +5,12 @@ function Spinner() {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50">
       <div className="preloader">
-      <div class="preloader-container">
-	<div class="📦"></div>
-	<div class="📦"></div>
-	<div class="📦"></div>
-	<div class="📦"></div>
-	<div class="📦"></div>
+      <div className="preloader-container">
+	<div className="📦"></div>
+	<div className="📦"></div>
+	<div className="📦"></div>
+	<div className="📦"></div>
+	<div className="📦"></div>
 </div>
       </div>
     </div>
@@ -28,5 +28,4 @@ function SpinnerWithBackground() {
 
 export default SpinnerWithBackground;
 
-// Render the SpinnerWithBackground component where you want to display the spinner
-ReactDOM.render(<SpinnerWithBackground />, document.getElementById('root'));
+

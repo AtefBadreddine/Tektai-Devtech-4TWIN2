@@ -28,6 +28,7 @@
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
 import SpinnerWithBackground from './components/spinner/spinner';
+  import ProtectedRoute from "./ProtectedRoute";
 
 
 
@@ -56,7 +57,6 @@ import SpinnerWithBackground from './components/spinner/spinner';
     }, [location.pathname]); // triggered on route change
 
     return (
-      <div>
         <AuthProvider>
         {loading ? (
           <SpinnerWithBackground />
@@ -70,16 +70,20 @@ import SpinnerWithBackground from './components/spinner/spinner';
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
           <Route path="/ranking" element={<Ranking />} />
-          <Route path="/admin" element={<Dashhome />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/pages/settings" element={<Settings />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+          <Route element={<ProtectedRoute/>}>
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/pages/settings" element={<Settings />} />
+          </Route>
 
+          <Route element={<ProtectedRoute adminOnly />}>
+            <Route path="/admin" element={<Dashhome />}    />
+          </Route>
 
-          
-        </Routes>)}
+        </Routes>)
+
+        }
         </AuthProvider>
-      </div>
     );
   }
 

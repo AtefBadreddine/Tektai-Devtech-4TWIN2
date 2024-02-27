@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 import './s.css'; // Import the CSS file
-
+import { redirect } from "react-router-dom";
+import userService from "../../services/userService";
+import {useAuth} from "../../auth/useAuth";
 function SignIn() {
   const [input, setInput] = useState({
     email: '',
     password: '',
     role: 'challenger'
   });
+  const auth = useAuth();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false); // State variable for loading
   const [loginSuccess, setLoginSuccess] = useState(false); // State variable for login success message
-
+  const [userData,setUserData] = useState({})
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -30,56 +34,34 @@ function SignIn() {
         const { email, password } = input;
 
         // Make a POST request to get the token
-        const response = await fetch('http://localhost:3000/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username: email, password: password }), // Send username and password
-        });
-
-        // Parse response
-        const data = await response.json();
+        const data = await userService.getJWT(email,password);
 
         // Check if token exists in response
         if (data && data.access_token) {
           const { access_token } = data;
 
-          // Save token to localStorage
-          localStorage.setItem('token', access_token);
-
           // Fetch user data using the token
-          const userResponse = await fetch(`http://localhost:3000/auth/getuser?username=${encodeURIComponent(email)}`, {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          });
+          const user =await userService.getUser(access_token,email)
+          setUserData(user)
 
-          // Parse user data
-          const userData = await userResponse.json();
-
-          // Save user data to localStorage
-          localStorage.setItem('user', JSON.stringify(userData));
+          auth.login(access_token,user);
 
           // Set login success message
           setLoginSuccess(true);
           setTimeout(() => {
-          // Redirect based on user role
-          if (userData.role === 'admin') {
-            // Redirect to admin page after successful login
-            window.location.href = '/admin';
-          } else {
-            // Redirect to home page after successful login
-            window.location.href = '/';}
-          }, 0);
+            if (user && user.role === 'admin') {
+              navigate('/admin')
+            } else {
+              navigate('/')
+            }
+         }, 2000);
         } else {
           console.error('Token not found in response');
         }
       } catch (error) {
         console.error('Login failed:', error);
       } finally {
-        setLoading(false); // Set loading to false after handling submit
+        setLoading(false);
       }
     } else {
       alert('Please provide a valid input');
@@ -158,7 +140,7 @@ function SignIn() {
                               Login Successfull
                             </h5>
                             <p className="text-base leading-relaxed text-body">
-                             weclome {userData.username}
+                             welcome {userData?.username ?? ''}
                             </p>
                           </div>
                         </div>
