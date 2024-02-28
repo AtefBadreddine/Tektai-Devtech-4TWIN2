@@ -31,6 +31,7 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
+  import Forgetpassword from "./pages/resetPassword/ForgetPassword";
 
 
 
@@ -68,6 +69,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forget-password" element={<Forgetpassword />} />
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />

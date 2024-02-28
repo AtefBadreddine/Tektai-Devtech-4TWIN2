@@ -12,7 +12,6 @@ export default function NotFound() {
   <p className="output">The page you are looking for might have been removed, had its name changed or is temporarily unavailable.</p>
   <p className="output">Please try to <Link to="/" className="bg-blue-600">go back</Link> or <Link to="/" className="bg-blue-700">return to the homepage</Link>.</p>
   <p className="output">Good luck.</p>
-
 </div>
     </div>
   )
