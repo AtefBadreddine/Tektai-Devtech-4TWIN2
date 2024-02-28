@@ -19,7 +19,8 @@ function SignUp() {
     birthday : "",
     companyName : "",
     adresse : "",
-    role : ""
+    role : "challenger"
+    
   });
   const handleInput = (e) => {
     const { name, value } = e.target;

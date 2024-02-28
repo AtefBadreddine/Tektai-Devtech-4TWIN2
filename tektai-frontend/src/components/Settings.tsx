@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import Header from '../layout/Header';
+import userService from "../services/userService";
 interface UserData {
+  _id : string;
   username: string;
   email: string;
   image: string;
@@ -18,26 +20,96 @@ interface UserData {
   // Add other properties if necessary
 }
 const Settings = () => {
+  const [flashMessage, setFlashMessage] = useState(""); // State for flash message
   const [userData, setUserData] = useState<UserData | null>(null);
-  useEffect(() => {
-    // Retrieve data from local storage
-    const localStorageData = localStorage.getItem('user');
+  const [input, setInput] = useState({
+    username: "",
+    email: "",
+    image: "",
+    bio: "",
+    phoneNumber: "",
+    companyName : "",
+    adresse : "",
+    birthday : ""
+  });
 
-    if (localStorageData) {
-      // Parse the data if necessary
-      const parsedData = JSON.parse(localStorageData);
-      // Set the user data to state
-      setUserData(parsedData);
-    } else {
-      // Handle the case where no user data is found
-      console.log('No user data found in local storage');
+  // @ts-ignore
+
+
+  // @ts-ignore
+  useEffect(  () => {
+    // @ts-ignore
+    const getuser =async () => {
+
+      const localStorageData = localStorage.getItem('user');
+      const token = localStorage.getItem('token');
+      if (token && localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        const user = await userService.getUser(token,parsedData.username)
+        setUserData(user);
+
+        setInput({
+          username: user.username || "",
+          email: user.email || "",
+          image: user.image || "",
+          bio: user.bio || "",
+          phoneNumber: user.phoneNumber || "",
+          companyName: user.companyName || "",
+          adresse: user.adresse || "",
+          birthday: user.birthday || ""
+        });
+      }
     }
+    getuser();
+
   }, []);
+  const handleInput = (e) => {
+    const { name, value } = e.target;
+    setInput((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  // @ts-ignore
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    try {
+
+      // Call the updateUser function with the current user ID and input data
+      const updatedUser = await userService.updateUser(userData._id, input);
+
+      // Update the input fields with the updated user data
+      setInput({
+        username: updatedUser.username || "",
+        email: updatedUser.email || "",
+        image: updatedUser.image || "",
+        bio: updatedUser.bio || "",
+        phoneNumber: updatedUser.phoneNumber || "",
+        companyName: updatedUser.companyName || "",
+        adresse: updatedUser.adresse || "",
+        birthday: updatedUser.birthday || ""
+      });
+
+      // Display a success message using Tailwind CSS flash notification
+      setFlashMessage("User updated successfully");
+
+    } catch (error) {
+      // Display an error message if updating the user fails
+      setFlashMessage("Failed to update user. Please try again later.");
+      console.error("Error updating user:", error);
+    }
+  };
+
   return (
-    <><Header /><div className="mx-auto max-w-270">
+    <>
+      <Header /><div className="mx-auto max-w-270">
     <div style={{ height: '100px' }}></div>
       <Breadcrumb pageName="Settings" />
-
+      {flashMessage && (
+          <div className="bg-green-500 text-white p-4 mb-4">
+            {flashMessage}
+          </div>
+      )}
       <div className="grid grid-cols-5 gap-8">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -47,14 +119,14 @@ const Settings = () => {
               </h3>
             </div>
             <div className="p-7">
-              <form action="#">
+              <form onSubmit={handleUpdate}>
                 <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                   <div className="w-full sm:w-1/2">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
                       htmlFor="fullName"
                     >
-                      Full Name
+                      Username
                     </label>
                     <div className="relative">
                       <span className="absolute left-4.5 top-4">
@@ -83,10 +155,11 @@ const Settings = () => {
                       <input
                         className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="text"
-                        name="fullName"
+                        name="username"
                         id="fullName"
                         placeholder="Devid Jhon"
-                        defaultValue={userData?.username} />
+                        onChange={handleInput}
+                        value={input.username} />
                         </div>
                   </div>
 
@@ -102,7 +175,8 @@ const Settings = () => {
                       type="text"
                       name="phoneNumber"
                       id="phoneNumber"
-                      defaultValue={userData?.phoneNumber}
+                      value={input.phoneNumber}
+                      onChange={handleInput}
                       />
                   </div>
                 </div>
@@ -141,29 +215,71 @@ const Settings = () => {
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                       type="email"
-                      name="emailAddress"
+                      name="email"
                       id="emailAddress"
                       placeholder="devidjond45@gmail.com"
-                      defaultValue={userData?.email}
+                      value={input.email}
+                      onChange={handleInput}
                       />
                   </div>
                 </div>
 
-                  {/* <div className="mb-5.5">
+
+                {userData?.role === 'company' && (
+                   <div>
+                     <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="companyName"
+                      >
+                        Company Name
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="companyName"
+                        id="companyName"
+                        onChange={handleInput}
+                        value={input.companyName}
+                      />
+                    </div>
+                    <div className="mb-5.5">
+                      <label
+                        className="mb-3 block text-sm font-medium text-black dark:text-white"
+                        htmlFor="adresse"
+                      >
+                        Company adresse
+
+                      </label>
+                      <input
+                        className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="adresse"
+                        id="adresse"
+                        onChange={handleInput}
+                        value={input.adresse}
+                      />
+                    </div>
+                    </div>
+                    
+                  )}
+                  <div className="mb-5.5">
                     <label
                       className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="Username"
+                      htmlFor="birthday"
                     >
-                      Username
+                      birthday
                     </label>
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
-                      type="text"
-                      name="Username"
-                      id="Username"
-                      placeholder="devidjhon24"
-                      defaultValue="devidjhon24" />
-                  </div> */}
+                      type="date"
+                      name="birthday"
+                      id="birthday"
+                      placeholder=""
+                      value={input.birthday}
+                      onChange={handleInput}
+                    />
+                  </div>
 
                 <div className="mb-5.5">
                   <label
@@ -208,7 +324,8 @@ const Settings = () => {
                       id="bio"
                       rows={6}
                       placeholder="Write your bio here"
-                                           defaultValue={userData?.bio}
+                      value={input.bio}
+                      onChange={handleInput}
 
                     ></textarea>
                   </div>
@@ -240,7 +357,7 @@ const Settings = () => {
               </h3>
             </div>
             <div className="p-7">
-              <form action="#">
+              <form >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-14 w-14 rounded-full">
                     {/* <img src={userThree} alt="User" /> */}

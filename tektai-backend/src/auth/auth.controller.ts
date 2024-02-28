@@ -11,6 +11,7 @@ import {
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { UsersService } from "src/users/users.service";
 import {UserDto} from "../users/user.dto";
+import {ResetPasswordDto} from "../schemas/reset-password.dto";
 
 @Controller('auth')
 export class AuthController {
@@ -44,5 +45,15 @@ export class AuthController {
     }
   }
 
+  @Post('/forget-password')
+  async forgetPassword(@Body('email') email: string) {
+    await this.authService.forgetPassword(email);
+    return { message: 'Password reset email sent successfully' };
+  }
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto.token, resetPasswordDto.email ,resetPasswordDto.newPassword);
+    return {message: 'Password reset successfully'};
 
+  }
 }
