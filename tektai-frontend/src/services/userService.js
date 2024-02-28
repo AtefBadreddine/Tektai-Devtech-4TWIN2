@@ -61,6 +61,38 @@ const UserService = {
             console.error('Error getting all users:', error);
             return { error: 'failed to get all users' };
         }
+    },
+    deleteUser: async (userId) => {
+        let token = localStorage.getItem('token')
+        try {
+            const response = await axios.delete(`${url}/users/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            return response.data;
+
+        } catch (error) {
+            console.error('Error delete:', error);
+            return { error: 'failed' };
+        }
+    },
+    updateUser : async (userId, userDataToUpdate) => {
+        let token = localStorage.getItem('token');
+        try {
+            const response = await axios.put(`${url}/users/${userId}`, userDataToUpdate, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                }
+            });
+
+            return response.data;
+
+        } catch (error) {
+            console.error('Error updating user:', error);
+            return { error: 'failed' };
+        }
     }
 };
 

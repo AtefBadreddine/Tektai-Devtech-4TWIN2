@@ -27,8 +27,14 @@ export class User {
   @Prop({ required: true })
   password: string;
 
+  @Prop({ default : null })
+  resetPasswordToken: string;
+
   @Prop({ default: "" })
   phoneNumber: string;
+
+  @Prop({ default: "" })
+  bio: string;
 
   @Prop({ default: "" })
   birthday: string;
