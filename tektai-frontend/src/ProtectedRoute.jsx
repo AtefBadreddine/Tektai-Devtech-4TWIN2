@@ -8,6 +8,7 @@ const ProtectedRoute = ({ adminOnly}) => {
 const user=JSON.parse(localStorage.getItem("user"))
 const token=  localStorage.getItem("token")
 
+
   if (!token || !user) {
     return <Navigate to="/signin" />;
   }
