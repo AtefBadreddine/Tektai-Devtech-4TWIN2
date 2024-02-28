@@ -31,6 +31,7 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
+import Forgetpassword from './pages/forgotpwd/forgetpassword';
 
 
 
@@ -74,6 +75,8 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
+          <Route path="/forgetpawd" element={<Forgetpassword />} />
+          
           <Route path="*" element={<NotFound />} />
 
           <Route element={<ProtectedRoute/>}>
