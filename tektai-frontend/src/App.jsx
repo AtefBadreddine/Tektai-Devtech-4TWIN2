@@ -31,7 +31,7 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
-import Cow from './components/Cow/Cow';
+import Forgetpassword from './pages/forgotpwd/forgetpassword';
 
 
 
@@ -75,7 +75,7 @@ import Cow from './components/Cow/Cow';
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
-          <Route path="/Cow" element={<Cow />} />
+          <Route path="/forgetpawd" element={<Forgetpassword />} />
           
           <Route path="*" element={<NotFound />} />
 

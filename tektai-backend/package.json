@@ -36,7 +36,9 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "sendinblue-v3-node-client": "^0.0.2",
+    "sib-api-v3-sdk": "^8.5.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

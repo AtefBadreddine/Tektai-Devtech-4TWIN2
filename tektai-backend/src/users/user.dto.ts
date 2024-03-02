@@ -3,7 +3,8 @@ export class UserDto {
     username: string;
     email: string;
     password: string;
-    tel: string;
+    phoneNumber: string;
+    bio : string;
     birthday: string;
     companyName: string;
     adresse: string;
