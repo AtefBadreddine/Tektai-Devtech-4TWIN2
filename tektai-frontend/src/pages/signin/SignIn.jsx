@@ -6,6 +6,9 @@ import userService from '../../services/userService';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+// Import the CAPTCHA component (replace 'CaptchaComponent' with the actual component)
+import CaptchaComponent from './CaptchaComponent';
+
 function SignIn() {
   const [input, setInput] = useState({
     email: '',
@@ -19,6 +22,7 @@ function SignIn() {
   const [loginSuccess, setLoginSuccess] = useState(false); // State variable for login success message
   const [userData, setUserData] = useState({});
   const [showPassword, setShowPassword] = useState(false); // State variable to toggle password visibility
+  const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -30,27 +34,28 @@ function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!captchaValid) {
+      alert('Please complete the CAPTCHA verification');
+      return;
+    }
+
     if (input.email !== '' && input.password !== '') {
       try {
-        setLoading(true); // Set loading to true when submitting
+        setLoading(true);
 
-        // Extract email and password from input state
         const { email, password } = input;
 
-        // Make a POST request to get the token
         const data = await userService.getJWT(email, password);
 
-        // Check if token exists in response
         if (data && data.access_token) {
           const { access_token } = data;
 
-          // Fetch user data using the token
           const user = await userService.getUser(access_token, email);
           setUserData(user);
 
           auth.login(access_token, user);
 
-          // Set login success message
           setLoginSuccess(true);
           setTimeout(() => {
             if (user && user.role === 'admin') {
@@ -74,16 +79,13 @@ function SignIn() {
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      {/* Page content */}
       <main className="flex-grow">
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-              {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
                 <h1 className="h1">Welcome back. We exist to make entrepreneurism easier.</h1>
               </div>
-              {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form onSubmit={handleSubmit}>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -117,19 +119,25 @@ function SignIn() {
                           placeholder="Enter your password"
                           required
                         />
-                       <span
-  className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer ${showPassword ? 'eye-icon-hide' : ''}`}
-  onClick={() => setShowPassword(!showPassword)}
->
-  {showPassword ? (
-    <FontAwesomeIcon icon={faEyeSlash} className="h-6 w-6 text-blue-600 eye-icon" />
-  ) : (
-    <FontAwesomeIcon icon={faEye} className="h-6 w-6 text-blue-600 eye-icon" />
-  )}
-</span>
+                        <span
+                          className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer ${
+                            showPassword ? 'eye-icon-hide' : ''
+                          }`}
+                          onClick={() => setShowPassword(!showPassword)}
+                        >
+                          {showPassword ? (
+                            <FontAwesomeIcon icon={faEyeSlash} className="h-6 w-6 text-blue-600 eye-icon" />
+                          ) : (
+                            <FontAwesomeIcon icon={faEye} className="h-6 w-6 text-blue-600 eye-icon" />
+                          )}
+                        </span>
                       </div>
                     </div>
                   </div>
+                  <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} />
+                  {captchaValid ? null : (
+                    <div className="text-red-600">Please complete the CAPTCHA verification</div>
+                  )}
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                       <div className="flex justify-between">
@@ -142,9 +150,7 @@ function SignIn() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      {/* Display loading animation while loading */}
                       {loading ? (
-                        // Replace the loader div with an SVG spinner animation
                         <svg
                           className="animate-spin h-6 w-6 text-blue-600 mx-auto"
                           xmlns="http://www.w3.org/2000/svg"
@@ -192,7 +198,7 @@ function SignIn() {
                           </div>
                         </div>
                       ) : (
-                        <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign in</button>
+                        <button className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${captchaValid ? '' : 'disabled'}`} disabled={!captchaValid}>Sign in</button>
                       )}
                     </div>
                   </div>
@@ -213,6 +219,11 @@ function SignIn() {
           </div>
         </section>
       </main>
+      <footer className="text-center pb-8">
+        <Link to="/contact" className="text-gray-600 hover:underline">
+          Contact Us
+        </Link>
+      </footer>
       <style>
         {`
           .eye-icon {
@@ -221,6 +232,11 @@ function SignIn() {
           
           .eye-icon-hide {
             transform: scale(0.8);
+          }
+          
+          .disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
           }
         `}
       </style>
