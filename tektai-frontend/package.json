@@ -19,6 +19,11 @@
     "react-bootstrap": "^2.10.1",
     "react-dom": "^18.2.0",
     "react-flatpickr": "^3.10.13",
+<<<<<<< Updated upstream
+=======
+    "react-google-recaptcha": "^3.1.0",
+    "react-hot-toast": "^2.4.1",
+>>>>>>> Stashed changes
     "react-loading-skeleton": "^3.4.0",
     "react-router-dom": "^6.8.1",
     "react-transition-group": "^4.4.5",

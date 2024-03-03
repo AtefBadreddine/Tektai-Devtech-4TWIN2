@@ -3,10 +3,20 @@ import {Link, useNavigate} from 'react-router-dom';
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
+<<<<<<< Updated upstream
 import {useAuth} from "../../auth/AuthProvider";
-
+=======
+import AuthProvider from "../../auth/AuthProvider";
+import UserService from "../../services/userService";
+import userService from "../../services/userService";
+import {useAuth} from "../../auth/useAuth";
+import PhoneInput from 'react-phone-number-input';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
+>>>>>>> Stashed changes
+hii
 
 function SignUp() {
+
   const [step,setStep] = useState(1);
   const [input, setInput] = useState({
     username : "",
@@ -16,7 +26,8 @@ function SignUp() {
     birthday : "",
     companyName : "",
     adresse : "",
-    role : ""
+    role : "challenger"
+    
   });
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -26,18 +37,33 @@ function SignUp() {
     }));
   };
 
+
+
+
+
   const handleNext = () => {
+    // Compare passwords
+    if (formData.password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    // Clear error and proceed to next step
+    setError('');
+    nextStep();
     setStep(prevStep => prevStep + 1);
+
   };
+
+
   const handlePrevious = () => {
     setStep(prevStep => prevStep - 1);
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
-
-  }
-
+  
+  };
   return (
       <div className="flex flex-col min-h-screen overflow-hidden">
 
@@ -98,6 +124,7 @@ function SignUp() {
                             formData={input}
                             handleInput={handleInput}
                             handleNext={handleNext}
+                            
                         />
                         <div className="flex items-center my-6">
                           <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
@@ -163,33 +190,182 @@ function SignUp() {
   );
 }
 
-const StepOne = ( {formData,handleInput,handleNext} ) => (
-    <form onSubmit={handleNext}>
+const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState('');
 
-      <div className="flex flex-wrap -mx-3 mb-4">
+    const handlePasswordChange = (e) => {
+      const { value } = e.target;
+      setConfirmPassword(value);
+    };
+    const handlePhoneChange = (value) => {
+      if (value) {
+        // Extract digits after the country code and plus sign
+        const digitsAfterCountryCode = value.replace(/^\D+/, '');
+        setPhoneNumber(digitsAfterCountryCode);
+        handleInput({ target: { name: 'tel', value: digitsAfterCountryCode } });
+      } else {
+        setPhoneNumber(''); // Reset phone number if value is empty
+        handleInput({ target: { name: 'tel', value: '' } }); // Reset tel field in formData
+      }
+    };
+    
+    
+    
+    
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+  return (
+    <form onSubmit={handleSubmit}>
+
+<div className="flex flex-wrap -mx-3 mb-4">
+      <div className="w-full px-3">
+        <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="username">
+          Username <span className="text-red-600">*</span>
+        </label>
+        <input
+          id="username"
+          type="text"
+          name="username"
+          value={formData.username}
+          onChange={handleInput}
+          className="form-input w-full text-gray-800"
+          placeholder="Enter your username"
+          required
+        />
+        {formData.username.trim() === '' && <p className="text-red-600 text-sm mt-1">Username is required</p>}
+      </div>
+    </div>
+    
+    {/* Email Field */}
+    <div className="flex flex-wrap -mx-3 mb-4">
+      <div className="w-full px-3">
+        <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">
+          Email <span className="text-red-600">*</span>
+        </label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleInput}
+          className="form-input w-full text-gray-800"
+          placeholder="Enter your email address"
+          required
+        />
+        {formData.email.trim() === '' && <p className="text-red-600 text-sm mt-1">Email is required</p>}
+      </div>
+    </div>
+    <div className="flex flex-wrap -mx-3 mb-4">
         <div className="w-full px-3">
-          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="username">Username <span className="text-red-600">*</span></label>
-          <input id="username" type="text" name="username" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your username" required />
+          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">
+            Password <span className="text-red-600">*</span>
+          </label>
+          <div className="relative">
+            <input
+              id="password"
+              type={showPassword ? 'text' : 'password'} // Toggle between text and password
+              name="password"
+              value={formData.password}
+              onChange={handleInput}
+              className="form-input w-full text-gray-800 pr-10"
+              placeholder="Enter your password"
+              required
+              minLength="8"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$"
+              />
+            {/* Eye icon to toggle password visibility */}
+            <button
+              type="button"
+              onClick={togglePasswordVisibility}
+              className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600"
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+          <p className="text-sm text-gray-500 mt-1">
+            Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character (e.g., @$!%*?&).
+          </p>
+          {formData.password.trim() === '' && <p className="text-red-600 text-sm mt-1">Password is required</p>}
+          {formData.password.length > 0 && formData.password.length < 8 && (
+            <p className="text-red-600 text-sm mt-1">Password must be at least 8 characters long</p>
+          )}
+          {!/(?=.*[a-z])/.test(formData.password) && (
+            <p className="text-red-600 text-sm mt-1">Password must contain at least one lowercase letter</p>
+          )}
+          {!/(?=.*[A-Z])/.test(formData.password) && (
+            <p className="text-red-600 text-sm mt-1">Password must contain at least one uppercase letter</p>
+          )}
+          {!/(?=.*[@$!%*?&])/.test(formData.password) && (
+            <p className="text-red-600 text-sm mt-1">Password must contain at least one special character (e.g., @$!%*?&)</p>
+          )}
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
+
+{/* Confirm Password Field */}
+<div className="flex flex-wrap -mx-3 mb-4">
         <div className="w-full px-3">
-          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Email <span className="text-red-600">*</span></label>
-          <input id="email" type="email" name="email" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
+          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="confirmPassword">
+            Confirm Password <span className="text-red-600">*</span>
+          </label>
+          <input
+            id="confirmPassword"
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            onChange={handlePasswordChange}
+            className="form-input w-full text-gray-800"
+            placeholder="Confirm your password"
+            required
+          />
+          {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
         </div>
       </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password <span className="text-red-600">*</span></label>
-          <input id="password" type="password" name="password" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
-        </div>
-      </div>
-      <div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">Phone number <span className="text-red-600">*</span></label>
-          <input id="tel" type="text" name="tel" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your phone number" required />
-        </div>
-      </div>
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {/* Phone Number Field */}
+<div className="flex flex-wrap -mx-3 mb-4">
+  <div className="w-full px-3">
+    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">
+      Phone number <span className="text-red-600">*</span>
+    </label>
+    <PhoneInput
+      id="tel"
+      placeholder="Enter your phone number"
+      value={phoneNumber}
+      onChange={handlePhoneChange}
+      className="form-input w-full sm:w-40 text-gray-800"
+      minLength={8}
+      maxLength={15}
+      pattern="\d{8}"
+      required
+    />
+    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
+      <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
+    )}
+  </div>
+</div>
+
       <div className="flex flex-wrap -mx-3 mb-4">
         <div className="w-full px-3">
           <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="birthday">Date of birth <span className="text-red-600">*</span></label>
@@ -207,8 +383,9 @@ const StepOne = ( {formData,handleInput,handleNext} ) => (
       <div className="text-sm text-gray-500 text-center mt-3">
         By creating an account, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our <a className="underline" href="#0">privacy policy</a>.
       </div>
-    </form>
-)
+      </form>
+  );
+};
 
 const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
   console.log( "user",formData)
@@ -250,78 +427,112 @@ const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
 const StepThree = ( { formData, handleInput, handleNext, handlePrevious } ) => {
   console.log("step 3" ,formData)
   const auth = useAuth();
+<<<<<<< Updated upstream
+=======
+  const navigate = useNavigate();
+>>>>>>> Stashed changes
   const [submitted,setSubmitted] = useState(false);
 
   useEffect(() => {
-    if (formData.role === 'challenger') {
-      setTimeout(() => {
-        auth.login(formData)
-      }, 4000)
-    }
+          if (formData.role === 'challenger') {
+              setTimeout(async () => {
+                  await submit()
+              }, 4000)
+          }
+
+
 
   }, [])
 
-  const submit = () => {
-    setSubmitted(true);
-    setTimeout(() => {
-      auth.login(formData)
-    }, 4000)
-  }
+  const submit = async () => {
+      setSubmitted(true);
+      const response = await UserService.signup(formData);
+        console.log('res:',response)
+      if (response.statusCode === 201) {
+          const data = await userService.getJWT(formData.username, formData.password);
+          console.log('data:',data)
+          if (data && data.access_token) {
+              const {access_token} = data;
 
-  if (formData.role === 'challenger' || submitted === true) {
-    return (
-        <div className="">
-          <h1 className="h2 text-blue-600 pb-4">You are all set ! </h1>
-          <div className="inline-flex gap-x-2">You will be redirected to challenges page in few seconds
+              const user = await userService.getUser(access_token, formData.username)
+                console.log('user:',user)
+              auth.login(access_token, user);
+              if (user && user.role === 'admin') {
+                  navigate('/admin')
+              } else {
+                  navigate('/')
+              }
+          }
 
-            <div role="status">
-              <svg aria-hidden="true"
-                   className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
-                   viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                    fill="currentColor"/>
-                <path
-                    d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                    fill="currentFill"/>
-              </svg>
-              <span className="sr-only">Loading...</span>
-            </div>
-
+      }
+      else {
+         return  <div className="">
+              <h1 className="h2 text-red-600 pb-4">An Error Ocuured ! </h1>
+              <div className="inline-flex gap-x-2">You will be redirected to home page in few seconds
+              </div>
           </div>
-        </div>
-    )
-  } else {
-    return (
-        <div>
-          <h1 className="h2 text-blue-600 pb-8">You are almost done !  </h1>
-          <form onSubmit={submit}>
-
-            <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3">
-                <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="companyName">Company name <span className="text-red-600">*</span></label>
-                <input id="companyName" type="text" name="companyName" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your company name" required />
-              </div>
-            </div>
-            <div className="flex flex-wrap -mx-3 mb-4">
-              <div className="w-full px-3">
-                <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="adresse">Legal Address <span className="text-red-600">*</span></label>
-                <input id="adresse" type="text" name="adresse" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
-              </div>
-            </div>
-
-
-            <div className="flex flex-wrap mx-auto max-w-xs mt-6">
-              <div className="w-full px-3">
-                <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full" type="submit">Submit</button>
-              </div>
-            </div>
-          </form>
-        </div>
-    )
+      }
   }
+    if (formData.role === 'challenger' || submitted === true) {
+        return (
+            <div className="">
+                <h1 className="h2 text-blue-600 pb-4">You are all set ! </h1>
+                <div className="inline-flex gap-x-2">You will be redirected to challenges page in few seconds
+
+                    <div role="status">
+                        <svg aria-hidden="true"
+                             className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                             viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor"/>
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill"/>
+                        </svg>
+                        <span className="sr-only">Loading...</span>
+                    </div>
+
+                </div>
+            </div>
+        )
+    } else {
+        return (
+            <div>
+                <h1 className="h2 text-blue-600 pb-8">You are almost done ! </h1>
+                <form onSubmit={submit}>
+
+                    <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full px-3">
+                            <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="companyName">Company
+                                name <span className="text-red-600">*</span></label>
+                            <input id="companyName" type="text" name="companyName" onChange={handleInput}
+                                   className="form-input w-full text-gray-800" placeholder="Enter your company name"
+                                   required/>
+                        </div>
+                    </div>
+                    <div className="flex flex-wrap -mx-3 mb-4">
+                        <div className="w-full px-3">
+                            <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="adresse">Legal
+                                Address <span className="text-red-600">*</span></label>
+                            <input id="adresse" type="text" name="adresse" onChange={handleInput}
+                                   className="form-input w-full text-gray-800" placeholder="Enter your email address"
+                                   required/>
+                        </div>
+                    </div>
 
 
+                    <div className="flex flex-wrap mx-auto max-w-xs mt-6">
+                        <div className="w-full px-3">
+                            <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full"
+                                    type="submit">Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        )
+    }
 }
 
 export default SignUp;
