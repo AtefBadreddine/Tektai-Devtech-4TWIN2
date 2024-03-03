@@ -1,21 +1,25 @@
 import React, { useState } from 'react';
-import {Link, Navigate, useNavigate} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './s.css'; // Import the CSS file
-import { redirect } from "react-router-dom";
-import userService from "../../services/userService";
-import {useAuth} from "../../auth/useAuth";
+import { useAuth } from '../../auth/useAuth';
+import userService from '../../services/userService';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 function SignIn() {
   const [input, setInput] = useState({
     email: '',
     password: '',
-    role: 'challenger'
+    role: 'challenger',
   });
   const auth = useAuth();
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false); // State variable for loading
   const [loginSuccess, setLoginSuccess] = useState(false); // State variable for login success message
-  const [userData,setUserData] = useState({})
+  const [userData, setUserData] = useState({});
+  const [showPassword, setShowPassword] = useState(false); // State variable to toggle password visibility
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -34,27 +38,27 @@ function SignIn() {
         const { email, password } = input;
 
         // Make a POST request to get the token
-        const data = await userService.getJWT(email,password);
+        const data = await userService.getJWT(email, password);
 
         // Check if token exists in response
         if (data && data.access_token) {
           const { access_token } = data;
 
           // Fetch user data using the token
-          const user =await userService.getUser(access_token,email)
-          setUserData(user)
+          const user = await userService.getUser(access_token, email);
+          setUserData(user);
 
-          auth.login(access_token,user);
+          auth.login(access_token, user);
 
           // Set login success message
           setLoginSuccess(true);
           setTimeout(() => {
             if (user && user.role === 'admin') {
-              navigate('/admin')
+              navigate('/admin');
             } else {
-              navigate('/')
+              navigate('/');
             }
-         }, 2000);
+          }, 2000);
         } else {
           console.error('Token not found in response');
         }
@@ -70,7 +74,7 @@ function SignIn() {
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-      {/*  Page content */}
+      {/* Page content */}
       <main className="flex-grow">
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -84,17 +88,46 @@ function SignIn() {
                 <form onSubmit={handleSubmit}>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Username</label>
-                      <input id="email" type="text" name="email" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">
+                        Username
+                      </label>
+                      <input
+                        id="email"
+                        type="text"
+                        name="email"
+                        onChange={handleInput}
+                        className="form-input w-full text-gray-800"
+                        placeholder="Enter your email address"
+                        required
+                      />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <div className="flex justify-between">
-                        <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password</label>
-                        <Link to="/reset-password" className="text-sm font-medium text-blue-600 hover:underline">Having trouble signing in?</Link>
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">
+                        Password
+                      </label>
+                      <div className="relative">
+                        <input
+                          id="password"
+                          type={showPassword ? 'text' : 'password'}
+                          name="password"
+                          onChange={handleInput}
+                          className="form-input w-full text-gray-800"
+                          placeholder="Enter your password"
+                          required
+                        />
+                       <span
+  className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer ${showPassword ? 'eye-icon-hide' : ''}`}
+  onClick={() => setShowPassword(!showPassword)}
+>
+  {showPassword ? (
+    <FontAwesomeIcon icon={faEyeSlash} className="h-6 w-6 text-blue-600 eye-icon" />
+  ) : (
+    <FontAwesomeIcon icon={faEye} className="h-6 w-6 text-blue-600 eye-icon" />
+  )}
+</span>
                       </div>
-                      <input id="password" type="password" name="password" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -112,14 +145,28 @@ function SignIn() {
                       {/* Display loading animation while loading */}
                       {loading ? (
                         // Replace the loader div with an SVG spinner animation
-                        <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 008-8h-4c0 2.762-1.316 5.225-3.35 6.809L12 20zm5.357-7.938A7.962 7.962 0 0120 12h-4c0 2.762 1.316 5.225 3.35 6.809l3-2.647zM12 4c3.042 0 5.824 1.135 7.938 3h-2c-2.21 0-4 1.79-4 4H8c0-2.21-1.79-4-4-4H0c0-3.042 1.135-5.824 3-7.938L6.357 4H12z"></path>
-                      </svg>
-                      
-                      ) : (
-                        loginSuccess ? (
-                          <div className="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
+                        <svg
+                          className="animate-spin h-6 w-6 text-blue-600 mx-auto"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 008-8h-4c0 2.762-1.316 5.225-3.35 6.809L12 20zm5.357-7.938A7.962 7.962 0 0120 12h-4c0 2.762 1.316 5.225 3.35 6.809l3-2.647zM12 4c3.042 0 5.824 1.135 7.938 3h-2c-2.21 0-4 1.79-4 4H8c0-2.21-1.79-4-4-4H0c0-3.042 1.135-5.824 3-7.938L6.357 4H12z"
+                          ></path>
+                        </svg>
+                      ) : loginSuccess ? (
+                        <div className="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
                           <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
                             <svg
                               width="16"
@@ -140,13 +187,12 @@ function SignIn() {
                               Login Successfull
                             </h5>
                             <p className="text-base leading-relaxed text-body">
-                             welcome {userData?.username ?? ''}
+                              welcome {userData?.username ?? ''}
                             </p>
                           </div>
                         </div>
-                        ) : (
-                          <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign in</button>
-                        )
+                      ) : (
+                        <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign in</button>
                       )}
                     </div>
                   </div>
@@ -157,13 +203,27 @@ function SignIn() {
                   <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
                 </div>
                 <div className="text-gray-600 text-center mt-6">
-                  Don’t you have an account? <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign up</Link>
+                  Don’t you have an account?{' '}
+                  <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
+                    Sign up
+                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
       </main>
+      <style>
+        {`
+          .eye-icon {
+            transition: transform 0.3s ease-in-out;
+          }
+          
+          .eye-icon-hide {
+            transform: scale(0.8);
+          }
+        `}
+      </style>
     </div>
   );
 }

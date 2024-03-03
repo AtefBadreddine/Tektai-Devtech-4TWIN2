@@ -11,4 +11,10 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+  .eye-icon {
+    transition: transform 0.3s ease-in-out;
+  }
   
+  .eye-icon-hide {
+    transform: scale(0.8);
+  }
