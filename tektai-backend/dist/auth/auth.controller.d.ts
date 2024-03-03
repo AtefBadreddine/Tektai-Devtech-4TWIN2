@@ -18,11 +18,8 @@ export declare class AuthController {
         message: string;
     }>;
     changePassword(email: string, currentPassword: string, newPassword: string): Promise<void>;
-    validateOAuthLogin(profile: any): Promise<{
-        user: import("../schemas/user.schema").User;
-        error?: undefined;
-    } | {
-        error: any;
-        user?: undefined;
+    githubLogin(res: any): void;
+    githubCallback(req: any, res: any): Promise<{
+        access_token: string;
     }>;
 }

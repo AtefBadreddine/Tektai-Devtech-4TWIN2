@@ -4,6 +4,7 @@ import './s.css'; // Import the CSS file
 import { redirect } from "react-router-dom";
 import userService from "../../services/userService";
 import {useAuth} from "../../auth/useAuth";
+import axios from 'axios';
 function SignIn() {
   const [input, setInput] = useState({
     email: '',
@@ -67,6 +68,16 @@ function SignIn() {
       alert('Please provide a valid input');
     }
   };
+  const loginWithGithub = async () => {
+  try {
+    const response = await axios.get(`http://localhost:3000/auth/github`);
+    // Rediriger l'utilisateur vers l'URL de connexion GitHub
+    window.location.href = response.data.redirectUrl;
+  } catch (error) {
+    console.error('Error logging in with GitHub:', error);
+    // Gérer les erreurs de connexion
+  }
+};
 
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
@@ -160,6 +171,9 @@ function SignIn() {
                   Don’t you have an account? <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign up</Link>
                 </div>
               </div>
+              <button onClick={loginWithGithub} className="btn text-white bg-gray-800 hover:bg-gray-900 w-full">
+                  Log in with GitHub
+              </button>
             </div>
           </div>
         </section>

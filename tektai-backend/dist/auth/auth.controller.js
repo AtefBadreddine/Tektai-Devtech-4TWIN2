@@ -19,6 +19,7 @@ const local_auth_guard_1 = require("./guards/local-auth.guard");
 const users_service_1 = require("../users/users.service");
 const user_dto_1 = require("../users/user.dto");
 const reset_password_dto_1 = require("../schemas/reset-password.dto");
+const passport_1 = require("@nestjs/passport");
 let AuthController = class AuthController {
     constructor(authService, userService) {
         this.authService = authService;
@@ -70,13 +71,16 @@ let AuthController = class AuthController {
             }
         }
     }
-    async validateOAuthLogin(profile) {
+    githubLogin(res) {
+        res.redirect('/auth/github/callback');
+    }
+    async githubCallback(req, res) {
         try {
-            const user = await this.authService.validateOAuthLogin(profile);
-            return { user };
+            return await this.authService.login(req.user);
         }
         catch (error) {
-            return { error: error.message };
+            console.error('Error during GitHub OAuth callback:', error);
+            res.redirect('/');
         }
     }
 };
@@ -120,12 +124,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "changePassword", null);
 __decorate([
-    (0, common_1.Post)('oauth/login'),
-    __param(0, (0, common_1.Body)()),
+    (0, common_1.Get)('github'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
+    __param(0, (0, common_1.Res)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], AuthController.prototype, "githubLogin", null);
+__decorate([
+    (0, common_1.Get)('github/callback'),
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('github')),
+    __param(0, (0, common_1.Req)()),
+    __param(1, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
-], AuthController.prototype, "validateOAuthLogin", null);
+], AuthController.prototype, "githubCallback", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService, users_service_1.UsersService])
