@@ -9,7 +9,6 @@ import userService from "../../services/userService";
 import {useAuth} from "../../auth/useAuth";
 import PhoneInput from 'react-phone-number-input';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
-test
 
 function SignUp() {
   const [step,setStep] = useState(1);
