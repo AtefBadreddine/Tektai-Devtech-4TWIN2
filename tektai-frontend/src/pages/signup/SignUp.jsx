@@ -209,7 +209,7 @@ const StepOne = ( {formData,handleInput,handleNext} ) => (
         </div>
       </div>
       <div className="text-sm text-gray-500 text-center mt-3">
-        By creating an account, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our <a className="underline" href="#0">privacy policy</a>.
+        By creating an account, you agree to the <Link className="underline" to={'/TermsAndConditions'}>terms & conditions</Link>.
       </div>
     </form>
 )

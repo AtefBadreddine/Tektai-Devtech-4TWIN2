@@ -93,6 +93,17 @@ const UserService = {
             console.error('Error updating user:', error);
             return { error: 'failed' };
         }
+    },
+    resetPwd: async (email) => {
+        try {
+            const response = await axios.post(`${url}/auth/forget-password`, email);
+
+            return response.data;
+
+        } catch (error) {
+            console.error('Error:', error);
+            return { error: 'failed' };
+        }
     }
 };
 
