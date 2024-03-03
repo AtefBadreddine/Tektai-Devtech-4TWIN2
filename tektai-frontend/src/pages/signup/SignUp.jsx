@@ -3,20 +3,15 @@ import {Link, useNavigate} from 'react-router-dom';
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
-<<<<<<< Updated upstream
-import {useAuth} from "../../auth/AuthProvider";
-=======
 import AuthProvider from "../../auth/AuthProvider";
 import UserService from "../../services/userService";
 import userService from "../../services/userService";
 import {useAuth} from "../../auth/useAuth";
 import PhoneInput from 'react-phone-number-input';
 import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
->>>>>>> Stashed changes
-hii
+test
 
 function SignUp() {
-
   const [step,setStep] = useState(1);
   const [input, setInput] = useState({
     username : "",
@@ -37,33 +32,18 @@ function SignUp() {
     }));
   };
 
-
-
-
-
   const handleNext = () => {
-    // Compare passwords
-    if (formData.password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    // Clear error and proceed to next step
-    setError('');
-    nextStep();
     setStep(prevStep => prevStep + 1);
-
   };
-
-
   const handlePrevious = () => {
     setStep(prevStep => prevStep - 1);
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-  
-  };
+
+
+  }
+
   return (
       <div className="flex flex-col min-h-screen overflow-hidden">
 
@@ -124,7 +104,6 @@ function SignUp() {
                             formData={input}
                             handleInput={handleInput}
                             handleNext={handleNext}
-                            
                         />
                         <div className="flex items-center my-6">
                           <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
@@ -190,34 +169,44 @@ function SignUp() {
   );
 }
 
-const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
+const StepOne = ({ formData, handleInput, handleNext }) => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordsMatch, setPasswordsMatch] = useState(true); // State to track password match
 
-    const handlePasswordChange = (e) => {
-      const { value } = e.target;
-      setConfirmPassword(value);
-    };
-    const handlePhoneChange = (value) => {
-      if (value) {
-        // Extract digits after the country code and plus sign
-        const digitsAfterCountryCode = value.replace(/^\D+/, '');
-        setPhoneNumber(digitsAfterCountryCode);
-        handleInput({ target: { name: 'tel', value: digitsAfterCountryCode } });
-      } else {
-        setPhoneNumber(''); // Reset phone number if value is empty
-        handleInput({ target: { name: 'tel', value: '' } }); // Reset tel field in formData
-      }
-    };
-    
-    
-    
-    
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  // Function to handle password input
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    handleInput(e); // Update password in form data
+    setPasswordsMatch(value === confirmPassword); // Check if passwords match
+  };
+
+  // Function to handle password confirmation input
+  const handleConfirmPasswordChange = (e) => {
+    const { value } = e.target;
+    setConfirmPassword(value);
+    setPasswordsMatch(value === formData.password); // Check if passwords match
+  };
+
+  // Function to handle form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Check if passwords match before proceeding
+    if (formData.password !== confirmPassword) {
+      setPasswordsMatch(false);
+      return; // Prevent form submission
+    }
+    // Proceed with form submission
+    handleNext();
+  };
+
+
+
   return (
     <form onSubmit={handleSubmit}>
 
@@ -259,7 +248,10 @@ const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
         {formData.email.trim() === '' && <p className="text-red-600 text-sm mt-1">Email is required</p>}
       </div>
     </div>
-    <div className="flex flex-wrap -mx-3 mb-4">
+
+
+ {/* Password Field */}
+ <div className="flex flex-wrap -mx-3 mb-4">
         <div className="w-full px-3">
           <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">
             Password <span className="text-red-600">*</span>
@@ -304,11 +296,15 @@ const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
           )}
         </div>
       </div>
+    
 
-{/* Confirm Password Field */}
-<div className="flex flex-wrap -mx-3 mb-4">
-        <div className="w-full px-3">
-          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="confirmPassword">
+
+
+
+
+
+          {/* Password confirmation field */}
+          <label className="block text-gray-800 text-sm font-medium mb-1 mt-3" htmlFor="confirmPassword">
             Confirm Password <span className="text-red-600">*</span>
           </label>
           <input
@@ -316,15 +312,16 @@ const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
             type="password"
             name="confirmPassword"
             value={confirmPassword}
-            onChange={handlePasswordChange}
+            onChange={handleConfirmPasswordChange} // Update confirmation field
             className="form-input w-full text-gray-800"
             placeholder="Confirm your password"
             required
           />
-          {error && <p className="text-red-600 text-sm mt-1">{error}</p>}
-        </div>
-      </div>
-            
+          {/* Error message if passwords don't match */}
+          {!passwordsMatch && (
+            <p className="text-red-600 text-sm mt-1">Passwords do not match</p>
+          )}
+     
 
 
 
@@ -334,37 +331,21 @@ const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
 
 
 
+      <div className="flex flex-wrap -mx-3 mb-4">
+        <div className="w-full px-3">
+          <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">Phone number <span className="text-red-600">*</span></label>
+          <input id="tel" type="text" name="tel" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your phone number" minLength={8} maxLength={8} required />
+          {formData.tel.trim() === '' && <p className="text-red-600 text-sm mt-1">Phone number is required</p>}
 
-
-
-
-
-
-
-
-
-      {/* Phone Number Field */}
-<div className="flex flex-wrap -mx-3 mb-4">
-  <div className="w-full px-3">
-    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">
-      Phone number <span className="text-red-600">*</span>
-    </label>
-    <PhoneInput
-      id="tel"
-      placeholder="Enter your phone number"
-      value={phoneNumber}
-      onChange={handlePhoneChange}
-      className="form-input w-full sm:w-40 text-gray-800"
-      minLength={8}
-      maxLength={15}
-      pattern="\d{8}"
-      required
-    />
-    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
+          {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
       <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
     )}
-  </div>
-</div>
+        </div>
+      </div>
+
+
+
+
 
       <div className="flex flex-wrap -mx-3 mb-4">
         <div className="w-full px-3">
@@ -383,9 +364,8 @@ const StepOne = ({ formData, handleInput, handleNext,handleSubmit }) => {
       <div className="text-sm text-gray-500 text-center mt-3">
         By creating an account, you agree to the <a className="underline" href="#0">terms & conditions</a>, and our <a className="underline" href="#0">privacy policy</a>.
       </div>
-      </form>
-  );
-};
+    </form>
+)};
 
 const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
   console.log( "user",formData)
@@ -427,10 +407,7 @@ const StepTwo = ({ formData, handleInput, handleNext, handlePrevious }) => {
 const StepThree = ( { formData, handleInput, handleNext, handlePrevious } ) => {
   console.log("step 3" ,formData)
   const auth = useAuth();
-<<<<<<< Updated upstream
-=======
   const navigate = useNavigate();
->>>>>>> Stashed changes
   const [submitted,setSubmitted] = useState(false);
 
   useEffect(() => {
