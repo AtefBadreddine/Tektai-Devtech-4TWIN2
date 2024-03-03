@@ -18,4 +18,5 @@ export declare class AuthService {
     generateResetToken(userId: string): Promise<string>;
     findByResetToken(token: string): Promise<User>;
     resetPassword(token: string, newPassword: string): Promise<void>;
+    changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void>;
 }

@@ -39,6 +39,35 @@ let AuthController = class AuthController {
         await this.authService.resetPassword(resetPasswordDto.token, resetPasswordDto.newPassword);
         return { message: 'Password reset successfully' };
     }
+    async deleteUser(userId) {
+        try {
+            const user = await this.usersService.deleteUser(userId);
+            if (!user) {
+                throw new common_1.NotFoundException('User not found');
+            }
+            return user;
+        }
+        catch (error) {
+            throw new common_1.InternalServerErrorException('Failed to delete user');
+        }
+    }
+    async changePassword(userId, currentPassword, newPassword) {
+        try {
+            await this.authService.changePassword(userId, currentPassword, newPassword);
+            return { message: 'Password changed successfully' };
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException('User not found');
+            }
+            else if (error instanceof common_1.ConflictException) {
+                throw new common_1.ConflictException('Current password is incorrect');
+            }
+            else {
+                throw new common_1.InternalServerErrorException('Failed to change password');
+            }
+        }
+    }
 };
 exports.AuthController = AuthController;
 __decorate([
@@ -70,6 +99,22 @@ __decorate([
     __metadata("design:paramtypes", [reset_password_dto_1.ResetPasswordDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Delete)(':userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "deleteUser", null);
+__decorate([
+    (0, common_1.Patch)('change-password/:userId'),
+    __param(0, (0, common_1.Param)('userId')),
+    __param(1, (0, common_1.Body)('currentPassword')),
+    __param(2, (0, common_1.Body)('newPassword')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "changePassword", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
     __metadata("design:paramtypes", [auth_service_1.AuthService,

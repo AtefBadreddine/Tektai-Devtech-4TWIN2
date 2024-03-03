@@ -1,12 +1,12 @@
 
-import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, Logger } from "@nestjs/common";
+import {  ConflictException, Injectable, Logger } from "@nestjs/common";
 import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
 import { NotFoundException } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
-import { User, UserDocument } from "src/schemas/user.schema"; // Assurez-vous que l'importation est correcte
+import { User } from "src/schemas/user.schema"; // Assurez-vous que l'importation est correcte
 
 @Injectable()
 export class AuthService {
@@ -51,7 +51,7 @@ async forgetPassword(email: string): Promise<void> {
       throw new NotFoundException('User not found');
     }
     const resetToken = uuidv4();
-     const st = await this.usersService.storePwdToken(resetToken,user._id);
+    
 
     // Créer le lien de réinitialisation de mot de passe avec le jeton
  const resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
@@ -109,6 +109,27 @@ async resetPassword(token: string, newPassword: string): Promise<void> {
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
     await this.usersService.clearResetToken(user._id);
    }
+async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void> {
+    // Récupérer l'utilisateur à partir de l'ID
+    const user = await this.usersService.findById(userId);
+    
+    // Vérifier si l'utilisateur existe
+    if (!user) {
+        throw new NotFoundException('User not found');
+    }
+
+    // Vérifier si le mot de passe actuel est correct
+    const isPasswordCorrect = await this.hashService.comparePassword(currentPassword, user.password);
+    if (!isPasswordCorrect) {
+        throw new ConflictException('Current password is incorrect');
+    }
+
+    // Hasher le nouveau mot de passe
+    const hashedNewPassword = await this.hashService.hashPassword(newPassword);
+
+    // Mettre à jour le mot de passe de l'utilisateur dans la base de données
+    await this.usersService.updatePassword(userId, hashedNewPassword);
+}
 
 
 }

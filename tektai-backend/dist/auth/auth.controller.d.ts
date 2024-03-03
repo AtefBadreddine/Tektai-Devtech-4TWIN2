@@ -1,6 +1,7 @@
 import { AuthService } from "./services/auth.service";
 import { UsersService } from "src/users/users.service";
 import { ResetPasswordDto } from "src/schemas/reset-password.dto";
+import { User } from "src/schemas/user.schema";
 export declare class AuthController {
     private authService;
     private usersService;
@@ -14,6 +15,10 @@ export declare class AuthController {
         message: string;
     }>;
     resetPassword(resetPasswordDto: ResetPasswordDto): Promise<{
+        message: string;
+    }>;
+    deleteUser(userId: string): Promise<User | null>;
+    changePassword(userId: string, currentPassword: string, newPassword: string): Promise<{
         message: string;
     }>;
 }

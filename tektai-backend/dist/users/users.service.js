@@ -17,7 +17,7 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const user_schema_1 = require("../schemas/user.schema");
-const mongo = require('mongodb');
+const mongodb_1 = require("mongodb");
 let UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
@@ -34,7 +34,7 @@ let UsersService = class UsersService {
         return user.save();
     }
     async storePwdToken(token, id) {
-        const user = await this.userModel.findById(new mongo.ObjectId(id)).exec();
+        const user = await this.userModel.findById(new mongodb_1.default.ObjectId(id)).exec();
         user.resetPasswordToken = token;
         return await user.save();
     }

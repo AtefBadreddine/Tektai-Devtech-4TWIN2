@@ -1,6 +1,6 @@
 import { AuthService } from "./services/auth.service";
 
-import { Controller, Request, Post, UseGuards, Body, Logger, Get, UnauthorizedException,Delete, Param, NotFoundException, Query, Res, InternalServerErrorException, Patch } from "@nestjs/common";
+import { Controller, Request, Post, UseGuards, Body, Logger, Get, UnauthorizedException,Delete, Param, NotFoundException, Query, Res, InternalServerErrorException, Patch, ConflictException } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { UsersService } from "src/users/users.service";
 import { ResetPasswordDto } from "src/schemas/reset-password.dto";
@@ -50,7 +50,26 @@ async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
       throw new InternalServerErrorException('Failed to delete user');
     }
   }
- 
+ @Patch('change-password/:userId')
+async changePassword(
+  @Param('userId') userId: string,
+  @Body('currentPassword') currentPassword: string,
+  @Body('newPassword') newPassword: string
+) {
+  try {
+    await this.authService.changePassword(userId, currentPassword, newPassword);
+    return { message: 'Password changed successfully' };
+  } catch (error) {
+    if (error instanceof NotFoundException) {
+      throw new NotFoundException('User not found');
+    } else if (error instanceof ConflictException) {
+      throw new ConflictException('Current password is incorrect');
+    } else {
+      throw new InternalServerErrorException('Failed to change password');
+    }
+  }
+}
+
   
  
 
