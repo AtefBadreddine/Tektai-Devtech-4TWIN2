@@ -1,39 +1,52 @@
 import {
+  Schema,
   SchemaFactory,
-  Prop, Schema,
+  Prop
 } from "@nestjs/mongoose";
 import {
   Document
 } from 'mongoose';
-
-import * as mongoose from 'mongoose';
-
+import * as mongoose from "mongoose";
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
   @Prop()
-  userId: string;
+  userId : string;
 
-  @Prop( {type: mongoose.Schema.Types.ObjectId})
-  _id : string;
+  @Prop({ default: () => new mongoose.Types.ObjectId() })
+  _id: string;
 
-  @Prop({ required: true})
-  email: string;
-
-  @Prop({ required: true})
+  @Prop({ required: true, unique: true })
   username: string;
+
+  @Prop({ required: true, unique: true })
+  email: string;
 
   @Prop({ required: true })
   password: string;
 
-    @Prop()
-  resetPasswordToken: string; // Champ pour stocker le token de réinitialisation
+  @Prop({ default : null })
+  resetPasswordToken: string;
 
-  @Prop()
-  resetPasswordTokenExpiry: Date; // Champ pour stocker la date d'expiration du token
+  @Prop({ default: "" })
+  phoneNumber: string;
 
+  @Prop({ default: "" })
+  bio: string;
+
+  @Prop({ default: "" })
+  birthday: string;
+
+  @Prop({ default: "" })
+  companyName: string;
+
+  @Prop({ default: "" })
+  adresse: string;
+
+  @Prop({ default: "challenger" })
+  role: string;
 
 }
 

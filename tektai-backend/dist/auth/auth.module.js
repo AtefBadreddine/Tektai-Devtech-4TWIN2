@@ -18,22 +18,24 @@ const jwt_strategy_1 = require("./strategies/jwt.strategy");
 const hash_service_1 = require("./services/hash.service");
 const process = require("process");
 const config_1 = require("@nestjs/config");
+const github_strategy_1 = require("./strategies/github.strategy");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
 exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            passport_1.PassportModule.register({ defaultStrategy: 'github' }),
             users_module_1.UsersModule,
             passport_1.PassportModule,
             config_1.ConfigModule.forRoot(),
             jwt_1.JwtModule.register({
                 secret: process.env.SECRET_KEY,
-                signOptions: { expiresIn: '99999s' }
+                signOptions: { expiresIn: '1h' }
             })
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy, hash_service_1.HashService]
+        providers: [auth_service_1.AuthService, local_strategy_1.LocalStrategy, jwt_strategy_1.JwtStrategy, hash_service_1.HashService, github_strategy_1.GithubStrategy]
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

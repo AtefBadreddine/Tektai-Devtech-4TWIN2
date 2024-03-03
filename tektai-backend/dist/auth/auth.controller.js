@@ -17,19 +17,34 @@ const auth_service_1 = require("./services/auth.service");
 const common_1 = require("@nestjs/common");
 const local_auth_guard_1 = require("./guards/local-auth.guard");
 const users_service_1 = require("../users/users.service");
+const user_dto_1 = require("../users/user.dto");
 const reset_password_dto_1 = require("../schemas/reset-password.dto");
 let AuthController = class AuthController {
-    constructor(authService, usersService) {
+    constructor(authService, userService) {
         this.authService = authService;
-        this.usersService = usersService;
+        this.userService = userService;
         this.logger = new common_1.Logger();
     }
     async login(req) {
         return this.authService.login(req.user);
     }
     async signUp(signUpDto) {
-        const { email, username, password } = signUpDto;
-        return this.authService.signup(email, password, username);
+        const validRoles = ['challenger', 'company', 'admin'];
+        if (!signUpDto.username || !signUpDto.email || !signUpDto.password || !validRoles.includes(signUpDto.role.toLowerCase())) {
+            throw new common_1.HttpException('Invalid data format!', common_1.HttpStatus.BAD_REQUEST);
+        }
+        try {
+            const user = await this.authService.signup(signUpDto);
+            return {
+                statusCode: 201,
+                message: 'User registered successfully!',
+                user,
+            };
+        }
+        catch (error) {
+            this.logger.log(error);
+            throw new common_1.HttpException('Internal server error', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async forgetPassword(email) {
         await this.authService.forgetPassword(email);
@@ -39,33 +54,29 @@ let AuthController = class AuthController {
         await this.authService.resetPassword(resetPasswordDto.token, resetPasswordDto.newPassword);
         return { message: 'Password reset successfully' };
     }
-    async deleteUser(userId) {
+    async changePassword(email, currentPassword, newPassword) {
         try {
-            const user = await this.usersService.deleteUser(userId);
-            if (!user) {
-                throw new common_1.NotFoundException('User not found');
-            }
-            return user;
-        }
-        catch (error) {
-            throw new common_1.InternalServerErrorException('Failed to delete user');
-        }
-    }
-    async changePassword(userId, currentPassword, newPassword) {
-        try {
-            await this.authService.changePassword(userId, currentPassword, newPassword);
-            return { message: 'Password changed successfully' };
+            await this.authService.changePassword(email, currentPassword, newPassword);
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
                 throw new common_1.NotFoundException('User not found');
             }
-            else if (error instanceof common_1.ConflictException) {
-                throw new common_1.ConflictException('Current password is incorrect');
+            else if (error instanceof common_1.UnauthorizedException) {
+                throw new common_1.UnauthorizedException('Current password is incorrect');
             }
             else {
                 throw new common_1.InternalServerErrorException('Failed to change password');
             }
+        }
+    }
+    async validateOAuthLogin(profile) {
+        try {
+            const user = await this.authService.validateOAuthLogin(profile);
+            return { user };
+        }
+        catch (error) {
+            return { error: error.message };
         }
     }
 };
@@ -82,7 +93,7 @@ __decorate([
     (0, common_1.Post)('signup'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [user_dto_1.UserDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "signUp", null);
 __decorate([
@@ -100,24 +111,23 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resetPassword", null);
 __decorate([
-    (0, common_1.Delete)(':userId'),
-    __param(0, (0, common_1.Param)('userId')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", Promise)
-], AuthController.prototype, "deleteUser", null);
-__decorate([
-    (0, common_1.Patch)('change-password/:userId'),
-    __param(0, (0, common_1.Param)('userId')),
+    (0, common_1.Patch)('/change-password'),
+    __param(0, (0, common_1.Body)('email')),
     __param(1, (0, common_1.Body)('currentPassword')),
     __param(2, (0, common_1.Body)('newPassword')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "changePassword", null);
+__decorate([
+    (0, common_1.Post)('oauth/login'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "validateOAuthLogin", null);
 exports.AuthController = AuthController = __decorate([
     (0, common_1.Controller)('auth'),
-    __metadata("design:paramtypes", [auth_service_1.AuthService,
-        users_service_1.UsersService])
+    __metadata("design:paramtypes", [auth_service_1.AuthService, users_service_1.UsersService])
 ], AuthController);
 //# sourceMappingURL=auth.controller.js.map

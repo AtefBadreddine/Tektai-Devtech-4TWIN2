@@ -17,26 +17,43 @@ const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const mongoose_2 = require("mongoose");
 const user_schema_1 = require("../schemas/user.schema");
-const mongodb_1 = require("mongodb");
 let UsersService = class UsersService {
     constructor(userModel) {
         this.userModel = userModel;
         this.logger = new common_1.Logger();
     }
-    async findByUsername(username) {
-        return this.userModel.findOne({ username });
-    }
     async findByEmail(email) {
         return this.userModel.findOne({ email });
     }
-    async createUser(email, password, username) {
-        const user = new this.userModel({ email, password, username });
+    async findByUsername(username) {
+        return this.userModel.findOne({ username });
+    }
+    async createUser(userDTO) {
+        const user = new this.userModel(userDTO);
         return user.save();
     }
-    async storePwdToken(token, id) {
-        const user = await this.userModel.findById(new mongodb_1.default.ObjectId(id)).exec();
-        user.resetPasswordToken = token;
-        return await user.save();
+    async getAllUsers() {
+        try {
+            const users = await this.userModel.find().exec();
+            return JSON.parse(JSON.stringify(users));
+        }
+        catch (error) {
+            this.logger.error(`Error fetching all users: ${error.message}`);
+            throw error;
+        }
+    }
+    async findUserByUsername(username) {
+        try {
+            const user = await this.userModel.findOne({ username }).exec();
+            if (!user) {
+                throw new Error(`User with username ${username} not found`);
+            }
+            return JSON.parse(JSON.stringify(user));
+        }
+        catch (error) {
+            this.logger.error(`Error fetching user by username ${username}: ${error.message}`);
+            throw error;
+        }
     }
     async deleteUser(userId) {
         try {
@@ -49,6 +66,18 @@ let UsersService = class UsersService {
         catch (error) {
             throw new common_1.InternalServerErrorException('Failed to delete user');
         }
+    }
+    async updateUser(userId, userDto) {
+        const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
+        if (!updatedUser) {
+            throw new common_1.NotFoundException('User not found');
+        }
+        return updatedUser;
+    }
+    async storePwdToken(token, id) {
+        const user = await this.userModel.findById(new mongoose_2.mongo.ObjectId(id)).exec();
+        user.resetPasswordToken = token;
+        return await user.save();
     }
     async findByResetToken(token) {
         this.logger.log(`Searching for user with reset token: ${token}`);
@@ -72,19 +101,6 @@ let UsersService = class UsersService {
         this.logger.log(`Updating reset token for user: ${userId}`);
         await this.userModel.findByIdAndUpdate(userId, { resetPasswordToken: token, resetPasswordTokenExpiry: expirationDate }).exec();
         this.logger.log(`Reset token updated successfully for user: ${userId}`);
-    }
-    async getUserIdByResetToken(token) {
-        const user = await this.findByResetToken(token);
-        return user?.userId.toString();
-    }
-    async findById(userId) {
-        try {
-            const user = await this.userModel.findById(userId).exec();
-            return user;
-        }
-        catch (error) {
-            throw new common_1.InternalServerErrorException('Failed to find user by ID');
-        }
     }
 };
 exports.UsersService = UsersService;

@@ -14,16 +14,15 @@ const common_1 = require("@nestjs/common");
 const users_service_1 = require("../../users/users.service");
 const jwt_1 = require("@nestjs/jwt");
 const hash_service_1 = require("./hash.service");
-const common_2 = require("@nestjs/common");
 const uuid_1 = require("uuid");
 const SibApiV3Sdk = require("sib-api-v3-sdk");
+const process = require("process");
 let AuthService = class AuthService {
     constructor(usersService, jwtService, hashService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
         this.hashService = hashService;
         this.logger = new common_1.Logger();
-        this.resetTokens = {};
     }
     async validateUser(username, pass) {
         const user = await this.usersService.findByUsername(username);
@@ -39,23 +38,25 @@ let AuthService = class AuthService {
             access_token: this.jwtService.sign(payload),
         };
     }
-    async signup(email, password, username) {
-        const existingUser = await this.usersService.findByUsername(username);
+    async signup(userDTO) {
+        const existingUser = await this.usersService.findByUsername(userDTO.username);
         if (existingUser) {
             throw new common_1.ConflictException('User already exists');
         }
-        const hashedPassword = await this.hashService.hashPassword(password);
-        return await this.usersService.createUser(email, hashedPassword, username);
+        userDTO.password = await this.hashService.hashPassword(userDTO.password);
+        return await this.usersService.createUser(userDTO);
     }
     async forgetPassword(email) {
         const user = await this.usersService.findByEmail(email);
         if (!user) {
-            throw new common_2.NotFoundException('User not found');
+            throw new common_1.NotFoundException('User not found');
         }
         const resetToken = (0, uuid_1.v4)();
-        const resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
+        const st = await this.usersService.storePwdToken(resetToken, user._id);
+        let resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
+        resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
         const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
-        const apiKey = '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';
+        const apiKey = process.env.SENDINBLUE;
         const defaultClient = SibApiV3Sdk.ApiClient.instance;
         const apiKeyV3 = defaultClient.authentications['api-key'];
         apiKeyV3.apiKey = apiKey;
@@ -80,40 +81,75 @@ let AuthService = class AuthService {
         await this.usersService.updateResetToken(userId, token, expirationDate);
         return token;
     }
-    async findByResetToken(token) {
-        const user = await this.usersService.findByResetToken(token);
-        if (!user || user.resetPasswordTokenExpiry < new Date()) {
-            throw new common_2.NotFoundException('Invalid or expired token');
-        }
-        return user;
-    }
     async resetPassword(token, newPassword) {
         const user = await this.usersService.findByResetToken(token);
         if (!user) {
-            throw new common_2.NotFoundException('Invalid or expired token');
+            throw new common_1.NotFoundException('Invalid or expired token');
         }
         const hashedPassword = await this.hashService.hashPassword(newPassword);
         await this.usersService.updatePassword(user._id, hashedPassword);
         await this.usersService.clearResetToken(user._id);
     }
-    async changePassword(userId, currentPassword, newPassword) {
-        const user = await this.usersService.findById(userId);
+    async changePassword(email, currentPassword, newPassword) {
+        try {
+            const user = await this.usersService.findByEmail(email);
+            if (!user) {
+                throw new common_1.NotFoundException('User not found');
+            }
+            const isPasswordCorrect = await this.hashService.comparePassword(currentPassword, user.password);
+            if (!isPasswordCorrect) {
+                throw new common_1.ConflictException('Current password is incorrect');
+            }
+            const hashedNewPassword = await this.hashService.hashPassword(newPassword);
+            await this.usersService.updatePassword(user._id, hashedNewPassword);
+        }
+        catch (error) {
+            console.error('Error changing password:', error);
+            if (error instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException('User not found');
+            }
+            else if (error instanceof common_1.ConflictException) {
+                throw new common_1.ConflictException('Current password is incorrect');
+            }
+            else {
+                throw new common_1.InternalServerErrorException('Failed to change password');
+            }
+        }
+    }
+    async validateOAuthLogin(profile) {
+        console.log("Profile received from GitHub:", profile);
+        if (!profile || !profile._json || !profile._json.username) {
+            console.error("Error: Username not found in GitHub profile.");
+            throw new Error("Username not found in GitHub profile.");
+        }
+        const { username, email } = profile._json;
+        console.log("Username:", username);
+        console.log("Email:", email);
+        let user = await this.usersService.findByEmail(email);
         if (!user) {
-            throw new common_2.NotFoundException('User not found');
+            console.log("User not found in the database. Creating a new user...");
+            user = await this.usersService.createUser({
+                username: username,
+                email: email,
+                password: "",
+                phoneNumber: "",
+                bio: "",
+                birthday: "",
+                companyName: "",
+                adresse: "",
+                role: ""
+            });
+            console.log("New user created:", user);
         }
-        const isPasswordCorrect = await this.hashService.comparePassword(currentPassword, user.password);
-        if (!isPasswordCorrect) {
-            throw new common_1.ConflictException('Current password is incorrect');
+        else {
+            console.log("User found in the database:", user);
         }
-        const hashedNewPassword = await this.hashService.hashPassword(newPassword);
-        await this.usersService.updatePassword(userId, hashedNewPassword);
+        return user;
     }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [users_service_1.UsersService,
-        jwt_1.JwtService,
-        hash_service_1.HashService])
+    __metadata("design:paramtypes", [users_service_1.UsersService, jwt_1.JwtService, hash_service_1.HashService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map
