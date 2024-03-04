@@ -1,12 +1,17 @@
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
-import React from "react";
+import React, { useState } from "react";
 import ChallengeDetails from "../challengeDetails/challengeDetails";
 import Challenges from "./challenge";
 import {Link} from "react-router-dom";
 
 
 function listChallenges() {
+    const [activeTab, setActiveTab] = useState('Ongoing');
+
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
+  };
         return (
 
                 <div className="flex flex-col min-h-screen overflow-hidden">
@@ -56,7 +61,41 @@ function listChallenges() {
 
 
                         {/* <section id="Projects" className="w-fit mx-auto grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5"> */}
-<Challenges></Challenges>
+{/* <Challenges></Challenges> */}
+<div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold text-left mb-6">Browse Challenges :</h1>
+
+      {/* Tab buttons */}
+      <div className="flex space-x-4 mb-4">
+        <button
+          className={`px-4 py-2 rounded-md focus:outline-none ${activeTab === 'Ongoing' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          onClick={() => handleTabClick('Ongoing')}
+        >
+          Ongoing
+        </button>
+        <button
+          className={`px-4 py-2 rounded-md focus:outline-none ${activeTab === 'Completed' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          onClick={() => handleTabClick('Completed')}
+        >
+          Completed
+        </button>
+        <button
+          className={`px-4 py-2 rounded-md focus:outline-none ${activeTab === 'Upcoming' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+          onClick={() => handleTabClick('Upcoming')}
+        >
+          Upcoming
+        </button>
+      </div>
+
+      {/* Tab content */}
+      <div>
+        {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
+        {activeTab === 'Completed' && <div><h1 className="text-xl font-bold my-4">Completed Challenges</h1> <Challenges status="Completed" /></div>}
+        {activeTab === 'Upcoming' && <div><h1 className="text-xl font-bold my-4">Upcoming Challenges</h1> <Challenges status="Upcoming" /></div>}
+
+      </div>
+    </div>
+
                         {/* </section> */}
                         <div className="mx-auto max-w-screen-2xl py-12 px-4 md:px-8">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">

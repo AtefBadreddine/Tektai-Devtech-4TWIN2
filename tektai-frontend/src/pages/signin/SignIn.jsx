@@ -1,60 +1,91 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
-
-import Header from '../../layout/Header';
-import {useAuth} from "../../auth/AuthProvider";
-
-
+import React, { useState } from 'react';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
+import './s.css'; // Import the CSS file
+import { redirect } from "react-router-dom";
+import userService from "../../services/userService";
+import {useAuth} from "../../auth/useAuth";
 function SignIn() {
   const [input, setInput] = useState({
-    email: "",
-    password: "",
-    role : "challenger"
+    email: '',
+    password: '',
+    role: 'challenger'
   });
   const auth = useAuth();
+  const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false); // State variable for loading
+  const [loginSuccess, setLoginSuccess] = useState(false); // State variable for login success message
+  const [userData,setUserData] = useState({})
   const handleInput = (e) => {
     const { name, value } = e.target;
-    console.log( name)
     setInput((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(input)
-    if (input.email !== "" && input.password !== "") {
-      auth.login(input);
-      return;
+    if (input.email !== '' && input.password !== '') {
+      try {
+        setLoading(true); // Set loading to true when submitting
+
+        // Extract email and password from input state
+        const { email, password } = input;
+
+        // Make a POST request to get the token
+        const data = await userService.getJWT(email,password);
+
+        // Check if token exists in response
+        if (data && data.access_token) {
+          const { access_token } = data;
+
+          // Fetch user data using the token
+          const user =await userService.getUser(access_token,email)
+          setUserData(user)
+
+          auth.login(access_token,user);
+
+          // Set login success message
+          setLoginSuccess(true);
+          setTimeout(() => {
+            if (user && user.role === 'admin') {
+              navigate('/admin')
+            } else {
+              navigate('/')
+            }
+         }, 2000);
+        } else {
+          console.error('Token not found in response');
+        }
+      } catch (error) {
+        console.error('Login failed:', error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Please provide a valid input');
     }
-    alert("pleae provide a valid input");
-  }
+  };
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-
-      {/*  Site header */}
-      <Header />
-
       {/*  Page content */}
       <main className="flex-grow">
-
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
             <div className="pt-32 pb-12 md:pt-40 md:pb-20">
-
               {/* Page header */}
               <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
                 <h1 className="h1">Welcome back. We exist to make entrepreneurism easier.</h1>
               </div>
-
               {/* Form */}
               <div className="max-w-sm mx-auto">
                 <form onSubmit={handleSubmit}>
                   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
-                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Email</label>
-                      <input id="email" type="email" name="email" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
+                      <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">Username</label>
+                      <input id="email" type="text" name="email" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your email address" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -63,7 +94,7 @@ function SignIn() {
                         <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="password">Password</label>
                         <Link to="/reset-password" className="text-sm font-medium text-blue-600 hover:underline">Having trouble signing in?</Link>
                       </div>
-                      <input id="password" type="password" name="password"  onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
+                      <input id="password" type="password" name="password" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your password" required />
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -78,7 +109,45 @@ function SignIn() {
                   </div>
                   <div className="flex flex-wrap -mx-3 mt-6">
                     <div className="w-full px-3">
-                      <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign in</button>
+                      {/* Display loading animation while loading */}
+                      {loading ? (
+                        // Replace the loader div with an SVG spinner animation
+                        <svg className="animate-spin h-6 w-6 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 008-8h-4c0 2.762-1.316 5.225-3.35 6.809L12 20zm5.357-7.938A7.962 7.962 0 0120 12h-4c0 2.762 1.316 5.225 3.35 6.809l3-2.647zM12 4c3.042 0 5.824 1.135 7.938 3h-2c-2.21 0-4 1.79-4 4H8c0-2.21-1.79-4-4-4H0c0-3.042 1.135-5.824 3-7.938L6.357 4H12z"></path>
+                      </svg>
+                      
+                      ) : (
+                        loginSuccess ? (
+                          <div className="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
+                          <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
+                            <svg
+                              width="16"
+                              height="12"
+                              viewBox="0 0 16 12"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15.2984 0.826822L15.2868 0.811827L15.2741 0.797751C14.9173 0.401867 14.3238 0.400754 13.9657 0.794406L5.91888 9.45376L2.05667 5.2868C1.69856 4.89287 1.10487 4.89389 0.747996 5.28987C0.417335 5.65675 0.417335 6.22337 0.747996 6.59026L0.747959 6.59029L0.752701 6.59541L4.86742 11.0348C5.14445 11.3405 5.52858 11.5 5.89581 11.5C6.29242 11.5 6.65178 11.3355 6.92401 11.035L15.2162 2.11161C15.5833 1.74452 15.576 1.18615 15.2984 0.826822Z"
+                                fill="white"
+                                stroke="white"
+                              ></path>
+                            </svg>
+                          </div>
+                          <div className="w-full">
+                            <h5 className="mb-3 text-lg font-semibold text-black dark:text-[#34D399] ">
+                              Login Successfull
+                            </h5>
+                            <p className="text-base leading-relaxed text-body">
+                             welcome {userData?.username ?? ''}
+                            </p>
+                          </div>
+                        </div>
+                        ) : (
+                          <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full">Sign in</button>
+                        )
+                      )}
                     </div>
                   </div>
                 </form>
@@ -87,41 +156,14 @@ function SignIn() {
                   <div className="text-gray-600 italic">Or</div>
                   <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
                 </div>
-                <form>
-                  <div className="flex flex-wrap -mx-3 mb-3">
-                    <div className="w-full px-3">
-                      <button className="btn px-0 text-white bg-gray-900 hover:bg-gray-800 w-full relative flex items-center">
-                        <svg className="w-4 h-4 fill-current text-white opacity-75 flex-shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M7.95 0C3.578 0 0 3.578 0 7.95c0 3.479 2.286 6.46 5.466 7.553.397.1.497-.199.497-.397v-1.392c-2.187.497-2.683-.993-2.683-.993-.398-.895-.895-1.193-.895-1.193-.696-.497.1-.497.1-.497.795.1 1.192.795 1.192.795.696 1.292 1.888.895 2.286.696.1-.497.298-.895.497-1.093-1.79-.2-3.578-.895-3.578-3.975 0-.895.298-1.59.795-2.087-.1-.2-.397-.994.1-2.087 0 0 .695-.2 2.186.795a6.408 6.408 0 011.987-.299c.696 0 1.392.1 1.988.299 1.49-.994 2.186-.795 2.186-.795.398 1.093.199 1.888.1 2.087.496.596.795 1.291.795 2.087 0 3.08-1.889 3.677-3.677 3.875.298.398.596.895.596 1.59v2.187c0 .198.1.497.596.397C13.714 14.41 16 11.43 16 7.95 15.9 3.578 12.323 0 7.95 0z" />
-                        </svg>
-                        <span className="flex-auto pl-16 pr-8 -ml-16">Continue with GitHub</span>
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap -mx-3">
-                    <div className="w-full px-3">
-                      <button className="btn px-0 text-white bg-red-600 hover:bg-red-700 w-full relative flex items-center">
-                        <svg className="w-4 h-4 fill-current text-white opacity-75 flex-shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z" />
-                        </svg>
-                        <span className="flex-auto pl-16 pr-8 -ml-16">Continue with Google</span>
-                      </button>
-                    </div>
-                  </div>
-                </form>
                 <div className="text-gray-600 text-center mt-6">
                   Don’t you have an account? <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign up</Link>
                 </div>
               </div>
-
             </div>
           </div>
         </section>
-
       </main>
-
-
-
     </div>
   );
 }

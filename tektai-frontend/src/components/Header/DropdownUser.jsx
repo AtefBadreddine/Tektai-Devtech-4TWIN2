@@ -1,41 +1,48 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
+import { AuthContext } from '../../auth/AuthProvider';
+import {useAuth} from "../../auth/useAuth";
 // import UserOne from '../../images/user/user-01.png';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef(null);
+  const dropdown = useRef(null);
+  const auth = useAuth();
+
+  const handleLogout = () => {
+    auth.logout();
+  };
 
   // close on click outside
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const storedUserData = auth.user || localStorage.getItem('user');
+    if (storedUserData) {
+      setUserData(auth.user ? auth.user : JSON.parse(storedUserData));
+    }
+
+    const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
-      if (
-        !dropdownOpen ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
+      if (!dropdownOpen || dropdown.current.contains(target) || trigger.current.contains(target))
         return;
       setDropdownOpen(false);
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
-  });
+  }, [dropdownOpen]); // Add dropdownOpen as a dependency
 
   // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
+    const keyHandler = ({ keyCode }) => {
       if (!dropdownOpen || keyCode !== 27) return;
       setDropdownOpen(false);
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
-  });
-
+  }, [dropdownOpen]); // Add dropdownOpen as a dependency
   return (
     <div className="relative">
       <Link
@@ -44,12 +51,24 @@ const DropdownUser = () => {
         className="flex items-center gap-4"
         to="#"
       >
-        <span className="hidden text-right lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
-          </span>
-          <span className="block text-xs">UX Designer</span>
-        </span>
+       <span className="hidden text-right lg:block">
+  <span className="block text-sm font-medium text-black dark:text-white">
+    {userData && userData.username && userData.username.charAt(0).toUpperCase() + userData.username.substring(1)}
+
+  </span>
+  <span className={`block text-xs ${
+                           userData && userData.role === 'admin'
+                        ? ' text-success'
+                        : userData && userData.role === 'challenger'
+                        ? ' text-danger'
+                        :userData &&  userData.role === 'company'
+                        ? ' text-purple-500'
+                        : ' text-warning'
+                    }`}>
+    {userData && userData.role && userData.role.charAt(0).toUpperCase() + userData.role.substring(1)}
+  </span>
+</span>
+
 
         <span className="h-12 w-12 rounded-full">
           {/* <img src={UserOne} alt="User" /> */}
@@ -154,7 +173,9 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button         onClick={handleLogout} // Call handleLogout on button click
+ className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          
           <svg
             className="fill-current"
             width="22"
