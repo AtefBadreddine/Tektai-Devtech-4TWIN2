@@ -15,7 +15,8 @@ import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import Whats
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5); // Set 
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -47,6 +48,10 @@ const TableComponent = () => {
       setUserToDelete(null);
     }
   }
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = data.slice(indexOfFirstUser, indexOfLastUser);
+
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
@@ -80,7 +85,7 @@ const TableComponent = () => {
           </thead>
           <tbody>
 
-            {data?.map((packageItem, key) => (
+            {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <h5 className="font-medium text-black dark:text-white">
@@ -171,6 +176,23 @@ const TableComponent = () => {
             ))}
           </tbody>
         </table>
+        <div className="flex justify-center my-4">
+  <button
+    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+    onClick={() => setCurrentPage(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    Previous
+  </button>
+  <button
+    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${indexOfLastUser >= data.length ? 'cursor-not-allowed opacity-50' : ''}`}
+    onClick={() => setCurrentPage(currentPage + 1)}
+    disabled={indexOfLastUser >= data.length}
+  >
+    Next
+  </button>
+</div>
+
         <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null} onClose={() => setUserToDelete(null)}>
           <ModalOverlay />
           <ModalContent>
