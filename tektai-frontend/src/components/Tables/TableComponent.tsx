@@ -33,7 +33,9 @@ const TableComponent = () => {
   };
 
   const openGmail = (emailAddress) => {
-    const gmailUrl = `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${encodeURIComponent(emailAddress)}`;
+    const encodedEmailAddress = encodeURIComponent(emailAddress);
+    const gmailUrl = `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${encodedEmailAddress}`;
+    console.log(gmailUrl);
     window.open(gmailUrl, '_blank');
   };
   const finalRef = React.useRef(null)
@@ -85,13 +87,12 @@ const TableComponent = () => {
   <span className="mr-2">
     <FaEnvelope size={16} /> {/* Adjust size as needed */}
   </span>
-  <a
-    href="#"
-    className="text-black dark:text-white hover:text-orange-500"
-    onClick={() => openGmail(packageItem.email)}
-  >
-    {packageItem.email}
-  </a>
+  <button
+  className="text-black dark:text-white hover:text-orange-500"
+  onClick={() => openGmail(packageItem.email)}
+>
+  {packageItem.email}
+</button>
 </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
