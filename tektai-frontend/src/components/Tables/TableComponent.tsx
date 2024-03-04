@@ -81,7 +81,9 @@ const TableComponent = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
-                    {packageItem.username}
+                  <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white">
+
+                    {packageItem.username}</a>
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">

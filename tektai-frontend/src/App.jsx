@@ -32,6 +32,7 @@ import SpinnerWithBackground from './components/spinner/spinner';
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
 import Forgetpassword from './pages/forgotpwd/forgetpassword';
+import ProfileAll from './components/ProfileAll';
 
 
 
@@ -76,10 +77,12 @@ import Forgetpassword from './pages/forgotpwd/forgetpassword';
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
-          
+          <Route path="/profile/:id" element={<ProfileAll/>} />
+
           <Route path="*" element={<NotFound />} />
 
           <Route element={<ProtectedRoute/>}>
+
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
