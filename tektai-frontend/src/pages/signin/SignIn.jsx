@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // Import the CAPTCHA component (replace 'CaptchaComponent' with the actual component)
 import CaptchaComponent from './CaptchaComponent';
 
+
 function SignIn() {
   const [input, setInput] = useState({
     email: '',
@@ -23,6 +24,7 @@ function SignIn() {
   const [userData, setUserData] = useState({});
   const [showPassword, setShowPassword] = useState(false); // State variable to toggle password visibility
   const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -48,6 +50,7 @@ function SignIn() {
 
         const data = await userService.getJWT(email, password);
 
+
         if (data && data.access_token) {
           const { access_token } = data;
 
@@ -64,6 +67,7 @@ function SignIn() {
               navigate('/');
             }
           }, 2000);
+
         } else {
           console.error('Token not found in response');
         }
@@ -102,6 +106,7 @@ function SignIn() {
                         placeholder="Enter your email address"
                         required
                       />
+
                     </div>
                   </div>
                   <div className="flex flex-wrap -mx-3 mb-4">
@@ -194,6 +199,7 @@ function SignIn() {
                             </h5>
                             <p className="text-base leading-relaxed text-body">
                               welcome {userData?.username ?? ''}
+
                             </p>
                           </div>
                         </div>

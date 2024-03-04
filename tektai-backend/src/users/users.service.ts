@@ -71,6 +71,7 @@ export class UsersService {
   async findByResetToken(token: string,email : string): Promise<User | undefined> {
     this.logger.log(`Searching for user with reset token: ${token}`);
     const user = await this.userModel.findOne({ resetPasswordToken: token , email : email }).exec();
+
     if (!user) {
       this.logger.error(`User not found for reset token: ${token}`);
     }

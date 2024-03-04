@@ -241,7 +241,6 @@ const Settings = () => {
                         id="companyName"
                         onChange={handleInput}
                         value={input.companyName}
-
                       />
                     </div>
                     <div className="mb-5.5">

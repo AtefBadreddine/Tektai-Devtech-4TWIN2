@@ -70,6 +70,7 @@ import ProfileAll from './components/ProfileAll';
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forget-password" element={<Forgetpassword />} />
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
@@ -86,6 +87,7 @@ import ProfileAll from './components/ProfileAll';
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
+
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
