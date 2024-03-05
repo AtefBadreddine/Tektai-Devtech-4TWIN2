@@ -13,13 +13,8 @@ import * as process from 'process';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
-  
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-   constructor() {
- 
-  }
-}
+export class AppModule {}

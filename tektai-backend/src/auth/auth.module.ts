@@ -9,11 +9,9 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { HashService } from "./services/hash.service";
 import * as process from 'process';
 import { ConfigModule } from "@nestjs/config";
-import { GithubStrategy } from './strategies/github.strategy';
 
 @Module({
   imports: [
-     PassportModule.register({ defaultStrategy: 'github' }),
     UsersModule,
     PassportModule,
     ConfigModule.forRoot(),
@@ -23,6 +21,6 @@ import { GithubStrategy } from './strategies/github.strategy';
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy,HashService,GithubStrategy]
+  providers: [AuthService,LocalStrategy,JwtStrategy,HashService]
 })
 export class AuthModule {}
