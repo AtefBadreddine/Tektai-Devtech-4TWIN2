@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalCloseButton,
   Button,
+  Tooltip
 } from '@chakra-ui/react';
 import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -48,7 +49,8 @@ const SearchTableComponentF = ({ users }) => {
             {users.map((user, index) => (
               <tr key={index}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
+                <Tooltip label='Send an Email '>
+  <h5 className="font-medium text-black dark:text-white">
                     <span className="mr-2">
                       <FaEnvelope size={16} />
                     </span>
@@ -58,20 +60,20 @@ const SearchTableComponentF = ({ users }) => {
                     >
                       {user.email}
                     </button>
-                  </h5>
+                  </h5></Tooltip>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
+                <Tooltip label='Visit profile '><p className="text-black dark:text-white">
                     <a href={`/profile/${user.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
                       <span className="mr-2">
                         <FaLink size={16} />
                       </span>
                       {user.username}
                     </a>
-                  </p>
+                  </p></Tooltip>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
+                <Tooltip label='Contact on Whatsapp '><p className="text-black dark:text-white">
                     <a href={`https://wa.me/${user.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
                       <span className="mr-2">
                         <FaWhatsapp size={32} color="green" />
@@ -80,7 +82,7 @@ const SearchTableComponentF = ({ users }) => {
                         {user.phoneNumber}
                       </span>
                     </a>
-                  </p>
+                  </p></Tooltip>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
