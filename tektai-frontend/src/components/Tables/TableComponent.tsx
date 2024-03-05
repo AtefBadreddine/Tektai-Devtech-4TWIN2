@@ -215,8 +215,8 @@ Phone Number
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-
-                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+            
+                    <Button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -230,7 +230,7 @@ Phone Number
                         />
                       </svg>
                       Delete
-                    </button>
+                    </Button>
 
 
                   </div>
