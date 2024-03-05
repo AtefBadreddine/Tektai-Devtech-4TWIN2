@@ -7,6 +7,7 @@ import FeaturesBlocks from './partials/FeaturesBlocks';
 import Testimonials from './partials/Testimonials';
 import Newsletter from './partials/Newsletter';
 import Footer from '../../layout/Footer';
+import PopupAd from '../../components/premium/premium';
 
 
 function Home() {
@@ -15,6 +16,7 @@ function Home() {
 
       {/*  Site header */}
       <Header />
+      <PopupAd />
 
       {/*  Page content */}
       <main className="flex-grow">
