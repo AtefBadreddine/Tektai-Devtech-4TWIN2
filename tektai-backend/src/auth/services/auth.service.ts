@@ -1,4 +1,4 @@
-
+<
 import {ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 
 import { UsersService } from "../../users/users.service";
@@ -171,4 +171,5 @@ export class AuthService {
     // Retournez l'utilisateur créé ou trouvé
     return user;
 }
+
 }
