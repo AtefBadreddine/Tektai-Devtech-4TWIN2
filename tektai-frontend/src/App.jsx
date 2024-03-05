@@ -35,6 +35,8 @@ import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
 
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+import CrmForm from './pages/crm/crmpage';
+import Settingsadmin from './components/Settingsadmin';
 
 
 
@@ -92,6 +94,9 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
+            <Route path="/crm" element={<CrmForm/>} />
+            <Route path="/profileadmin" element={<Settingsadmin/>} />
+
           </Route>
 
         </Routes>)
