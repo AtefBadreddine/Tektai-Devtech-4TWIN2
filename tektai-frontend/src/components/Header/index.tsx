@@ -5,6 +5,7 @@ import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher';
 // @ts-ignore
 import React from 'react';
+import UserSearch from '../../pages/usersearch/UserSearch';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -88,11 +89,9 @@ const Header = (props: {
                 </svg>
               </button>
 
-              <input
-                type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent rounded-sm  pl-8 pr-4 text-black focus:outline-none dark:text-white xl:w-125"
-              />
+
+              <UserSearch/>
+
             </div>
           </form>
         </div>

@@ -61,14 +61,22 @@ export class UserController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Put(':userId')
     async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
         return await this.userService.updateUser(userId, userDto);
     }
+
     @UseGuards(JwtAuthGuard)
     @Put('/block/:userId')
     async blockUser(@Param('userId') userId: string) {
         return await this.userService.blockUser(userId);
     }
+
+    @Get('searchusers')
+async searchUsers(@Query() query: any): Promise<User[]> {
+  const users = await this.userService.searchUsers(query);
+  return users || [];
+}
+
 }

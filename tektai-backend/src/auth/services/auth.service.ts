@@ -1,3 +1,4 @@
+
 import {ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 
 import { UsersService } from "../../users/users.service";
@@ -8,6 +9,8 @@ import {User} from "../../schemas/user.schema";
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
+
+;
 
 @Injectable()
 export class AuthService {
@@ -134,7 +137,6 @@ export class AuthService {
         }
     }
 }
-
 
 
 }

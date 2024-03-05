@@ -6,16 +6,23 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure,
+  ModalCloseButton, Button, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
-import userService from '../../services/userService';
-import {FaEnvelope, FaLink, FaWhatsapp, FaBan, FaCheck} from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+
+import userService from "../../services/userService";
+import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import Updatedraw from './updatedrawer';
+import ExportToExcel from './xlx';
+import ExportToPDF from './pdf';
+
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(5); // Set 
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -23,6 +30,30 @@ const TableComponent = () => {
       fetchUsers(token);
     }
   }, []);
+  const sortData = (column) => {
+    if (sortColumn === column) {
+      // If the same column is clicked again, toggle sort direction
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // If a new column is clicked, set it as the sort column and default to ascending order
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+  const sortedData = [...data].sort((a, b) => {
+    if (sortColumn) {
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+      if (aValue < bValue) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+    return 0;
+  });
 
   // @ts-ignore
   const blockUser = async(user)  => {
@@ -60,30 +91,72 @@ const TableComponent = () => {
   }
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = data.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
 
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
+        <ExportToExcel users={data}/>
+        <ExportToPDF users={data}/>
         <table className="w-full table-auto">
           <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Email
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                Username
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                phoneNumber
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+
+          <tr className="bg-gray-2 text-left dark:bg-meta-4">
+          <th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('email')}
+>
+  Email
+  {sortColumn === 'email' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+<th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('username')}
+>
+Username
+  {sortColumn === 'username' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+<th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('phoneNumber')}
+>
+Phone Number
+  {sortColumn === 'phoneNumber' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+       
+              <th
+                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
+                onClick={() => sortData('role')}
+              >
                 Role
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Actions
               </th>
-
             </tr>
           </thead>
           <tbody>
@@ -98,23 +171,26 @@ const TableComponent = () => {
   <button
   className="text-black dark:text-white hover:text-orange-500"
   onClick={() => openGmail(packageItem.email)}
->
-  {packageItem.email}
+  >  
+     <Tooltip label='Send an Email '>
+
+  {packageItem.email}</Tooltip>
 </button>
 </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <p className="text-black dark:text-white">
+                <Tooltip label='Visit profile '>
   <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
     <span className="mr-2">
       <FaLink size={16} /> {/* Adjust size as needed */}
     </span>
     {packageItem.username}
-  </a>
+  </a></Tooltip> 
 </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">
+                <p className="text-black dark:text-white"><Tooltip label='Contact on Whatsapp '>
   <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
     <span className="mr-2">
       <FaWhatsapp size={32} color="green" />
@@ -122,7 +198,7 @@ const TableComponent = () => {
     <span className="text-black dark:text-white hover:text-green-500">
       {packageItem.phoneNumber}
     </span>
-  </a>
+  </a></Tooltip>
 </p>
 
                 </td>
@@ -173,6 +249,9 @@ const TableComponent = () => {
 
 
                   </div>
+                  <div className="flex items-center space-x-3.5"> 
+                   <Updatedraw user={packageItem}></Updatedraw>   
+                    </div>
                 </td>
 
 

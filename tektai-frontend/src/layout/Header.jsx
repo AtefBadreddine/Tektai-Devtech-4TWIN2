@@ -16,6 +16,7 @@
     DrawerCloseButton,
   } from '@chakra-ui/react'
   import {useAuth} from "../auth/useAuth";
+import UserSearchF from '../pages/usersearch/UsersearchF';
   function Header() {
     const { login, logout } = useContext(AuthContext); // Access authentication context
     const [top, setTop] = useState(true);
@@ -121,7 +122,7 @@
                
               </div>
               <div className="flex items-center">
-        <input type="text" placeholder="Search..." className="border border-gray-300 rounded-lg py-1 px-3 mr-4 focus:outline-none focus:border-indigo-500" />
+                <UserSearchF></UserSearchF>
         {loading ? (
         <div className="spinner" style={{ 
           border: '4px solid rgba(0, 0, 0, 0.1)',

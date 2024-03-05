@@ -18,7 +18,6 @@ import {GoogleAuthGuard} from "./guards/google-auth.guard";
 import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
 
-
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger();
@@ -126,6 +125,7 @@ async changePassword(
    res.redirect(`http://localhost:5173/auth/success-redirect/`);
    return;
   }
+
 
 }
 
