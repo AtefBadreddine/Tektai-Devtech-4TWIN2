@@ -258,7 +258,6 @@ const Settings = () => {
                         id="adresse"
                         onChange={handleInput}
                         value={input.adresse}
-
                       />
                     </div>
                     </div>
@@ -280,7 +279,6 @@ const Settings = () => {
                       value={input.birthday}
                       onChange={handleInput}
                     />
-
                   </div>
 
                 <div className="mb-5.5">

@@ -24,6 +24,8 @@
   import DefaultLayout from './layout/DefaultLayout';
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
+  import ProfileAll from './components/ProfileAll';
+  
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -31,8 +33,9 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
-import Forgetpassword from './pages/forgotpwd/forgetpassword';
-import ProfileAll from './components/ProfileAll';
+
+  import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+
 
 
 
@@ -83,11 +86,9 @@ import ProfileAll from './components/ProfileAll';
           <Route path="*" element={<NotFound />} />
 
           <Route element={<ProtectedRoute/>}>
-
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
-
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />

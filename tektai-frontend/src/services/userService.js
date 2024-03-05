@@ -93,7 +93,6 @@ const UserService = {
             console.error('Error updating user:', error);
             return { error: 'failed' };
         }
-
     },
     resetPwd: async (email) => {
         try {

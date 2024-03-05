@@ -26,7 +26,6 @@ export class UserController {
 
     @Get('get/:username')
     // @UseGuards(JwtAuthGuard)
-
     async findByUsername(@Param('username') username: string) {
         return await this.userService.findUserByUsername(username);
     }

@@ -49,9 +49,8 @@ export class AuthService {
     const st = await this.usersService.storePwdToken(resetToken,user._id);
 
     // Créer le lien de réinitialisation de mot de passe avec le jeton
-
-    const resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
-
+    let resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
+     resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
     // Créer un objet Sendinblue
     const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
     const apiKey = process.env.SENDINBLUE;
@@ -84,9 +83,8 @@ export class AuthService {
   }
 
 
-  async resetPassword(token: string, email : string, newPassword: string): Promise<void> {
-    const user = await this.usersService.findByResetToken(token,email);
-
+  async resetPassword(token: string,  newPassword: string): Promise<void> {
+    const user = await this.usersService.findByResetToken(token);
     if (!user) {
       throw new NotFoundException('Invalid or expired token');
     }
