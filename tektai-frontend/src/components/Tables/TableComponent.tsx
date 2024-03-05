@@ -7,10 +7,11 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure,
+  ModalCloseButton, Button, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
 import userService from "../../services/userService";
-import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import { FaEdit, FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import Updatedraw from './updatedrawer';
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -59,6 +60,7 @@ const TableComponent = () => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                
                 Email
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
@@ -95,23 +97,26 @@ const TableComponent = () => {
   <button
   className="text-black dark:text-white hover:text-orange-500"
   onClick={() => openGmail(packageItem.email)}
->
-  {packageItem.email}
+  >  
+     <Tooltip label='Send an Email '>
+
+  {packageItem.email}</Tooltip>
 </button>
 </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <p className="text-black dark:text-white">
+                <Tooltip label='Visit profile '>
   <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
     <span className="mr-2">
       <FaLink size={16} /> {/* Adjust size as needed */}
     </span>
     {packageItem.username}
-  </a>
+  </a></Tooltip> 
 </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">
+                <p className="text-black dark:text-white"><Tooltip label='Contact on Whatsapp '>
   <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
     <span className="mr-2">
       <FaWhatsapp size={32} color="green" />
@@ -119,7 +124,7 @@ const TableComponent = () => {
     <span className="text-black dark:text-white hover:text-green-500">
       {packageItem.phoneNumber}
     </span>
-  </a>
+  </a></Tooltip>
 </p>
 
                 </td>
@@ -168,6 +173,9 @@ const TableComponent = () => {
 
 
                   </div>
+                  <div className="flex items-center space-x-3.5"> 
+                   <Updatedraw user={packageItem}></Updatedraw>   
+                    </div>
                 </td>
 
 

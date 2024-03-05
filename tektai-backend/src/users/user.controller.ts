@@ -44,7 +44,7 @@ export class UserController {
         }
     }
 
-    @UseGuards(JwtAuthGuard)
+    // @UseGuards(JwtAuthGuard)
     @Put(':userId')
     async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
         return await this.userService.updateUser(userId, userDto);

@@ -11,6 +11,7 @@ import {
   Button,
 } from '@chakra-ui/react';
 import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import Updatedraw from './updatedrawer';
 
 const SearchTableComponent = ({ users }) => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -103,11 +104,31 @@ const SearchTableComponent = ({ users }) => {
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <button className="hover:text-primary" onClick={() => deleteUser(user)}>
+
+                    <button className="hover:text-primary" onClick={() => setUserToDelete(user)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       Delete
                     </button>
+
+
                   </div>
+                  <div className="flex items-center space-x-3.5"> 
+                   <Updatedraw user={user}></Updatedraw>   
+                    </div>
+                </td>
                 </td>
               </tr>
             ))}
