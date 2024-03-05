@@ -94,6 +94,28 @@ export class UsersService {
     await this.userModel.findByIdAndUpdate(userId, { resetPasswordToken: token, resetPasswordTokenExpiry: expirationDate }).exec();
     this.logger.log(`Reset token updated successfully for user: ${userId}`);
   }
+  
+async searchUsers(query: any): Promise<User[] | null> {
+  const { username, email, role,phoneNumber } = query;
+  const searchQuery: any = {};
+
+  if (username) {
+    searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+  }
+  if (email) {
+    searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
+  }
+  if (role) {
+    searchQuery.role = role;
+  }
+  //  if (phoneNumber) {
+  //   searchQuery.phoneNumber = phoneNumber;
+  // }
+
+  const users = await this.userModel.find(searchQuery).exec();
+  return users || null;
+}
+
 
 
 }
