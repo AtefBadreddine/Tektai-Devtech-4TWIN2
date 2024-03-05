@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
   ModalOverlay,
@@ -9,11 +8,13 @@ import {
   ModalBody,
   ModalCloseButton, Button, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
+
 import userService from "../../services/userService";
-import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 import Updatedraw from './updatedrawer';
 import ExportToExcel from './xlx';
 import ExportToPDF from './pdf';
+
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -55,6 +56,17 @@ const TableComponent = () => {
   });
 
   // @ts-ignore
+  const blockUser = async(user)  => {
+    console.log(user._id)
+    const blocked = await userService.banUser(user._id);
+    if (blocked) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        fetchUsers(token);
+      }
+    }
+  }  // @ts-ignore
+
   const fetchUsers = async (token) => {
 
     const userData = await userService.getAll(token);
@@ -88,6 +100,7 @@ const TableComponent = () => {
         <ExportToPDF users={data}/>
         <table className="w-230 table-auto">
           <thead>
+
           <tr className="bg-gray-2 text-left dark:bg-meta-4">
           <th
   className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
@@ -135,10 +148,7 @@ Phone Number
   )}
 </th>
        
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                Image
-              </th>
-              
+
               <th
                 className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
                 onClick={() => sortData('role')}
@@ -155,7 +165,7 @@ Phone Number
             {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="font-medium text-black dark:text-white">
+                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
   <span className="mr-2">
     <FaEnvelope size={16} /> {/* Adjust size as needed */}
   </span>
@@ -193,12 +203,7 @@ Phone Number
 </p>
 
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.image}
-                  </p>
-                </td>
-               
+
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
@@ -215,8 +220,10 @@ Phone Number
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-            
-                    <Button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+
+
+                    <button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -231,6 +238,17 @@ Phone Number
                       </svg>
                       Delete
                     </Button>
+
+                    { packageItem?.isBlocked ? <button className="inline-flex  text-green-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                          <FaCheck color="green" />
+                          Unban
+                        </button>   :
+                          <button className="inline-flex text-red-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    <FaBan  color="red" />
+                    Ban
+                  </button>}
+
+
 
 
                   </div>
@@ -305,6 +323,7 @@ Phone Number
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
