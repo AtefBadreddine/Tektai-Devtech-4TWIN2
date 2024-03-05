@@ -98,7 +98,7 @@ const TableComponent = () => {
       <div className="max-w-full ">
         <ExportToExcel users={data}/>
         <ExportToPDF users={data}/>
-        <table className="w-full table-auto">
+        <table className="w-230 table-auto">
           <thead>
 
           <tr className="bg-gray-2 text-left dark:bg-meta-4">
@@ -148,6 +148,7 @@ Phone Number
   )}
 </th>
        
+
               <th
                 className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
                 onClick={() => sortData('role')}
@@ -220,7 +221,9 @@ Phone Number
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
 
+
                     <button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -234,7 +237,7 @@ Phone Number
                         />
                       </svg>
                       Delete
-                    </button>
+                    </Button>
 
                     { packageItem?.isBlocked ? <button className="inline-flex  text-green-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
                           <FaCheck color="green" />
