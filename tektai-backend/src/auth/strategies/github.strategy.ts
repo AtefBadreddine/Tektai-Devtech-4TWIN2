@@ -3,7 +3,8 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-github';
 import { UsersService } from 'src/users/users.service'; 
 import { HashService } from '../services/hash.service';
-// Assurez-vous que le chemin est correct
+import axios from 'axios';
+import {VerifyCallback} from "passport-google-oauth2";
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy) {
@@ -20,27 +21,37 @@ export class GithubStrategy extends PassportStrategy(Strategy) {
       scope: [ 'user:email' ],
     });
   }
-async validate(accessToken: string, refreshToken: string, profile: any) {
+async validate(accessToken: string, refreshToken: string, profile: any,done: VerifyCallback) {
  
 
-  // Utilisez la propriété appropriée du profil comme identifiant unique
-  const email = profile._json.email;
-console.log(profile);
-  // Vérifiez si le nom d'utilisateur est présent, sinon utilisez l'e-mail comme nom d'utilisateur
-  const username = profile._json.login || email;
-  console.log('Username: ', username);
-
-  // Vérifiez si l'utilisateur existe déjà dans votre base de données
-  const user = await this.usersService.findByUsername(username);
-
-  // Si l'utilisateur n'existe pas, créez-en un nouveau
-  if (!user) {
-    // Créez un nouvel utilisateur avec les informations du profil GitHub
-    return null;
+  const response = await axios.get(`https://api.github.com/user/emails`, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    }
+  });
+   const emails = response.data;
+  let email = "";
+  const primaryEmails = emails.filter(email => email.primary === true);
+  if (primaryEmails.length > 0) {
+     email = primaryEmails[0].email;
   }
 
-  // Retournez l'utilisateur créé ou trouvé
-  return user;
+  const username = profile._json.login;
+
+  const userInDB = await this.usersService.findByEmail(email);
+
+  if (userInDB) done(null,userInDB);
+
+  const user = {
+    provider: 'github',
+    providerId: profile._json.id,
+    email: email,
+    name: username,
+    picture: profile._json.avatar_url,
+    didNotFinishSignup : true
+  };
+
+  done(null, user);
 }
 
 }

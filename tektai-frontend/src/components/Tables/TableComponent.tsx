@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
   ModalOverlay,
@@ -9,8 +8,8 @@ import {
   ModalBody,
   ModalCloseButton, Button, useDisclosure,
 } from '@chakra-ui/react'
-import userService from "../../services/userService";
-import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import userService from '../../services/userService';
+import {FaEnvelope, FaLink, FaWhatsapp, FaBan, FaCheck} from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -26,6 +25,17 @@ const TableComponent = () => {
   }, []);
 
   // @ts-ignore
+  const blockUser = async(user)  => {
+    console.log(user._id)
+    const blocked = await userService.banUser(user._id);
+    if (blocked) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        fetchUsers(token);
+      }
+    }
+  }  // @ts-ignore
+
   const fetchUsers = async (token) => {
 
     const userData = await userService.getAll(token);
@@ -67,13 +77,6 @@ const TableComponent = () => {
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 phoneNumber
               </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                image
-              </th>
-
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-                birthdate
-              </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Role
               </th>
@@ -88,7 +91,7 @@ const TableComponent = () => {
             {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="font-medium text-black dark:text-white">
+                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
   <span className="mr-2">
     <FaEnvelope size={16} /> {/* Adjust size as needed */}
   </span>
@@ -123,16 +126,7 @@ const TableComponent = () => {
 </p>
 
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.image}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.birthdate}
-                  </p>
-                </td>
+
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
@@ -150,7 +144,7 @@ const TableComponent = () => {
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
 
-                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+                    <button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -165,6 +159,17 @@ const TableComponent = () => {
                       </svg>
                       Delete
                     </button>
+
+                    { packageItem?.isBlocked ? <button className="inline-flex  text-green-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                          <FaCheck color="green" />
+                          Unban
+                        </button>   :
+                          <button className="inline-flex text-red-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    <FaBan  color="red" />
+                    Ban
+                  </button>}
+
+
 
 
                   </div>
@@ -236,6 +241,7 @@ const TableComponent = () => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

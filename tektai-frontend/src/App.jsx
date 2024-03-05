@@ -34,8 +34,9 @@ import SpinnerWithBackground from './components/spinner/spinner';
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+  import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
-  import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+
 
 
 
@@ -72,6 +73,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forget-password" element={<Forgetpassword />} />
