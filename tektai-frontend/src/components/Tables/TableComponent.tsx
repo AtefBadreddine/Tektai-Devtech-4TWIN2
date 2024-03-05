@@ -86,7 +86,7 @@ const TableComponent = () => {
       <div className="max-w-full ">
         <ExportToExcel users={data}/>
         <ExportToPDF users={data}/>
-        <table className="w-full table-auto">
+        <table className="w-230 table-auto">
           <thead>
           <tr className="bg-gray-2 text-left dark:bg-meta-4">
           <th
@@ -138,12 +138,7 @@ Phone Number
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Image
               </th>
-              <th
-                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => sortData('birthdate')}
-              >
-                Birthdate
-              </th>
+              
               <th
                 className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
                 onClick={() => sortData('role')}
@@ -203,11 +198,7 @@ Phone Number
                     {packageItem.image}
                   </p>
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.birthdate}
-                  </p>
-                </td>
+               
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
@@ -224,8 +215,8 @@ Phone Number
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-
-                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+            
+                    <Button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5"
@@ -239,7 +230,7 @@ Phone Number
                         />
                       </svg>
                       Delete
-                    </button>
+                    </Button>
 
 
                   </div>

@@ -266,7 +266,7 @@ const StepOne = ({ formData, handleInput, handleNext }) => {
               placeholder="Enter your password"
               required
               minLength="8"
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$"
+              // pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z@$!%*?&]{8,}$"
               />
             {/* Eye icon to toggle password visibility */}
             <button

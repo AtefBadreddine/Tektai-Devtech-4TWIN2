@@ -38,7 +38,7 @@ function Updatedraw({ user }) {
 
   return (
     <>
-      <Button   onClick={onOpen}>
+    <Button   onClick={onOpen}>
         <FaEdit size={16} />
         Update
       </Button>
