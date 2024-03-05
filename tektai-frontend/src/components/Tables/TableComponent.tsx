@@ -13,6 +13,7 @@ import userService from "../../services/userService";
 import { FaEdit, FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 import Updatedraw from './updatedrawer';
 import ExportToExcel from './xlx';
+import ExportToPDF from './pdf';
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -58,6 +59,7 @@ const TableComponent = () => {
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
         <ExportToExcel users={data}/>
+        <ExportToPDF users={data}/>
         <table className="w-full table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
