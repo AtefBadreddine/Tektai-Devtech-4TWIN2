@@ -119,17 +119,8 @@ async changePassword(
 
   }
 
-  @Post('/forget-password')
-  async forgetPassword(@Body('email') email: string) {
-    await this.authService.forgetPassword(email);
-    return { message: 'Password reset email sent successfully' };
-  }
-  @Post('reset-password')
-  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
-    await this.authService.resetPassword(resetPasswordDto.token,resetPasswordDto.newPassword);
-    return {message: 'Password reset successfully'};
-
-  }
+ 
+  
 }
 
 
