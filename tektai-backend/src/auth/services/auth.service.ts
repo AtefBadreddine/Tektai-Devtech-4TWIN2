@@ -1,4 +1,4 @@
-import {ConflictException, Injectable, Logger, NotFoundException} from "@nestjs/common";
+import {ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
@@ -98,5 +98,76 @@ export class AuthService {
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
     await this.usersService.clearResetToken(user._id);
   }
+  async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
+    try {
+        // Récupérer l'utilisateur à partir de l'email
+        const user = await this.usersService.findByEmail(email);
+        
+        // Vérifier si l'utilisateur existe
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        // Vérifier si le mot de passe actuel est correct
+        const isPasswordCorrect = await this.hashService.comparePassword(currentPassword, user.password);
+        if (!isPasswordCorrect) {
+            throw new ConflictException('Current password is incorrect');
+        }
+
+        // Hasher le nouveau mot de passe
+        const hashedNewPassword = await this.hashService.hashPassword(newPassword);
+
+        // Mettre à jour le mot de passe de l'utilisateur dans la base de données
+        await this.usersService.updatePassword(user._id, hashedNewPassword);
+    } catch (error) {
+        console.error('Error changing password:', error);
+        if (error instanceof NotFoundException) {
+            throw new NotFoundException('User not found');
+        } else if (error instanceof ConflictException) {
+            throw new ConflictException('Current password is incorrect');
+        } else {
+            throw new InternalServerErrorException('Failed to change password');
+        }
+    }
+}
+ async validateOAuthLogin(profile: any): Promise<User> {
+    console.log("Profile received from GitHub:", profile);
+
+    // Vérifiez si la propriété username est définie dans le profil GitHub
+    if (!profile || !profile._json || !profile._json.username) {
+        console.error("Error: Username not found in GitHub profile.");
+        throw new Error("Username not found in GitHub profile.");
+    }
+
+    const { username, email } = profile._json;
+    console.log("Username:", username);
+    console.log("Email:", email);
+
+    // Vérifiez si l'utilisateur existe déjà dans votre base de données
+    let user = await this.usersService.findByEmail(email);
+
+    // Si l'utilisateur n'existe pas, créez-en un nouveau
+    if (!user) {
+        console.log("User not found in the database. Creating a new user...");
+        // Créez un nouvel utilisateur avec les informations du profil GitHub
+        user = await this.usersService.createUser({
+            username: username,
+            email: email,
+            password: "",
+            phoneNumber: "",
+            bio: "",
+            birthday: "",
+            companyName: "",
+            adresse: "",
+            role: ""
+        });
+        console.log("New user created:", user);
+    } else {
+        console.log("User found in the database:", user);
+    }
+
+    // Retournez l'utilisateur créé ou trouvé
+    return user;
+}
 
 }
