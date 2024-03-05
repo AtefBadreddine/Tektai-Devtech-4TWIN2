@@ -5,6 +5,7 @@ import { UsersService } from 'src/users/users.service';
 import { HashService } from '../services/hash.service';
 import axios from 'axios';
 import {VerifyCallback} from "passport-google-oauth2";
+import * as process from "process";
 
 @Injectable()
 export class GithubStrategy extends PassportStrategy(Strategy) {
@@ -15,8 +16,8 @@ export class GithubStrategy extends PassportStrategy(Strategy) {
 
   ) {
     super({
-      clientID: '7efefb71654da4d15244',
-      clientSecret: '21ac105a6e1697a32abb4d40de391e300ca00dfd',
+      clientID: process.env.GITHUB_CLIENTID,
+      clientSecret: process.env.GITHUB_CLIENTSECRET ,
       callbackURL: 'http://localhost:3000/auth/github/callback',
       scope: [ 'user:email' ],
     });
