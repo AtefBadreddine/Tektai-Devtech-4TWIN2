@@ -7,6 +7,7 @@ import {
   Body,
   Logger,
   HttpException, HttpStatus, Res, Get, InternalServerErrorException, NotFoundException, Patch, Req, UnauthorizedException
+
 } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { UsersService } from "src/users/users.service";
@@ -114,8 +115,20 @@ async changePassword(
       res.redirect('/'); // Redirect to login page on error
     }
     
+
   }
 
+  @Post('/forget-password')
+  async forgetPassword(@Body('email') email: string) {
+    await this.authService.forgetPassword(email);
+    return { message: 'Password reset email sent successfully' };
+  }
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto.token,resetPasswordDto.newPassword);
+    return {message: 'Password reset successfully'};
+
+  }
 }
 
 
