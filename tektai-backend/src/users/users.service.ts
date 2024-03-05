@@ -95,27 +95,29 @@ export class UsersService {
     this.logger.log(`Reset token updated successfully for user: ${userId}`);
   }
   
-async searchUsers(query: any): Promise<User[] | null> {
-  const { username, email, role,phoneNumber } = query;
-  const searchQuery: any = {};
-
-  if (username) {
-    searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+  async searchUsers(query: any): Promise<User[] | null> {
+    const { username, email, role } = query;
+    const searchQuery: any = {};
+  
+    // Construct query parameters based on provided search criteria
+    if (username) {
+      searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+    }
+    if (email) {
+      searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
+    }
+    if (role) {
+      searchQuery.$or = [ // Allow multiple roles in the search
+        { role },
+        { "roles": { $in: [role] } } // Search for role in an array of roles
+      ];
+    }
+  
+    // Execute the search using your model
+    const users = await this.userModel.find(searchQuery).exec();
+    return users || null;
   }
-  if (email) {
-    searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
-  }
-  if (role) {
-    searchQuery.role = role;
-  }
-  //  if (phoneNumber) {
-  //   searchQuery.phoneNumber = phoneNumber;
-  // }
-
-  const users = await this.userModel.find(searchQuery).exec();
-  return users || null;
-}
-
+  
 
 
 }

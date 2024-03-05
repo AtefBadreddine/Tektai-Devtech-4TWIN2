@@ -37,6 +37,10 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
+import SearchResult from './pages/usersearch/SearchResult';
+import UserSearch from './pages/usersearch/UserSearch';
+import UserSearchF from './pages/usersearch/UsersearchF';
+import SearchResultF from './pages/usersearch/SearchResultF';
 
 
 
@@ -84,6 +88,10 @@ import Settingsadmin from './components/Settingsadmin';
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
           <Route path="/profile/:id" element={<ProfileAll/>} />
+          <Route path="/UserSearchF" element={<UserSearchF/>} />
+          
+          <Route path="/results" element={<SearchResult />} />
+          <Route path="/resultsf" element={<SearchResultF />} />
 
           <Route path="*" element={<NotFound />} />
 
@@ -95,6 +103,8 @@ import Settingsadmin from './components/Settingsadmin';
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
             <Route path="/crm" element={<CrmForm/>} />
+            <Route path="/search" element={<UserSearch />} />
+
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
