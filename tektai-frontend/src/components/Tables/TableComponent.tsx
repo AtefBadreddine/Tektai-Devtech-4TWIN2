@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
@@ -10,12 +10,15 @@ import {
   ModalCloseButton, Button, useDisclosure,
 } from '@chakra-ui/react'
 import userService from "../../services/userService";
+import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5); // Set 
 
-
-  useEffect( () => {
+  useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       fetchUsers(token);
@@ -30,15 +33,25 @@ const TableComponent = () => {
       setData(userData);
   };
 
+  const openGmail = (emailAddress) => {
+    const encodedEmailAddress = encodeURIComponent(emailAddress);
+    const gmailUrl = `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${encodedEmailAddress}`;
+    console.log(gmailUrl);
+    window.open(gmailUrl, '_blank');
+  };
   const finalRef = React.useRef(null)
   // @ts-ignore
-  const deleteUser = async () : Promise<void> => {
+  const deleteUser = async (): Promise<void> => {
     const response = await userService.deleteUser(userToDelete._id);
     if (!response.error) {
       setData(data.filter(item => item._id !== userToDelete._id));
       setUserToDelete(null);
     }
   }
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = data.slice(indexOfFirstUser, indexOfLastUser);
+
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
@@ -49,45 +62,66 @@ const TableComponent = () => {
                 Email
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              Username
+                Username
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              phoneNumber
+                phoneNumber
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              image
+                image
               </th>
-              
+
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-              birthdate
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-              Role
+                birthdate
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-              Actions
+                Role
               </th>
-              
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+                Actions
+              </th>
+
             </tr>
           </thead>
           <tbody>
 
-            {data?.map((packageItem, key) => (
+            {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.email}
-                  </h5>
+                <h5 className="font-medium text-black dark:text-white">
+  <span className="mr-2">
+    <FaEnvelope size={16} /> {/* Adjust size as needed */}
+  </span>
+  <button
+  className="text-black dark:text-white hover:text-orange-500"
+  onClick={() => openGmail(packageItem.email)}
+>
+  {packageItem.email}
+</button>
+</h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.username}
-                  </p>
+                <p className="text-black dark:text-white">
+  <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
+    <span className="mr-2">
+      <FaLink size={16} /> {/* Adjust size as needed */}
+    </span>
+    {packageItem.username}
+  </a>
+</p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.phoneNumber}
-                  </p>
+                <p className="text-black dark:text-white">
+  <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
+    <span className="mr-2">
+      <FaWhatsapp size={32} color="green" />
+    </span>
+    <span className="text-black dark:text-white hover:text-green-500">
+      {packageItem.phoneNumber}
+    </span>
+  </a>
+</p>
+
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
@@ -101,41 +135,40 @@ const TableComponent = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                           packageItem.role === 'admin'
+                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
                         ? 'bg-success text-success'
                         : packageItem.role === 'challenger'
-                        ? 'bg-danger text-danger'
-                        : packageItem.role === 'company'
-                        ? 'bg-purple-500 text-purple-500'
-                        : 'bg-warning text-warning'
-                    }`}
+                          ? 'bg-danger text-danger'
+                          : packageItem.role === 'company'
+                            ? 'bg-purple-500 text-purple-500'
+                            : 'bg-warning text-warning'
+                      }`}
                   >
                     {packageItem.role}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-  <div className="flex items-center space-x-3.5">
+                  <div className="flex items-center space-x-3.5">
 
-    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
-          clipRule="evenodd"
-        />
-      </svg>
-      Delete
-    </button>
+                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Delete
+                    </button>
 
 
-  </div>
-</td>
+                  </div>
+                </td>
 
 
 
@@ -143,7 +176,24 @@ const TableComponent = () => {
             ))}
           </tbody>
         </table>
-        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null}  onClose={() => setUserToDelete(null)}>
+        <div className="flex justify-center my-4">
+  <button
+    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+    onClick={() => setCurrentPage(currentPage - 1)}
+    disabled={currentPage === 1}
+  >
+    Previous
+  </button>
+  <button
+    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${indexOfLastUser >= data.length ? 'cursor-not-allowed opacity-50' : ''}`}
+    onClick={() => setCurrentPage(currentPage + 1)}
+    disabled={indexOfLastUser >= data.length}
+  >
+    Next
+  </button>
+</div>
+
+        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null} onClose={() => setUserToDelete(null)}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Delete User</ModalHeader>
@@ -159,7 +209,7 @@ const TableComponent = () => {
               <Button colorScheme='blue' mr={3} onClick={() => setUserToDelete(null)}>
                 No, cancel
               </Button>
-              <Button  colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
+              <Button colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
 
 
             </ModalFooter>

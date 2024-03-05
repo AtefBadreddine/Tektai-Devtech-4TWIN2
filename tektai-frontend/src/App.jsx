@@ -24,6 +24,8 @@
   import DefaultLayout from './layout/DefaultLayout';
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
+  import ProfileAll from './components/ProfileAll';
+  
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -32,6 +34,9 @@ import SpinnerWithBackground from './components/spinner/spinner';
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+
+  import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+
 
 
 
@@ -76,6 +81,9 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
+          <Route path="/forgetpawd" element={<Forgetpassword />} />
+          <Route path="/profile/:id" element={<ProfileAll/>} />
+
           <Route path="*" element={<NotFound />} />
 
           <Route element={<ProtectedRoute/>}>
