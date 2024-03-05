@@ -15,7 +15,6 @@ import {UserDto} from "../users/user.dto";
 import {ResetPasswordDto} from "../schemas/reset-password.dto";
 import { AuthGuard } from "@nestjs/passport";
 
-
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger();
@@ -119,7 +118,7 @@ async changePassword(
 
   }
 
- 
+
   
 }
 

@@ -3,7 +3,7 @@ import {
     UseGuards,
     Logger,
     Get,
-    Query, Param, Delete, NotFoundException, InternalServerErrorException, Put, Body,
+     Param, Delete, NotFoundException, InternalServerErrorException, Put, Body, Query,
 
 } from "@nestjs/common";
 
@@ -49,4 +49,11 @@ export class UserController {
     async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
         return await this.userService.updateUser(userId, userDto);
     }
+    @Get('searchusers')
+async searchUsers(@Query() query: any): Promise<User[]> {
+  const users = await this.userService.searchUsers(query);
+  return users || [];
+}
+
+
 }
