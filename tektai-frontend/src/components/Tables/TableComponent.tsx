@@ -14,6 +14,7 @@ import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, F
 import Updatedraw from './updatedrawer';
 import ExportToExcel from './xlx';
 import ExportToPDF from './pdf';
+import {FaTrashCan} from "react-icons/fa6";
 
 
 const TableComponent = () => {
@@ -25,10 +26,7 @@ const TableComponent = () => {
   const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchUsers(token);
-    }
+      fetchUsers();
   }, []);
   const sortData = (column) => {
     if (sortColumn === column) {
@@ -57,19 +55,15 @@ const TableComponent = () => {
 
   // @ts-ignore
   const blockUser = async(user)  => {
-    console.log(user._id)
     const blocked = await userService.banUser(user._id);
     if (blocked) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        fetchUsers(token);
-      }
+        fetchUsers();
     }
   }  // @ts-ignore
 
-  const fetchUsers = async (token) => {
+  const fetchUsers = async () => {
 
-    const userData = await userService.getAll(token);
+    const userData = await userService.getAll();
     if (!userData.error)
       setData(userData);
   };
@@ -93,11 +87,16 @@ const TableComponent = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
-        <ExportToExcel users={data}/>
-        <ExportToPDF users={data}/>
+        <div className="flex py-4 gap-x-2">
+          <ExportToExcel users={data}/>
+          <ExportToPDF users={data}/>
+        </div>
+
         <table className="w-230 table-auto">
           <thead>
 
@@ -220,41 +219,30 @@ Phone Number
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
+                    <div className="flex items-center space-x-3.5">
+                      <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
+                    </div>
 
+                    <Button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
 
-                    <button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
-
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                      <FaTrashCan/>
                       Delete
                     </Button>
 
-                    { packageItem?.isBlocked ? <button className="inline-flex  text-green-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    { packageItem?.isBlocked ? <Button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
                           <FaCheck color="green" />
                           Unban
-                        </button>   :
-                          <button className="inline-flex text-red-600 justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                        </Button>   :
+                          <Button color="red" className="inline-flex text-red-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
                     <FaBan  color="red" />
                     Ban
-                  </button>}
+                  </Button>}
 
 
 
 
                   </div>
-                  <div className="flex items-center space-x-3.5"> 
-                   <Updatedraw user={packageItem}></Updatedraw>   
-                    </div>
+
                 </td>
 
 

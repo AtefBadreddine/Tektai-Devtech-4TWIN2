@@ -62,7 +62,8 @@ const UserService = {
         }
     },
 
-    getAll: async (token) => {
+    getAll: async () => {
+        let token = localStorage.getItem('token')
         try {
             const response = await axios.get(`${url}/users/getall`, {
                 headers: {
