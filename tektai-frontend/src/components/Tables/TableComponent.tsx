@@ -223,20 +223,20 @@ Phone Number
                       <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
                     </div>
 
-                    <Button className="inline-flex justify-center items-center gap-x-0.5  hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+                    <button className="inline-flex justify-center items-center gap-x-0.5  text-red-600 hover:text-red-800" onClick={() => setUserToDelete(packageItem)}>
 
                       <FaTrashCan/>
                       Delete
-                    </Button>
+                    </button>
 
-                    { packageItem?.isBlocked ? <Button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    { packageItem?.isBlocked ? <button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
                           <FaCheck color="green" />
                           Unban
-                        </Button>   :
-                          <Button color="red" className="inline-flex text-red-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
-                    <FaBan  color="red" />
+                        </button>   :
+                          <button color="black" className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    <FaBan  color="black" />
                     Ban
-                  </Button>}
+                  </button>}
 
 
 

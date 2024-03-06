@@ -39,10 +39,10 @@ function Updatedraw({ user,RefreshUsersList }) {
 
   return (
     <>
-    <Button   onClick={onOpen}>
+    <button className='inline-flex justify-center items-center  text-orange-600 hover:text-orange-800'  onClick={onOpen}>
         <FaEdit size={16} />
         Update
-      </Button>
+      </button>
       <Drawer size={"xl"}
         isOpen={isOpen}
         placement='right'
