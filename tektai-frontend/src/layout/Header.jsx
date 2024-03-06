@@ -104,6 +104,9 @@ import UserSearchF from '../pages/usersearch/UsersearchF';
                 <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Home
                 </Link>
+                <Link to="/contactus" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
+                  Contact Us
+                </Link>
                 <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">  <Tooltip label='Partake in a coding challenge for glory or money too xoxo'>
                   Challenges              
                   </Tooltip>
@@ -212,6 +215,10 @@ import UserSearchF from '../pages/usersearch/UsersearchF';
                 <Link to="/" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
                   <FontAwesomeIcon icon={faHome} className="mr-2" />
                   Home
+                </Link>
+                <Link to="/contactus" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
+                  <FontAwesomeIcon icon={faHome} className="mr-2" />
+                  Contact Us
                 </Link>
                 <Link to="/challenges" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
                   <FontAwesomeIcon icon={faChartBar} className="mr-2" />

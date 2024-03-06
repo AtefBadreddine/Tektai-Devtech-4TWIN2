@@ -3,17 +3,7 @@ import {
     UseGuards,
     Logger,
     Get,
-    Query,
-    Param,
-    Delete,
-    NotFoundException,
-    InternalServerErrorException,
-    Put,
-    Body,
-    Req,
-    Request,
-    UseInterceptors,
-    ClassSerializerInterceptor,
+     Param, Delete, NotFoundException, InternalServerErrorException, Put, Body, Query,
 
 } from "@nestjs/common";
 
@@ -27,13 +17,6 @@ import {UserDto} from "./user.dto";
 export class UserController {
     private readonly logger = new Logger();
     constructor(private  userService: UsersService) {}
-
-
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    async getProfile(@Request() req) {
-        return this.userService.findById(req.user.userId);
-    }
 
     @UseGuards(JwtAuthGuard)
     @Get('getall')
@@ -66,17 +49,11 @@ export class UserController {
     async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
         return await this.userService.updateUser(userId, userDto);
     }
-
-    @UseGuards(JwtAuthGuard)
-    @Put('/block/:userId')
-    async blockUser(@Param('userId') userId: string) {
-        return await this.userService.blockUser(userId);
-    }
-
     @Get('searchusers')
 async searchUsers(@Query() query: any): Promise<User[]> {
   const users = await this.userService.searchUsers(query);
   return users || [];
 }
+
 
 }

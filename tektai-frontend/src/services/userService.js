@@ -3,12 +3,11 @@ import axios from 'axios';
 const url = "http://localhost:3000";
 
 const UserService = {
-    getJWT: async (username, pwd,rememberMe = false) => {
+    getJWT: async (username, pwd) => {
         try {
             const response = await axios.post(`${url}/auth/login`, {
                 username: username,
-                password: pwd,
-                rememberMe : rememberMe
+                password: pwd
             });
 
             return response.data;
@@ -31,21 +30,7 @@ const UserService = {
             return { error: 'failed to signup' };
         }
     },
-    getProfile: async (access_token) => {
-        try {
-            const response = await axios.get(`${url}/users/profile`, {
-                headers: {
-                    Authorization: `Bearer ${access_token}`,
-                }
-            });
 
-            return response.data;
-
-        } catch (error) {
-            console.error('Error getting user:', error);
-            return { error: 'failed to get user details' };
-        }
-    },
     getUser: async (access_token, email) => {
         try {
             const response = await axios.get(`${url}/users/get/${encodeURIComponent(email)}`, {
@@ -62,8 +47,7 @@ const UserService = {
         }
     },
 
-    getAll: async () => {
-        let token = localStorage.getItem('token')
+    getAll: async (token) => {
         try {
             const response = await axios.get(`${url}/users/getall`, {
                 headers: {
@@ -120,24 +104,7 @@ const UserService = {
             console.error('Error:', error);
             return { error: 'failed' };
         }
-    },
-    banUser : async (userId) => {
-        let token = localStorage.getItem('token');
-        console.log(token)
-        try {
-            const response = await axios.put(`${url}/users/block/${userId}`,  {},{
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            });
-
-            return response.data;
-
-        } catch (error) {
-            console.error('Error blocking user:', error);
-            return { error: 'failed' };
-        }
-    },
+    }
 };
 
 export default UserService;

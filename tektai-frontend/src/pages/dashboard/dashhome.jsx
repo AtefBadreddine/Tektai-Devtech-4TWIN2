@@ -15,10 +15,10 @@ const Dashhome = () => {
         <div className="col-span-12 md:col-span-8 xl:col-span-6 2xl:col-span-8">
           <Chartcercle />
         </div>
-        <div className="col-span-12 md:col-span-4 xl:col-span-3 2xl:col-span-4">
+        <div className="col-span-12 md:col-span-4 xl:col-span-3 2xl:col-span-2">
           <Chartone />
         </div>
-        <div className="col-span-12 ">
+        <div className="col-span-12 md:col-span-12 xl:col-span-3">
           <UserList />
         </div>
       </div>

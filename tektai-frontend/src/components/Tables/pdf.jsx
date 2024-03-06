@@ -10,14 +10,7 @@ function ExportToPDF({ users }) {
     const pdf = new jsPDF();
 
     // Define the columns for the table
-    const columns = [
-      'username',
-        'email',
-        'role',
-        'phoneNumber',
-        'birthday',
-        'companyName',
-    ];
+    const columns = Object.keys(users[0]);
 
     // Create an empty array to hold the table data
     const data = [];
@@ -37,20 +30,14 @@ function ExportToPDF({ users }) {
     // Check if autoTable function is available
     if (typeof pdf.autoTable === 'function') {
       // AutoTable plugin for jsPDF to generate table
-      const tableOptions = {
-        head: [columns], // Column headers
-        body: data, // Table data
-        startY: 20, // Y position to start the table
-        theme: 'striped', // Table theme
-        headStyles: { fillColor: [100, 100, 255], textColor: [255, 255, 255], fontSize: 10 }, // Header styles
-        styles: { textColor: [0, 0, 0], fontSize: 10, cellPadding: 2 }, // Table body styles
-        columnStyles: { 0: { cellWidth: 40 } }, // Column-specific styles (e.g., column width)
-        margin: { top: 20, bottom: 20, left: 5, right: 5 }, // Table margins
-        showHead: 'firstPage', // Show header on the first page only
-      };
-
-// Generate the table using autoTable plugin
-      pdf.autoTable(tableOptions);
+      pdf.autoTable({
+        head: [columns],
+        body: data,
+        startY: 20,
+        theme: 'striped',
+        headStyles: { fillColor: [100, 100, 255] },
+        columnStyles: { 0: { cellWidth: 40 } }, // Adjust column width if necessary
+      });
 
       // Save the PDF file
       pdf.save('users.pdf');

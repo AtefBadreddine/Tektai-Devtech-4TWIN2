@@ -7,8 +7,6 @@ import {
   Document
 } from 'mongoose';
 import * as mongoose from "mongoose";
-import {classToPlain, Exclude} from 'class-transformer';
-
 
 export type UserDocument = User & Document;
 
@@ -27,7 +25,6 @@ export class User {
   email: string;
 
   @Prop({ required: true })
-  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Prop({ default : null })
@@ -35,9 +32,6 @@ export class User {
 
   @Prop({ default: "" })
   phoneNumber: string;
-
-  @Prop({ default: false })
-  isBlocked: boolean;
 
   @Prop({ default: "" })
   bio: string;
@@ -53,8 +47,6 @@ export class User {
 
   @Prop({ default: "challenger" })
   role: string;
-
-
 
 }
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
   ModalOverlay,
@@ -8,14 +9,11 @@ import {
   ModalBody,
   ModalCloseButton, Button, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
-
 import userService from "../../services/userService";
-import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 import Updatedraw from './updatedrawer';
 import ExportToExcel from './xlx';
 import ExportToPDF from './pdf';
-import {FaTrashCan} from "react-icons/fa6";
-
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
@@ -26,7 +24,10 @@ const TableComponent = () => {
   const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
-      fetchUsers();
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUsers(token);
+    }
   }, []);
   const sortData = (column) => {
     if (sortColumn === column) {
@@ -54,16 +55,9 @@ const TableComponent = () => {
   });
 
   // @ts-ignore
-  const blockUser = async(user)  => {
-    const blocked = await userService.banUser(user._id);
-    if (blocked) {
-        fetchUsers();
-    }
-  }  // @ts-ignore
+  const fetchUsers = async (token) => {
 
-  const fetchUsers = async () => {
-
-    const userData = await userService.getAll();
+    const userData = await userService.getAll(token);
     if (!userData.error)
       setData(userData);
   };
@@ -87,19 +81,13 @@ const TableComponent = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
 
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
-        <div className="flex py-4 gap-x-2">
-          <ExportToExcel users={data}/>
-          <ExportToPDF users={data}/>
-        </div>
-
-        <table className="w-230 table-auto">
+        <ExportToExcel users={data}/>
+        <ExportToPDF users={data}/>
+        <table className="w-full table-auto">
           <thead>
-
           <tr className="bg-gray-2 text-left dark:bg-meta-4">
           <th
   className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
@@ -147,7 +135,15 @@ Phone Number
   )}
 </th>
        
-
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+                Image
+              </th>
+              <th
+                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
+                onClick={() => sortData('birthdate')}
+              >
+                Birthdate
+              </th>
               <th
                 className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
                 onClick={() => sortData('role')}
@@ -164,7 +160,7 @@ Phone Number
             {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
+                <h5 className="font-medium text-black dark:text-white">
   <span className="mr-2">
     <FaEnvelope size={16} /> {/* Adjust size as needed */}
   </span>
@@ -202,7 +198,16 @@ Phone Number
 </p>
 
                 </td>
-
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {packageItem.image}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {packageItem.birthdate}
+                  </p>
+                </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
@@ -219,30 +224,28 @@ Phone Number
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
-                    <div className="flex items-center space-x-3.5">
-                      <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
-                    </div>
 
-                    <button className="inline-flex justify-center items-center gap-x-0.5  text-red-600 hover:text-red-800" onClick={() => setUserToDelete(packageItem)}>
-
-                      <FaTrashCan/>
+                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                       Delete
                     </button>
 
-                    { packageItem?.isBlocked ? <button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
-                          <FaCheck color="green" />
-                          Unban
-                        </button>   :
-                          <button color="black" className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
-                    <FaBan  color="black" />
-                    Ban
-                  </button>}
-
-
-
 
                   </div>
-
+                  <div className="flex items-center space-x-3.5"> 
+                   <Updatedraw user={packageItem}></Updatedraw>   
+                    </div>
                 </td>
 
 
@@ -311,7 +314,6 @@ Phone Number
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
