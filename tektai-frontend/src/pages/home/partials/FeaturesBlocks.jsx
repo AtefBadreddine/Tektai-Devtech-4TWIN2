@@ -14,7 +14,7 @@ function FeaturesBlocks() {
             {/* Section header */}
             <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
               <h2 className="h2 mb-4">How <span className="px-2 text-white bg-blue-600 rounded ">TektAI</span> works</h2>
-              <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TecktAI</span> simplifies the process of participating in data science competitions, accessing datasets, and collaborating with peers through its user-friendly platform</p>
+              <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> simplifies the process of participating in data science competitions, accessing datasets, and collaborating with peers through its user-friendly platform</p>
             </div>
 
             {/* Items */}
