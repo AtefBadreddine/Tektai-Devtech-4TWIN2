@@ -9,18 +9,20 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
 import { HashService } from "./services/hash.service";
 import * as process from 'process';
 import { ConfigModule } from "@nestjs/config";
-
+import { GithubStrategy } from './strategies/github.strategy';
+import {GoogleStrategy} from "./strategies/google.strategy";
 @Module({
   imports: [
     UsersModule,
     PassportModule,
     ConfigModule.forRoot(),
     JwtModule.register({
+      global: true,
       secret : process.env.SECRET_KEY,
       signOptions : {expiresIn : '1h'}
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy,HashService]
+  providers: [AuthService,LocalStrategy,JwtStrategy,HashService,GithubStrategy,GoogleStrategy]
 })
 export class AuthModule {}

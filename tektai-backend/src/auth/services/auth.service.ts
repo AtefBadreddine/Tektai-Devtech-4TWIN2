@@ -1,4 +1,6 @@
-import {ConflictException, Injectable, Logger, NotFoundException} from "@nestjs/common";
+
+import {ConflictException, Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
+
 import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
@@ -8,6 +10,8 @@ import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
 
+;
+
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger();
@@ -16,6 +20,7 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
+
     if (user && await this.hashService.comparePassword(pass,user.password)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -24,10 +29,12 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
+  async login(user: any,rememberMe: boolean = false) {
+      const expiresIn = rememberMe ? '7d' : '1d';
+
+    const payload = { username: user.username, sub: user._id };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload,{ expiresIn : expiresIn }),
     };
   }
   async signup(userDTO : UserDto): Promise<any> {
@@ -98,5 +105,38 @@ export class AuthService {
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
     await this.usersService.clearResetToken(user._id);
   }
+  async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
+    try {
+        // Récupérer l'utilisateur à partir de l'email
+        const user = await this.usersService.findByEmail(email);
+        
+        // Vérifier si l'utilisateur existe
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        // Vérifier si le mot de passe actuel est correct
+        const isPasswordCorrect = await this.hashService.comparePassword(currentPassword, user.password);
+        if (!isPasswordCorrect) {
+            throw new ConflictException('Current password is incorrect');
+        }
+
+        // Hasher le nouveau mot de passe
+        const hashedNewPassword = await this.hashService.hashPassword(newPassword);
+
+        // Mettre à jour le mot de passe de l'utilisateur dans la base de données
+        await this.usersService.updatePassword(user._id, hashedNewPassword);
+    } catch (error) {
+        console.error('Error changing password:', error);
+        if (error instanceof NotFoundException) {
+            throw new NotFoundException('User not found');
+        } else if (error instanceof ConflictException) {
+            throw new ConflictException('Current password is incorrect');
+        } else {
+            throw new InternalServerErrorException('Failed to change password');
+        }
+    }
+}
+
 
 }

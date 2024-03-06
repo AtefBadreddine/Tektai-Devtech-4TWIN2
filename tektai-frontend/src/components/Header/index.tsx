@@ -5,6 +5,7 @@ import DropdownUser from './DropdownUser';
 import DarkModeSwitcher from './DarkModeSwitcher';
 // @ts-ignore
 import React from 'react';
+import UserSearch from '../../pages/usersearch/UserSearch';
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -64,7 +65,7 @@ const Header = (props: {
         <div className="hidden sm:block">
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
-              <button className="absolute left-0 top-1/2 -translate-y-1/2">
+              <button className="absolute left-0 ml-2 top-1/2 -translate-y-1/2">
                 <svg
                   className="fill-body hover:fill-primary dark:fill-bodydark dark:hover:fill-primary"
                   width="20"
@@ -88,11 +89,9 @@ const Header = (props: {
                 </svg>
               </button>
 
-              <input
-                type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent pl-9 pr-4 text-black focus:outline-none dark:text-white xl:w-125"
-              />
+
+              <UserSearch/>
+
             </div>
           </form>
         </div>

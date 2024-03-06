@@ -1,14 +1,8 @@
 import {Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-<<<<<<< HEAD
-import { Model, Types } from "mongoose";
-import { User } from "../schemas/user.schema";
-import { CreateUserDto } from "./dto/createUser.dto";
-=======
 import {Model, mongo} from "mongoose";
 import { User } from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
->>>>>>> main
 
 
 @Injectable()
@@ -16,39 +10,17 @@ export class UsersService {
   private readonly logger = new Logger();
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-<<<<<<< HEAD
-  async findAll(): Promise<User[]> {
-    const users = await this.userModel.find();
-    return users;
-  }
 
-  async findByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({username})
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(new mongo.ObjectId(id)).lean();
   }
-
-  async createUser(email: string, password: string, username: string, phoneNumber?: string, image?: string, birthdate?: Date): Promise<User> {
-    const user = new this.userModel({ email, password, username, phoneNumber, image, birthdate });
-    return user.save();
-  }
-
-  async addUser(createUserDto: CreateUserDto): Promise<User> {
-    const user = new this.userModel(createUserDto);
-    return user.save();
-  } 
-  async updateUser(userId: string, updateUserDto: Partial<User>): Promise<User> {
-    console.log('Update DTO:', updateUserDto);
-    const objectId = new Types.ObjectId(userId);
-    const updatedUser = await this.userModel.findByIdAndUpdate(objectId, updateUserDto, { new: true });
-    console.log('Updated User:', updatedUser);
-    return updatedUser;
-  }
-  
-=======
   async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email });
   }
   async findByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({username})
+    return this.userModel.findOne({
+      username :  username
+    }).lean()
   }
   async createUser(userDTO : UserDto): Promise<User> {
     const user = new this.userModel(userDTO);
@@ -128,7 +100,42 @@ export class UsersService {
     await this.userModel.findByIdAndUpdate(userId, { resetPasswordToken: token, resetPasswordTokenExpiry: expirationDate }).exec();
     this.logger.log(`Reset token updated successfully for user: ${userId}`);
   }
+  
+  async searchUsers(query: any): Promise<User[] | null> {
+    const { username, email, role } = query;
+    const searchQuery: any = {};
+  
+    // Construct query parameters based on provided search criteria
+    if (username) {
+      searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+    }
+    if (email) {
+      searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
+    }
+    if (role) {
+      searchQuery.$or = [ // Allow multiple roles in the search
+        { role },
+        { "roles": { $in: [role] } } // Search for role in an array of roles
+      ];
+    }
+  
+    // Execute the search using your model
+    const users = await this.userModel.find(searchQuery).exec();
+    return users || null;
+  }
+  
 
+  async blockUser(userId: string): Promise<User> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      return null;
+    }
+    if (!user?.isBlocked)
+      user.isBlocked = true;
+    else user.isBlocked = !user.isBlocked;
 
->>>>>>> main
+    return  await user.save();
+
+  }
+
 }
