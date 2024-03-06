@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css'
 
 export default function StepOne  ({ formData, handleInput, handleNext })  {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -8,10 +10,19 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true); // State to track password match
     const [showFields, setShowFields] = useState(true);
+    const [selectedCountry, setSelectedCountry] = useState(''); // State to track the selected country phone number
+
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
-
+    const handlePhoneChange = (value) => {
+        setPhoneNumber(value);
+        handleInput({ target: { name: 'tel', value: value } });
+      };
+      const handleCountryChange = (country) => {
+        setSelectedCountry(country);
+      };
+    
 
     useEffect(() => {
        if (formData.username.length && formData.email.length) {
@@ -174,17 +185,28 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
 
 
 
-            <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
-                    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">Phone number <span className="text-red-600">*</span></label>
-                    <input id="tel" type="text" name="tel" onChange={handleInput} className="form-input w-full text-gray-800" placeholder="Enter your phone number" minLength={8} maxLength={8} required />
-                    {formData.tel.trim() === '' && <p className="text-red-600 text-sm mt-1">Phone number is required</p>}
-
-                    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
-                        <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
-                    )}
-                </div>
-            </div>
+<div className="flex flex-wrap -mx-3 mb-4">
+  <div className="w-full px-3">
+    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">
+      Phone number <span className="text-red-600">*</span>
+    </label>
+    <PhoneInput
+      international
+      defaultCountry="TN"
+      value={phoneNumber}
+      onChange={handlePhoneChange}
+      onCountryChange={handleCountryChange}
+      containerClass="phone-input-container" // Add a custom class
+      inputClass="form-input w-full text-gray-800" // Add your input styles
+    />
+    {formData.tel && formData.tel.trim() === '' && (
+      <p className="text-red-600 text-sm mt-1">Phone number is required</p>
+    )}
+    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
+      <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
+    )}
+  </div>
+</div>
 
 
 

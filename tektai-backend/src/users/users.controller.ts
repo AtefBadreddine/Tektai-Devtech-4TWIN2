@@ -1,21 +1,59 @@
-import { Controller, Post, Body, Param, Patch, Put } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/createUser.dto';
-import { UpdateUserDto } from './dto/updateUser.dto';
+import {
+  Controller,
+  UseGuards,
+  Logger,
+  Get,
+   Param, Delete, NotFoundException, InternalServerErrorException, Put, Body, Query,
+
+} from "@nestjs/common";
+
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { UsersService } from "src/users/users.service";
+import {User} from "../schemas/user.schema";
+import {UserDto} from "./user.dto";
+
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly usersService: UsersService) {}
+  private readonly logger = new Logger();
+  constructor(private  userService: UsersService) {}
 
-  @Post()
-  async createUser(@Body() createUserDto: CreateUserDto) {
-    const newUser = await this.usersService.addUser(createUserDto);
-    return { message: 'User created successfully', user: newUser };
+  @UseGuards(JwtAuthGuard)
+  @Get('getall')
+  async getAllUsers(): Promise<any[]> {
+      return this.userService.getAllUsers();
   }
 
-  @Put(':id')
-  async updateUser(@Param('id') userId: string, @Body() updateUserDto: UpdateUserDto) {
-    const updatedUser = await this.usersService.updateUser(userId, updateUserDto);
-    return { message: 'User updated successfully', user: updatedUser };
+  @Get('get/:username')
+  // @UseGuards(JwtAuthGuard)
+  async findByUsername(@Param('username') username: string) {
+      return await this.userService.findUserByUsername(username);
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':userId')
+  async deleteUser(@Param('userId') userId: string): Promise<User | null> {
+      try {
+          const user = await this.userService.deleteUser(userId);
+          if (!user) {
+              throw new NotFoundException('User not found');
+          }
+          return user;
+      } catch (error) {
+          throw new InternalServerErrorException('Failed to delete user');
+      }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':userId')
+  async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
+      return await this.userService.updateUser(userId, userDto);
+  }
+  @Get('searchusers')
+async searchUsers(@Query() query: any): Promise<User[]> {
+const users = await this.userService.searchUsers(query);
+return users || [];
+}
+
+
 }
