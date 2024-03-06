@@ -128,7 +128,7 @@ export class UsersService {
   async blockUser(userId: string): Promise<User> {
     const user = await this.userModel.findById(userId);
     if (!user) {
-      throw new Error('User not found');
+      return null;
     }
     if (!user?.isBlocked)
       user.isBlocked = true;
