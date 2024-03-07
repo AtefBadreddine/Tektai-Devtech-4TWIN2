@@ -177,7 +177,6 @@ function Footer() {
           <div className="text-sm text-gray-600 mr-4">      <span className="text-blue-600 hover:underline cursor-pointer">TEKTAI</span>. All rights reserved &copy; {currentYear}.
 </div>
 
-<DrawerExample></DrawerExample>
         </div>
 
       </div>

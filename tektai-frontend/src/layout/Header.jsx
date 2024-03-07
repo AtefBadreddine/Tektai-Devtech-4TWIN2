@@ -114,6 +114,9 @@ import UserSearchF from '../pages/usersearch/UsersearchF';
                 <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
                   Datasets</Tooltip>
                 </Link>
+                <Link to="/aboutUs" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
+                  AboutUs</Tooltip>
+                </Link>
                 {user?.role === 'admin' && (
                 <Link to="/admin" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Admin Dashboard
