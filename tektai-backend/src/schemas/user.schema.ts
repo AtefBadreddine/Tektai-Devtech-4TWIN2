@@ -7,7 +7,7 @@ import {
   Document
 } from 'mongoose';
 import * as mongoose from "mongoose";
-import {classToPlain, Exclude} from 'class-transformer';
+import { Exclude} from 'class-transformer';
 
 
 export type UserDocument = User & Document;
@@ -53,6 +53,9 @@ export class User {
 
   @Prop({ default: "challenger" })
   role: string;
+
+  @Prop({ default: "" }) // Add this line to include the image attribute
+  image?: string;
 
 
 

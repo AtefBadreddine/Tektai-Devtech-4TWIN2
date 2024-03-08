@@ -3,7 +3,7 @@ import {
   UseGuards,
   Logger,
   Get,
-   Param, Delete, NotFoundException, InternalServerErrorException, Put, Body, Query,
+   Param, Delete, NotFoundException, InternalServerErrorException, Put, Body, Query, UploadedFile, UseInterceptors,
 
 } from "@nestjs/common";
 
@@ -11,6 +11,7 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { UsersService } from "src/users/users.service";
 import {User} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 
 @Controller('users')
@@ -18,7 +19,7 @@ export class UserController {
   private readonly logger = new Logger();
   constructor(private  userService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Get('getall')
   async getAllUsers(): Promise<any[]> {
       return this.userService.getAllUsers();
@@ -44,11 +45,18 @@ export class UserController {
       }
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put(':userId')
-  async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
-      return await this.userService.updateUser(userId, userDto);
+  @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
+  async updateUser(
+    @Param('userId') userId: string,
+    @Body() userDto: UserDto,
+    @UploadedFile() file: Express.Multer.File, // Use @UploadedFile() for file parameter
+  ) {
+    return await this.userService.updateUser(userId, userDto, file);
   }
+
+
   @Get('searchusers')
 async searchUsers(@Query() query: any): Promise<User[]> {
 const users = await this.userService.searchUsers(query);
@@ -57,3 +65,4 @@ return users || [];
 
 
 }
+export default UserController; // Add this line for default export
