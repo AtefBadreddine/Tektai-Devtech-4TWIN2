@@ -16,6 +16,8 @@
 .contact4 .form-control {
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.5);
+  width: 50%;
+  margin-left: 20px;
 }
 
 .contact4 .form-control:focus {
@@ -36,7 +38,11 @@
 .contact4 textarea::placeholder {
   color: rgba(255, 255, 255, 0.7);
 }
-
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+  margin-left: 20px;
+}
 .contact4 .right-image {
   position: absolute;
   right: 0;
@@ -51,6 +57,8 @@
 
 .contact4 .text-inverse {
     color: #3e4555 !important;
+    margin-left: 20px;
+
 }
 
 @media (min-width: 1024px) {

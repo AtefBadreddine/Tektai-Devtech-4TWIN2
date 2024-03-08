@@ -1,6 +1,7 @@
 import React from 'react';
 
 import TestimonialImage from '../../../images/testimonial.jpg';
+import Team from './team';
 
 function Testimonials() {
   return (
@@ -72,6 +73,8 @@ function Testimonials() {
             </div>
 
           </div>
+
+
 
           {/* Testimonials */}
           <div className="max-w-3xl mx-auto mt-20" data-aos="zoom-y-out">

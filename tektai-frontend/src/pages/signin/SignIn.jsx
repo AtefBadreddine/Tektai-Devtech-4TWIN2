@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // Import the CAPTCHA component (replace 'CaptchaComponent' with the actual component)
 import CaptchaComponent from './CaptchaComponent';
-
+import Header from '../../layout/Header';
+oups
 
 function SignIn() {
   const [input, setInput] = useState({
@@ -82,7 +83,10 @@ function SignIn() {
   };
 
   return (
+    
     <div className="flex flex-col min-h-screen overflow-hidden">
+         {/*  Site header */}
+         <Header />
       <main className="flex-grow">
         <section className="bg-gradient-to-b from-gray-100 to-white">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">

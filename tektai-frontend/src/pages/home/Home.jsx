@@ -29,7 +29,6 @@ function Home() {
 
       </main>
 
-<ContactForm></ContactForm>
 
       {/*  Site footer */}
       <Footer />
