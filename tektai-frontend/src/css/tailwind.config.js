@@ -5,10 +5,15 @@ const {
 } = require("tailwindcss/lib/util/flattenColorPalette");
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  images: {
+    domains: ['example.com'], // Add your image domain here
+  },
   darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: { animation: {
+      scroll:
+      "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
       first: "moveVertical 30s ease infinite",
       second: "moveInCircle 20s reverse infinite",
       third: "moveInCircle 40s linear infinite",
@@ -16,6 +21,11 @@ module.exports = {
       fifth: "moveInCircle 20s ease infinite",
     },
     keyframes: {
+      scroll: {
+        to: {
+          transform: "translate(calc(-50% - 0.5rem))",
+        },
+      },
       moveHorizontal: {
         "0%": {
           transform: "translateX(-50%) translateY(-10%)",
@@ -470,7 +480,7 @@ module.exports = {
     addVariablesForColors,
 
   ],
-};
+}};
 function addVariablesForColors({ addBase, theme }) {
   let allColors = flattenColorPalette(theme("colors"));
   let newVars = Object.fromEntries(

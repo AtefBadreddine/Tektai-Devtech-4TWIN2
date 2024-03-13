@@ -37,8 +37,8 @@ function Features() {
 
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h1 className="h2 mb-4">Explore challenges and solutions</h1>
-            <p className="text-xl text-gray-600">Test your skills and prove yourself among your peers </p>
+            <h1 className="h2 mb-4">Why Choose Us ?</h1>
+            <p className="text-xl text-gray-600"> Because we provide you with these tools so you can test your skills and prove yourself among your peers </p> 
           </div>
 
           {/* Section content */}

@@ -3,6 +3,7 @@ import Modal from '../../../utils/Modal';
 
 import HeroImage from '../../../images/hero-image.png';
 import { MacbookScroll } from './mac';
+import { TypeAnimation } from 'react-type-animation';
 
 function HeroHome() {
   const [videoModalOpen, setVideoModalOpen] = useState(false);
@@ -17,6 +18,7 @@ function HeroHome() {
          {/* <BackgroundBeams/> */}
 
         {/* Illustration behind hero content */}
+        
         <div className="absolute left-1/2 transform -translate-x-1/2 bottom-0 pointer-events-none" aria-hidden="true">
           <svg width="1360" height="578" viewBox="0 0 1360 578" xmlns="http://www.w3.org/2000/svg">
             <defs>
@@ -38,8 +40,25 @@ function HeroHome() {
           <div className="pt-32 pb-12 md:pt-40 md:pb-20">
             {/* Section header */}
             <div className="text-center pb-12 md:pb-16">
-              <h1 className="text-5xl md:text-6xl font-extrabold leading-tighter tracking-tighter mb-4" data-aos="zoom-y-out">
-                Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span>
+            <h1 className="text-4xl xl:text-6xl font-extrabold leading-tight md:leading-tighter tracking-tighter md:text-2xl sm:text-xl mb-4" data-aos="zoom-y-out">
+            <h1>For</h1>
+
+              <TypeAnimation
+              
+  sequence={[
+    // Same substring at the start will only be typed once, initially
+    ' Developpers',
+    2000,
+    ' Companies',
+    2000,
+   
+  ]}
+  speed={50}
+  style={{ fontSize: '1.5em' }}
+  repeat={Infinity}
+  className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
+/>
+                {/* Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> */}
               </h1>
               <MacbookScroll></MacbookScroll>
 
