@@ -89,7 +89,7 @@ export const InfiniteMovingCards = ({
           <li
             className="bg-black w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px]"
             style={{
-              background: "linear-gradient(180deg, #1f2937, #111827)",
+              background: "linear-gradient(180deg, #1f2937, #9e9e9e)",
             }}
             key={item.name}
           >

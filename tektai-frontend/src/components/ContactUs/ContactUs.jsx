@@ -13,12 +13,12 @@ function ContactUs() {
   };
 
   return (
-    <div className="bg-white py-12 px-4 md:px-0">
+    <div className="bg-white py-8 px-4 md:px-0">
       <div className="container mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="contact-box mb-4 mb-md-0 bg-white shadow-md rounded-md p-6">
+        <div className="flex flex-col md:flex-row items-center">
+          <div className="md:w-1/2 mb-8 md:mb-0">
             <h1 className="title font-semibold text-gray-800 text-center md:text-left mb-4">Contact Us</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input className="form-input w-full border-gray-300 rounded-md focus:border-blue-500" type="text" placeholder="Name" {...register("name")} />
@@ -39,8 +39,10 @@ function ContactUs() {
               </div>
             </form>
           </div>
-          <div className="right-image p-0 md:p-4">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3231.097263291829!2d10.151678615210185!3d36.86123887992854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb7454c6ed51%3A0x683b3ab5565cd357!2sESPRIT!5e0!3m2!1sen!2stn!4v1561440545863!5m2!1sen!2stn" width="100%" height="538" frameBorder="0" style={{ border: 0 }} allowFullScreen data-aos="fade-left" data-aos-duration="3000"></iframe>
+          <div className="md:w-1/2">
+            <div className="right-image">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3231.097263291829!2d10.151678615210185!3d36.86123887992854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb7454c6ed51%3A0x683b3ab5565cd357!2sESPRIT!5e0!3m2!1sen!2stn!4v1561440545863!5m2!1sen!2stn" width="100%" height="300" frameBorder="0" style={{ border: 0 }} allowFullScreen data-aos="fade-left" data-aos-duration="3000"></iframe>
+            </div>
           </div>
         </div>
       </div>

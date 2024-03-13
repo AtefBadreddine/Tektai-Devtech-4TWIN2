@@ -91,10 +91,10 @@ function Home() {
         <FeaturesHome/>
        <FeaturesBlocks />  
         {/* <HeroParallax products={products} /> */}
-        <ContactUs></ContactUs>
         <InfiniteMovingCards items={data} />
  {/* <Testimonials /> */}
         {/* <Newsletter /> */}
+        <ContactUs></ContactUs>
 
       </main>
 
