@@ -11,7 +11,7 @@ import PopupAd from '../../components/premium/premium';
 import { HeroParallax } from './partials/whyus';
 import { LampContainer, LampDemo } from './partials/lamp';
 import { InfiniteMovingCards } from './partials/team';
-
+import ContactUs from '../../components/ContactUs/ContactUs';
 
 function Home() {
   const products = [
@@ -58,9 +58,9 @@ function Home() {
   ];
   const data = [
     {
-      quote: "Quote 1",
+      quote: "Bouzid Baha Eddine",
       name: "John Doe",
-      title: "CEO",
+      title: "Front-end Dev",
       imageUrl: "https://preview.redd.it/qvgkzttwl8p61.jpg?width=640&crop=smart&auto=webp&s=ca8ac6e7a4eff2b4d6b27f00f126d9b2b64eae90",
       flagImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1200px-Flag_of_Tunisia.svg.png"
     },
@@ -90,10 +90,11 @@ function Home() {
       
         <FeaturesHome/>
        <FeaturesBlocks />  
-        <HeroParallax products={products} />
+        {/* <HeroParallax products={products} /> */}
+        <ContactUs></ContactUs>
         <InfiniteMovingCards items={data} />
- <Testimonials />
-        <Newsletter />
+ {/* <Testimonials /> */}
+        {/* <Newsletter /> */}
 
       </main>
 

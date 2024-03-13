@@ -97,12 +97,10 @@ export const InfiniteMovingCards = ({
               <div className="flex items-center justify-between mb-4">
                 <img
                   src={item.imageUrl}
-                  alt={item.name}
                   className="w-28 h-28 rounded-full border-4 border-white flex-shrink-0"
                 />
                 <img
                   src={item.flagImageUrl}
-                  alt={item.name}
                   className="w-12 h-8 flex-shrink-0"
                 />
               </div>
