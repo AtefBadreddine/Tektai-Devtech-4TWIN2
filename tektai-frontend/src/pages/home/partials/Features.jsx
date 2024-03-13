@@ -26,7 +26,7 @@ function Features() {
   }, [tab])
 
   return (
-    <section className="relative">
+    <section className="relative bg-white">
 
       {/* Section background (needs .relative class on parent and next sibling elements) */}
       <div className="absolute inset-0 bg-gray-100 pointer-events-none mb-16" aria-hidden="true"></div>

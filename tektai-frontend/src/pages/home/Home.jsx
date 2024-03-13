@@ -13,7 +13,6 @@ import PopupAd from '../../components/premium/premium';
 function Home() {
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
-
       {/*  Site header */}
       <Header />
       <PopupAd />
@@ -22,8 +21,10 @@ function Home() {
       <main className="flex-grow">
 
         {/*  Page sections */}
+       
         <HeroHome />
         <FeaturesHome/>
+        
         <FeaturesBlocks />
         <Testimonials />
         <Newsletter />
