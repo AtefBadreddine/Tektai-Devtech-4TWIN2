@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useSearchParams} from 'react-router-dom';
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
@@ -27,31 +27,30 @@ function SignUp( ) {
     role : "challenger"
     
   });
-  const [fromAuth,setFromAuth] = useState(false);
-    const searchParams = new URLSearchParams(window.location.search);
-  useEffect(()=>{
+
+  const [fromAuth,setFromAuth] = useState({
+      username : '',
+      email : ''
+  });
+/*    const searchParams = new URLSearchParams(window.location.search);*/
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    useEffect(()=>{
       const email = searchParams.get('email');
       const username = searchParams.get('username')
-      if (email) {
-          setFromAuth(true)
-          const e = {
-              target : {
-                  name : 'email',
-                  value : email
-              }
-          }
-          handleInput(e)
-          if (username) {
-              const f = {
-                  target : {
-                      name : 'username',
-                      value : username
-                  }
-              }
-              handleInput(f)
-          }
-
+      if (username) {
+          setFromAuth(prevState => ({
+              ...prevState,
+              username: username
+          }));
       }
+      if (email) {
+              setFromAuth(prevState => ({
+                  ...prevState,
+                  email: email
+              }));
+      }
+
 
 
   },[])
@@ -130,15 +129,16 @@ function SignUp( ) {
 
                 {/* Form */}
                 <div className=" max-w-2xl mx-auto">
-                    { fromAuth ? <h2 className="mb-4">Welcome <span className="font-bold text-blue-600">{input.username}</span> ,Please continue the sign up process !</h2> : '' }
+                    { fromAuth.username.length ? <h2 className="mb-4">Welcome <span className="font-bold text-blue-600">{fromAuth.username}</span> ,Please continue the sign up process !</h2> : '' }
                   {step === 1 && (
                       <div    className="mx-auto max-w-xl">
                         <StepOne
                             formData={input}
+                            fromAuth={fromAuth}
                             handleInput={handleInput}
                             handleNext={handleNext}
                         />
-                          { !fromAuth ? <>
+                          { !fromAuth.email.length ? <>
                                   <div className="flex items-center my-6">
                                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                                       <div className="text-gray-600 italic">Or</div>
