@@ -90,7 +90,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
                             id="email"
                             type="email"
                             name="email"
-                            value={formData.email}
+                            // value={formData.email}
                             readOnly={!!formData.email.length}
                             className="form-input w-full text-gray-800"
                             placeholder="Enter your email address"
@@ -202,7 +202,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
     {formData.tel && formData.tel.trim() === '' && (
       <p className="text-red-600 text-sm mt-1">Phone number is required</p>
     )}
-    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
+    {formData.tel && (formData.tel.trim() === '' || !(/^\d{11}$/.test(formData.tel))) && (
       <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
     )}
   </div>
