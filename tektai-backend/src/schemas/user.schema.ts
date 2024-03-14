@@ -7,7 +7,7 @@ import {
   Document
 } from 'mongoose';
 import * as mongoose from "mongoose";
-import { Exclude} from 'class-transformer';
+import {classToPlain, Exclude} from 'class-transformer';
 
 
 export type UserDocument = User & Document;
@@ -56,6 +56,8 @@ export class User {
 
   @Prop({ default: "" }) // Add this line to include the image attribute
   image?: string;
+
+
 
 
 

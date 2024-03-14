@@ -4,7 +4,7 @@ import {Model, mongo} from "mongoose";
 import { User } from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { extname } from "path";
-//import { createReadStream } from "fs";
+
 
 @Injectable()
 export class UsersService {
@@ -47,6 +47,8 @@ export class UsersService {
         throw error;
       }
     }
+
+
   async deleteUser(userId: string): Promise<User | null> {
     try {
       const user = await this.userModel.findByIdAndDelete(userId);
@@ -66,7 +68,7 @@ export class UsersService {
   //   }
   //   return updatedUser;
   // }
-   async updateUser(userId: string, userDto: UserDto, file: Express.Multer.File): Promise<User> {
+  async updateUser(userId: string, userDto: UserDto, file: Express.Multer.File): Promise<User> {
     try {
       // Check if the user exists
       const existingUser = await this.userModel.findById(userId).exec();
@@ -106,7 +108,7 @@ export class UsersService {
       throw new InternalServerErrorException('Failed to update user');
     }
   }
-
+  
 
   async storePwdToken(token: string, id: string) {
     const user = await this.userModel.findById(new mongo.ObjectId(id)).exec();

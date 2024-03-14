@@ -30,8 +30,8 @@ const SearchTableComponentF = ({ users }) => {
 
   return (
     <div className="rounded-sm border-strokesm:px-7.5 xl:pb-1">
-      <div className="max-w-full">
-        <table className="w-full table-auto">
+      <div className="flex justify-center max-w-full">
+        <table className="w-3/4 table-auto">
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
@@ -50,7 +50,7 @@ const SearchTableComponentF = ({ users }) => {
               <tr key={index}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <Tooltip label='Send an Email '>
-  <h5 className="font-medium text-black dark:text-white">
+  <h5 className="font-medium inline-flex text-black dark:text-white">
                     <span className="mr-2">
                       <FaEnvelope size={16} />
                     </span>

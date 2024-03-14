@@ -43,7 +43,6 @@ import SearchResult from './pages/usersearch/SearchResult';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
-import AboutUs from './pages/AboutUs/AboutUs';
 
 
 
@@ -80,7 +79,6 @@ import AboutUs from './pages/AboutUs/AboutUs';
         ) : (
         <Routes>
           <Route exact path="/" element={<Home />} />
-          <Route exact path="/aboutUs" element={<AboutUs/>} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
           <Route path="/signup" element={<SignUp />} />

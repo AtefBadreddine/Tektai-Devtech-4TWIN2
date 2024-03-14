@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { MongooseModule } from "@nestjs/mongoose";
 import { User, UserSchema } from "../schemas/user.schema";
-import {UserController} from "./users.controller";
+import {UserController} from "./user.controller";
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 

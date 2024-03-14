@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'
 
-export default function StepOne  ({ formData, handleInput, handleNext })  {
+export default function StepOne  ({ formData,fromAuth, handleInput, handleNext })  {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -15,6 +15,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
     const handlePhoneChange = (value) => {
         setPhoneNumber(value);
         handleInput({ target: { name: 'tel', value: value } });
@@ -25,10 +26,12 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
     
 
     useEffect(() => {
-       if (formData.username.length && formData.email.length) {
+       if (fromAuth.username.length && fromAuth.email.length) {
            setShowFields(false)
+           handleInput({ target: { name: 'username', value: fromAuth.username } })
+           handleInput({ target: { name: 'email', value: fromAuth.email } })
        }
-    },[])
+    },[fromAuth])
     // Function to handle password input
     const handlePasswordChange = (e) => {
         const { value } = e.target;
@@ -51,6 +54,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
             setPasswordsMatch(false);
             return; // Prevent form submission
         }
+
         // Proceed with form submission
         handleNext();
     };
@@ -80,8 +84,10 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
                 </div>
 
 
-            {
-                showFields ??   <div className="flex flex-wrap -mx-3 mb-4">
+
+
+                  <div className="flex flex-wrap -mx-3 mb-4">
+
                     <div className="w-full px-3">
                         <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">
                             Email <span className="text-red-600">*</span>
@@ -90,16 +96,24 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
                             id="email"
                             type="email"
                             name="email"
+
                             value={formData.email}
-                            readOnly={!!formData.email.length}
-                            className="form-input w-full text-gray-800"
+                            onChange={handleInput}
+                            readOnly={!!fromAuth.email.length}
+                            className={`form-input w-full text-gray-800 ${fromAuth.email.length ? '!bg-gray-300 cursor-not-allowed' : ''}`}
+
                             placeholder="Enter your email address"
                             required
                         />
                         {formData.email.trim() === '' && <p className="text-red-600 text-sm mt-1">Email is required</p>}
+                        {!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && formData.email.trim() !== '' && (
+                            <p className="text-red-600 text-sm mt-1">Please enter a valid email address</p>
+                        )}
+
                     </div>
+
                 </div>
-            }
+
 
 
 
@@ -196,15 +210,20 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
       value={phoneNumber}
       onChange={handlePhoneChange}
       onCountryChange={handleCountryChange}
-      containerClass="phone-input-container" // Add a custom class
-      inputClass="form-input w-full text-gray-800" // Add your input styles
+
+      containerclass="phone-input-container" // Add a custom class
+      inputclass="form-input w-full text-gray-800" // Add your input styles
+
     />
     {formData.tel && formData.tel.trim() === '' && (
       <p className="text-red-600 text-sm mt-1">Phone number is required</p>
     )}
-    {formData.tel && (formData.tel.trim() === '' || !(/^\d{8}$/.test(formData.tel))) && (
-      <p className="text-red-600 text-sm mt-1">Please enter a valid 8-digit phone number</p>
-    )}
+
+      {formData.tel && (formData.tel.trim() === '' || !(/^\+\d{9,}$/.test(formData.tel))) && (
+          <p className="text-red-600 text-sm mt-1">Please enter a valid phone number starting with '+' followed by at least 9 digits</p>
+      )}
+
+
   </div>
 </div>
 

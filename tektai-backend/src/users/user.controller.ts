@@ -1,87 +1,93 @@
-// import {
-//     Controller,
-//     UseGuards,
-//     Logger,
-//     Get,
-//     Query,
-//     Param,
-//     Delete,
-//     NotFoundException,
-//     InternalServerErrorException,
-//     Put,
-//     Body,
-//     Request,
-//     UseInterceptors,
-//     UploadedFile,
+import {
+    Controller,
+    UseGuards,
+    Logger,
+    Get,
+    Query,
+    Param,
+    Delete,
+    NotFoundException,
+    InternalServerErrorException,
+    Put,
+    Body,
+    Req,
+    Request,
+    UseInterceptors,
+    ClassSerializerInterceptor,
+    UploadedFile,
 
-// } from "@nestjs/common";
+} from "@nestjs/common";
 
-// import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-// import { UsersService } from "src/users/users.service";
-// import {User} from "../schemas/user.schema";
-// import {UserDto} from "./user.dto";
-// import { FileInterceptor } from "@nestjs/platform-express";
-
-
-// @Controller('user')
-// export class UserController {
-//     private readonly logger = new Logger();
-//     constructor(private  userService: UsersService) {}
+import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { UsersService } from "src/users/users.service";
+import {User} from "../schemas/user.schema";
+import {UserDto} from "./user.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 
-//     @UseGuards(JwtAuthGuard)
-//     @Get('profile')
-//     async getProfile(@Request() req) {
-//         return this.userService.findById(req.user.userId);
-//     }
+@Controller('users')
+export class UserController {
+    private readonly logger = new Logger();
+    constructor(private  userService: UsersService) {}
 
-//    // @UseGuards(JwtAuthGuard)
-//     @Get('getall')
-//     async getAllUsers(): Promise<any[]> {
-//         return this.userService.getAllUsers();
-//     }
 
-//     @Get('get/:username')
-//     // @UseGuards(JwtAuthGuard)
-//     async findByUsername(@Param('username') username: string) {
-//         return await this.userService.findUserByUsername(username);
-//     }
+    @UseGuards(JwtAuthGuard)
+    @Get('profile')
+    async getProfile(@Request() req) {
+        return this.userService.findById(req.user.userId);
+    }
 
-//     @UseGuards(JwtAuthGuard)
-//     @Delete(':userId')
-//     async deleteUser(@Param('userId') userId: string): Promise<User | null> {
-//         try {
-//             const user = await this.userService.deleteUser(userId);
-//             if (!user) {
-//                 throw new NotFoundException('User not found');
-//             }
-//             return user;
-//         } catch (error) {
-//             throw new InternalServerErrorException('Failed to delete user');
-//         }
-//     }
+    @UseGuards(JwtAuthGuard)
+    @Get('getall')
+    async getAllUsers(): Promise<any[]> {
+        return this.userService.getAllUsers();
+    }
 
-//     // @UseGuards(JwtAuthGuard)
-//     @Put(':userId')
-//     @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
-//     async updateUser(
-//       @Param('userId') userId: string,
-//       @Body() userDto: UserDto,
-//       @UploadedFile() file: Express.Multer.File, // Use @UploadedFile() for file parameter
-//     ) {
-//       return await this.userService.updateUser(userId, userDto, file);
-//     }
+    @Get('get/:username')
+    // @UseGuards(JwtAuthGuard)
+    async findByUsername(@Param('username') username: string) {
+        return await this.userService.findUserByUsername(username);
+    }
 
-//     @UseGuards(JwtAuthGuard)
-//     @Put('/block/:userId')
-//     async blockUser(@Param('userId') userId: string) {
-//         return await this.userService.blockUser(userId);
-//     }
+    @UseGuards(JwtAuthGuard)
+    @Delete(':userId')
+    async deleteUser(@Param('userId') userId: string): Promise<User | null> {
+        try {
+            const user = await this.userService.deleteUser(userId);
+            if (!user) {
+                throw new NotFoundException('User not found');
+            }
+            return user;
+        } catch (error) {
+            throw new InternalServerErrorException('Failed to delete user');
+        }
+    }
 
-//     @Get('searchusers')
-// async searchUsers(@Query() query: any): Promise<User[]> {
-//   const users = await this.userService.searchUsers(query);
-//   return users || [];
-// }
+    // @UseGuards(JwtAuthGuard)
+    // @Put(':userId')
+    // async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
+    //     return await this.userService.updateUser(userId, userDto);
+    // }
+  @Put(':userId')
+  @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
+  async updateUser(
+    @Param('userId') userId: string,
+    @Body() userDto: UserDto,
+    @UploadedFile() file: Express.Multer.File, // Use @UploadedFile() for file parameter
+  ) {
+    return await this.userService.updateUser(userId, userDto, file);
+  }
 
-// }
+    @UseGuards(JwtAuthGuard)
+    @Put('/block/:userId')
+    async blockUser(@Param('userId') userId: string) {
+        return await this.userService.blockUser(userId);
+    }
+
+    @Get('searchusers')
+async searchUsers(@Query() query: any): Promise<User[]> {
+  const users = await this.userService.searchUsers(query);
+  return users || [];
+}
+
+}
