@@ -33,8 +33,17 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
-
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+  import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
+
+
+import CrmForm from './pages/crm/crmpage';
+import Settingsadmin from './components/Settingsadmin';
+import SearchResult from './pages/usersearch/SearchResult';
+import UserSearch from './pages/usersearch/UserSearch';
+import UserSearchF from './pages/usersearch/UsersearchF';
+import SearchResultF from './pages/usersearch/SearchResultF';
+
 
 
 
@@ -71,6 +80,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
         <Routes>
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forget-password" element={<Forgetpassword />} />
@@ -82,6 +92,10 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
           <Route path="/profile/:id" element={<ProfileAll/>} />
+          <Route path="/UserSearchF" element={<UserSearchF/>} />
+          
+          <Route path="/results" element={<SearchResult />} />
+          <Route path="/resultsf" element={<SearchResultF />} />
 
           <Route path="*" element={<NotFound />} />
 
@@ -92,6 +106,11 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
+            <Route path="/crm" element={<CrmForm/>} />
+            <Route path="/search" element={<UserSearch />} />
+
+            <Route path="/profileadmin" element={<Settingsadmin/>} />
+
           </Route>
 
         </Routes>)

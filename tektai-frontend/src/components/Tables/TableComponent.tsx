@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
   ModalOverlay,
@@ -7,28 +6,64 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure,
+  ModalCloseButton, Button, useDisclosure, Tooltip,
 } from '@chakra-ui/react'
+
 import userService from "../../services/userService";
-import { FaEnvelope, FaLink, FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import Updatedraw from './updatedrawer';
+import ExportToExcel from './xlx';
+import ExportToPDF from './pdf';
+import {FaTrashCan} from "react-icons/fa6";
+
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(5); // Set 
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchUsers(token);
-    }
+      fetchUsers();
   }, []);
+  const sortData = (column) => {
+    if (sortColumn === column) {
+      // If the same column is clicked again, toggle sort direction
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // If a new column is clicked, set it as the sort column and default to ascending order
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+  const sortedData = [...data].sort((a, b) => {
+    if (sortColumn) {
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+      if (aValue < bValue) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+    return 0;
+  });
 
   // @ts-ignore
-  const fetchUsers = async (token) => {
+  const blockUser = async(user)  => {
+    const blocked = await userService.banUser(user._id);
+    if (blocked) {
+        fetchUsers();
+    }
+  }  // @ts-ignore
 
-    const userData = await userService.getAll(token);
+  const fetchUsers = async () => {
+
+    const userData = await userService.getAll();
     if (!userData.error)
       setData(userData);
   };
@@ -50,37 +85,78 @@ const TableComponent = () => {
   }
   const indexOfLastUser = currentPage * usersPerPage;
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = data.slice(indexOfFirstUser, indexOfLastUser);
+  const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
 
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Email
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                Username
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                phoneNumber
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-                image
-              </th>
+        <div className="flex py-4 gap-x-2">
+          <ExportToExcel users={data}/>
+          <ExportToPDF users={data}/>
+        </div>
 
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-                birthdate
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
+        <table className="w-230 table-auto">
+          <thead>
+
+          <tr className="bg-gray-2 text-left dark:bg-meta-4">
+          <th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('email')}
+>
+  Email
+  {sortColumn === 'email' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+<th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('username')}
+>
+Username
+  {sortColumn === 'username' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+<th
+  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
+  onClick={() => sortData('phoneNumber')}
+>
+Phone Number
+  {sortColumn === 'phoneNumber' && (
+    <span className="ml-1">
+      {sortDirection === 'asc' ? (
+        <FaArrowUp />
+      ) : (
+        <FaArrowDown />
+      )}
+    </span>
+  )}
+</th>
+       
+
+              <th
+                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
+                onClick={() => sortData('role')}
+              >
                 Role
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
                 Actions
               </th>
-
             </tr>
           </thead>
           <tbody>
@@ -88,30 +164,33 @@ const TableComponent = () => {
             {currentUsers?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="font-medium text-black dark:text-white">
+                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
   <span className="mr-2">
     <FaEnvelope size={16} /> {/* Adjust size as needed */}
   </span>
   <button
   className="text-black dark:text-white hover:text-orange-500"
   onClick={() => openGmail(packageItem.email)}
->
-  {packageItem.email}
+  >  
+     <Tooltip label='Send an Email '>
+
+  {packageItem.email}</Tooltip>
 </button>
 </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <p className="text-black dark:text-white">
+                <Tooltip label='Visit profile '>
   <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
     <span className="mr-2">
       <FaLink size={16} /> {/* Adjust size as needed */}
     </span>
     {packageItem.username}
-  </a>
+  </a></Tooltip> 
 </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">
+                <p className="text-black dark:text-white"><Tooltip label='Contact on Whatsapp '>
   <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
     <span className="mr-2">
       <FaWhatsapp size={32} color="green" />
@@ -119,20 +198,11 @@ const TableComponent = () => {
     <span className="text-black dark:text-white hover:text-green-500">
       {packageItem.phoneNumber}
     </span>
-  </a>
+  </a></Tooltip>
 </p>
 
                 </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.image}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.birthdate}
-                  </p>
-                </td>
+
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
                     className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
@@ -149,25 +219,30 @@ const TableComponent = () => {
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <div className="flex items-center space-x-3.5">
+                    <div className="flex items-center space-x-3.5">
+                      <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
+                    </div>
 
-                    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-5 w-5"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                    <button className="inline-flex justify-center items-center gap-x-0.5  text-red-600 hover:text-red-800" onClick={() => setUserToDelete(packageItem)}>
+
+                      <FaTrashCan/>
                       Delete
                     </button>
 
+                    { packageItem?.isBlocked ? <button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
+                          <FaCheck color="green" />
+                          Unban
+                        </button>   :
+                          <button color="black" className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
+                    <FaBan  color="black" />
+                    Ban
+                  </button>}
+
+
+
 
                   </div>
+
                 </td>
 
 
@@ -236,6 +311,7 @@ const TableComponent = () => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
