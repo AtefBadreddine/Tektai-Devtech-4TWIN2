@@ -4,6 +4,7 @@ const CaptchaComponent = ({ onVerify }) => {
   const [captchaValue, setCaptchaValue] = useState('');
   const [captchaInput, setCaptchaInput] = useState('');
   const [captchaValid, setCaptchaValid] = useState(false);
+  const [isCaptchaEmpty, setIsCaptchaEmpty] = useState(false);
 
   // Generate a random CAPTCHA value
   const generateCaptcha = () => {
@@ -30,11 +31,16 @@ const CaptchaComponent = ({ onVerify }) => {
   // Handle CAPTCHA input change
   const handleCaptchaChange = (e) => {
     setCaptchaInput(e.target.value);
+    setIsCaptchaEmpty(false); // Reset the empty state when there's input
   };
 
   // Handle CAPTCHA form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!captchaInput) {
+      setIsCaptchaEmpty(true); // Set the empty state to true if input is empty
+      return; // Prevent validation if input is empty
+    }
     validateCaptcha();
   };
 
@@ -57,6 +63,7 @@ const CaptchaComponent = ({ onVerify }) => {
           placeholder="Enter CAPTCHA"
           required
         />
+        {isCaptchaEmpty && <p className="text-red-600 text-sm mt-1">Please enter the CAPTCHA.</p>}
       </div>
       {!captchaValid && (
         <div>

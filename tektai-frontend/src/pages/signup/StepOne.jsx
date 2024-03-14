@@ -3,6 +3,7 @@ import {Link} from "react-router-dom";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css'
+import CaptchaComponent from "../signin/CaptchaComponent";
 
 export default function StepOne  ({ formData,fromAuth, handleInput, handleNext })  {
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -11,6 +12,26 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
     const [passwordsMatch, setPasswordsMatch] = useState(true); // State to track password match
     const [showFields, setShowFields] = useState(true);
     const [selectedCountry, setSelectedCountry] = useState(''); // State to track the selected country phone number
+    const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
+    const [birthday, setBirthday] = useState('');
+    const [isDateValid, setIsDateValid] = useState(true);
+
+    const handleInput2 = (event) => {
+        const inputDate = new Date(event.target.value);
+        const today = new Date();
+        let age = today.getFullYear() - inputDate.getFullYear();
+        const monthDiff = today.getMonth() - inputDate.getMonth();
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < inputDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            setIsDateValid(false);
+        } else {
+            setIsDateValid(true);
+            setBirthday(event.target.value);
+        }
+    };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -49,6 +70,10 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
     // Function to handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (!captchaValid) {
+            alert('Please complete the CAPTCHA verification');
+            return;
+          }
         // Check if passwords match before proceeding
         if (formData.password !== confirmPassword) {
             setPasswordsMatch(false);
@@ -232,17 +257,19 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
 
 
             <div className="flex flex-wrap -mx-3 mb-4">
-                <div className="w-full px-3">
+            <div className="w-full px-3">
                     <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="birthday">Date of birth <span className="text-red-600">*</span></label>
-                    <input id="birthday" type="date" name="birthday" onChange={handleInput} className="form-input w-full text-gray-800" required />
+                    <input id="birthday" type="date" name="birthday" onChange={handleInput2} value={birthday} className="form-input w-full text-gray-800" required />
+                    {!isDateValid && <p className="text-red-600 text-sm mt-1">You must be 18 years or older.</p>}
                 </div>
 
 
             </div>
+            <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} />
 
             <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
-                    <button className="btn text-white bg-blue-600 hover:bg-blue-700 w-full" type="submit">Sign up</button>
+                <button className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${captchaValid ? '' : 'disabled'}`} disabled={!captchaValid}>Next </button>
                 </div>
             </div>
             <div className="text-sm text-gray-500 text-center mt-3">
