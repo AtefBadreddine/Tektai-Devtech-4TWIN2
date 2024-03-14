@@ -3,13 +3,14 @@ import { useDisclosure, Button, Drawer, DrawerOverlay, DrawerContent, DrawerClos
 import { FaEdit } from 'react-icons/fa';
 import userService from '../../services/userService'; // Import the userService
 
-function Updatedraw({ user }) {
+function Updatedraw({ user,RefreshUsersList }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   const [updatedUser, setUpdatedUser] = useState({ ...user }); // Initialize with user data passed in props
 
   useEffect(() => {
-    // Set updatedUser to the user data passed in props whenever it changes
+
+
     setUpdatedUser({ ...user });
   }, [user]);
 
@@ -26,8 +27,8 @@ function Updatedraw({ user }) {
   const handleSave = async () => {
     try {
       // Call the userService update user function with updated user data
-      await userService.updateUser(updatedUser.id, updatedUser);
-      // Optionally handle success (e.g., show a success message)
+      await userService.updateUser(updatedUser._id, updatedUser);
+      RefreshUsersList();
       onClose(); // Close the drawer after successful update
     } catch (error) {
       console.error('Error updating user data:', error);
@@ -38,10 +39,10 @@ function Updatedraw({ user }) {
 
   return (
     <>
-      <Button   onClick={onOpen}>
+    <button className='inline-flex justify-center items-center  text-orange-600 hover:text-orange-800'  onClick={onOpen}>
         <FaEdit size={16} />
         Update
-      </Button>
+      </button>
       <Drawer size={"xl"}
         isOpen={isOpen}
         placement='right'
@@ -51,7 +52,7 @@ function Updatedraw({ user }) {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader> About Us</DrawerHeader>
+          <DrawerHeader> Update User : {updatedUser.username}</DrawerHeader>
 
           <DrawerBody>
             <label>Username</label>
