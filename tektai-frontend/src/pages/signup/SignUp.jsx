@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, useSearchParams} from 'react-router-dom';
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
 import Header from '../../layout/Header';
@@ -135,6 +135,7 @@ function SignUp( ) {
                       <div    className="mx-auto max-w-xl">
                         <StepOne
                             formData={input}
+                            fromAuth={fromAuth}
                             handleInput={handleInput}
                             handleNext={handleNext}
                         />

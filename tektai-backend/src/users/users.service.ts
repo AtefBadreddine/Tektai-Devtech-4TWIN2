@@ -10,11 +10,17 @@ export class UsersService {
   private readonly logger = new Logger();
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
+
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(new mongo.ObjectId(id)).lean();
+  }
   async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email });
   }
   async findByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({username})
+    return this.userModel.findOne({
+      username :  username
+    }).lean()
   }
   async createUser(userDTO : UserDto): Promise<User> {
     const user = new this.userModel(userDTO);
@@ -95,27 +101,41 @@ export class UsersService {
     this.logger.log(`Reset token updated successfully for user: ${userId}`);
   }
   
-async searchUsers(query: any): Promise<User[] | null> {
-  const { username, email, role,phoneNumber } = query;
-  const searchQuery: any = {};
-
-  if (username) {
-    searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+  async searchUsers(query: any): Promise<User[] | null> {
+    const { username, email, role } = query;
+    const searchQuery: any = {};
+  
+    // Construct query parameters based on provided search criteria
+    if (username) {
+      searchQuery.username = { $regex: new RegExp(username, 'i') }; // Case-insensitive search
+    }
+    if (email) {
+      searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
+    }
+    if (role) {
+      searchQuery.$or = [ // Allow multiple roles in the search
+        { role },
+        { "roles": { $in: [role] } } // Search for role in an array of roles
+      ];
+    }
+  
+    // Execute the search using your model
+    const users = await this.userModel.find(searchQuery).exec();
+    return users || null;
   }
-  if (email) {
-    searchQuery.email = { $regex: new RegExp(email, 'i') }; // Case-insensitive search
+  
+
+  async blockUser(userId: string): Promise<User> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      return null;
+    }
+    if (!user?.isBlocked)
+      user.isBlocked = true;
+    else user.isBlocked = !user.isBlocked;
+
+    return  await user.save();
+
   }
-  if (role) {
-    searchQuery.role = role;
-  }
-  //  if (phoneNumber) {
-  //   searchQuery.phoneNumber = phoneNumber;
-  // }
-
-  const users = await this.userModel.find(searchQuery).exec();
-  return users || null;
-}
-
-
 
 }
