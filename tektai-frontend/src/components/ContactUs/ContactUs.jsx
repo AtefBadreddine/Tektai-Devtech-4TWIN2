@@ -17,8 +17,9 @@ function ContactUs() {
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-8 md:mb-0">
-            <h1 className="title font-semibold text-gray-800 text-center md:text-left mb-4">Contact Us</h1>
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-lg mx-auto">
+            <h2 className="text-4xl title  font-bold text-gray-800 text-center md:text-left mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">Contact Us</h2>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <input className="form-input w-full border-gray-300 rounded-md focus:border-blue-500" type="text" placeholder="Name" {...register("name")} />

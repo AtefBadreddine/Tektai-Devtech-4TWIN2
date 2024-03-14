@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 export const InfiniteMovingCards = ({
   items,
   direction = "left",
-  speed = "fast",
+  speed = "normal",
   pauseOnHover = true,
   className,
 }: {
@@ -12,6 +12,8 @@ export const InfiniteMovingCards = ({
     quote: string;
     name: string;
     title: string;
+    email: string;
+    
     imageUrl: string; // Add imageUrl property for the image URL
     flagImageUrl: string; // New property for the flag image URL
   }[];
@@ -70,10 +72,11 @@ export const InfiniteMovingCards = ({
     }
   };
   return (
-    <div
+    <div className="">
+      <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+        "py-20 scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
         className
       )}
     >
@@ -87,9 +90,9 @@ export const InfiniteMovingCards = ({
       >
         {items.map((item, idx) => (
           <li
-            className="bg-black w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px]"
+            className="bg-gray-100 text-gray-800 w-[350px] max-w-full relative rounded-2xl border border-b-0 border-gray-300 px-8 py-6 md:w-[450px]"
             style={{
-              background: "linear-gradient(180deg, #1f2937, #9e9e9e)",
+              background: "linear-gradient(180deg, #ffffff, #e5e5e5)",
             }}
             key={item.name}
           >
@@ -101,20 +104,20 @@ export const InfiniteMovingCards = ({
                 />
                 <img
                   src={item.flagImageUrl}
-                  className="w-12 h-8 flex-shrink-0"
+                  className=" rounded-full w-12 h-13 flex-shrink-0"
                 />
               </div>
-              <p className="text-white text-lg leading-tight mb-4">
-                {item.quote}
+              <p className="text-gray-700 text-lg leading-tight mb-4">
+                {item.name}
               </p>
-              <div className="text-gray-300">
-                <p className="text-sm">{item.name}</p>
+              <div className="text-gray-700 font-bold">
+<a href={`https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${item.email}`} className="text-sm">{item.email}</a>
                 <p className="text-sm">{item.title}</p>
               </div>
             </blockquote>
           </li>
         ))}
       </ul>
-    </div>
+    </div></div>
   );
 };
