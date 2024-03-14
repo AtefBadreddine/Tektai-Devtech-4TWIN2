@@ -41,6 +41,7 @@ function HeroHome() {
             {/* Section header */}
             <div className="text-center pb-12 md:pb-16">
             <h1 className="text-4xl xl:text-6xl font-extrabold leading-tight md:leading-tighter tracking-tighter md:text-2xl sm:text-xl mb-4" data-aos="zoom-y-out">
+
             <h1>For
                 <TypeAnimation
 

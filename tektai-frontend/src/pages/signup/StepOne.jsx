@@ -85,7 +85,9 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
 
 
 
+
                   <div className="flex flex-wrap -mx-3 mb-4">
+
                     <div className="w-full px-3">
                         <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">
                             Email <span className="text-red-600">*</span>
@@ -94,10 +96,12 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
                             id="email"
                             type="email"
                             name="email"
+
                             value={formData.email}
                             onChange={handleInput}
                             readOnly={!!fromAuth.email.length}
                             className={`form-input w-full text-gray-800 ${fromAuth.email.length ? '!bg-gray-300 cursor-not-allowed' : ''}`}
+
                             placeholder="Enter your email address"
                             required
                         />
@@ -107,6 +111,7 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
                         )}
 
                     </div>
+
                 </div>
 
 
@@ -205,15 +210,19 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
       value={phoneNumber}
       onChange={handlePhoneChange}
       onCountryChange={handleCountryChange}
+
       containerclass="phone-input-container" // Add a custom class
       inputclass="form-input w-full text-gray-800" // Add your input styles
+
     />
     {formData.tel && formData.tel.trim() === '' && (
       <p className="text-red-600 text-sm mt-1">Phone number is required</p>
     )}
+
       {formData.tel && (formData.tel.trim() === '' || !(/^\+\d{9,}$/.test(formData.tel))) && (
           <p className="text-red-600 text-sm mt-1">Please enter a valid phone number starting with '+' followed by at least 9 digits</p>
       )}
+
 
   </div>
 </div>
