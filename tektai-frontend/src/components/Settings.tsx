@@ -3,6 +3,7 @@ import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import Header from '../layout/Header';
 import userService from "../services/userService";
+import FileUploadComponent from './upload';
 interface UserData {
   _id : string;
   username: string;
@@ -33,8 +34,9 @@ const Settings = () => {
     birthday : ""
   });
 
-  // @ts-ignore
-
+  const handleFileUpload = async (e) => {
+    
+  };
 
   // @ts-ignore
   useEffect(  () => {
@@ -76,7 +78,7 @@ const Settings = () => {
     try {
 
       // Call the updateUser function with the current user ID and input data
-      const updatedUser = await userService.updateUser(userData._id, input);
+      const updatedUser = await userService.updateUser(userData?._id, input);
 
       // Update the input fields with the updated user data
       setInput({
@@ -369,10 +371,9 @@ const Settings = () => {
                     <span className="flex gap-2.5">
                       <button className="text-sm hover:text-primary">
                         Delete
-                      </button>
-                      <button className="text-sm hover:text-primary">
-                        Update
-                      </button>
+                      </button>                <FileUploadComponent />
+
+                      
                     </span>
                   </div>
                 </div>
@@ -382,6 +383,8 @@ const Settings = () => {
                   className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5"
                 >
                   <input
+                                        onChange={handleFileUpload}
+
                     type="file"
                     accept="image/*"
                     className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none" />

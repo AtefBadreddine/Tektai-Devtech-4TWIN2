@@ -43,6 +43,7 @@ import SearchResult from './pages/usersearch/SearchResult';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
+import UserList from './components/User/Userlist';
 
 
 
@@ -108,6 +109,7 @@ import SearchResultF from './pages/usersearch/SearchResultF';
             <Route path="/admin" element={<Dashhome />}    />
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
+            <Route path="/adminuser" element={<UserList />} />
 
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
