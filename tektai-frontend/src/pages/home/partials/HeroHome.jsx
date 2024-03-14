@@ -41,23 +41,26 @@ function HeroHome() {
             {/* Section header */}
             <div className="text-center pb-12 md:pb-16">
             <h1 className="text-4xl xl:text-6xl font-extrabold leading-tight md:leading-tighter tracking-tighter md:text-2xl sm:text-xl mb-4" data-aos="zoom-y-out">
-            <h1>For</h1>
 
-              <TypeAnimation
-              
-  sequence={[
-    // Same substring at the start will only be typed once, initially
-    ' Developpers',
-    2000,
-    ' Companies',
-    2000,
-   
-  ]}
-  speed={50}
-  style={{ fontSize: '1.5em' }}
-  repeat={Infinity}
-  className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
-/>
+            <h1>For
+                <TypeAnimation
+
+                    sequence={[
+                        // Same substring at the start will only be typed once, initially
+                        ' Developpers',
+                        2000,
+                        ' Companies',
+                        2000,
+
+                    ]}
+                    speed={50}
+                    style={{ fontSize: '1.5em' }}
+                    repeat={Infinity}
+                    className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
+                />
+            </h1>
+
+
                 {/* Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> */}
               </h1>
               <MacbookScroll></MacbookScroll>

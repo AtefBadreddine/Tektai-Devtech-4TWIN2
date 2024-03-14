@@ -61,7 +61,7 @@ function Home() {
   ];
   const data = [
     {
-      name: "Bouzid Baha EddinAtef Badreddine",
+      name: "Atef Badreddine",
       title: "Back-end Dev",
       imageUrl: "https://trello.com/1/cards/65c34b55faef21b8807b11bf/attachments/65d5bd6d49ab77dc5af123e0/previews/65d5bd6e49ab77dc5af125a1/download/118951202_2649730878463391_7352345839204004750_n.jpg",
       flagImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1200px-Flag_of_Tunisia.svg.png",
@@ -106,7 +106,7 @@ function Home() {
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
       <Header />
-      <PopupAd />
+      {/*<PopupAd />*/}
 
       {/*  Page content */}
       <main className="flex-grow">
