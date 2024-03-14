@@ -81,7 +81,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
 
 
             {
-                showFields ??   <div className="flex flex-wrap -mx-3 mb-4">
+                showFields ?   <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
                         <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="email">
                             Email <span className="text-red-600">*</span>
@@ -98,7 +98,7 @@ export default function StepOne  ({ formData, handleInput, handleNext })  {
                         />
                         {formData.email.trim() === '' && <p className="text-red-600 text-sm mt-1">Email is required</p>}
                     </div>
-                </div>
+                </div> : ''
             }
 
 
