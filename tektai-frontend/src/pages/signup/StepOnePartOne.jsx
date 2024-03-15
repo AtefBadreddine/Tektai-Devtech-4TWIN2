@@ -30,6 +30,13 @@ export default function StepOnePartOne({ formData, fromAuth, handleInput, handle
 
     }, [formData, phoneNumber, birthday, isDateValid]);
 
+    useEffect(() => {
+        if (fromAuth.username.length && fromAuth.email.length) {
+            handleInput({ target: { name: 'username', value: fromAuth.username } })
+            handleInput({ target: { name: 'email', value: fromAuth.email } })
+        }
+    },[fromAuth])
+
     const handleInput2 = (event) => {
         const inputDate = new Date(event.target.value);
         const today = new Date();
