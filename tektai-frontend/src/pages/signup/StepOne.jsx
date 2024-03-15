@@ -229,55 +229,6 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
             )}
 
 
-
-
-
-
-
-
-
-
-<div className="flex flex-wrap -mx-3 mb-4">
-  <div className="w-full px-3">
-    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="tel">
-      Phone number <span className="text-red-600">*</span>
-    </label>
-    <PhoneInput
-      international
-      defaultCountry="TN"
-      value={phoneNumber}
-      onChange={handlePhoneChange}
-      onCountryChange={handleCountryChange}
-
-      containerclass="phone-input-container" // Add a custom class
-      inputclass="form-input w-full text-gray-800" // Add your input styles
-
-    />
-    {formData.tel && formData.tel.trim() === '' && (
-      <p className="text-red-600 text-sm mt-1">Phone number is required</p>
-    )}
-
-      {formData.tel && (formData.tel.trim() === '' || !(/^\+\d{9,}$/.test(formData.tel))) && (
-          <p className="text-red-600 text-sm mt-1">Please enter a valid phone number starting with '+' followed by at least 9 digits</p>
-      )}
-
-
-  </div>
-</div>
-
-
-
-
-
-            <div className="flex flex-wrap -mx-3 mb-4">
-            <div className="w-full px-3">
-                    <label className="block text-gray-800 text-sm font-medium mb-1" htmlFor="birthday">Date of birth <span className="text-red-600">*</span></label>
-                    <input id="birthday" type="date" name="birthday" onChange={handleInput2} value={birthday} className="form-input w-full text-gray-800" required />
-                    {!isDateValid && <p className="text-red-600 text-sm mt-1">You must be 18 years or older.</p>}
-                </div>
-
-
-            </div>
             <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} />
 
             <div className="flex flex-wrap -mx-3 mt-6">

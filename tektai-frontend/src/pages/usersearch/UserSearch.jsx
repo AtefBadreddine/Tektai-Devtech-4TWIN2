@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"; // Import useNavigate
 
 const UserSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -45,14 +46,21 @@ const UserSearch = () => {
   }, [searchTerm, searchBy]);
 
   const renderSearchInput = () => (
-    <div className="search-input-container">
-      <input
-        type="text"
-        placeholder="Search..."
-        className="w-full bg-transparent pl-9 pr-4 text-black focus:outline-none dark:text-white xl:w-125"
-        value={searchTerm}
-        onChange={handleSearchChange}
-      />
+    <div className="search-input-container flex">
+      <div className="relative w-full">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
+        </div>
+        <input
+            type="text"
+            placeholder="Search..."
+            className="w-full pl-12 pr-4 bg-transparent text-black focus:outline-none dark:text-white xl:w-125"
+            value={searchTerm}
+            onChange={handleSearchChange}
+        />
+      </div>
+
+
       <select value={searchBy} onChange={handleSearchByChange}>
         <option value="username">Username</option>
         <option value="role">Role</option>
