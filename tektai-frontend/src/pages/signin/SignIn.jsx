@@ -95,19 +95,20 @@ function SignIn() {
         {/*  Site header */}
         <Header />
         {/*<PopupAd />*/}
-        <div className="flex min-h-screen">
+        <div className="bg-gradient-to-br from-blue-100 to-purple-100 flex min-h-screen">
         {/* <div className="" style={{backgroundImage: 'url("https://cdni.iconscout.com/illustration/premium/thumb/coding-4841682-4037522.png?f=webp")'}}></div> */}
         
                 <img
               src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-              className="hidden md:block w-1/2 bg-cover bg-center"
+              className=" ml-24 hidden md:block w-1/2 bg-cover bg-center"
               alt="Phone image"
             />
-          <main className="flex-grow" >
-            <section className="bg-gradient-to-b from-gray-100 to-white">
+          <main className="flex-grow bg-transparent  rounded-lg overflow-hidden" >
+            <section className="bg-transparent">
               <div className="max-w-6xl mx-auto px-4 sm:px-6">
                 <div className="pt-8 sm:pt-32 pb-12 md:pt-24 md:pb-20">
                   <div className="max-w-sm mx-auto">
+                  <div className="border shadow-lg border-gray-300 rounded-lg p-6">
                     <form onSubmit={handleSubmit}>
                       <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
@@ -235,7 +236,7 @@ function SignIn() {
                           )}
                         </div>
                       </div>
-                    </form>
+                    </form></div>
                     <div className="flex items-center my-6">
                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                       <div className="text-gray-600 italic">Or</div>
