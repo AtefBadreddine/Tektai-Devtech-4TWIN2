@@ -8,7 +8,12 @@
   import 'aos/dist/aos.css';
   import './css/style.css';
   import './css/additional-styles/satoshi.css'; // Import the CSS file
+  import { library } from '@fortawesome/fontawesome-svg-core'
 
+  // import your icons
+  import { fab } from '@fortawesome/free-brands-svg-icons'
+  import { fas } from '@fortawesome/free-solid-svg-icons'
+  import { far } from '@fortawesome/free-regular-svg-icons'
 
   import AOS from 'aos';
 
@@ -43,6 +48,7 @@ import SearchResult from './pages/usersearch/SearchResult';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
+import UserList from './components/User/Userlist';
 
 
 
@@ -108,6 +114,7 @@ import SearchResultF from './pages/usersearch/SearchResultF';
             <Route path="/admin" element={<Dashhome />}    />
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
+            <Route path="/adminuser" element={<UserList />} />
 
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
@@ -121,3 +128,4 @@ import SearchResultF from './pages/usersearch/SearchResultF';
   }
 
   export default App;
+  library.add(fab,fas,far);

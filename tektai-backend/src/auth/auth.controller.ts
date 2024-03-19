@@ -57,12 +57,7 @@ export class AuthController {
     await this.authService.forgetPassword(email);
     return { message: 'Password reset email sent successfully' };
   }
-  @Post('reset-password')
-  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
-    await this.authService.resetPassword(resetPasswordDto.token,resetPasswordDto.newPassword);
-    return {message: 'Password reset successfully'};
-
-  }
+ 
   
  @Patch('/change-password')
 async changePassword(
@@ -126,6 +121,31 @@ async changePassword(
    return;
   }
 
+
+   @Post('/forgot-password')
+  async forgotPassword(@Body('email') email: string): Promise<void> {
+    try {
+      this.logger.log(`Initiating password reset for email: ${email}`);
+      await this.authService.forgextPassword(email);
+      this.logger.log(`Password reset initiated successfully for email: ${email}`);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        this.logger.error(`User not found for email: ${email}`);
+        // Gérer l'erreur si l'utilisateur n'est pas trouvé
+        // Retourner un message d'erreur approprié ou une réponse HTTP appropriée
+      } else {
+        this.logger.error(`Error resetting password for email: ${email}, error: ${error.message}`);
+        // Gérer les autres erreurs
+        // Retourner un message d'erreur approprié ou une réponse HTTP appropriée
+      }
+    }
+  }
+  @Post('/reset-password')
+  async resetPassword(@Body() dto: ResetPasswordDto): Promise<void> {
+    await this.authService.resetPassword(dto);
+  }
+  
+  
 
 }
 

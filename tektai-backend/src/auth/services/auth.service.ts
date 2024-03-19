@@ -9,6 +9,7 @@ import {User} from "../../schemas/user.schema";
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
+import { ResetPasswordDto } from "src/schemas/reset-password.dto";
 
 ;
 
@@ -81,30 +82,31 @@ export class AuthService {
       throw new Error('Failed to send email');
     }
   }
-  async generateResetToken(userId: string): Promise<string> {
-    const token = uuidv4();
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1); // Expiration dans 1 heure
-    await this.usersService.updateResetToken(userId, token, expirationDate); // Mettre à jour le token de réinitialisation dans l'utilisateur
-    return token;
+  
+ 
+ 
+async resetPassword(dto: ResetPasswordDto): Promise<void> {
+  const { verificationCode, email, newPassword } = dto;
+  
+  // Vérifier si l'utilisateur avec cet email existe et si le code de vérification est correct
+  const user = await this.usersService.findByEmail(email);
+  if (!user || user.verificationCode !== verificationCode) {
+    throw new NotFoundException('Invalid or expired verification code');
   }
 
+  // Hasher le nouveau mot de passe
+  const hashedPassword = await this.hashService.hashPassword(newPassword);
 
-  async resetPassword(token: string,  newPassword: string): Promise<void> {
-    const user = await this.usersService.findByResetToken(token);
-    if (!user) {
-      throw new NotFoundException('Invalid or expired token');
-    }
+  // Mettre à jour le mot de passe de l'utilisateur dans la base de données
+  await this.usersService.updatePassword(user._id, hashedPassword);
 
-    // Hasher le nouveau mot de passe
-    const hashedPassword = await this.hashService.hashPassword(newPassword);
+  // Effacer le code de vérification dans la base de données
+  await this.usersService.clearVerificationCode(user._id);
+}
 
-    // Mettre à jour le mot de passe de l'utilisateur dans la base de données
-    await this.usersService.updatePassword(user._id, hashedPassword);
 
-    // Effacer le jeton de réinitialisation de mot de passe dans la base de données
-    await this.usersService.clearResetToken(user._id);
-  }
+
+ 
   async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
         // Récupérer l'utilisateur à partir de l'email
@@ -137,6 +139,50 @@ export class AuthService {
         }
     }
 }
+
+async forgextPassword(email: string): Promise<void> {
+  const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
+    const apiKey = process.env.SENDINBLUE;
+    const defaultClient = SibApiV3Sdk.ApiClient.instance;
+    const apiKeyV3 = defaultClient.authentications['api-key'];
+    apiKeyV3.apiKey = apiKey;
+    const user = await this.usersService.findByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Générer le code de vérification à 6 chiffres
+    const verificationCode =await this.generateVerificationCode();
+
+    // Stocker le code de vérification dans la base de données
+    await this.usersService.storeVerificationCode(verificationCode, user._id);
+
+    // Créer le corps de l'e-mail avec le code de vérification
+    const emailParams = {
+      sender: { email: 'alaedineibrahim@gmail.com' },
+      to: [{ email }],
+      subject: 'Reset Your Password',
+      htmlContent: `<p>Your verification code is: ${verificationCode}</p>`,
+    };
+
+    // Envoyer l'e-mail
+    try {
+      await sendinblue.sendTransacEmail(emailParams);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      throw new Error('Failed to send email');
+    }
+}
+
+async generateVerificationCode(): Promise<string> {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+
+
+
+
+
 
 
 }

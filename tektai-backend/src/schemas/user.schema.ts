@@ -53,9 +53,13 @@ export class User {
 
   @Prop({ default: "challenger" })
   role: string;
-
-
-
+    // Ajout de la propriété verificationCode
+  @Prop({ default: null })
+  verificationCode: string;
 }
+
+
+
+
 
 export const UserSchema = SchemaFactory.createForClass(User);
