@@ -53,7 +53,7 @@ import FeaturesElement from '../../../images/features-element.png';
           <h1 className="h2 mb-4">Join our community</h1>
           <p className="text-xl text-gray-600">Take the first step towards unleashing your potential – sign up now and embark on an exciting adventure in the world of data science.</p>
           {/* Button */}
-          <Link to="/signup" className="btn-smm inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
+          <Link to="/signup" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
             Get started <FaArrowRight className="ml-2" />
           </Link>
         </div>
