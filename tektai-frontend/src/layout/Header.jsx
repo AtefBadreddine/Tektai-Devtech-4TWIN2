@@ -2,7 +2,16 @@
   import { Link } from 'react-router-dom';
   import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-  import { faHome, faChartBar, faDatabase, faMedal, faAngleDown, faCog, faUser } from '@fortawesome/free-solid-svg-icons';
+  import {
+  faHome,
+  faChartBar,
+  faDatabase,
+  faMedal,
+  faAngleDown,
+  faCog,
+  faUser,
+  faSignIn, faSignInAlt
+  } from '@fortawesome/free-solid-svg-icons';
   import DropdownUser from '../components/Header/DropdownUser';
   import './Header.css'; // Import CSS file for Header styles
   import { Tooltip } from '@chakra-ui/react'
@@ -306,12 +315,14 @@ import UserSearchF from '../pages/usersearch/UsersearchF';
           animation: 'spin 1s linear infinite'
         }}></div> // Render spinner animation while loading
           ) : !user ? (
-          <div>
-            <Link to="/signin" className="text-gray-700 hover:text-gray-900 mr-4">
-              Sign in
+          <div className="flex  justify-end">
+            <Link to="/signin" className="block py-2  text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
+              <FontAwesomeIcon icon={faSignIn} className="mr-2" />
+              <span style={{textTransform: 'capitalize', fontWeight: 'bold'}}>Sign in</span>
             </Link>
-            <Link to="/signup" className="btn-sm text-gray-200 bg-gray-900 hover:bg-gray-800">
-              Sign up
+            <Link to="/signip" className="block py-2 px-4 text-gray-700 hover:text-gray-900 transition duration-300 flex items-center">
+              <FontAwesomeIcon icon={faSignInAlt} className="mr-2" />
+              <span style={{textTransform: 'capitalize', fontWeight: 'bold'}}>Sign up</span>
             </Link>
           </div>
         ) : (

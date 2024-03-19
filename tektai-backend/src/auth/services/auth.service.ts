@@ -20,6 +20,7 @@ export class AuthService {
 
   async validateUser(username: string, pass: string): Promise<any> {
     const user = await this.usersService.findByUsername(username);
+
     if (user && await this.hashService.comparePassword(pass,user.password)) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = user;
@@ -28,10 +29,12 @@ export class AuthService {
     return null;
   }
 
-  async login(user: any) {
-    const payload = { email: user.email, sub: user.userId };
+  async login(user: any,rememberMe: boolean = false) {
+      const expiresIn = rememberMe ? '7d' : '1d';
+
+    const payload = { username: user.username, sub: user._id };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload,{ expiresIn : expiresIn }),
     };
   }
   async signup(userDTO : UserDto): Promise<any> {
@@ -134,44 +137,6 @@ export class AuthService {
         }
     }
 }
- async validateOAuthLogin(profile: any): Promise<User> {
-    console.log("Profile received from GitHub:", profile);
 
-    // Vérifiez si la propriété username est définie dans le profil GitHub
-    if (!profile || !profile._json || !profile._json.username) {
-        console.error("Error: Username not found in GitHub profile.");
-        throw new Error("Username not found in GitHub profile.");
-    }
-
-    const { username, email } = profile._json;
-    console.log("Username:", username);
-    console.log("Email:", email);
-
-    // Vérifiez si l'utilisateur existe déjà dans votre base de données
-    let user = await this.usersService.findByEmail(email);
-
-    // Si l'utilisateur n'existe pas, créez-en un nouveau
-    if (!user) {
-        console.log("User not found in the database. Creating a new user...");
-        // Créez un nouvel utilisateur avec les informations du profil GitHub
-        user = await this.usersService.createUser({
-            username: username,
-            email: email,
-            password: "",
-            phoneNumber: "",
-            bio: "",
-            birthday: "",
-            companyName: "",
-            adresse: "",
-            role: ""
-        });
-        console.log("New user created:", user);
-    } else {
-        console.log("User found in the database:", user);
-    }
-
-    // Retournez l'utilisateur créé ou trouvé
-    return user;
-}
 
 }

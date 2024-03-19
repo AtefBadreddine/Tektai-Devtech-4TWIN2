@@ -12,4 +12,30 @@
     animation: bounce 1s ease;
   }
   
-  
+/* Button.css */
+.btn-smm {
+  padding: 15px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  background-color: #5FBDFF; /* Default color */
+  color: white; /* Text color */
+  animation: colorChange 1s linear infinite; /* Apply animation */
+}
+
+@keyframes colorChange {
+  0% {
+    background-color: #96E9C6; /* Start color */
+  }
+  25% {
+    background-color: #96EFFF; /* Middle color */
+  }
+  50% {
+    background-color: #5FBDFF; /* Middle color */
+  }
+  75% {
+    background-color: #7B66FF; /* Middle color */
+  }
+  100% {
+    background-color: #96E9C6; /* End color */
+  }
+}

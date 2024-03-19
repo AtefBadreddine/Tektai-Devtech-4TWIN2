@@ -1,19 +1,13 @@
-import React from "react";
 import ChallengerImg from "../../images/dev.jpg";
 import CompanyImg from "../../images/business.jpg";
+import React from "react";
 
-export default function StepTwo({ formData, handleInput, handleNext, handlePrevious }) {
-    console.log("user", formData);
-
+export default function  StepTwo  ({ formData, handleInput, handleNext, handlePrevious })  {
+    console.log( "user",formData)
     const handleRole = (role) => {
         handleInput({ target: { name: 'role', value: role } });
         handleNext();
-    };
-
-    const handleBack = () => {
-        handlePrevious(); // Call the handlePrevious function to go back to Step One
-    };
-
+    }
     return (
         <div className="w-full">
             <h1 className="text-3xl font-bold text-center mb-8">Choose Your Account Type</h1>
@@ -29,7 +23,7 @@ export default function StepTwo({ formData, handleInput, handleNext, handlePrevi
                         <p className="mb-3 font-normal text-gray-700 text-center">Sign up as a challenger to participate in competitions.</p>
                     </div>
                 </div>
-                <div onClick={() => handleRole('company')} className="cursor-pointer max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div onClick={() => handleRole('company') } className="cursor-pointer max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                     <div>
                         <img className="rounded-t-lg" src={CompanyImg} alt="" />
                     </div>
@@ -41,11 +35,6 @@ export default function StepTwo({ formData, handleInput, handleNext, handlePrevi
                     </div>
                 </div>
             </div>
-            <div className="flex flex-wrap mx-auto max-w-xs mt-6">
-                <div className="w-full px-3">
-                    <button className="btn text-white bg-gray-600 hover:bg-gray-700 w-full" onClick={handleBack}>Back</button>
-                </div>
-            </div>
         </div>
     );
-}
+};

@@ -1,30 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Transition from '../../../utils/Transition';
-
 import FeaturesBg from '../../../images/Google_Hero.jpg';
 import notebooks from '../../../images/notebooks.png';
 import discussion from '../../../images/discussion.jpg';
+import { Link } from 'react-router-dom';
+import { FaArrowRight } from 'react-icons/fa'; // Import the arrow icon from FontAwesome
 
 
 import FeaturesElement from '../../../images/features-element.png';
 
-function Features() {
 
-  const [tab, setTab] = useState(1);
-
-  const tabs = useRef(null);
-
-  const heightFix = () => {
-    if (tabs.current.children[tab]) {
-      tabs.current.style.height = tabs.current.children[tab - 1].offsetHeight + 'px'
-    }
-  }
-
-  useEffect(() => {
-    heightFix()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tab])
-
+  function Features() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+    // Function to handle login
+    const handleLogin = () => {
+      // Perform login actions (e.g., set session, store tokens)
+      setIsLoggedIn(true);
+    };
+  
+    // Function to handle logout
+    const handleLogout = () => {
+      // Perform logout actions (e.g., clear session, remove tokens)
+      setIsLoggedIn(false);
+    };
+  
+    const [tab, setTab] = useState(1);
+    const tabs = useRef(null);
+  
+    const heightFix = () => {
+      if (tabs.current.children[tab]) {
+        tabs.current.style.height = tabs.current.children[tab - 1].offsetHeight + 'px';
+      }
+    };
+  
+    useEffect(() => {
+      heightFix();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [tab]);
+  
   return (
     <section className="relative bg-white">
       <div className="absolute inset-0 bg-gray-100 pointer-events-none mb-16" aria-hidden="true"></div>
@@ -32,10 +46,21 @@ function Features() {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
         <div className="pt-12 md:pt-20">
-          <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-            <h1 className="h2 mb-4">Why Choose Us ?</h1>
-            <p className="text-xl text-gray-600">Because we provide you with these tools so you can test your skills and prove yourself among your peers.</p>
-          </div>
+      
+ {/* Why Choose Us section */}
+ {!isLoggedIn && (
+        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
+          <h1 className="h2 mb-4">Join our community</h1>
+          <p className="text-xl text-gray-600">Take the first step towards unleashing your potential – sign up now and embark on an exciting adventure in the world of data science.</p>
+          {/* Button */}
+          <Link to="/signup" className="btn-smm inline-flex items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
+            Get started <FaArrowRight className="ml-2" />
+          </Link>
+        </div>
+      )}
+
+
+
 
           <div className="md:grid md:grid-cols-12 md:gap-6">
             <div className="max-w-xl md:max-w-none md:w-full mx-auto md:col-span-7 lg:col-span-6 md:mt-6" data-aos="fade-right">

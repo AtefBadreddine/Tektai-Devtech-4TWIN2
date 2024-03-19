@@ -10,11 +10,17 @@ export class UsersService {
   private readonly logger = new Logger();
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
+
+  async findById(id: string): Promise<User> {
+    return this.userModel.findById(new mongo.ObjectId(id)).lean();
+  }
   async findByEmail(email: string): Promise<User> {
     return this.userModel.findOne({ email });
   }
   async findByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({username})
+    return this.userModel.findOne({
+      username :  username
+    }).lean()
   }
   async createUser(userDTO : UserDto): Promise<User> {
     const user = new this.userModel(userDTO);
@@ -119,5 +125,17 @@ export class UsersService {
   }
   
 
+  async blockUser(userId: string): Promise<User> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      return null;
+    }
+    if (!user?.isBlocked)
+      user.isBlocked = true;
+    else user.isBlocked = !user.isBlocked;
+
+    return  await user.save();
+
+  }
 
 }
