@@ -9,5 +9,4 @@ export class UserDto {
     companyName: string;
     adresse: string;
     role: string;
-    image?: string;
 }

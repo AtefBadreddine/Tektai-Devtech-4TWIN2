@@ -3,7 +3,6 @@ import { InjectModel } from "@nestjs/mongoose";
 import {Model, mongo} from "mongoose";
 import { User } from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
-import { extname } from "path";
 
 
 @Injectable()
@@ -61,54 +60,13 @@ export class UsersService {
     }
   }
 
-  // async updateUser(userId: string, userDto: UserDto): Promise<User> {
-  //   const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
-  //   if (!updatedUser) {
-  //     throw new NotFoundException('User not found');
-  //   }
-  //   return updatedUser;
-  // }
-  async updateUser(userId: string, userDto: UserDto, file: Express.Multer.File): Promise<User> {
-    try {
-      // Check if the user exists
-      const existingUser = await this.userModel.findById(userId).exec();
-      if (!existingUser) {
-        throw new NotFoundException('User not found');
-      }
-
-      // Update user properties
-      existingUser.username = userDto.username || existingUser.username;
-      existingUser.email = userDto.email || existingUser.email;
-      existingUser.phoneNumber = userDto.phoneNumber || existingUser.phoneNumber;
-      existingUser.bio = userDto.bio || existingUser.bio;
-      existingUser.birthday = userDto.birthday || existingUser.birthday;
-      existingUser.companyName = userDto.companyName || existingUser.companyName;
-      existingUser.adresse = userDto.adresse || existingUser.adresse;
-      existingUser.role = userDto.role || existingUser.role;
-
-      // Update the profile image if provided in the DTO
-      if (file) {
-        // Handle file upload and update the user's image
-        const fileExt = extname(file.originalname);
-        const randomFileName = `${Date.now()}${fileExt}`;
-        existingUser.image = randomFileName;
-
-        // Save the uploaded file
-        //const path = `./uploads/${randomFileName}`;
-        //const fileStream = createReadStream(path);
-        // Handle saving the file to the desired location or cloud storage
-
-        // Note: You should implement proper file handling based on your storage solution
-      }
-
-      // Save the updated user
-      const updatedUser = await existingUser.save();
-      return updatedUser;
-    } catch (error) {
-      throw new InternalServerErrorException('Failed to update user');
+  async updateUser(userId: string, userDto: UserDto): Promise<User> {
+    const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
+    if (!updatedUser) {
+      throw new NotFoundException('User not found');
     }
+    return updatedUser;
   }
-  
 
   async storePwdToken(token: string, id: string) {
     const user = await this.userModel.findById(new mongo.ObjectId(id)).exec();

@@ -6,7 +6,7 @@ import 'react-phone-number-input/style.css';
 import CaptchaComponent from "../signin/CaptchaComponent";
 
 export default function StepOnePartTwo({ formData, fromAuth, handleInput, handleNext }) {
-    
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -155,12 +155,12 @@ export default function StepOnePartTwo({ formData, fromAuth, handleInput, handle
 
             <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
-                <button 
-    className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${formValid ? '' : 'opacity-50 cursor-not-allowed'}`} 
-    disabled={!formValid}
->
-    Next
-</button>
+                    <button
+                        className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${formValid ? '' : 'opacity-50 cursor-not-allowed'}`}
+                        disabled={!formValid}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
             <div className="text-sm text-gray-500 text-center mt-3">

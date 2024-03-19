@@ -42,12 +42,12 @@ function HeroHome() {
             <div className="text-center pb-12 md:pb-16">
             <h1 className="text-4xl xl:text-6xl font-extrabold leading-tight md:leading-tighter tracking-tighter md:text-2xl sm:text-xl mb-4" data-aos="zoom-y-out">
 
-            <h1>For
+            <div className="flex justify-center items-center gap-x-2 text-[32px] sm:text-[64px] lg:text-[72px]">For
                 <TypeAnimation
 
                     sequence={[
                         // Same substring at the start will only be typed once, initially
-                        ' Developpers',
+                        ' Developers',
                         2000,
                         ' Companies',
                         2000,
@@ -58,7 +58,7 @@ function HeroHome() {
                     repeat={Infinity}
                     className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400"
                 />
-            </h1>
+            </div>
 
 
                 {/* Welcome to <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> */}

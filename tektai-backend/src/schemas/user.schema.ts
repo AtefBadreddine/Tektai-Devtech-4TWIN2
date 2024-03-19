@@ -54,11 +54,6 @@ export class User {
   @Prop({ default: "challenger" })
   role: string;
 
-  @Prop({ default: "" }) // Add this line to include the image attribute
-  image?: string;
-
-
-
 
 
 }
