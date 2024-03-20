@@ -18,6 +18,7 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
     const [isDateValid, setIsDateValid] = useState(true);
     const [agreeToTerms, setAgreeToTerms] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     const handleAgreeToTermsChange = (e) => {
         setAgreeToTerms(e.target.checked);
       };
@@ -57,7 +58,18 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
       const handleCountryChange = (country) => {
         setSelectedCountry(country);
       };
-    
+     useEffect(() => {
+        // Effectue une requête pour obtenir la liste des pays
+        axios.get('https://restcountries.com/v3.1/all')
+            .then(response => {
+                // Récupère uniquement les noms des pays
+                const countryNames = response.data.map(country => country.name.common);
+                setCountries(countryNames); // Met à jour l'état avec la liste des pays
+            })
+            .catch(error => {
+                console.error('Error fetching countries:', error);
+            });
+    }, []);
 
     useEffect(() => {
        if (fromAuth.username.length && fromAuth.email.length) {
@@ -101,6 +113,13 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
 
     return (
         <form onSubmit={handleSubmit}>
+        {/* Ajoute la liste déroulante des pays ici */}
+<div className="flex flex-wrap -mx-3 mb-4">
+    <div className="w-full px-3">
+      
+       
+    </div>
+</div>
 
              <div className="flex flex-wrap -mx-3 mb-4">
                     <div className="w-full px-3">
@@ -152,7 +171,7 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
 
                 </div>
 
-
+                            
 
 
 

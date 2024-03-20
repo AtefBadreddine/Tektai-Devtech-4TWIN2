@@ -18,11 +18,11 @@ interface UserData {
   password: string;
   role: string;
   bio: string;
-  
   gpts: number;
   spts: number;
   bpts: number;
   phoneNumber:number;
+  
   
   // Add other properties if necessary
 }

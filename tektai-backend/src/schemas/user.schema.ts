@@ -56,6 +56,10 @@ export class User {
     // Ajout de la propriété verificationCode
   @Prop({ default: null })
   verificationCode: string;
+
+   @Prop({ default: "" })
+  country: string;
+
 }
 
 

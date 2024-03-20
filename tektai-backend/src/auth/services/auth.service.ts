@@ -104,9 +104,6 @@ async resetPassword(dto: ResetPasswordDto): Promise<void> {
   await this.usersService.clearVerificationCode(user._id);
 }
 
-
-
- 
   async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
         // Récupérer l'utilisateur à partir de l'email
