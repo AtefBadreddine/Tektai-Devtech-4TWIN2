@@ -10,6 +10,18 @@ export class Settings {
 
   @Prop({ required: true })
   termsOfService: string;
+
+  @Prop({ required: true }) // Assuming these are required
+  github: string;
+
+  @Prop({ required: true })
+  facebook: string;
+
+  @Prop({ required: true })
+  linkedin: string;
+
+  @Prop({ required: true })
+  twitter: string;
 }
 
 export const SettingsSchema = SchemaFactory.createForClass(Settings);

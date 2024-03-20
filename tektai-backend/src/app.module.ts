@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import * as process from 'process';
 import { SettingsModule } from './settings/settings/settings.module';
+import { TermModule } from './termOfUse/term.module';
 
 @Module({
   imports: [
@@ -14,7 +15,8 @@ import { SettingsModule } from './settings/settings/settings.module';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
-    SettingsModule
+    SettingsModule,
+    TermModule
   ],
   controllers: [AppController],
   providers: [AppService],
