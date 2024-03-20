@@ -141,7 +141,7 @@ const Profile: React.FC = () => {
                   </div>
                   <div className="mb-2 text-blueGray-600">
                     <i className="fa fa-phone mr-2 text-lg text-blueGray-400"></i>
-                    99365422{userData?.phoneNumber??'Loading...'}
+                    {userData?.phoneNumber??'Loading...'}
                   </div> 
                 </div>
 

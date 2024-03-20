@@ -15,6 +15,7 @@ import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import { Tabs } from '@chakra-ui/tabs';
 import Transition from '../../utils/Transition'; // Assuming Transition component file location
+import ProfileCard from './partials/usersCard';
 
 function Home() {
   const products = [
@@ -113,12 +114,12 @@ function Home() {
 
         {/*  Page sections */}
         <Transition show appear>
-
         <HeroHome />        
         </Transition>
- <FeaturesHome/>
         
-       <FeaturesBlocks />  
+        <FeaturesHome/>
+        
+        <FeaturesBlocks />  
         {/* <HeroParallax products={products} /> */}
         <Slider userData={data} />
         <div className="container">
@@ -138,6 +139,8 @@ function Home() {
             <InfiniteMovingCards items={data} />
 
         <ContactUs></ContactUs>
+        
+        <ProfileCard></ProfileCard>
 
       </main>
 
