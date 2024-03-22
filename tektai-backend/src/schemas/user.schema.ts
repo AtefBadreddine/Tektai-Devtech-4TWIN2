@@ -54,6 +54,9 @@ export class User {
   @Prop({ default: "challenger" })
   role: string;
 
+  @Prop({ nullable: true, default: null }) 
+  image?: string;
+
 
 
 }

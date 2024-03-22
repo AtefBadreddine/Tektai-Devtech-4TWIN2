@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
 import Stats from './stats/stats';
+import axios from 'axios';
+
 interface UserData {
   username: string;
   email: string;
@@ -26,7 +28,8 @@ const Profile: React.FC = () => {
    let sptss: number = 0;
    let bptss: number = 0;
    const [userData, setUserData] = useState<UserData | null>(null);
-  
+   const [profileImageUrl, setProfileImageUrl] = useState('');
+
    useEffect(() => {
      const localStorageData = localStorage.getItem('user');
     
@@ -45,8 +48,25 @@ const Profile: React.FC = () => {
      } else {
        console.log('No user data found in local storage');
      }
+
+     const fetchUserData = async () => {
+      try {
+        // Fetch user data from the backend
+        const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
+        const userData = response.data;
+        setUserData(userData);
+        setProfileImageUrl(`/uploads/${userData.image}`);
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+    
    }, []);
-  
+
+   const imageUrl = userData?.image; // Assuming you retrieve the profile image URL from the API response
+
   return (
     <>
       <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
@@ -72,10 +92,30 @@ const Profile: React.FC = () => {
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
                     <div className="relative">
-                      <img alt="..." src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
+                    <img src={profileImageUrl} alt="Profile" />
+
+                      {/* <img alt="..." src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
                       className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
 
-                      />
+                      />  */}
+
+                      {/* {imageUrl && (
+                        <img
+                          alt="User Profile"
+                          src={imageUrl}
+                          className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                        />
+                      )} */}
+
+                {/* {userData && userData.image && (
+                  
+  <img
+    alt="User Profile"
+    src={imageUrl}
+    className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+  />
+)} */}
+
                     </div>
                   </div>
                   
@@ -268,6 +308,7 @@ const Profile: React.FC = () => {
               <div className="flex flex-wrap items-center md:justify-between justify-center">
               <div className="w-full md:w-6/12 px-4 mx-auto text-center">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
+            
                   <Footer /> 
 
                   

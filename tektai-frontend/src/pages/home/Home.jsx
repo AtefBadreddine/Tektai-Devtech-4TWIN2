@@ -15,7 +15,6 @@ import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import { Tabs } from '@chakra-ui/tabs';
 import Transition from '../../utils/Transition'; // Assuming Transition component file location
-import ProfileCard from './partials/usersCard';
 
 function Home() {
   const products = [
@@ -140,7 +139,6 @@ function Home() {
 
         <ContactUs></ContactUs>
         
-        <ProfileCard></ProfileCard>
 
       </main>
 

@@ -3,6 +3,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import {Model, mongo} from "mongoose";
 import { User } from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
+import { extname } from "path";
+
 
 
 @Injectable()
@@ -60,12 +62,43 @@ export class UsersService {
     }
   }
 
-  async updateUser(userId: string, userDto: UserDto): Promise<User> {
-    const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
-    if (!updatedUser) {
-      throw new NotFoundException('User not found');
+   async updateUser(userId: string, userDto: UserDto): Promise<User> {
+     const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
+     if (!updatedUser) {
+       throw new NotFoundException('User not found');
+     }
+     return updatedUser;
+   }
+
+
+  async uploadProfileImage(userId: string, userDto: UserDto, file: Express.Multer.File): Promise<User> {
+    try {
+      // Check if the user exists
+      const existingUser = await this.userModel.findById(userId).exec();
+      if (!existingUser) {
+        throw new NotFoundException('User not found');
+      }
+
+      // Update user properties
+      existingUser.image = userDto.image || existingUser.image;
+
+      // Update the profile image if provided in the DTO
+      if (file) {
+        // Handle file upload and update the user's image
+        const fileExt = extname(file.originalname);
+        const uniqueSuffix = `${userId}-${Date.now()}`; // Generate unique filename with user ID
+        const randomFileName = `${uniqueSuffix}${fileExt}`;
+
+        existingUser.image = randomFileName;
+
+      }
+
+      // Save the updated user
+      const updatedUser = await existingUser.save();
+      return updatedUser;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update user');
     }
-    return updatedUser;
   }
 
   async storePwdToken(token: string, id: string) {
@@ -124,7 +157,6 @@ export class UsersService {
     return users || null;
   }
   
-
   async blockUser(userId: string): Promise<User> {
     const user = await this.userModel.findById(userId);
     if (!user) {

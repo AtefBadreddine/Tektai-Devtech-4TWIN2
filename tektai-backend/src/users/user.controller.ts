@@ -14,6 +14,8 @@ import {
     Request,
     UseInterceptors,
     ClassSerializerInterceptor,
+    UploadedFile,
+    Res
 
 } from "@nestjs/common";
 
@@ -21,7 +23,7 @@ import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { UsersService } from "src/users/users.service";
 import {User} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
-
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('users')
 export class UserController {
@@ -61,10 +63,30 @@ export class UserController {
         }
     }
 
-    // @UseGuards(JwtAuthGuard)
+    @UseGuards(JwtAuthGuard)
     @Put(':userId')
-    async updateUser(@Param('userId') userId: string, @Body() userDto: UserDto) {
-        return await this.userService.updateUser(userId, userDto);
+    // @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
+    async updateUser(
+        @Param('userId') userId: string,
+        @Body() userDto: UserDto,
+        // @UploadedFile() file: Express.Multer.File, // Use @UploadedFile() for file parameter
+        ) {
+        return await this.userService.updateUser(
+            userId, 
+            userDto
+            // file
+            );
+    }
+
+    //@UseGuards(JwtAuthGuard)
+    @Put('/upload/:userId')
+    @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
+    async uploadProfileImage(
+        @Param('userId') userId: string,
+        @Body() userDto: UserDto,
+        @UploadedFile() file: Express.Multer.File,
+        ) {
+        return await this.userService.uploadProfileImage(userId, userDto, file);
     }
 
     @UseGuards(JwtAuthGuard)

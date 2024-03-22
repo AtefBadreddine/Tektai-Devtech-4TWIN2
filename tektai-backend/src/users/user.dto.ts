@@ -1,5 +1,7 @@
 // user.dto.ts
 export class UserDto {
+    userId : string;
+    _id: string;
     username: string;
     email: string;
     password: string;
@@ -9,4 +11,6 @@ export class UserDto {
     companyName: string;
     adresse: string;
     role: string;
+    image?: string;
+
 }
