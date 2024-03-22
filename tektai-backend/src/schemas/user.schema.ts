@@ -7,7 +7,7 @@ import {
   Document
 } from 'mongoose';
 import * as mongoose from "mongoose";
-import {classToPlain, Exclude} from 'class-transformer';
+import { Exclude} from 'class-transformer';
 
 
 export type UserDocument = User & Document;

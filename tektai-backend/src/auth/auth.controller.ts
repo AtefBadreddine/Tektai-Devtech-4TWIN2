@@ -6,7 +6,7 @@ import {
   UseGuards,
   Body,
   Logger,
-  HttpException, HttpStatus, Res, Get, InternalServerErrorException, NotFoundException, Patch, Req, UnauthorizedException
+  HttpException, HttpStatus, Res, Get, InternalServerErrorException, NotFoundException, Patch, Req, UnauthorizedException, Put, UploadedFile, UseInterceptors
 
 } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
@@ -18,9 +18,13 @@ import {GoogleAuthGuard} from "./guards/google-auth.guard";
 import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
 
+import { FileInterceptor } from '@nestjs/platform-express';
+
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger();
+    
+
   constructor(private authService: AuthService,private  userService: UsersService) {}
 
   @UseGuards(LocalAuthGuard)
@@ -145,8 +149,6 @@ async changePassword(
     await this.authService.resetPassword(dto);
   }
   
-  
-
 }
 
 
