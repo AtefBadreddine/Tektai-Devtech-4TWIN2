@@ -140,6 +140,8 @@ function Home() {
     </div>
         
  {/* <Testimonials /> */}
+
+
         {/* <Newsletter /> */}
         <Transition show appear>
 

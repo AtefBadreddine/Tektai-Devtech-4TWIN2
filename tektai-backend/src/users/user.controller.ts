@@ -46,6 +46,11 @@ export class UserController {
     async findByUsername(@Param('username') username: string) {
         return await this.userService.findUserByUsername(username);
     }
+    
+    @Get('getById/:userId') // Define the route for getById endpoint
+    async getUserById(@Param('userId') userId: string): Promise<User> { // Define the method to handle getById logic
+        return await this.userService.findById(userId); // Call the findById method of UsersService
+    }
 
     @UseGuards(JwtAuthGuard)
     @Delete(':userId')

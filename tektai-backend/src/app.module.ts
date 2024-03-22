@@ -8,6 +8,8 @@ import { UsersModule } from './users/users.module';
 import * as process from 'process';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
+import { ChallengesModule } from './challenge/challenges.module';
+import { MulterConfigModule } from './multer.module';
 
 @Module({
   imports: [
@@ -16,7 +18,9 @@ import { TermModule } from './termOfUse/term.module';
     AuthModule,
     UsersModule,
     SettingsModule,
-    TermModule
+    TermModule,
+    ChallengesModule,
+    MulterConfigModule
   ],
   controllers: [AppController],
   providers: [AppService],

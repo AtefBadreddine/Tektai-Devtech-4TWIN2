@@ -49,6 +49,7 @@ import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 
 
 
@@ -115,6 +116,7 @@ import UserList from './components/User/Userlist';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 

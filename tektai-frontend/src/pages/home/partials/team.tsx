@@ -1,5 +1,8 @@
 import { cn } from "../../../utils/cn";
 import React, { useEffect, useState } from "react";
+import './team.css';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons"; // Import required icons
 
 export const InfiniteMovingCards = ({
   items,
@@ -74,50 +77,67 @@ export const InfiniteMovingCards = ({
   return (
     <div className="">
       <div
-      ref={containerRef}
-      className={cn(
-        "py-20 scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
-        className
-      )}
-    >
-      <ul
-        ref={scrollerRef}
+        ref={containerRef}
         className={cn(
-          "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
-          start && "animate-scroll ",
-          pauseOnHover && "hover:[animation-play-state:paused]"
+          "py-20 scroller relative z-20 max-w-7xl overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]",
+          className
         )}
       >
-        {items.map((item, idx) => (
-          <li
-            className="bg-gray-100 text-gray-800 w-[350px] max-w-full relative rounded-2xl border border-b-0 border-gray-300 px-8 py-6 md:w-[450px]"
-            style={{
-              background: "linear-gradient(180deg, #ffffff, #e5e5e5)",
-            }}
-            key={item.name}
-          >
-            <blockquote>
-              <div className="flex items-center justify-between mb-4">
-                <img
-                  src={item.imageUrl}
-                  className="w-28 h-28 rounded-full border-4 border-white flex-shrink-0"
-                />
-                <img
-                  src={item.flagImageUrl}
-                  className=" rounded-full w-12 h-13 flex-shrink-0"
-                />
+        <ul
+          ref={scrollerRef}
+          className={cn(
+            "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
+            start && "animate-scroll ",
+            pauseOnHover && "hover:[animation-play-state:paused]"
+          )}
+        >
+          {items.map((item, idx) => (
+            <div className="card" key={idx}>
+              <div className="card-inner relative">
+             
+  
+                <li
+                  className="card-front  playing text-gray-800 w-[350px] max-w-full relative rounded-2xl border border-b-0 border-gray-300 px-8 py-6 md:w-[450px]"
+               
+                >
+               
+                  <blockquote>
+                    <div className=" flex items-center justify-between mb-4">
+                      <img
+                        src={item.imageUrl}
+                        className=" w-28 h-28 rounded-full border-4 border-white flex-shrink-0"
+                      />
+                      <img
+                        src={item.flagImageUrl}
+                        className="rounded-full w-13 h-13 flex-shrink-0 absolute top-2 right-2"
+                      />
+                    </div>
+                    <p className="  text-white text-lg leading-tight mb-4">
+                      {item.name}
+                    </p>
+                  </blockquote>
+                  <div className="wave" style={{ zIndex: -1 }}></div> 
+                  <div className="wave" style={{ zIndex: -1 }}></div>
+                  <div className="wave" style={{ zIndex: -1 }}></div>
+                </li>
+                <li className="card-back bg-gray-100 w-[350px] max-w-full relative rounded-2xl border border-b-0 border-gray-300 px-8 py-6 md:w-[450px]">
+                <blockquote>
+  <div className="font-bold text-white flex items-center">
+    <FontAwesomeIcon icon={faEnvelope} className="mr-2 w-m"  /> {/* Mail icon */}
+    <a href={`https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${item.email}`} className="text-sm">{item.email}</a>
+  </div>
+  <div className="text-white flex items-center mt-2">
+    <FontAwesomeIcon icon={faUser} className="mr-2 w-m"  /> {/* Speciality icon */}
+    <p className="text-sm">{item.title}</p>
+  </div>
+</blockquote>
+
+                </li>
               </div>
-              <p className="text-gray-700 text-lg leading-tight mb-4">
-                {item.name}
-              </p>
-              <div className="text-gray-700 font-bold">
-<a href={`https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${item.email}`} className="text-sm">{item.email}</a>
-                <p className="text-sm">{item.title}</p>
-              </div>
-            </blockquote>
-          </li>
-        ))}
-      </ul>
-    </div></div>
+            </div>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 };
