@@ -10,8 +10,6 @@ import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
 
-;
-
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger();
@@ -105,6 +103,7 @@ export class AuthService {
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
     await this.usersService.clearResetToken(user._id);
   }
+
   async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
         // Récupérer l'utilisateur à partir de l'email
