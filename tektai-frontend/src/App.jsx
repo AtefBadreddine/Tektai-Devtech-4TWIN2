@@ -10,6 +10,7 @@
   import './css/additional-styles/satoshi.css'; // Import the CSS file
   import { library } from '@fortawesome/fontawesome-svg-core'
 
+
   // import your icons
   import { fab } from '@fortawesome/free-brands-svg-icons'
   import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -49,6 +50,9 @@ import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
+import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+
+
 
 
 
@@ -84,6 +88,7 @@ import UserList from './components/User/Userlist';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/fileuploadform" element={<FileUploadForm />} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
@@ -110,7 +115,7 @@ import UserList from './components/User/Userlist';
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
 
-          <Route element={<ProtectedRoute adminOnly />}>
+          <Route >
             <Route path="/admin" element={<Dashhome />}    />
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
@@ -118,6 +123,8 @@ import UserList from './components/User/Userlist';
 
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
+
+           
           </Route>
 
         </Routes>)

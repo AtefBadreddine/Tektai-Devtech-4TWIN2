@@ -27,5 +27,6 @@ import { Submission, SubmissionSchema } from 'src/schemas/submission.schema';
   ],
   controllers: [SubmissionController],
   providers: [SubmissionService],
+   exports: [SubmissionService],
 })
 export class SubmissionModule {}

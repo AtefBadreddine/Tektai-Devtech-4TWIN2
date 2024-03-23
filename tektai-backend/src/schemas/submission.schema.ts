@@ -5,14 +5,14 @@ export type SubmissionDocument = Submission & Document;
 
 @Schema()
 export class Submission {
-  @Prop({ required: true })
-  teamId: string;
-
-  @Prop({ required: true })
-  pdfFilePath: string;
-
   @Prop({ required: false })
-  notebookFilePath: string;
+  TeamId: string;
+
+  @Prop({ type: Buffer, required: false }) // Utilisez Buffer pour stocker les données binaires
+  pdf: Buffer;
+
+  @Prop({ type: Buffer, required: false }) // Utilisez Buffer pour stocker les données binaires
+  notebook: Buffer;
 }
 
 export const SubmissionSchema = SchemaFactory.createForClass(Submission);
