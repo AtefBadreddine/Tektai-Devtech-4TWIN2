@@ -14,6 +14,7 @@ interface UserData {
   password: string;
   phoneNumber:string;
   companyName: string;
+  adresse: string;
   role: string;
   bio: string;
     
@@ -90,14 +91,15 @@ const Profile: React.FC = () => {
               <div className="px-6">
  {/* section 1 */}
                 <div className="flex flex-wrap justify-center">
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                
+                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-30">
                     <div className="relative">
-                    <img src={profileImageUrl} alt="Profile" />
+                    {/* <img src={profileImageUrl} alt="Profile" /> */}
 
-                      {/* <img alt="..." src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
+                       <img alt="..." src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
                       className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
 
-                      />  */}
+                      />  
 
                       {/* {imageUrl && (
                         <img
@@ -119,18 +121,27 @@ const Profile: React.FC = () => {
                     </div>
                   </div>
                   
-                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
-                    <div className="py-6 px-3 mt-32 sm:mt-0">
+                  <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:pt-4">
+                    {/* <div className="py-6 px-3 mt-32 sm:mt-0"> */}
                     {userData?.role === 'challenger' ? (
-                      <button className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 hover:text-gray-100 font-bold py-2 px-4 rounded-l uppercase font-bold hover:shadow-md shadow text-xs outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 " type="button">
                         Manage Teams
                       </button>
                     ): (
-                      <button className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
-                      Manage Challenges
-                    </button>
-                    )}
+                  <div className="flex justify-center ">
+                  <div className="mr-4 p-3 text-center">
+                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 hover:text-gray-100 font-bold py-2 px-3 rounded-l hover:shadow-md shadow text-xs " type="button">
+                        New Challenge
+                        </button>
+                  </div>
+                  <div className="mr-4 p-3 text-center">
+                  <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 hover:text-gray-100 font-bold py-2 px-3 rounded-l hover:shadow-md shadow text-xs " type="button">
+                        My Challenges
+                  </button>                  
+                  </div>
                     </div>
+                    )}
+                    {/* </div> */}
                   </div>
 
                   <div className="w-full lg:w-4/12 px-4 lg:order-1">
@@ -149,9 +160,12 @@ const Profile: React.FC = () => {
                     </div>
 
                   ) : (
-                  <div className="flex justify-center py-4 lg:pt-4 pt-8">
+                  <div className="flex justify-center py-4 lg:pt-4 pt-4">
                     <div className="mr-4 p-3 text-center">
-                     <span className="text-sm text-blueGray-400">{userData?.companyName??'Loading...'}</span>
+                     <span className="text-sm text-blueGray-800"><i className="fa fa-building"/> {userData?.companyName??'Loading...'}</span>
+                    </div>
+                    <div className="mr-4 p-3 text-center">
+                     <span className="text-sm text-blueGray-800"><i className="fa fa-map-pin"/> {userData?.adresse??'Loading...'}</span>
                     </div>
                   </div>
 )}
@@ -185,21 +199,19 @@ const Profile: React.FC = () => {
                   </div> 
                 </div>
 
-{/* about  */}
-                {/* <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
-                  <div className="flex flex-wrap justify-center">
+{/* BIO  */}
+                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
+                  <div className="flex flex-wrap justify-center">                  
                     <div className="w-full lg:w-9/12 px-4">
+                    <h3 className="text-2xl font-semibold leading-normal mb-2 mb-2 text-black dark:text-white">BIO</h3>
+
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                      {userData?.bio??'Loading...'}
                       </p>
-                      <a href="#pablo" className="font-normal text-pink-500">Show more</a>
+                      {/* <a href="#pablo" className="font-normal text-pink-500">Show more</a> */}
                     </div>
                   </div>
-                </div> */}
+                </div> 
 
 <div className="flex flex-wrap justify-center">
   
@@ -238,15 +250,6 @@ const Profile: React.FC = () => {
                   <span></span> Bronze
                 </span>
               </div>
-            </div>
-
-            <div className="mx-auto max-w-180">
-              <h4 className="font-semibold text-black dark:text-white">
-                About Me
-              </h4>
-              <p className="mt-4.5">
-                {userData?.bio ?? 'Loading...'}
-              </p>
             </div>
 
             <div className="mt-6.5">
