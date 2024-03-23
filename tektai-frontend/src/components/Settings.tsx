@@ -113,7 +113,7 @@ const Settings = () => {
           </div>
       )}
       <div className="grid grid-cols-5 gap-8">
-        <div className="col-span-5 xl:col-span-3">
+        <div className="col-span-5 xl:col-span-5">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
@@ -351,7 +351,7 @@ const Settings = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-5 xl:col-span-2">
+       {/* <div className="col-span-5 xl:col-span-2">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
@@ -362,7 +362,7 @@ const Settings = () => {
               <form >
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-14 w-14 rounded-full">
-                    {/* <img src={userThree} alt="User" /> */}
+                     <img src={userThree} alt="User" />
                   </div>
                   <div>
                     <span className="mb-1.5 text-black dark:text-white">
@@ -440,7 +440,7 @@ const Settings = () => {
               </form>
             </div>
           </div>
-        </div>
+        </div>*/}
       </div>
     </div></>
   );
