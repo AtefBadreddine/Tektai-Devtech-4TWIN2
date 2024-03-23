@@ -15,6 +15,13 @@ export class ChallengesController {
   async findAll(): Promise<Challenges[]> {
     return this.challengesService.findAll();
   }
+
+
+  @Get('search')
+  findByTitle(@Query('title') title: string): Promise<Challenges[]> {
+    return this.challengesService.findByTitle(title);
+  }
+
   @Get('filter')
   async getFilteredChallenges(
     @Query('status') status: string,
@@ -70,4 +77,7 @@ export class ChallengesController {
       console.error('Error uploading file:', error);
       return { error: 'Failed to upload file' };
     }
-  }}
+  }
+
+
+}

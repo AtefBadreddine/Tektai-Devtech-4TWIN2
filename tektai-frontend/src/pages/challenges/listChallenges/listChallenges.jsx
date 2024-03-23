@@ -1,4 +1,3 @@
-// ListChallenges.js
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Challenges from "./challenge";
@@ -8,10 +7,25 @@ import Footer from "../../../layout/Footer";
 
 function ListChallenges() {
     const [activeTab, setActiveTab] = useState('Ongoing');
+    const [searchTitle, setSearchTitle] = useState('');
+    const [challenges, setChallenges] = useState([]);
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
+
+    const handleSearch = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3000/challenges/search?title=${searchTitle}`);
+            setChallenges(response.data);
+        } catch (error) {
+            console.error('Error fetching challenges:', error);
+        }
+    };
+
+    useEffect(() => {
+        handleSearch();
+    }, [searchTitle]);
 
     return (
         <div className="ml-4 flex flex-col min-h-screen overflow-hidden">
@@ -27,7 +41,7 @@ function ListChallenges() {
                     <div className="relative shadow-sm sm:rounded-lg">
                         <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                             <div className="w-full md:w-1/2">
-                                <form className="flex items-center">
+                                <form className="flex items-center" onSubmit={e => { e.preventDefault(); handleSearch(); }}>
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -42,18 +56,18 @@ function ListChallenges() {
                                         </div>
                                         <input type="text" id="simple-search"
                                             className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 "
-                                            placeholder="Search" required="" />
+                                            placeholder="Search" required="" value={searchTitle} onChange={e => setSearchTitle(e.target.value)} />
                                     </div>
                                 </form>
                             </div>
-<div className="flex items-center">
-  <Link to="/challenges/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-    </svg>
-    Create Challenge
-  </Link>
-</div>
+                            <div className="flex items-center">
+                                <Link to="/challenges/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                    </svg>
+                                    Create Challenge
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,9 +95,9 @@ function ListChallenges() {
                     </div>
                     {/* Tab content */}
                     <div>
-                        {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
-                        {activeTab === 'Completed' && <div><h1 className="text-xl font-bold my-4">Completed Challenges</h1> <Challenges status="Completed" /></div>}
-                        {activeTab === 'Upcoming' && <div><h1 className="text-xl font-bold my-4">Upcoming Challenges</h1> <Challenges status="Upcoming" /></div>}
+                        {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" challenges={challenges} /></div>}
+                        {activeTab === 'Completed' && <div><h1 className="text-xl font-bold my-4">Completed Challenges</h1> <Challenges status="Completed" challenges={challenges} /></div>}
+                        {activeTab === 'Upcoming' && <div><h1 className="text-xl font-bold my-4">Upcoming Challenges</h1> <Challenges status="Upcoming" challenges={challenges} /></div>}
                     </div>
                 </div>
 
@@ -91,7 +105,7 @@ function ListChallenges() {
                     {/* Render other content here */}
                 </div>
             </main>
-            <Footer/>
+            <Footer />
         </div>
     );
 }
