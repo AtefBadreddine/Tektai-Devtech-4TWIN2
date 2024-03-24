@@ -67,7 +67,9 @@ const Profile: React.FC = () => {
    }, []);
 
    const imageUrl = userData?.image; // Assuming you retrieve the profile image URL from the API response
+   console.log("userData",userData);
 
+   
   return (
     <>
       <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
@@ -92,34 +94,24 @@ const Profile: React.FC = () => {
  {/* section 1 */}
                 <div className="flex flex-wrap justify-center">
                 
-                  <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-30">
-                    <div className="relative">
-                    {/* <img src={profileImageUrl} alt="Profile" /> */}
+                <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center mb-30">
+  <div className="relative">
+    {userData && userData.image ? (
+      <img
+        src={`http://localhost:3000/uploads/${userData.image}`}
+        alt="Profile"
+        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+      />
+    ) : (
+      <img
+        src="../../public/default-profile-picture.png" // Adjust the path to your static image
+        alt="Default Profile"
+        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+      />
+    )}
+  </div>
+</div>
 
-                       <img alt="..." src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
-                      className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-
-                      />  
-
-                      {/* {imageUrl && (
-                        <img
-                          alt="User Profile"
-                          src={imageUrl}
-                          className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-                        />
-                      )} */}
-
-                {/* {userData && userData.image && (
-                  
-  <img
-    alt="User Profile"
-    src={imageUrl}
-    className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
-  />
-)} */}
-
-                    </div>
-                  </div>
                   
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:pt-4">
                     {/* <div className="py-6 px-3 mt-32 sm:mt-0"> */}

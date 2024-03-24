@@ -447,13 +447,15 @@ const Settings = () => {
                 {/* <ImageUpload userId={userData?._id} /> */}
                 <div className="flex justify-end gap-4.5">
                   <button
-                    className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
+                    className="flex justify-center relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
                     type="button"
                   >
-                    Cancel
+                    <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    Cancel</span>
+                    
                   </button>
                   <button
-                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                     type="submit"
                   >
                     Save
@@ -461,9 +463,20 @@ const Settings = () => {
                 </div>
 </form>
           <hr />
-{/* section4     */}
+{/* section4    */}
+
+           <div className="md:inline-flex space-y-4 md:space-y-0 w-full p-4  text-gray-500 items-center">
+            <h2 className="md:w-1/3 max-w-sm mx-auto bold">Profile image</h2>
+             <div className="md:w-2/3 max-w-sm mx-auto"> 
+             <UploadImageForm userId={userData?._id}/>
+            </div> 
+          </div> 
+
+
+          <hr />
+{/* section5     */}
    
-          <form onSubmit={handleSubmit}>
+           <form onSubmit={handleSubmit}>
           {flashMessage && (
           <div className="bg-green-500 text-white p-4 mb-4">
             {flashMessage}
@@ -535,7 +548,7 @@ const Settings = () => {
           </div>
               <div className="flex justify-end gap-4.5">
                   <button
-                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                    className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                     type="submit"
                     >
                    <svg
@@ -578,8 +591,9 @@ const Settings = () => {
             </div> */}
 
 
+
           <hr />
-{/* section5     */}
+{/* section6     */}
           <div className="w-full p-4 text-right text-gray-800">
             <button className="inline-flex items-center focus:outline-none mr-4">
               <svg
@@ -598,6 +612,10 @@ const Settings = () => {
               Delete account
             </button>
           </div>
+
+
+    {flashMessage && <div>{flashMessage}</div>}
+
         </div>
       </div>
     </section>

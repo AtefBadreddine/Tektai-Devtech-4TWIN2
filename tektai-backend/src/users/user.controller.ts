@@ -10,12 +10,9 @@ import {
     InternalServerErrorException,
     Put,
     Body,
-    Req,
     Request,
     UseInterceptors,
-    ClassSerializerInterceptor,
     UploadedFile,
-    Res
 
 } from "@nestjs/common";
 
@@ -80,13 +77,13 @@ export class UserController {
 
     //@UseGuards(JwtAuthGuard)
     @Put('/upload/:userId')
-    @UseInterceptors(FileInterceptor('file')) // Use FileInterceptor for handling file uploads
+    @UseInterceptors(FileInterceptor('image')) // Use FileInterceptor for handling image uploads
     async uploadProfileImage(
         @Param('userId') userId: string,
         @Body() userDto: UserDto,
-        @UploadedFile() file: Express.Multer.File,
+        @UploadedFile() image: Express.Multer.File,
         ) {
-        return await this.userService.uploadProfileImage(userId, userDto, file);
+        return await this.userService.uploadProfileImage(userId, userDto, image);
     }
 
     @UseGuards(JwtAuthGuard)

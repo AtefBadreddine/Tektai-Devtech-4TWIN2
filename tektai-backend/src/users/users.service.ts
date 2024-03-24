@@ -71,7 +71,7 @@ export class UsersService {
    }
 
 
-  async uploadProfileImage(userId: string, userDto: UserDto, file: Express.Multer.File): Promise<User> {
+  async uploadProfileImage(userId: string, userDto: UserDto, image: Express.Multer.File): Promise<User> {
     try {
       // Check if the user exists
       const existingUser = await this.userModel.findById(userId).exec();
@@ -83,10 +83,10 @@ export class UsersService {
       existingUser.image = userDto.image || existingUser.image;
 
       // Update the profile image if provided in the DTO
-      if (file) {
-        // Handle file upload and update the user's image
-        const fileExt = extname(file.originalname);
-        const uniqueSuffix = `${userId}-${Date.now()}`; // Generate unique filename with user ID
+      if (image) {
+        // Handle image upload and update the user's image
+        const fileExt = extname(image.originalname);
+        const uniqueSuffix = `${userId}`; // Generate unique filename with user ID
         const randomFileName = `${uniqueSuffix}${fileExt}`;
 
         existingUser.image = randomFileName;
