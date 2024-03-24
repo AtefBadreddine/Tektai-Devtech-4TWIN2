@@ -10,6 +10,8 @@ import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
 import { ChallengesModule } from './challenge/challenges.module';
 import { MulterConfigModule } from './multer.module';
+import { HistorychallengesModule } from './historychallenges/historychallenges.module';
+import { HistorychallengesService } from './historychallenges/historychallenges.service';
 
 @Module({
   imports: [
@@ -20,9 +22,10 @@ import { MulterConfigModule } from './multer.module';
     SettingsModule,
     TermModule,
     ChallengesModule,
-    MulterConfigModule
-  ],
+    MulterConfigModule,
+    HistorychallengesModule
+    ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,HistorychallengesService],
 })
 export class AppModule {}

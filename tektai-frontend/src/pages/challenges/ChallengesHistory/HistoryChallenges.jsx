@@ -8,6 +8,9 @@ function HistoryChallenges() {
     const defaultCompanyId = "65de2f67e35266b9b459132b";
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    
     const truncateText = (text, maxLength) => {
         if (text.length > maxLength) {
           return text.substring(0, maxLength) + '...';
@@ -18,8 +21,10 @@ function HistoryChallenges() {
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
-                const response = await axios.get("http://localhost:3000/challenges");
-                setChallenges(response.data.reverse()); // Reverse the challenges array
+                const response = await axios.get(`http://localhost:3000/challenges/company/${user._id}`, {
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+                  });
+                                  setChallenges(response.data.reverse()); // Reverse the challenges array
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching challenges:', error);
@@ -98,6 +103,7 @@ function HistoryChallenges() {
                     </div>
                 </div>
             </div>
+            
             <main className="flex-grow container mx-auto space-y-12">
                 <section className="timeline">
                     <ul>
@@ -114,6 +120,7 @@ function HistoryChallenges() {
                                         <time>{displayStartDate}</time>
                                         <div className="discovery">
                                             <h1 className="text-xl font-semibold mb-2">{truncateText(challenge.title, 15)}</h1>
+
                                             <span className="text-gray-600 text-sm mb-2">Description: {truncateText(challenge.description, 20)}</span>
                                             <Link to={`/challenges/${challenge._id}`} className="menu__link text-sm">View Details</Link>
                                         </div>

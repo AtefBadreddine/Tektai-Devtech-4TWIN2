@@ -85,43 +85,37 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
           <SpinnerWithBackground />
         ) : (
         <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/forget-password" element={<Forgetpassword />} />
-          <Route path="/challenges" element={<ListChallenges />} />
-          <Route path="/challenges/new" element={<CreateChallenge />} />
-          <Route path="/challenges/:id" element={<ChallengeDetails />} />
-          <Route path="/ranking" element={<Ranking />} />
-          <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
-          <Route path="/NotAdmin" element={<NotAdmin />} />
-          <Route path="/forgetpawd" element={<Forgetpassword />} />
-          <Route path="/profile/:id" element={<ProfileAll/>} />
-          <Route path="/UserSearchF" element={<UserSearchF/>} />
-          
-          <Route path="/results" element={<SearchResult />} />
-          <Route path="/resultsf" element={<SearchResultF />} />
+         <Route exact path="/" element={<Home />} />
+  <Route path="/signin" element={<SignIn />} />
+  <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
+  <Route path="/signup" element={<SignUp />} />
+  <Route path="/reset-password" element={<ResetPassword />} />
+  <Route path="/forget-password" element={<Forgetpassword />} />
+  <Route path="/challenges" element={<ListChallenges />} />
+  <Route path="/challenges/new" element={<CreateChallenge />} />
+  <Route path="/challenges/:id" element={<ChallengeDetails />} />
+  <Route path="/ranking" element={<Ranking />} />
+  <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
+  <Route path="/NotAdmin" element={<NotAdmin />} />
+  <Route path="/forgetpawd" element={<Forgetpassword />} />
+  <Route path="/profile/:id" element={<ProfileAll/>} />
+  <Route path="/UserSearchF" element={<UserSearchF/>} />
+  
+  <Route path="/results" element={<SearchResult />} />
+  <Route path="/resultsf" element={<SearchResultF />} />
 
-          <Route path="*" element={<NotFound />} />
+  <Route path="*" element={<NotFound />} />
 
-          <Route element={<ProtectedRoute/>}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/pages/settings" element={<Settings />} />
-          </Route>
+  <Route path="/profile" element={<Profile />} />
+  <Route path="/pages/settings" element={<Settings />} />
 
-          <Route element={<ProtectedRoute adminOnly />}>
-            <Route path="/admin" element={<Dashhome />}    />
-            <Route path="/crm" element={<CrmForm/>} />
-            <Route path="/search" element={<UserSearch />} />
-            <Route path="/adminuser" element={<UserList />} />
-            <Route path="/historychallenges" element={<HistoryChallenges/>} />
+  <Route path="/admin" element={<Dashhome />}    />
+  <Route path="/crm" element={<CrmForm/>} />
+  <Route path="/search" element={<UserSearch />} />
+  <Route path="/adminuser" element={<UserList />} />
+  <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
-            <Route path="/profileadmin" element={<Settingsadmin/>} />
-
-          </Route>
-
+  <Route path="/profileadmin" element={<Settingsadmin/>} />
         </Routes>)
 
         }

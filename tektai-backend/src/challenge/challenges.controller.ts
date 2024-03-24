@@ -1,10 +1,11 @@
 // challenges.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 
 @Controller('challenges')
@@ -41,7 +42,18 @@ export class ChallengesController {
     return this.challengesService.findById(id);
   }
 
+
+  @Get('company/:companyId')
+  @UseGuards(JwtAuthGuard) 
+  async getChallengesByCompanyId(@Param('companyId') companyId: string): Promise<Challenges[]> {
+    return this.challengesService.getChallengesByCompanyId(companyId);
+  }
+
+
+
+  
   @Post()
+  @UseGuards(JwtAuthGuard) 
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
   }

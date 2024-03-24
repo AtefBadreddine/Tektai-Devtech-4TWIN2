@@ -56,8 +56,12 @@ export class ChallengesService {
     const regex = new RegExp(title, 'i'); // Case-insensitive search
     return this.challengesModel.find({ title: { $regex: regex } }).exec();
   }
+  async getChallengesByCompanyId(company_id: string): Promise<Challenges[]> {
+    const regex = new RegExp(company_id, 'i'); // Case-insensitive search
+    return this.challengesModel.find({ company_id: { $regex: regex } }).exec();
+  }
   
-
+  
 
   
 }

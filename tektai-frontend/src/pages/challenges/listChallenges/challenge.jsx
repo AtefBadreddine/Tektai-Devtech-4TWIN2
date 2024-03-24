@@ -56,6 +56,7 @@ const Challenges = ({ status }) => {
     }, [challenge.company_id]);
 
     const imageSrc = challenge.image ? challenge.image : defaultImagePath;
+    
     return (
       <div className="max-w-xs rounded overflow-hidden shadow-lg my-2 relative hover:shadow-xl">
          <img 
@@ -78,9 +79,12 @@ const Challenges = ({ status }) => {
             <Link to={`/challenges/${challenge._id}`} className="menu__link">View Details</Link>
           )}
           {status === 'Ongoing' && (
-            <Link to={`/challenges/${challenge._id}`} className="btn-smm font-bold py-2 px-4 rounded">
-              Participate
-            </Link>
+     <Link 
+     to={isLoggedIn() ? `/challenges/${challenge._id}` : "/signin"} 
+     className={`btn-smm font-bold py-2 px-4 rounded ${isLoggedIn() ? "" : "cursor-not-allowed opacity-50"} ${isLoggedIn() ? "" : "bg-black text-white"}`}
+   >
+     {isLoggedIn() ? "Participate" : "Sign In to Participate"}
+   </Link>
           )}
           {status === 'Upcoming' && (
             <button className="bg-[#6fc5ff] text-white font-bold py-2 px-4 rounded" disabled>
@@ -90,6 +94,10 @@ const Challenges = ({ status }) => {
         </div>
       </div>
     );
+  };
+  const isLoggedIn = () => {
+    const storedToken = localStorage.getItem('token');
+    return !!storedToken;
   };
 
   return (
