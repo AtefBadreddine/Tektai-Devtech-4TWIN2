@@ -42,7 +42,17 @@ function ContactUs() {
           </div>
           <div className="md:w-1/2">
             <div className="right-image">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3231.097263291829!2d10.151678615210185!3d36.86123887992854!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12e2cb7454c6ed51%3A0x683b3ab5565cd357!2sESPRIT!5e0!3m2!1sen!2stn!4v1561440545863!5m2!1sen!2stn" width="100%" height="300" frameBorder="0" style={{ border: 0 }} allowFullScreen data-aos="fade-left" data-aos-duration="3000"></iframe>
+            
+              <iframe
+  width="600"
+  height="450"
+  style="border:0"
+  loading="lazy"
+  allowfullscreen
+  referrerpolicy="no-referrer-when-downgrade"
+  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyACvnBjxSpzHjh_Qxv1ZsMwvlZVSfun-G0
+    &q=Space+Needle,Seattle+WA">
+</iframe>
             </div>
           </div>
         </div>

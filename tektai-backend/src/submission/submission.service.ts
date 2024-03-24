@@ -23,5 +23,14 @@ export class SubmissionService {
       this.logger.error(`Error saving submission: ${error.message}`);
       throw error;
     }
+
+  }
+  async saveSubmissionPaths(teamId: string, pdfPath: string, notebookPath: string): Promise<void> {
+    const submission = new this.submissionModel({
+      TeamId: teamId,
+      pdf: pdfPath,
+      notebook: notebookPath,
+    });
+    await submission.save();
   }
 }

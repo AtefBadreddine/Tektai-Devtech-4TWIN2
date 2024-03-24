@@ -8,11 +8,11 @@ export class Submission {
   @Prop({ required: false })
   TeamId: string;
 
-  @Prop({ type: Buffer, required: false }) // Utilisez Buffer pour stocker les données binaires
-  pdf: Buffer;
+  @Prop({ required: false }) // Type modifié pour stocker le chemin du fichier
+  pdf: string;
 
-  @Prop({ type: Buffer, required: false }) // Utilisez Buffer pour stocker les données binaires
-  notebook: Buffer;
+  @Prop({ required: false }) // Type modifié pour stocker le chemin du fichier
+  notebook: string;
 }
 
 export const SubmissionSchema = SchemaFactory.createForClass(Submission);

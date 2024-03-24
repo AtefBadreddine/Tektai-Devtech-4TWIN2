@@ -14,10 +14,10 @@ function FileUploadForm() {
       console.log('PDF File:', pdf);
       console.log('Notebook File:', notebook);
       
-      const formData = new FormData();
-      formData.append('TeamId', TeamId);
-      formData.append('pdf', pdf);
-      formData.append('notebook', notebook);
+      const formData = []
+      formData.push('TeamId', TeamId);
+      formData.push('pdf', pdf);
+      formData.push('notebook', notebook);
 
       console.log('Form data to be sent:', formData);
 
