@@ -5,7 +5,7 @@ import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
 import {UserDto} from "../../users/user.dto";
-import {User} from "../../schemas/user.schema";
+
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
@@ -104,7 +104,7 @@ async resetPassword(dto: ResetPasswordDto): Promise<void> {
   await this.usersService.clearVerificationCode(user._id);
 }
 
-  async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
+async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
         // Récupérer l'utilisateur à partir de l'email
         const user = await this.usersService.findByEmail(email);

@@ -78,7 +78,7 @@ function Home() {
       title: "Back-end Dev",
       imageUrl: "/ala.jpg",
       flagImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1200px-Flag_of_Tunisia.svg.png",
-      email:"alaEddine.ibrahim@gmail.com"
+      email:"ibrahim.alaeddine@esprit.tn"
 
     },{
       name: "Balkis Hmidi",

@@ -42,7 +42,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
-
+import MapComponent from './pages/Localisation/MapComponent'; 
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
 import SearchResult from './pages/usersearch/SearchResult';
@@ -88,6 +88,7 @@ import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/Map" element={<MapComponent />} />
         <Route path="/fileuploadform" element={<FileUploadForm />} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />

@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import * as process from 'process';
 import { MulterModule } from '@nestjs/platform-express';
 import { SubmissionModule } from './submission/submission.module';
+import { LocalisationModule } from './localisation/localisation.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SubmissionModule } from './submission/submission.module';
       dest: './uploads', // Répertoire de destination pour stocker les fichiers téléchargés
     }),
     SubmissionModule,
+    LocalisationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
