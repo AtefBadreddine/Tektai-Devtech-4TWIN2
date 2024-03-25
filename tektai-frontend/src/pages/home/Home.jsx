@@ -96,11 +96,11 @@ function Home() {
       email:"sirine.benyounes@esprit.tn"
 
 
-
     },
     // Add more data objects as needed
   ];
     // Add more items as needed
+
   const localStorageData = localStorage.getItem('user');
 
   return (
@@ -115,11 +115,13 @@ function Home() {
         {/*  Page sections */}
         <Transition show appear>
 
+
         <HeroHome />
         </Transition>
         <FeaturesHome/>
 
        <FeaturesBlocks />
+
         {/* <HeroParallax products={products} /> */}
         <Slider userData={data} />
         <div className="container">

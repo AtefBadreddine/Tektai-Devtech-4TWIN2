@@ -99,6 +99,7 @@ export class AuthService {
     // Effacer le jeton de réinitialisation de mot de passe dans la base de données
     await this.usersService.clearResetToken(user._id);
   }
+
   async changePassword(email: string, currentPassword: string, newPassword: string): Promise<void> {
     try {
         // Récupérer l'utilisateur à partir de l'email
