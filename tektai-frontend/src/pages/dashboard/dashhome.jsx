@@ -18,7 +18,6 @@ const Dashhome = () => {
         <div className="col-span-12 md:col-span-4 xl:col-span-3 2xl:col-span-4">
           <Chartone />
         </div>
-       
       </div>
     </DefaultLayout>
   );
