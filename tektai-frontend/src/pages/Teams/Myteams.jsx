@@ -3,6 +3,8 @@ import TeamsService from '../../services/teamServices';
 import UsersService from '../../services/userService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faUser, faCog, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
+import Header from '../../layout/Header';
+import Footer from '../../layout/Footer';
 
 function MyTeams() {
   const [teams, setTeams] = useState([]);
@@ -11,6 +13,7 @@ function MyTeams() {
   const [users, setUsers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [updateSuccess, setUpdateSuccess] = useState(null); // Initialize updateSuccess state
 
   useEffect(() => {
     async function fetchUsers() {
@@ -91,6 +94,10 @@ function MyTeams() {
       setTeams(teams.map(team => (team._id === selectedTeam._id ? selectedTeam : team)));
       // Close the modal
       setShowModal(false);
+      setUpdateSuccess(true);
+      setTimeout(() => {
+        setUpdateSuccess(null);
+      }, 7000);
     } catch (error) {
       console.error('Error updating team:', error);
     }
@@ -98,7 +105,9 @@ function MyTeams() {
 
   return (
     // add condition to display only teams that belong to the current user
-    <div className="container mx-auto px-4 py-8">
+    <div>       <div className='pb-16'><Header/></div> 
+    
+    <div className="container mx-auto px-4 py-8 pt-7">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-3xl font-bold">My Teams</h1>
         <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={() => setShowModal(true)}><FontAwesomeIcon icon={faPlus} className="mr-2" />Create New Team</button>
@@ -154,6 +163,11 @@ function MyTeams() {
           </div>
         </div>
       )}
+      {updateSuccess !== null && (
+        <div className={`${updateSuccess ? 'bg-green-200' : 'bg-red-200'}  w-full p-4 text-center transition-opacity duration-500 ease-in-out opacity-100`}>
+          <p className="text-sm text-green-800">{updateSuccess ? 'Team updated successfully!' : 'Error updating team. Please try again.'}</p>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-4">
         {teams.map((team) => (
           <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
@@ -174,6 +188,8 @@ function MyTeams() {
           </div>
         ))}
       </div>
+    </div>
+    <Footer/>
     </div>
   );
 }
