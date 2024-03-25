@@ -42,12 +42,7 @@ export class UserController {
         return this.userService.getAllUsers();
     }
 
-    @Get('/get/:id')
-    // @UseGuards(JwtAuthGuard)
-    async getById(@Param('id') id: string) {
-        this.logger.log(id);
-        return await this.userService.findById(id);
-    }
+
 
     @Get('get/:username')
     // @UseGuards(JwtAuthGuard)

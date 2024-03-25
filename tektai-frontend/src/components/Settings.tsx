@@ -44,9 +44,6 @@ const Settings = () => {
 
   });
 
-  const handleFileUpload = async (e) => {
-    
-  };
 
 
   
@@ -121,6 +118,7 @@ const Settings = () => {
       [name]: value,
     }));
   };
+  // @ts-ignore
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -211,9 +209,9 @@ const Settings = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
@@ -241,9 +239,9 @@ const Settings = () => {
                       stroke="currentColor"
                     >
                       <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
                         d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                       />
                     </svg>
@@ -453,7 +451,7 @@ const Settings = () => {
                 {/* <ImageUpload userId={userData?._id} /> */}
                 <div className="flex justify-end gap-4.5">
                   <button
-                    className="flex justify-center relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800"
                     type="button"
                   >
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
@@ -503,9 +501,9 @@ const Settings = () => {
                       stroke="currentColor"
                     >
                       <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
                       d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                     />
                     </svg>
@@ -625,11 +623,6 @@ const Settings = () => {
         </div>
       </div>
     </section>
-      
-
-
-
-
 
     {/* <div className="mx-auto max-w-270">
     <div style={{ height: '100px' }}></div>
@@ -972,13 +965,11 @@ const Settings = () => {
           </div>
         </div>*/}
 
-      </div>
-    </div>
-    
-    <h1>uploaaaaadd imageeeee {userData?._id} </h1>
-     <UploadImageForm userId={userData?._id}/>
 
-    {flashMessage && <div>{flashMessage}</div>}  */}
+
+
+    {flashMessage && <div>{flashMessage}</div>}
+
     </>
   );
 };
