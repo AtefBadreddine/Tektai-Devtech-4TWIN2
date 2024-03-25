@@ -122,7 +122,7 @@ function HistoryChallenges() {
                                             <h1 className="text-xl font-semibold mb-2">{truncateText(challenge.title, 15)}</h1>
 
                                             <span className="text-gray-600 text-sm mb-2">Description: {truncateText(challenge.description, 20)}</span>
-                                            <Link to={`/challenges/${challenge._id}`} className="menu__link text-sm">View Details</Link>
+                                            <Link to={`/challenge/details/${challenge._id}`} className="menu__link text-sm">View Details</Link>
                                         </div>
                                     </div>
                                 </li>

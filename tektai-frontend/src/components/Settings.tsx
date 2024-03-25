@@ -149,7 +149,7 @@ const Settings = () => {
         className="w-10 h-10 object-cover rounded-full"
       />
     )}
-              <h1 className="text-gray-600">{userData?.username ?? 'Loading...'}</h1>
+              <h1 className="text-gray-600">Settings profile : {userData?.username ?? 'Loading...'}</h1>
             </div>
           </div>
         </div>
