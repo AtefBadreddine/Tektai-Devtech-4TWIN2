@@ -3,14 +3,17 @@ import Footer from "../../../layout/Footer";
 import { useState } from "react";
 import './card.css'
 import { Link } from "react-router-dom";
+import axios from 'axios';
+import Challenges from "../listChallenges/challenge";
 
 function CreateChallenge() {
-    const defaultCompanyId = "65f36f4b33d09c43e89618e2";
-
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
+    const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
     const [formData, setFormData] = useState({
         title: "",
         image: "",
-        company_id: defaultCompanyId, // Set default value
+        company_id: defaultCompanyId, // Set default value to user._id
         prize: "",
         status: "Upcoming",
         description: "",
@@ -36,6 +39,14 @@ function CreateChallenge() {
             ...prevErrors,
             [name]: "",
         }));
+        if (name === "prizeType") {
+            // Clear prize value when prize type changes
+            setFormData((prevData) => ({
+              ...prevData,
+              prize: "",
+            }));
+          }
+          const updatedPrize = formData.prizeType === "money" ? value + " DT" : value;
 
         // Input validation for each field
         if (name === "title" && value.trim() === "") {
@@ -97,7 +108,7 @@ function CreateChallenge() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         // Validate form before submitting
         const validationErrors = {};
         if (formData.title.trim() === "") {
@@ -115,30 +126,30 @@ function CreateChallenge() {
         if (formData.deadline === "") {
             validationErrors.deadline = "Deadline is required";
         }
-
+    
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-
+    
         try {
-            const response = await fetch('http://localhost:3000/challenges', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+            const response = await axios.post('http://localhost:3000/challenges', formData, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
-            if (!response.ok) {
+    
+            // Check if response status is OK (2xx)
+            if (response.status >= 200 && response.status < 300) {
+                const data = response.data;
+                setChallengeId(data.id);
+                setShowSuccessCard(true);
+            } else {
                 throw new Error('Failed to add challenge');
             }
-            const data = await response.json();
-            setChallengeId(data.id);
-            setShowSuccessCard(true);
         } catch (error) {
             console.error('Error adding challenge:', error.message);
         }
     };
+    
 
     return (
         <div className="flex flex-col min-h-screen overflow-hidden">
@@ -180,16 +191,51 @@ function CreateChallenge() {
                                 name="company_id"
                                 value={defaultCompanyId}
                             />
-                        <h5 className="mb-2 font-bold">Challenge Prize:</h5>
-                            <input
-                                type="text"
-                                name="prize"
-                                placeholder="Prize"
-                                className="w-full p-2 border border-gray-300 rounded mb-4"
-                                value={formData.prize}
-                                onChange={handleChange}
-                            />
-                            {errors.prize && <p className="text-red-500">{errors.prize}</p>}
+<h5 className="mb-2 font-bold">
+  Challenge Prize <span className="text-red-600">*</span>
+</h5>
+<select
+  className="w-full p-2 border border-gray-300 rounded mb-4"
+  value={formData.prizeType}
+  onChange={(e) => {
+    const value = e.target.value;
+    setFormData((prevData) => ({
+      ...prevData,
+      prizeType: value,
+      prize: value === "money" ? "" : prevData.prize // Clear prize value if changing to money type
+    }));
+  }}
+>
+  <option value="">Select Prize Type</option>
+  <option value="money">Money</option>
+  <option value="not_money">Not Money</option>
+</select>
+{formData.prizeType === "money" && (
+  <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr", alignItems: "center", gap: "10px" }}>
+    <div className="flex items-center">
+      <input
+        type="number"
+        name="prize"
+        placeholder="Enter prize amount"
+        className="w-full p-2 border border-gray-300 rounded mb-0"
+        value={formData.prize}
+        onChange={handleChange}
+      />
+    </div>
+    <div className="carddt flex items-center justify-center">DT</div>
+  </div>
+)}
+{formData.prizeType === "not_money" && (
+  <input
+    type="text"
+    name="prize"
+    placeholder="Enter prize description"
+    className="w-full p-2 border border-gray-300 rounded mb-4"
+    value={formData.prize}
+    onChange={handleChange}
+  />
+)}
+
                         <h5 className="mb-2 font-bold">Start Date:</h5>
 
                             <input
@@ -239,7 +285,7 @@ function CreateChallenge() {
                         <p className="cookieDescription">Click on View to see your challenge Details. <br /></p>
                         <div className="buttonContainer">
                             {/* Link to view the challenge */}
-                            <Link to={`/challenges/${challengeId}`} className="acceptButton">View</Link>
+                            <Link to={`/historychallenges`} className="acceptButton">View</Link>
                         </div>
                     </div>
                 </div>
@@ -249,4 +295,3 @@ function CreateChallenge() {
 }
 
 export default CreateChallenge;
-

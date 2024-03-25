@@ -135,11 +135,20 @@ const Settings = () => {
         <div className="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-indigo-400 rounded-t">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
             <div className="inline-flex items-center space-x-4">
-              <img
-                className="w-10 h-10 object-cover rounded-full"
-                alt="User avatar"
-                src="https://images.pexels.com/photos/3777946/pexels-photo-3777946.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-              />
+           
+               {userData && userData.image ? (
+      <img
+        src={`http://localhost:3000/uploads/${userData.image}`}
+        alt="Profile"
+        className="w-10 h-10 object-cover rounded-full"
+        />
+    ) : (
+      <img
+        src="../../public/default-profile-picture.png" // path to the static default image
+        alt="Default Profile"
+        className="w-10 h-10 object-cover rounded-full"
+      />
+    )}
               <h1 className="text-gray-600">{userData?.username ?? 'Loading...'}</h1>
             </div>
           </div>

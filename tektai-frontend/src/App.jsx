@@ -50,6 +50,10 @@ import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
 
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
+
+
 
 
 
@@ -107,7 +111,10 @@ import UserList from './components/User/Userlist';
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/pages/settings" element={<Settings />} />
+            <Route path="/profile/settings" element={<Settings />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} />
+            <Route path="/challenge/setting" element={<UpdateChallenge/>} />
+
           </Route>
 
           <Route element={<ProtectedRoute adminOnly />}>
@@ -115,7 +122,6 @@ import UserList from './components/User/Userlist';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
-
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
