@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TeamsModule } from './teams/teams.module';
 import * as process from 'process';
 import { ContactModule } from './contact/contact.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -17,12 +18,14 @@ import { ChallengesModule } from './challenge/challenges.module';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
+
     ContactModule,
     ChallengesModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // relative path to uploads directory
       serveRoot: '/uploads', // Base URL path to serve the files from
     }),
+    TeamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

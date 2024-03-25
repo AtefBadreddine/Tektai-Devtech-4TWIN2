@@ -11,8 +11,10 @@ import {
     Put,
     Body,
     Request,
+
     UseInterceptors,
     UploadedFile,
+
 
 } from "@nestjs/common";
 
@@ -38,6 +40,13 @@ export class UserController {
     @Get('getall')
     async getAllUsers(): Promise<any[]> {
         return this.userService.getAllUsers();
+    }
+
+    @Get('/get/:id')
+    // @UseGuards(JwtAuthGuard)
+    async getById(@Param('id') id: string) {
+        this.logger.log(id);
+        return await this.userService.findById(id);
     }
 
     @Get('get/:username')

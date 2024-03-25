@@ -95,13 +95,14 @@ function Home() {
       flagImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1200px-Flag_of_Tunisia.svg.png",
       email:"sirine.benyounes@esprit.tn"
 
-    
 
     },
     // Add more data objects as needed
   ];
     // Add more items as needed
- 
+
+  const localStorageData = localStorage.getItem('user');
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
@@ -113,17 +114,19 @@ function Home() {
 
         {/*  Page sections */}
         <Transition show appear>
-        <HeroHome />        
+
+
+        <HeroHome />
         </Transition>
-        
         <FeaturesHome/>
-        
-        <FeaturesBlocks />  
+
+       <FeaturesBlocks />
+
         {/* <HeroParallax products={products} /> */}
         <Slider userData={data} />
         <div className="container">
     </div>
-        
+
  {/* <Testimonials /> */}
         {/* <Newsletter /> */}
         <Transition show appear>
@@ -138,7 +141,6 @@ function Home() {
             <InfiniteMovingCards items={data} />
 
         <ContactUs></ContactUs>
-        
 
       </main>
 
