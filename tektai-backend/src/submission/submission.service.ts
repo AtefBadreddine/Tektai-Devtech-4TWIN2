@@ -11,26 +11,18 @@ export class SubmissionService {
     @InjectModel(Submission.name) private readonly submissionModel: Model<SubmissionDocument>,
   ) {}
 
-  async saveSubmission(TeamId: string, pdf: Buffer, notebook: Buffer): Promise<Submission> {
+  async saveSubmission(teamId: string, challengeId: string, pdf: string, notebook: string): Promise<Submission> {
     try {
-      const createdSubmission = new this.submissionModel({ TeamId, pdf, notebook });
+      const createdSubmission = new this.submissionModel({ team: teamId, challenge: challengeId, pdf, notebook });
       const savedSubmission = await createdSubmission.save();
-
       this.logger.log(`Submission saved successfully: ${savedSubmission._id}`);
+      this.logger.log(`Team ID: ${teamId}, Challenge ID: ${challengeId}`);
 
       return savedSubmission;
     } catch (error) {
       this.logger.error(`Error saving submission: ${error.message}`);
       throw error;
     }
+  }
 
-  }
-  async saveSubmissionPaths(teamId: string, pdfPath: string, notebookPath: string): Promise<void> {
-    const submission = new this.submissionModel({
-      TeamId: teamId,
-      pdf: pdfPath,
-      notebook: notebookPath,
-    });
-    await submission.save();
-  }
 }
