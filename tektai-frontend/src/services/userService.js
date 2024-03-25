@@ -138,6 +138,15 @@ const UserService = {
             return { error: 'failed' };
         }
     },
+    getUserById: async (id) => {
+        try {
+            const response = await axios.get(`${url}/users/get/${id}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error getting user by ID:', error);
+            return { error: 'failed to get user by ID' };
+        }
+    },
 };
 
 export default UserService;
