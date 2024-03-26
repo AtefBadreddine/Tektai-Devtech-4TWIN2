@@ -11,7 +11,6 @@ import { ContactModule } from './contact/contact.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
-import { HistorychallengesModule } from './historychallenges/historychallenges.module';
 
 @Module({
   imports: [
@@ -22,7 +21,6 @@ import { HistorychallengesModule } from './historychallenges/historychallenges.m
 
     ContactModule,
     ChallengesModule,
-    HistorychallengesModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // relative path to uploads directory
       serveRoot: '/uploads', // Base URL path to serve the files from
