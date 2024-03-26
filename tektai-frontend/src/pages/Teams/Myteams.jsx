@@ -114,55 +114,26 @@ function MyTeams() {
       </div>
       {/* Modal for creating or managing a team */}
       {showModal && (
-        <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-8">
-            {selectedTeam ? (
-             <>
-             <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
-             <div className="mb-4">
-               <label htmlFor="teamName" className="block text-sm font-medium text-gray-700">Team Name:</label>
-               <input
-  type="text"
-  id="teamName"
-  value={selectedTeam.name}
-  onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
-  className="border border-gray-300 rounded-lg px-4 py-2 mt-1 focus:outline-none focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm"
-/>
-             </div>
-             {/* Add additional fields for team modification */}
-             <div className="flex justify-end mt-4">
-               <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mr-2" onClick={handleSaveChanges}>Save Changes</button>
-               <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" onClick={() => setShowModal(false)}>Cancel</button>
-             </div>
-           </>
-           
-            ) : (
-              <>
-                <h2 className="text-xl font-semibold mb-4">Create New Team</h2>
-                <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4" />
-                <div className="overflow-y-auto max-h-60">
-                  {users.map((user) => (
-                    <div key={user._id} className="flex items-center mb-2">
-                      <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={(e) => {
-                        if (e.target.checked) {
-                          setSelectedMembers([...selectedMembers, user._id]);
-                        } else {
-                          setSelectedMembers(selectedMembers.filter(memberId => memberId !== user._id));
-                        }
-                      }} />
-                      <label htmlFor={user._id} className="ml-2">{user.username}</label>
-                    </div>
-                  ))}
-                </div>
-                <div className="flex justify-end">
-                  <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
-                  <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"onClick={() => setShowModal(false)}>Cancel</button>
-                </div>
-              </>
-            )}
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white rounded-lg p-8">
+              <h2 className="text-xl font-semibold mb-4">Create New Team</h2>
+              <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4" />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4" />
+              <div className="overflow-y-auto max-h-60">
+                {filteredUsers.map((user) => (
+                  <div key={user._id} className="flex items-center mb-2">
+                    <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
+                    <label htmlFor={user._id} className="ml-2">{user.username}</label>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-end">
+                <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
+                <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"onClick={() => setShowModal(false)}>Cancel</button>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
       {updateSuccess !== null && (
         <div className={`${updateSuccess ? 'bg-green-200' : 'bg-red-200'}  w-full p-4 text-center transition-opacity duration-500 ease-in-out opacity-100`}>
           <p className="text-sm text-green-800">{updateSuccess ? 'Team updated successfully!' : 'Error updating team. Please try again.'}</p>
