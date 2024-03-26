@@ -49,6 +49,8 @@ import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
+import Teams from './pages/Teams/Teams';
+import MyTeams from './pages/Teams/Myteams';
 
 
 
@@ -99,7 +101,9 @@ import UserList from './components/User/Userlist';
           <Route path="/forgetpawd" element={<Forgetpassword />} />
           <Route path="/profile/:id" element={<ProfileAll/>} />
           <Route path="/UserSearchF" element={<UserSearchF/>} />
-          
+          <Route path="/Teams" element={<Teams/>} />
+          <Route path="/MyTeams" element={<MyTeams/>} />
+
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
 
