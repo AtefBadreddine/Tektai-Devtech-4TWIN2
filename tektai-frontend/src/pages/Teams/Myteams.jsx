@@ -14,6 +14,7 @@ function MyTeams() {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [updateSuccess, setUpdateSuccess] = useState(null); // Initialize updateSuccess state
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     async function fetchUsers() {
@@ -49,7 +50,9 @@ function MyTeams() {
 
     fetchTeams();
   }, []);
-
+  const filteredUsers = users.filter(user =>
+    user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   // Function to handle deleting a team
   const handleDeleteTeam = async (teamId) => {
     try {
