@@ -100,13 +100,13 @@ const Profile: React.FC = () => {
       <img
         src={`http://localhost:3000/uploads/${userData.image}`}
         alt="Profile"
-        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+        className="shadow-xl rounded-full h-35 w-35 object-cover align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />
     ) : (
       <img
         src="../../public/default-profile-picture.png" // Adjust the path to your static image
         alt="Default Profile"
-        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+        className="shadow-xl rounded-full h-35 w-35 object-cover  align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />
     )}
   </div>
