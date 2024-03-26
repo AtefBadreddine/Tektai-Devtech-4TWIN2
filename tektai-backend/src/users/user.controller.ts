@@ -30,10 +30,10 @@ export class UserController {
     constructor(private  userService: UsersService) {}
 
 
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    async getProfile(@Request() req) {
-        return this.userService.findById(req.user.userId);
+    // @UseGuards(JwtAuthGuard)
+    @Get('profile/:userId')
+    async getProfile(@Param('userId') userId: string) {
+        return await this.userService.findById(userId);
     }
 
     @UseGuards(JwtAuthGuard)

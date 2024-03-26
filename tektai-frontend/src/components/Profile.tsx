@@ -32,28 +32,12 @@ const Profile: React.FC = () => {
    const [profileImageUrl, setProfileImageUrl] = useState('');
 
    useEffect(() => {
-     const localStorageData = localStorage.getItem('user');
-    
+    const localStorageData = localStorage.getItem('user');
 
-     if (localStorageData) {
-
-      const parsedData = JSON.parse(localStorageData);
-
-       setUserData(parsedData);
-       console.log('gpts:', userData?.gpts);
-       console.log('spts:', userData?.spts);
-       console.log('bpts:', userData?.bpts);
-       let gptss: number = userData?.gpts ?? 0;
-       let sptss: number = userData?.spts ?? 0;
-       let bptss: number = userData?.bpts ?? 0;
-     } else {
-       console.log('No user data found in local storage');
-     }
-
-     const fetchUserData = async () => {
+    const fetchUserData = async (username) => {
       try {
         // Fetch user data from the backend
-        const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
+        const response = await axios.get(`http://localhost:3000/users/get/${username}`);
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
@@ -62,9 +46,21 @@ const Profile: React.FC = () => {
       }
     };
 
-    fetchUserData();
-    
-   }, []);
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      setUserData(parsedData);
+      console.log('gpts:', parsedData.gpts);
+      console.log('spts:', parsedData.spts);
+      console.log('bpts:', parsedData.bpts);
+
+      fetchUserData(parsedData.username); // Move fetchUserData here
+    } else {
+      console.log('No user data found in local storage');
+    }
+
+    console.log(userData?.bio);
+  }, []);
+
 
    const imageUrl = userData?.image; // Assuming you retrieve the profile image URL from the API response
    console.log("userData",userData);
@@ -197,11 +193,11 @@ const Profile: React.FC = () => {
                  <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                   <div className="flex flex-wrap justify-center">                  
                     <div className="w-full lg:w-9/12 px-4">
-                    <h3 className="text-2xl font-semibold leading-normal mb-2 mb-2 text-black dark:text-white">BIO</h3>
-
-                      <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
+                    <h3 className="text-2xl font-semibold leading-normal mb-2 text-black dark:text-white">BIO</h3>
+                      <div className="mb-4 text-lg leading-relaxed text-blueGray-700">
+                        
                       {userData?.bio??'Loading...'}
-                      </p>
+                      </div>
                       {/* <a href="#pablo" className="font-normal text-pink-500">Show more</a> */}
                     </div>
                   </div>

@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faUser, faCog, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
-
+import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -152,7 +152,9 @@ function MyTeams() {
                 <button className="text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}><FontAwesomeIcon icon={faCog} /></button>
               </div>
             </div>
-            <p className="text-gray-600 mb-2">Leader: <a href={`/profile/${team.leader}`} className="text-black dark:text-white flex items-center hover:text-blue-500"><FontAwesomeIcon icon={faCrown} className="mr-2" />{team.leader}</a></p>
+            <p className="text-gray-600 mb-2">Leader: <a href={`/profile/${team.leader}`} className="text-black dark:text-white flex items-center hover:text-blue-500"><FontAwesomeIcon icon={faCrown} className="mr-2" />
+            <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
+   {team.leader}</a></p>
             <p className="text-gray-600 mb-2">Members:</p>
             <ul className="list-disc list-inside">
               {team.members.map((member, index) => (
