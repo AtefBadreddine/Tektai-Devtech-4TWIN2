@@ -1,6 +1,10 @@
 # Tektai
 
-![Simple TailwindCSS template preview](https://scontent.ftun15-1.fna.fbcdn.net/v/t1.15752-9/430252148_768479655210708_7124617943769741544_n.png?stp=dst-png_s1080x2048&_nc_cat=108&ccb=1-7&_nc_sid=5f2048&_nc_ohc=NipIZWpF9DoAX_OQsmv&_nc_ht=scontent.ftun15-1.fna&oh=03_AdRDbfPYwz1v-vDEGYQYbL2xd8Tih6cDS8OR7DTt4c5b3Q&oe=66298793)
+![Simple TailwindCSS template preview](https://user-images.githubusercontent.com/2683512/96160974-f93aa780-0f16-11eb-9ce4-81d94b216be6.png)
+
+**Simple Light** is a free landing page template built on top of **TailwindCSS** and fully coded in **React**. Simple light is designed to provide all the basic components a developer need to create a landing page for SaaS products, online services, and more. 
+Use it for whatever you want, and be sure to reach us out on Twitter if you build anything cool/useful with it.
+Created and maintained with ❤️ by [Cruip.com](https://cruip.com/).
 
 ## Live demo
 

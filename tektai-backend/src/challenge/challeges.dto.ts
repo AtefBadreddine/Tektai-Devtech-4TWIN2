@@ -1,5 +1,6 @@
 // challenge.dto.ts
 export class ChallengeDto {
+    _id: string;
     title: string;
     image: string;
     company_id: string;

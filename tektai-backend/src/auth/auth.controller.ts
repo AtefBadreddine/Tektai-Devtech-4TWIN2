@@ -13,7 +13,9 @@ import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { UsersService } from "src/users/users.service";
 import {UserDto} from "../users/user.dto";
 import {ResetPasswordDto} from "../schemas/reset-password.dto";
+import { AuthGuard } from "@nestjs/passport";
 import {GoogleAuthGuard} from "./guards/google-auth.guard";
+import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
 
 @Controller('auth')

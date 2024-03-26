@@ -45,7 +45,7 @@
   }
   
   .acceptButton {
-    width: 80px;
+    width: 100px;
     height: 30px;
     background-color: #338CF5;
     transition-duration: .2s;
@@ -321,4 +321,18 @@ a {
   .timeline ul li:nth-of-type(even) > div {
     left: 45px;
   }
+}
+.carddt {
+  width: 100%; /* Match the width of the input */
+  height: 2.5rem; /* Set a fixed height */
+  border-radius: 0.25rem; /* Adjust the border radius as needed */
+  background: #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+input.selected {
+  border-radius: 5px; /* Change border radius */
+  background-color: pink; /* Change background color */
 }
