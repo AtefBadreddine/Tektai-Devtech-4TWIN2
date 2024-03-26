@@ -21,7 +21,7 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true , type : String , select : false })
+  @Prop({ required: true , type : String /*, select : false*/ })
   password: string;
 
   @Prop({ default : null })
@@ -47,6 +47,13 @@ export class User {
 
   @Prop({ default: "challenger" })
   role: string;
+
+
+  @Prop({ nullable: true, default: null }) 
+  image?: string;
+
+
+
 
 }
 

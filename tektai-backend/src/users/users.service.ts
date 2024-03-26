@@ -3,6 +3,8 @@ import { InjectModel } from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {User, UserDocument} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
+import { extname } from "path";
+
 
 
 @Injectable()
@@ -60,12 +62,44 @@ export class UsersService {
     }
   }
 
-  async updateUser(userId: string, userDto: UserDto): Promise<UserDocument> {
-    const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
-    if (!updatedUser) {
-      throw new NotFoundException('User not found');
+
+   async updateUser(userId: string, userDto: UserDto): Promise<UserDocument> {
+     const updatedUser = await this.userModel.findByIdAndUpdate(userId, userDto, { new: true });
+     if (!updatedUser) {
+       throw new NotFoundException('User not found');
+     }
+     return updatedUser;
+   }
+
+
+  async uploadProfileImage(userId: string, userDto: UserDto, image: Express.Multer.File): Promise<User> {
+    try {
+      // Check if the user exists
+      const existingUser = await this.userModel.findById(userId).exec();
+      if (!existingUser) {
+        throw new NotFoundException('User not found');
+      }
+
+      // Update user properties
+      existingUser.image = userDto.image || existingUser.image;
+
+      // Update the profile image if provided in the DTO
+      if (image) {
+        // Handle image upload and update the user's image
+        const fileExt = extname(image.originalname);
+        const uniqueSuffix = `${userId}`; // Generate unique filename with user ID
+        const randomFileName = `${uniqueSuffix}${fileExt}`;
+
+        existingUser.image = randomFileName;
+
+      }
+
+      // Save the updated user
+      const updatedUser = await existingUser.save();
+      return updatedUser;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update user');
     }
-    return updatedUser;
   }
 
   async storePwdToken(token: string, id: string) {
@@ -118,7 +152,7 @@ export class UsersService {
     const users = await this.userModel.find(searchQuery).exec();
     return users || null;
   }
-  
+
 
   async blockUser(userId: string): Promise<UserDocument> {
     const user = await this.userModel.findById(userId);

@@ -241,6 +241,7 @@ function SignIn() {
                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                       <div className="text-gray-600 italic">Or</div>
                       <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
+
                     </div>
                     <form>
                       <div className="flex flex-wrap -mx-3 mb-3">
@@ -270,6 +271,7 @@ function SignIn() {
                         Reset password
                       </Link>
                     </div>
+
                     <div className="text-gray-600 text-center mt-6">
                       Don’t you have an account?{' '}
                       <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
@@ -282,6 +284,10 @@ function SignIn() {
             </section>
           </main>
           <footer className="text-center pb-8">
+
+            <Link to="/contact" className="text-gray-600 hover:underline">
+              Contact Us
+            </Link>
 
           </footer>
           <style>
