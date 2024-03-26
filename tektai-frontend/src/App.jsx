@@ -8,19 +8,12 @@
   import 'aos/dist/aos.css';
   import './css/style.css';
   import './css/additional-styles/satoshi.css'; // Import the CSS file
-  import { library } from '@fortawesome/fontawesome-svg-core'
 
-  // import your icons
-  import { fab } from '@fortawesome/free-brands-svg-icons'
-  import { fas } from '@fortawesome/free-solid-svg-icons'
-  import { far } from '@fortawesome/free-regular-svg-icons'
-
-  // import your icons
-  import { fab } from '@fortawesome/free-brands-svg-icons'
-  import { fas } from '@fortawesome/free-solid-svg-icons'
-  import { far } from '@fortawesome/free-regular-svg-icons'
 
   import AOS from 'aos';
+import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+
+import MapComponent from './pages/Localisation/MapComponent'; 
 
   import Home from './pages/home/Home';
   import SignIn from './pages/signin/SignIn';
@@ -34,8 +27,6 @@
   import DefaultLayout from './layout/DefaultLayout';
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
-  import ProfileAll from './components/ProfileAll';
-  
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -43,21 +34,8 @@ import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
 import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
+
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
-  import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
-
-import MapComponent from './pages/Localisation/MapComponent'; 
-import CrmForm from './pages/crm/crmpage';
-import Settingsadmin from './components/Settingsadmin';
-import SearchResult from './pages/usersearch/SearchResult';
-import UserSearch from './pages/usersearch/UserSearch';
-import UserSearchF from './pages/usersearch/UsersearchF';
-import SearchResultF from './pages/usersearch/SearchResultF';
-import UserList from './components/User/Userlist';
-import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
-
-
-
 
 
 
@@ -92,11 +70,10 @@ import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
           <SpinnerWithBackground />
         ) : (
         <Routes>
-        <Route path="/Map" element={<MapComponent />} />
+         <Route path="/Map" element={<MapComponent />} />
         <Route path="/fileuploadform" element={<FileUploadForm />} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/forget-password" element={<Forgetpassword />} />
@@ -107,12 +84,7 @@ import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
-          <Route path="/profile/:id" element={<ProfileAll/>} />
-          <Route path="/UserSearchF" element={<UserSearchF/>} />
           
-          <Route path="/results" element={<SearchResult />} />
-          <Route path="/resultsf" element={<SearchResultF />} />
-
           <Route path="*" element={<NotFound />} />
 
           <Route element={<ProtectedRoute/>}>
@@ -120,16 +92,8 @@ import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
 
-          <Route >
+          <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
-            <Route path="/crm" element={<CrmForm/>} />
-            <Route path="/search" element={<UserSearch />} />
-            <Route path="/adminuser" element={<UserList />} />
-
-            <Route path="/profileadmin" element={<Settingsadmin/>} />
-
-
-           
           </Route>
 
         </Routes>)
@@ -140,4 +104,3 @@ import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
   }
 
   export default App;
-  library.add(fab,fas,far);

@@ -2,22 +2,32 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { SubmissionService } from './submission.service';
 import { Controller, Post, UploadedFiles, BadRequestException, UseInterceptors, Logger, Req } from '@nestjs/common';
 import * as path from 'path';
-import { Request, Response } from 'express'; // Import des types Request et Response depuis Express
+import { Request } from 'express'; // Import des types Request et Response depuis Express
+import { TeamsService } from 'src/teams/teams.service';
+import { ChallengesService } from 'src/challenge/challenges.service';
 
 @Controller('submissions')
 export class SubmissionController {
-  constructor(private readonly submissionService: SubmissionService) {}
+  constructor(private readonly submissionService: SubmissionService ,private readonly teamsService: TeamsService
+    ,private readonly challengesService:ChallengesService ) {}
 
   private readonly logger = new Logger();
-
-  @Post('upload2')
+  @Post('upload')
   @UseInterceptors(AnyFilesInterceptor())
   async uploadFile(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Req() req: Request // Utilisation de Req pour accéder à l'objet de la requête HTTP
+    @Req() req: Request,
   ) {
     try {
-      const { teamId, challengeId } = req.body; // Extraire les valeurs de teamId et challengeId à partir du corps de la requête
+      const { teamId, challengeId } = req.body;
+
+      // Vérifier si l'équipe et le défi existent
+      const team = await this.teamsService.findOne(teamId);
+      const challenge = await this.challengesService.findById(challengeId);
+
+      if (!team || !challenge) {
+        throw new BadRequestException('Team or challenge not found');
+      }
 
       if (!files || files.length !== 2) {
         throw new BadRequestException('Two files are required!');

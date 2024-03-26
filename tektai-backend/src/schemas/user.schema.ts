@@ -52,6 +52,9 @@ export class User {
   @Prop({ nullable: true, default: null }) 
   image?: string;
 
+  // Ajout de la propriété verificationCode
+  @Prop({ default: null })
+  verificationCode: string;
 
 
 

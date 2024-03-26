@@ -46,18 +46,18 @@ function Stats() {
       </select>
 
       {/* Images with the selected theme */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <div className="w-full p-2 transition-all duration-500">
+      <div className="flex flex-wrap justify-center">
+        <div className="w-full sm:w-1/2 lg:w-1/4 p-2 transition-all duration-500">
           <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
             <img src={`https://raw.githubusercontent.com/Armi64bit/armi64bit/master/profile-summary-card-output/${theme}/2-most-commit-language.svg`} alt="Most Commit Language" className="w-full h-auto" />
           </a>
         </div>
-        <div className="w-full p-2 transition-all duration-500">
+        <div className="w-full sm:w-1/2 lg:w-1/4 p-2 transition-all duration-500">
           <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
             <img src={`https://raw.githubusercontent.com/Armi64bit/armi64bit/master/profile-summary-card-output/${theme}/3-stats.svg`} alt="Stats" className="w-full h-auto" />
           </a>
         </div>
-        <div className="w-full p-2 transition-all duration-500">
+        <div className="w-full sm:w-1/2 lg:w-1/4 p-2 transition-all duration-500">
           <a href="https://github.com/vn7n24fzkq/github-profile-summary-cards">
             <img src={`https://raw.githubusercontent.com/Armi64bit/armi64bit/master/profile-summary-card-output/${theme}/4-productive-time.svg`} alt="Productive Time" className="w-full h-auto" />
           </a>

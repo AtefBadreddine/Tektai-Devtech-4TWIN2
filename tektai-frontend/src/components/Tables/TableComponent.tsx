@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
+import PropTypes from 'prop-types'; // Import PropTypes for type validation
 import {
   Modal,
   ModalOverlay,
@@ -6,244 +7,135 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure, Tooltip,
+  ModalCloseButton, Button, useDisclosure,
 } from '@chakra-ui/react'
-
 import userService from "../../services/userService";
-import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
-import Updatedraw from './updatedrawer';
-import ExportToExcel from './xlx';
-import ExportToPDF from './pdf';
-import {FaTrashCan} from "react-icons/fa6";
-
-
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5); // Set 
-  const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState('asc');
 
-  useEffect(() => {
-      fetchUsers();
+
+  useEffect( () => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUsers(token);
+    }
   }, []);
-  const sortData = (column) => {
-    if (sortColumn === column) {
-      // If the same column is clicked again, toggle sort direction
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      // If a new column is clicked, set it as the sort column and default to ascending order
-      setSortColumn(column);
-      setSortDirection('asc');
-    }
-  };
-  const sortedData = [...data].sort((a, b) => {
-    if (sortColumn) {
-      const aValue = a[sortColumn];
-      const bValue = b[sortColumn];
-      if (aValue < bValue) {
-        return sortDirection === 'asc' ? -1 : 1;
-      }
-      if (aValue > bValue) {
-        return sortDirection === 'asc' ? 1 : -1;
-      }
-      return 0;
-    }
-    return 0;
-  });
 
   // @ts-ignore
-  const blockUser = async(user)  => {
-    const blocked = await userService.banUser(user._id);
-    if (blocked) {
-        fetchUsers();
-    }
-  }  // @ts-ignore
+  const fetchUsers = async (token) => {
 
-  const fetchUsers = async () => {
-
-    const userData = await userService.getAll();
+    const userData = await userService.getAll(token);
     if (!userData.error)
       setData(userData);
   };
 
-  const openGmail = (emailAddress) => {
-    const encodedEmailAddress = encodeURIComponent(emailAddress);
-    const gmailUrl = `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${encodedEmailAddress}`;
-    console.log(gmailUrl);
-    window.open(gmailUrl, '_blank');
-  };
   const finalRef = React.useRef(null)
   // @ts-ignore
-  const deleteUser = async (): Promise<void> => {
+  const deleteUser = async () : Promise<void> => {
     const response = await userService.deleteUser(userToDelete._id);
     if (!response.error) {
       setData(data.filter(item => item._id !== userToDelete._id));
       setUserToDelete(null);
     }
   }
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
-
-  // @ts-ignore
-  // @ts-ignore
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
-        <div className="flex py-4 gap-x-2">
-          <ExportToExcel users={data}/>
-          <ExportToPDF users={data}/>
-        </div>
-
-        <table className="w-230 table-auto">
+        <table className="w-full table-auto">
           <thead>
-
-          <tr className="bg-gray-2 text-left dark:bg-meta-4">
-          <th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('email')}
->
-  Email
-  {sortColumn === 'email' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-<th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('username')}
->
-Username
-  {sortColumn === 'username' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-<th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('phoneNumber')}
->
-Phone Number
-  {sortColumn === 'phoneNumber' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-       
-
-              <th
-                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => sortData('role')}
-              >
-                Role
+            <tr className="bg-gray-2 text-left dark:bg-meta-4">
+              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
+                Email
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              Username
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              phoneNumber
+              </th>
+              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
+              image
+              </th>
+              
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              birthdate
               </th>
               <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Actions
+              Role
               </th>
+              <th className="py-4 px-4 font-medium text-black dark:text-white">
+              Actions
+              </th>
+              
             </tr>
           </thead>
           <tbody>
 
-            {currentUsers?.map((packageItem, key) => (
+            {data?.map((packageItem, key) => (
               <tr key={key}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
-  <span className="mr-2">
-    <FaEnvelope size={16} /> {/* Adjust size as needed */}
-  </span>
-  <button
-  className="text-black dark:text-white hover:text-orange-500"
-  onClick={() => openGmail(packageItem.email)}
-  >  
-     <Tooltip label='Send an Email '>
-
-  {packageItem.email}</Tooltip>
-</button>
-</h5>
+                  <h5 className="font-medium text-black dark:text-white">
+                    {packageItem.email}
+                  </h5>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">
-                <Tooltip label='Visit profile '>
-  <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-    <span className="mr-2">
-      <FaLink size={16} /> {/* Adjust size as needed */}
-    </span>
-    {packageItem.username}
-  </a></Tooltip> 
-</p>
+                  <p className="text-black dark:text-white">
+                    {packageItem.username}
+                  </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white"><Tooltip label='Contact on Whatsapp '>
-  <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
-    <span className="mr-2">
-      <FaWhatsapp size={32} color="green" />
-    </span>
-    <span className="text-black dark:text-white hover:text-green-500">
-      {packageItem.phoneNumber}
-    </span>
-  </a></Tooltip>
-</p>
-
+                  <p className="text-black dark:text-white">
+                    {packageItem.phoneNumber}
+                  </p>
                 </td>
-
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {packageItem.image}
+                  </p>
+                </td>
+                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
+                  <p className="text-black dark:text-white">
+                    {packageItem.birthdate}
+                  </p>
+                </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
+                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
+                           packageItem.role === 'admin'
                         ? 'bg-success text-success'
                         : packageItem.role === 'challenger'
-                          ? 'bg-danger text-danger'
-                          : packageItem.role === 'company'
-                            ? 'bg-purple-500 text-purple-500'
-                            : 'bg-warning text-warning'
-                      }`}
+                        ? 'bg-danger text-danger'
+                        : packageItem.role === 'company'
+                        ? 'bg-purple-500 text-purple-500'
+                        : 'bg-warning text-warning'
+                    }`}
                   >
                     {packageItem.role}
                   </p>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <div className="flex items-center space-x-3.5">
-                    <div className="flex items-center space-x-3.5">
-                      <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
-                    </div>
+  <div className="flex items-center space-x-3.5">
 
-                    <button className="inline-flex justify-center items-center gap-x-0.5  text-red-600 hover:text-red-800" onClick={() => setUserToDelete(packageItem)}>
-
-                      <FaTrashCan/>
-                      Delete
-                    </button>
-
-                    { packageItem?.isBlocked ? <button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
-                          <FaCheck color="green" />
-                          Unban
-                        </button>   :
-                          <button color="black" className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
-                    <FaBan  color="black" />
-                    Ban
-                  </button>}
+    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5"
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
+          clipRule="evenodd"
+        />
+      </svg>
+      Delete
+    </button>
 
 
-
-
-                  </div>
-
-                </td>
+  </div>
+</td>
 
 
 
@@ -251,24 +143,7 @@ Phone Number
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center my-4">
-  <button
-    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-    onClick={() => setCurrentPage(currentPage - 1)}
-    disabled={currentPage === 1}
-  >
-    Previous
-  </button>
-  <button
-    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${indexOfLastUser >= data.length ? 'cursor-not-allowed opacity-50' : ''}`}
-    onClick={() => setCurrentPage(currentPage + 1)}
-    disabled={indexOfLastUser >= data.length}
-  >
-    Next
-  </button>
-</div>
-
-        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null} onClose={() => setUserToDelete(null)}>
+        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null}  onClose={() => setUserToDelete(null)}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Delete User</ModalHeader>
@@ -284,7 +159,7 @@ Phone Number
               <Button colorScheme='blue' mr={3} onClick={() => setUserToDelete(null)}>
                 No, cancel
               </Button>
-              <Button colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
+              <Button  colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
 
 
             </ModalFooter>
@@ -311,7 +186,6 @@ Phone Number
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );
