@@ -10,16 +10,10 @@ function FileUploadForm() {
     e.preventDefault();
 
     try {
-      console.log('Form submitted with TeamId:', TeamId);
-      console.log('PDF File:', pdf);
-      console.log('Notebook File:', notebook);
-      
-      const formData = []
-      formData.push('TeamId', TeamId);
-      formData.push('pdf', pdf);
-      formData.push('notebook', notebook);
-
-      console.log('Form data to be sent:', formData);
+      const formData = new FormData();
+      formData.append('TeamId', TeamId);
+      formData.append('pdf', pdf);
+      formData.append('notebook', notebook);
 
       await submissionService.uploadSubmission(formData);
       console.log('Submission successful');
@@ -28,7 +22,7 @@ function FileUploadForm() {
     }
   };
 
-return (
+  return (
     <div className="flex justify-center items-center h-screen">
       <form onSubmit={handleFormSubmit} className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
         <div className="mb-4">
