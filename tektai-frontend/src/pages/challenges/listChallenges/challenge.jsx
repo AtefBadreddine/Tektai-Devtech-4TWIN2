@@ -1,67 +1,81 @@
 import React, { useState, useEffect } from 'react';
-import challengesData from '../challenges.json';
 import { Link } from "react-router-dom";
-
-// Challenge component
-const Challenge = ({ challenge, status }) => {
-  const isOngoing = challenge.status === status;
-
-
-  
-  return (
-    <div className="max-w-xs rounded overflow-hidden shadow-lg my-2 relative hover:shadow-xl">
-      <img 
-        className="w-full h-40 object-cover transition-transform duration-300 transform hover:scale-110" 
-        src={challenge.image} 
-        alt="Challenge" 
-      />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{challenge.name}</div>
-        <p className="text-gray-700 text-base">Host: {challenge.host}</p>
-        <p className="text-gray-700 text-base">Prize: ${challenge.price}</p>
-        <p className="text-gray-700 text-base">Status: {challenge.status}</p>
-      </div>
-      <Link 
-        to={`/challenges/${challenge.id}`} 
-        className={`bg-blue-500 ${isOngoing ? 'hover:bg-blue-700' : 'bg-gray-400'} text-white font-bold py-2 px-4 rounded absolute bottom-0 right-0 m-4`}
-        disabled={!isOngoing}
-      >
-        Participate
-      </Link>
-    </div>
-  );
-};
+import axios from 'axios';
+// Default image path
+const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
 
 // Challenges component
-const Challenges = () => {
+const Challenges = ({ status }) => {
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate loading delay
-    const timeout = setTimeout(() => {
-      setChallenges(challengesData);
-      setLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const classifyChallenges = () => {
-    const classifiedChallenges = {
-      Completed: [],
-      Ongoing: [],
-      Upcoming: []
+    const fetchChallenges = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/challenges/filter?status=${status}`);
+        setChallenges(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching challenges:', error);
+      }
     };
 
-    challenges.forEach(challenge => {
-      classifiedChallenges[challenge.status].push(challenge);
-    });
+    fetchChallenges();
+  }, [status]);
 
-    return classifiedChallenges;
+  // Challenge component
+  const Challenge = ({ challenge }) => {
+    const [companyName, setCompanyName] = useState('');
+    const [loadingCompany, setLoadingCompany] = useState(true);
+
+    useEffect(() => {
+      const fetchCompany = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/users/getById/${challenge.company_id}`);
+          setCompanyName(response.data.companyName); // Assuming companyName is the field name in the user collection
+          setLoadingCompany(false);
+        } catch (error) {
+          console.error('Error fetching company:', error);
+        }
+      };
+
+      fetchCompany();
+    }, [challenge.company_id]);
+
+    // Determine image source
+    const imageSrc = challenge.image ? challenge.image : defaultImagePath;
+    return (
+      <div className="max-w-xs rounded overflow-hidden shadow-lg my-2 relative hover:shadow-xl">
+         <img 
+          className="w-full h-40 object-cover transition-transform duration-300 transform hover:scale-110" 
+          src={imageSrc} 
+          alt="Challenge" 
+        />
+        <div className="px-6 py-4">
+          <div className="font-bold text-xl mb-2">{challenge.title}</div>
+          <p className="text-gray-700 text-base">Company: {loadingCompany ? 'Loading...' : companyName}</p>
+          <p className="text-gray-700 text-base">Prize: <span className='text-[#3aa856] font-bold'>{challenge.prize}</span></p>
+          <p className="text-gray-700 text-base mb-20">Status: <span className='text-[#7747ff] font-bold'>{challenge.status}</span></p>
+        </div>
+      
+        <div className="absolute bottom-0 left-0 m-4">
+          {status !== 'Ongoing' && status !== 'Upcoming' && (
+            <Link to={`/challenges/${challenge._id}`} className="menu__link">View Details</Link>
+          )}
+          {status === 'Ongoing' && (
+            <Link to={`/challenges/${challenge._id}`} className="btn-smm font-bold py-2 px-4 rounded">
+              Participate
+            </Link>
+          )}
+          {status === 'Upcoming' && (
+            <button className="bg-[#6fc5ff] text-white font-bold py-2 px-4 rounded" disabled>
+              Upcoming ...
+            </button>
+          )}
+        </div>
+      </div>
+    );
   };
-
-  const categorizedChallenges = classifyChallenges();
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -84,14 +98,11 @@ const Challenges = () => {
           ))
         ) : (
           // Render actual challenges
-          categorizedChallenges.Ongoing.map(challenge => (
-            <Challenge key={challenge.id} challenge={challenge} status="Ongoing" />
+          challenges.map(challenge => (
+            <Challenge key={challenge.id} challenge={challenge} />
           ))
         )}
       </div>
-
-      {/* Completed Challenges */}
-      {/* Include loading skeleton and actual challenges rendering similarly for other categories */}
     </div>
   );
 };

@@ -25,6 +25,7 @@
     "@nestjs/config": "^3.2.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "*",
     "@nestjs/mongoose": "^10.0.4",
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.3.4",
@@ -41,6 +42,7 @@
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
+    "sendinblue-api": "^1.0.8",
     "sendinblue-v3-node-client": "^0.0.2",
     "sib-api-v3-sdk": "^8.5.0"
   },

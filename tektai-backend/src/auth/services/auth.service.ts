@@ -11,12 +11,13 @@ import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
 import { ResetPasswordDto } from "src/schemas/reset-password.dto";
 
-;
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger();
-  constructor(private usersService : UsersService, private jwtService : JwtService , private  hashService : HashService) {
+  constructor(private usersService : UsersService
+              , private jwtService : JwtService
+              , private  hashService : HashService) {
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -40,6 +41,7 @@ export class AuthService {
   }
   async signup(userDTO : UserDto): Promise<any> {
     const existingUser = await this.usersService.findByUsername(userDTO.username);
+
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
@@ -49,17 +51,14 @@ export class AuthService {
     return await this.usersService.createUser(userDTO);
   }
   async forgetPassword(email: string): Promise<void> {
-    const user = await this.usersService.findByEmail(email);
+    const user  = await this.usersService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');
     }
     const resetToken = uuidv4();
-    const st = await this.usersService.storePwdToken(resetToken,user._id);
+    await this.usersService.storePwdToken(resetToken,user._id);
+    const resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
 
-    // Créer le lien de réinitialisation de mot de passe avec le jeton
-    let resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
-     resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
-    // Créer un objet Sendinblue
     const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
     const apiKey = process.env.SENDINBLUE;
     const defaultClient = SibApiV3Sdk.ApiClient.instance;

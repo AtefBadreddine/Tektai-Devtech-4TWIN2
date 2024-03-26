@@ -6,7 +6,6 @@ import StepThree from "./StepThree";
 import StepOnePartOne from './StepOnePartOne';
 import StepOnePartTwo from './StepOnePartTwo';
 import Footer from "../../layout/Footer"; // Import eye icons
-import axios from 'axios';
 
 function SignUp( ) {
     const [step,setStep] = useState(0);
@@ -18,8 +17,7 @@ function SignUp( ) {
         birthday : "",
         companyName : "",
         adresse : "",
-        role : "challenger",
-        country: ''
+        role : "challenger"
 
     });
 
@@ -27,19 +25,8 @@ function SignUp( ) {
         username : '',
         email : ''
     });
-     const [countries, setCountries] = useState(); // Déclaration de countries
     /*    const searchParams = new URLSearchParams(window.location.search);*/
     const [searchParams, setSearchParams] = useSearchParams();
-      useEffect(() => {
-        axios.get('https://restcountries.com/v3.1/all')
-            .then(response => {
-                const countryNames = response.data.map(country => country.name.common);
-                setCountries(countryNames);
-            })
-            .catch(error => {
-                console.error('Error fetching countries:', error);
-            });
-    }, []);
 
     useEffect(()=>{
         const email = searchParams.get('email');
@@ -135,7 +122,6 @@ function SignUp( ) {
                             </div>
 
                             {/* Form */}
-  
                             <div className=" max-w-2xl mx-auto">
                                 { fromAuth.username.length ? <h2 className="mb-4">Welcome <span className="font-bold text-blue-600">{fromAuth.username}</span> ,Please continue the sign up process !</h2> : '' }
                                 {step === 0 && (
@@ -157,7 +143,6 @@ function SignUp( ) {
                                                 <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
                                             </div>
                                             <form>
-                                            
                                                 <div className="flex flex-wrap -mx-3 mb-3">
                                                     <div className="w-full px-3">
                                                         <a href="http://localhost:3000/auth/github" rel='noopener noreferrer' target="_self"  className="btn px-0 text-white text-center bg-gray-900 hover:bg-gray-800 w-full relative flex items-center">

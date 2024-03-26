@@ -8,9 +8,25 @@ function ContactUs() {
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (data) => {
-    // Your onSubmit logic here
-    console.log(data);
+
+    setDisabled(true);
+    try {
+      const response = await fetch('http://localhost:3000/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error sending contact form:', error);
+    }
+    setDisabled(false);
   };
+
+
 
   return (
     <div className="bg-white py-8 px-4 md:px-0">
