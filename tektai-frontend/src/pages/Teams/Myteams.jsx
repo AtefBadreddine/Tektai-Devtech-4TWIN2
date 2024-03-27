@@ -98,86 +98,161 @@ function MyTeams() {
       console.error('Error updating team:', error);
     }
   };
+  const handleMemberSelection = (userId) => {
+    // Check if the user ID is already in the selectedMembers array
+    const isSelected = selectedMembers.includes(userId);
+  
+    // If the user ID is selected, remove it from the array
+    // If not selected, add it to the array
+    if (isSelected) {
+      setSelectedMembers(selectedMembers.filter(id => id !== userId));
+    } else {
+      setSelectedMembers([...selectedMembers, userId]);
+    }
+  };
+ const handleRemoveMember = async (userId) => {
+  try {
+    // Create an updated team object without the removed member
+    const updatedTeam = {
+      ...selectedTeam,
+      members: selectedTeam.members.filter(member => member._id !== userId)
+    };
+
+    // Send a PUT request to the server to update the team
+    await fetch(`/teams/${selectedTeam._id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedTeam)
+    });
+
+    // Update the state with the new selected team
+    setSelectedTeam(updatedTeam);
+  } catch (error) {
+    console.error('Error removing member from team:', error);
+  }
+};
 
   return (
     // add condition to display only teams that belong to the current user
     <div>       <div className='pb-16'><Header/></div> 
     
     <div className="container mx-auto px-4 py-8 pt-7">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-3xl font-bold">My Teams</h1>
-        <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={() => setShowModal(true)}><FontAwesomeIcon icon={faPlus} className="mr-2" />Create New Team</button>
-      </div>
+    <div className="flex flex-col sm:flex-row justify-between items-center mb-4">
+  <h1 className="text-3xl font-bold mb-4 sm:mb-0">My Teams</h1>
+  <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600" onClick={() => setShowModal(true)}>
+    <FontAwesomeIcon icon={faPlus} className="mr-2" />
+    Create New Team
+  </button>
+</div>
+
       {/* Modal for creating or managing a team */}
       {showModal && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white rounded-lg p-8">
-              <h2 className="text-xl font-semibold mb-4">Create New Team</h2>
-              <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4" />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4" />
-              <div className="overflow-y-auto max-h-60">
-                {filteredUsers.map((user) => (
-                  <div key={user._id} className="flex items-center mb-2">
-                    <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
-                    <label htmlFor={user._id} className="ml-2">{user.username}</label>
-                  </div>
-                ))}
-              </div>
-              <div className="flex justify-end">
-                <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
-                <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"onClick={() => setShowModal(false)}>Cancel</button>
-              </div>
-            </div>
+  <div className="z-50 fixed inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
+    <div className="bg-white rounded-lg p-8 w-full max-w-md">
+      <h2 className="text-xl font-semibold mb-4">Create New Team</h2>
+      <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
+      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
+      <div className="overflow-y-auto max-h-60">
+        {filteredUsers.map((user) => (
+          <div key={user._id} className="flex items-center mb-2">
+            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
+            <label htmlFor={user._id} className="ml-2">{user.username}</label>
           </div>
-        )}
-        {showModal2 && (
-          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white rounded-lg p-8">
-              <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
-              {/* Input field for team name */}
-              <input
-                type="text"
-                value={selectedTeam ? selectedTeam.name : ''}
-                onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
-                placeholder="Enter Team Name"
-                className="border border-gray-300 rounded-lg px-4 py-2 mb-4"
-              />
-              {/* Button to save changes */}
-              <button
-                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2"
-                onClick={handleSaveChanges}
-              >
-                Save Changes
-              </button>
-              {/* Button to cancel */}
-              <button
-                className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
-                onClick={() => setShowModal2(false)}
-              >
-                Cancel
-              </button>
-            </div>
+        ))}
+      </div>
+      <div className="flex justify-end">
+        <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
+        <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" onClick={() => setShowModal(false)}>Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
+{showModal2 && (
+  <div className="fixed inset-0 flex justify-center items-center z-50">
+    {/* Overlay */}
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-50"></div>
+    
+    {/* Modal content */}
+    <div className="bg-white rounded-lg p-8 relative z-10 w-full max-w-md">
+      <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
+      {/* Input field for team name */}
+      <input
+        type="text"
+        value={selectedTeam ? selectedTeam.name : ''}
+        onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
+        placeholder="Enter Team Name"
+        className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+      />
+      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
+      <div className="overflow-y-auto max-h-60">
+        {searchQuery && filteredUsers.map((user) => (
+          <div key={user._id} className="flex items-center mb-2">
+            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} className="mr-2" />
+            <label htmlFor={user._id}>{user.username}</label>
           </div>
-        )}
-      {updateSuccess !== null && (
-        <div className={`${updateSuccess ? 'bg-green-200' : 'bg-red-200'}  w-full p-4 text-center transition-opacity duration-500 ease-in-out opacity-100`}>
-         
-          <p className="text-sm text-green-800">{updateSuccess ?   <Alert status='success' variant='subtle'>
-        <AlertIcon />
-        Team updated successfully!
-      </Alert> : <Alert status='error'>
-    <AlertIcon />
-    Error updating team. Please try again
-  </Alert>}</p>
-        </div>
-      )}
+        ))}
+        {selectedTeam.members.map((member) => (
+          <div key={member._id} className="flex items-center mb-2">
+            <p className="mr-2">{member.username}</p>
+            <button
+              onClick={() => handleSaveChanges(member._id)}
+              className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+      </div>
+      {/* Buttons */}
+      <div className="flex flex-col sm:flex-row justify-end">
+        <button
+          className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mb-2 sm:mb-0 sm:mr-2"
+          onClick={handleSaveChanges}
+        >
+          Save Changes
+        </button>
+        <button
+          className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
+          onClick={() => setShowModal2(false)}
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
+
+{updateSuccess !== null && (
+  <div className={`${updateSuccess ? 'bg-green-200' : 'bg-red-200'} w-full p-4 text-center transition-opacity duration-500 ease-in-out opacity-100`}>
+    <div className="text-sm text-green-800">
+      {updateSuccess ?   
+        <Alert status='success' variant='subtle'>
+          <AlertIcon />
+          Team updated successfully!
+        </Alert> 
+        : 
+        <Alert status='error'>
+          <AlertIcon />
+          Error updating team. Please try again
+        </Alert>
+      }
+    </div>
+  </div>
+)}
+
     <div className="grid grid-cols-2 gap-4">
   {teams.map((team) => (
     <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
        
-        <div>
+       <div className="mt-4 grid gap-4 md:flex md:flex-row md:overflow-x-auto">
   <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
-  <div className="mt-4 grid grid-cols-3 gap-4">
+  <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     {team.members
       .map(member => ({
         ...member,
@@ -186,25 +261,29 @@ function MyTeams() {
       .sort((a, b) => b.totalScore - a.totalScore)
       .slice(0, 3)
       .map((member, index) => (
-        <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''}`}>
+        <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''} sm:flex sm:flex-col sm:items-center`}>
           {/* Render crown icon for the top member */}
-          {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 absolute -top-3 left-1/2 transform -translate-x-1/2" />}
-          <div className="flex flex-col items-center">
-            <div className="flex items-center mb-2">
-              {/* Conditionally apply classes based on the index */}
-              <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
-                {index + 1}.
-              </span>
-              <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} />
-              <span className="text-gray-600">{member.username} {index === 0 && <FontAwesomeIcon icon={faCrown} className="mx-2 text-yellow-500" />}</span>
-            </div>
-            <span><FontAwesomeIcon icon=" fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</span>
+          {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mb-2 sm:mb-0" />}
+          <div className="flex items-center mb-2">
+            {/* Conditionally apply classes based on the index */}
+            <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
+              {index + 1}
+           
+              <div>
+              <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
+  <span className="text-gray-600">{member.username} </span>
+</div>
+ </span>
+            
           </div>
+          <div><FontAwesomeIcon icon="fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</div>
         </div>
       ))
     }
   </div>
 </div>
+
+
 
 
       <div className="flex justify-between items-center mb-2">
@@ -219,21 +298,21 @@ function MyTeams() {
         </div>
       </div>
       <div className="mb-2 flex items-center">
-        <p className="text-gray-600 mr-2">Leader:</p>
-        <p className="text-gray-600 mb-2 flex items-center  dark:text-white hover:text-blue-500">
-          <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader.username} src={`http://localhost:3000/uploads/${team.leader.image}`} />
+        <div className="text-gray-600 mr-2">Leader:</div>
+        <div className="text-gray-600 mb-2 flex items-center  dark:text-white hover:text-blue-500">
+          <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader.username} src={`http://localhost:3000/uploads/${team.leader.image}`} /></div>
           {team.leader.username}  {/*<FontAwesomeIcon icon={faCrown} className="mx-2" /> */}
-        </p>
+        </div>
       </div>
-      <p className="text-gray-600 mb-2">Members:</p>
-      <p className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</p>
+      <div className="text-gray-600 mb-2">Members:</div>
+      <div className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</div>
 
 
       <ul className="list-disc list-inside">  
         {team.members.map((member) => (
           <div key={member._id} className="ml-4">
             <a href={`/profile/${member.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-              <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} />
+            <div> <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
               {member.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
             </a>
           </div>
