@@ -5,10 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCrown, faUser, faCog, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
-import { Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
+import { Alert, AlertIcon, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [showModal2, setShowModal2] = useState(false);
+  
   const [newTeamName, setNewTeamName] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -33,16 +35,7 @@ function MyTeams() {
     async function fetchTeams() {
       try {
         const allTeams = await TeamsService.getAllTeams();
-        // For each team, fetch user details for leader and members
-        const teamsWithUsers = await Promise.all(allTeams.map(async (team) => {
-          const leader = await UsersService.getUserById(team.leader);
-          const members = await Promise.all(team.members.map(async (memberId) => {
-            const user = await UsersService.getUserById(memberId);
-            return user.username.charAt(0).toUpperCase() + user.username.slice(1); // Convert first letter to uppercase
-          }));
-          return { ...team, leader: leader.username.charAt(0).toUpperCase() + leader.username.slice(1), members };
-        }));
-        setTeams(teamsWithUsers);
+        setTeams(allTeams);
       } catch (error) {
         console.error('Error fetching teams:', error);
       }
@@ -85,7 +78,7 @@ function MyTeams() {
   // Function to handle opening the manage team modal
   const handleManageTeam = (team) => {
     setSelectedTeam(team);
-    setShowModal(true);
+    setShowModal2(true);
   };
 
   // Function to handle saving changes in the manage team modal
@@ -96,7 +89,7 @@ function MyTeams() {
       // Update the teams state with the modified team
       setTeams(teams.map(team => (team._id === selectedTeam._id ? selectedTeam : team)));
       // Close the modal
-      setShowModal(false);
+      setShowModal2(false);
       setUpdateSuccess(true);
       setTimeout(() => {
         setUpdateSuccess(null);
@@ -137,33 +130,120 @@ function MyTeams() {
             </div>
           </div>
         )}
+        {showModal2 && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+            <div className="bg-white rounded-lg p-8">
+              <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
+              {/* Input field for team name */}
+              <input
+                type="text"
+                value={selectedTeam ? selectedTeam.name : ''}
+                onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
+                placeholder="Enter Team Name"
+                className="border border-gray-300 rounded-lg px-4 py-2 mb-4"
+              />
+              {/* Button to save changes */}
+              <button
+                className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2"
+                onClick={handleSaveChanges}
+              >
+                Save Changes
+              </button>
+              {/* Button to cancel */}
+              <button
+                className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400"
+                onClick={() => setShowModal2(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       {updateSuccess !== null && (
         <div className={`${updateSuccess ? 'bg-green-200' : 'bg-red-200'}  w-full p-4 text-center transition-opacity duration-500 ease-in-out opacity-100`}>
-          <p className="text-sm text-green-800">{updateSuccess ? 'Team updated successfully!' : 'Error updating team. Please try again.'}</p>
+         
+          <p className="text-sm text-green-800">{updateSuccess ?   <Alert status='success' variant='subtle'>
+        <AlertIcon />
+        Team updated successfully!
+      </Alert> : <Alert status='error'>
+    <AlertIcon />
+    Error updating team. Please try again
+  </Alert>}</p>
         </div>
       )}
-      <div className="grid grid-cols-2 gap-4">
-        {teams.map((team) => (
-          <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
-            <div className="flex justify-between items-center mb-2">
-              <h2 className="text-xl font-semibold">{team.name}</h2>
-              <div>
-                <button className="text-red-500 mr-2 hover:text-red-700" onClick={() => handleDeleteTeam(team._id)}><FontAwesomeIcon icon={faTrash} /></button>
-                <button className="text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}><FontAwesomeIcon icon={faCog} /></button>
-              </div>
+    <div className="grid grid-cols-2 gap-4">
+  {teams.map((team) => (
+    <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
+       
+        <div>
+  <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
+  <div className="mt-4 grid grid-cols-3 gap-4">
+    {team.members
+      .map(member => ({
+        ...member,
+        totalScore: parseInt(member.gpts) * 3 + parseInt(member.spts) * 2 + parseInt(member.bpts)
+      }))
+      .sort((a, b) => b.totalScore - a.totalScore)
+      .slice(0, 3)
+      .map((member, index) => (
+        <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''}`}>
+          {/* Render crown icon for the top member */}
+          {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 absolute -top-3 left-1/2 transform -translate-x-1/2" />}
+          <div className="flex flex-col items-center">
+            <div className="flex items-center mb-2">
+              {/* Conditionally apply classes based on the index */}
+              <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
+                {index + 1}.
+              </span>
+              <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} />
+              <span className="text-gray-600">{member.username} {index === 0 && <FontAwesomeIcon icon={faCrown} className="mx-2 text-yellow-500" />}</span>
             </div>
-            <p className="text-gray-600 mb-2">Leader: <a href={`/profile/${team.leader}`} className="text-black dark:text-white flex items-center hover:text-blue-500"><FontAwesomeIcon icon={faCrown} className="mr-2" />
-            <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name='Dan Abrahmov' src='https://bit.ly/dan-abramov' />
-   {team.leader}</a></p>
-            <p className="text-gray-600 mb-2">Members:</p>
-            <ul className="list-disc list-inside">
-              {team.members.map((member, index) => (
-                <div key={index} className="ml-4"><a href={`/profile/${member}`} className="text-black dark:text-white flex items-center hover:text-blue-500"><FontAwesomeIcon icon={faUser} className="mr-2" />{member}</a></div>
-              ))}
-            </ul>
+            <span><FontAwesomeIcon icon=" fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</div>
+
+
+      <div className="flex justify-between items-center mb-2">
+        <h2 className="my-4 text-xl font-semibold">{team.name}</h2>
+        <div>
+          <button className="text-2xl text-red-500 mr-2 hover:text-red-700" onClick={() => handleDeleteTeam(team._id)}>
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+          <button className="text-2xl text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}>
+            <FontAwesomeIcon icon={faCog} />
+          </button>
+        </div>
+      </div>
+      <div className="mb-2 flex items-center">
+        <p className="text-gray-600 mr-2">Leader:</p>
+        <p className="text-gray-600 mb-2 flex items-center  dark:text-white hover:text-blue-500">
+          <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader.username} src={`http://localhost:3000/uploads/${team.leader.image}`} />
+          {team.leader.username}  {/*<FontAwesomeIcon icon={faCrown} className="mx-2" /> */}
+        </p>
+      </div>
+      <p className="text-gray-600 mb-2">Members:</p>
+      <p className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</p>
+
+
+      <ul className="list-disc list-inside">  
+        {team.members.map((member) => (
+          <div key={member._id} className="ml-4">
+            <a href={`/profile/${member.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
+              <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} />
+              {member.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
+            </a>
           </div>
         ))}
-      </div>
+      </ul>
+    </div>
+  ))}
+</div>
+
+                  
     </div>
     <Footer/>
     </div>
