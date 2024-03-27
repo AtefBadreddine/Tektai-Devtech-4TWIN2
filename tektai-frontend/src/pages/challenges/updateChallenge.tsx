@@ -30,33 +30,40 @@ const UpdateChallenge = () => {
 
   useEffect(() => {
     const getChallenge = async () => {
-      const localStorageData = localStorage.getItem('challenge');
-      const token = localStorage.getItem('token');
-      if (token && localStorageData) {
-        try {
-          const parsedData = JSON.parse(localStorageData);
-          const challenge = await challengeService.updateChallenge(parsedData.id, parsedData);
-          setUserData(challenge);
+        const localStorageData = localStorage.getItem('challenge');
+        const token = localStorage.getItem('token');
+        if (token && localStorageData) {
+            try {
+                const parsedData = JSON.parse(localStorageData);
+                // Ensure that parsedData.id is defined before making the request
+                if(parsedData.id) {
+                    const challenge = await challengeService.updateChallenge(parsedData.id, parsedData);
+                    console.log('Challenge data:', challenge); // Add this line to check the challenge data
 
-          setInput({
-            title: challenge.title || '',
-            company_id: challenge.company_id || '',
-            prize: challenge.prize || '',
-            status: challenge.status || '',
-            description: challenge.description || '',
-            start_date: challenge.start_date || '',
-            deadline: challenge.deadline || '',
-            dataset: challenge.dataset || ''
-          });
-        } catch (error) {
-          console.error('Error updating challenge:', error);
-          // Handle error, show error message, etc.
+                    setUserData(challenge);
+
+                    setInput({
+                        title: challenge.title || '',
+                        company_id: challenge.company_id || '',
+                        prize: challenge.prize || '',
+                        status: challenge.status || '',
+                        description: challenge.description || '',
+                        start_date: challenge.start_date || '',
+                        deadline: challenge.deadline || '',
+                        dataset: challenge.dataset || ''
+                    });
+                } else {
+                    console.error('Error: Challenge ID is undefined');
+                }
+            } catch (error) {
+                console.error('Error updating challenge:', error);
+                // Handle error, show error message, etc.
+            }
         }
-      }
     };
 
     getChallenge();
-  }, []);
+}, []);
 
 
 

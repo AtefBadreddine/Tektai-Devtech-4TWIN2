@@ -53,9 +53,9 @@ export class ChallengesController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put('/setting/:id')
-  async update(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesService.update(id, challengeDto);
+  @Put('setting/:id')
+  async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesService.updateChallenge(id, challengeDto);
   }
 
   @Delete(':id')

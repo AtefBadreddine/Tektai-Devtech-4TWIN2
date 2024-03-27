@@ -24,8 +24,8 @@ export class ChallengesService {
     return createdChallenge.save();
   }
 
-  async update(id: string, challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesModel.findByIdAndUpdate(id, challengeDto, { new: true });
+  async updateChallenge(_id: string, challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesModel.findByIdAndUpdate(_id, challengeDto, { new: true });
   }
 
   async delete(id: string): Promise<void> {

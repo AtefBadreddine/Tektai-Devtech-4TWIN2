@@ -3,6 +3,8 @@ import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
@@ -84,7 +86,25 @@ function ChallengeDetails() {
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
                         <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
+                        
+                          <div className="flex justify-end gap-4.5">
+                            <button
+                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                              type="button"
+                            >
+                              
+                            <Link to="/challenge/setting">Edit</Link>
+                            </button>
+                            <button
+                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                              type="button"
+                            >
+                            Delete
+                            </button>
+                          </div>
                       </div>
+
+
                       <img src={imageSrc} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg" />
                     </div>
                     <h2 className="h4">Description :</h2>
