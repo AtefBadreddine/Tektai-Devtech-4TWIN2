@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import challengeService from '../../services/challengeService';
 import Header from '../../layout/Header';
+import { useParams } from 'react-router-dom';
+import axios from "axios";
 
-interface UserData {
-    _id : string;
-    title: string,
-    company_id: string,
-    prize: string,
-    status: string,
-    description: string,
-    start_date: string,
-    deadline: string,
-    dataset: string
-}
 
 const UpdateChallenge = () => {
+  const { id } = useParams();
   const [flashMessage, setFlashMessage] = useState(""); // State for flash message
-  const [userData, setUserData] = useState<UserData | null>(null);
   const [input, setInput] = useState({
       title: '',
       company_id: '',
@@ -27,47 +18,19 @@ const UpdateChallenge = () => {
       deadline: '',
       dataset: ''
   });
-
+  
   useEffect(() => {
-    const getChallenge = async () => {
-        const localStorageData = localStorage.getItem('challenge');
-        const token = localStorage.getItem('token');
-        if (token && localStorageData) {
-            try {
-                const parsedData = JSON.parse(localStorageData);
-                // Ensure that parsedData.id is defined before making the request
-                if(parsedData.id) {
-                    const challenge = await challengeService.updateChallenge(parsedData.id, parsedData);
-                    console.log('Challenge data:', challenge); // Add this line to check the challenge data
-
-                    setUserData(challenge);
-
-                    setInput({
-                        title: challenge.title || '',
-                        company_id: challenge.company_id || '',
-                        prize: challenge.prize || '',
-                        status: challenge.status || '',
-                        description: challenge.description || '',
-                        start_date: challenge.start_date || '',
-                        deadline: challenge.deadline || '',
-                        dataset: challenge.dataset || ''
-                    });
-                } else {
-                    console.error('Error: Challenge ID is undefined');
-                }
-            } catch (error) {
-                console.error('Error updating challenge:', error);
-                // Handle error, show error message, etc.
-            }
-        }
+    const fetchChallenge = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/challenges/${id}`);
+        setInput(response.data);
+      } catch (error) {
+        console.error('Error fetching challenge:', error);
+      }
     };
 
-    getChallenge();
-}, []);
-
-
-
-
+    fetchChallenge();
+  }, [id]);
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -76,33 +39,16 @@ const UpdateChallenge = () => {
       [name]: value,
     }));
   };
-  // @ts-ignore
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-
-      // Call the updateUser function with the current user ID and input data
-      const updatedChallenge = await challengeService.updateChallenge(userData?._id, input)
-
-      // Update the input fields with the updated user data
-      setInput({
-            title: updatedChallenge.title || '',
-            company_id: updatedChallenge.company_id || '',
-            prize: updatedChallenge.prize || '',
-            status: updatedChallenge.status || '',
-            description: updatedChallenge.description || '',
-            start_date: updatedChallenge.start_date || '',
-            deadline: updatedChallenge.deadline || '',
-            dataset: updatedChallenge.dataset || ''
-      });
-
+      const response = await axios.put(`http://localhost:3000/challenges/setting/${id}`, input);
       setFlashMessage("Challenge updated successfully");
       window.location.href = '/historychallenges';
-
     } catch (error) {
-      // Display an error message if updating the user fails
-      setFlashMessage("Failed to update profile. Please try again later.");
-      console.error("Error updating user:", error);
+      setFlashMessage("Failed to update challenge. Please try again later.");
+      console.error("Error updating challenge:", error);
     }
   };
 

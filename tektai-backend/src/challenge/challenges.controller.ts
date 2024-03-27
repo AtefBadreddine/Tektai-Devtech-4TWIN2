@@ -52,7 +52,7 @@ export class ChallengesController {
     return this.challengesService.create(challengeDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  //@UseGuards(JwtAuthGuard)
   @Put('setting/:id')
   async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.updateChallenge(id, challengeDto);

@@ -6,8 +6,8 @@ export type ChallengesDocument = Challenges & Document;
 
 @Schema()
 export class Challenges {
-  @Prop({ default: () => new mongoose.Types.ObjectId() })
-  _id: string;
+  // @Prop({ default: () => new mongoose.Types.ObjectId() })
+  // _id: string;
 
   @Prop()
   title: string;

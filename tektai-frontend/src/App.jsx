@@ -97,6 +97,7 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
+          <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
@@ -113,7 +114,6 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
             <Route path="/profile" element={<Profile />} />
             <Route path="/profile/settings" element={<Settings />} />
             <Route path="/historychallenges" element={<HistoryChallenges/>} />
-            <Route path="/challenge/setting" element={<UpdateChallenge/>} />
 
           </Route>
 

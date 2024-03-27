@@ -15,6 +15,8 @@ function ChallengeDetails() {
   const [companyName, setCompanyName] = useState('');
   const [loadingCompany, setLoadingCompany] = useState(true);
   const { id } = useParams();
+  const [deleted, setDeleted] = useState(false);
+
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -63,6 +65,16 @@ function ChallengeDetails() {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:3000/challenges/${id}`);
+      setDeleted(true);
+      window.location.href = '/historychallenges';
+    } catch (error) {
+      console.error('Error deleting challenge:', error);
+    }
+  };
+
   // Determine image source
   const imageSrc = challenge && challenge.image ? challenge.image : defaultImagePath;
 
@@ -93,14 +105,20 @@ function ChallengeDetails() {
                               type="button"
                             >
                               
-                            <Link to="/challenge/setting">Edit</Link>
+                            <Link to={`/challenge/setting/${challenge._id}`}>Edit</Link>
                             </button>
-                            <button
-                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                              type="button"
-                            >
-                            Delete
-                            </button>
+                            
+                            <div>
+      {deleted ? (
+        <p>Deleted successfully!</p>
+      ) : (
+        <button 
+        className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        onClick={handleDelete}>
+          Delete
+        </button>
+      )}
+    </div>
                           </div>
                       </div>
 
