@@ -62,7 +62,7 @@ const UpdateChallenge = () => {
         <div className="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-indigo-400 rounded-t">
           <div className="max-w-sm mx-auto md:w-full md:mx-0">
             <div className="inline-flex items-center space-x-4">
-              <h1 className="text-gray-600">Update challenge</h1>
+              <h1 className="text-gray-600">Challenge {input.status} </h1>
             </div>
           </div>
         </div>
@@ -170,41 +170,6 @@ const UpdateChallenge = () => {
                     name="prize"
                     id="prize"
                     value={input.prize}
-                    onChange={handleInput}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-sm text-gray-400" htmlFor="status">status</label>
-                <div className="w-full inline-flex border">
-                  <div className="w-1/12 pt-2 bg-gray-100">
-                    <svg
-                      fill="none"
-                      className="w-6 text-gray-400 mx-auto"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                     <g opacity="0.8">
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M3.33301 4.16667C2.87658 4.16667 2.49967 4.54357 2.49967 5V15C2.49967 15.4564 2.87658 15.8333 3.33301 15.8333H16.6663C17.1228 15.8333 17.4997 15.4564 17.4997 15V5C17.4997 4.54357 17.1228 4.16667 16.6663 4.16667H3.33301ZM0.833008 5C0.833008 3.6231 1.9561 2.5 3.33301 2.5H16.6663C18.0432 2.5 19.1663 3.6231 19.1663 5V15C19.1663 16.3769 18.0432 17.5 16.6663 17.5H3.33301C1.9561 17.5 0.833008 16.3769 0.833008 15V5Z"
-                            fill="" />
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M0.983719 4.52215C1.24765 4.1451 1.76726 4.05341 2.1443 4.31734L9.99975 9.81615L17.8552 4.31734C18.2322 4.05341 18.7518 4.1451 19.0158 4.52215C19.2797 4.89919 19.188 5.4188 18.811 5.68272L10.4776 11.5161C10.1907 11.7169 9.80879 11.7169 9.52186 11.5161L1.18853 5.68272C0.811486 5.4188 0.719791 4.89919 0.983719 4.52215Z"
-                            fill="" />
-                        </g>
-                    </svg>
-                  </div>
-                  <input
-                    className="w-11/12 focus:outline-none focus:text-gray-600 p-2"
-                    type="text"
-                    name="status"
-                    id="status"
-                    value={input.status}
                     onChange={handleInput}
                   />
                 </div>

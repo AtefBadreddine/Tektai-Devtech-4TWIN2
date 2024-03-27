@@ -16,6 +16,9 @@ function ChallengeDetails() {
   const [loadingCompany, setLoadingCompany] = useState(true);
   const { id } = useParams();
   const [deleted, setDeleted] = useState(false);
+  const [flashMessage, setFlashMessage] = useState(""); // State for flash message
+
+
 
 
   useEffect(() => {
@@ -67,11 +70,25 @@ function ChallengeDetails() {
 
   const handleDelete = async () => {
     try {
+      if (challenge.status === 'Upcoming' || challenge.status === 'Completed') {
       await axios.delete(`http://localhost:3000/challenges/${id}`);
       setDeleted(true);
       window.location.href = '/historychallenges';
+    } else {
+      // Display a message indicating that the challenge cannot be deleted
+      alert("You cannot delete an ongoing challenge.");
+    }
+    
     } catch (error) {
       console.error('Error deleting challenge:', error);
+    }
+  };
+  const handleEditClick = () => {
+    if (challenge.status !== 'Upcoming') {
+      setFlashMessage("You cannot update a past challenge.");
+    } else {
+      // Redirect to the edit page
+      window.location.href = `/challenge/setting/${id}`;
     }
   };
 
@@ -100,25 +117,29 @@ function ChallengeDetails() {
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
                         
                           <div className="flex justify-end gap-4.5">
-                            <button
-                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                              type="button"
-                            >
-                              
-                            <Link to={`/challenge/setting/${challenge._id}`}>Edit</Link>
-                            </button>
-                            
-                            <div>
-      {deleted ? (
-        <p>Deleted successfully!</p>
-      ) : (
-        <button 
-        className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-        onClick={handleDelete}>
-          Delete
+                          {flashMessage && <p className="text-red-500">{flashMessage}</p>}
+      <div>
+        <button
+          className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+          type="button"
+          onClick={handleEditClick}
+        >
+          Edit
         </button>
-      )}
-    </div>
+      </div>
+        
+
+                            <div>
+                            {deleted ? (
+                             <p>Deleted successfully!</p>
+                             ) : (
+                             <button 
+                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+                              onClick={handleDelete}>
+                              Delete
+                             </button>
+                            )}
+                            </div>
                           </div>
                       </div>
 
