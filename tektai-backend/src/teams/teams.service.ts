@@ -15,7 +15,7 @@ export class TeamsService {
   }
 
   async findAll(): Promise<Team[]> {
-    return this.teamModel.find().exec();
+    return this.teamModel.find().populate('leader members').exec();
   }
 
   async findOne(id: string): Promise<Team> {

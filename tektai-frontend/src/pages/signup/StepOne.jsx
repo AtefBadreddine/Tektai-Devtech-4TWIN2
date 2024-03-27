@@ -49,6 +49,9 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    const handleBack = () => {
+        handlePrevious(); // Call the handlePrevious function to go back to Step One
+    };
 
     const handlePhoneChange = (value) => {
         setPhoneNumber(value);
@@ -289,7 +292,10 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
           </ModalFooter>
         </ModalContent>
       </Modal>
+      <button className="btn text-white bg-gray-600 hover:bg-gray-700 w-full" onClick={handleBack}>Back</button>
+        
                 <button className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${captchaValid ? '' : 'disabled'}`} disabled={!captchaValid || !agreeToTerms}>Next </button>
+
                 </div>
             </div>
             <div className="text-sm text-gray-500 text-center mt-3">
