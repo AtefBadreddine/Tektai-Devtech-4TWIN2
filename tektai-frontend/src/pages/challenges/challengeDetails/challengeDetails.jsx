@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
 
 function ChallengeDetails() {
+
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [companyName, setCompanyName] = useState('');
@@ -17,7 +18,11 @@ function ChallengeDetails() {
   const { id } = useParams();
   const [deleted, setDeleted] = useState(false);
   const [flashMessage, setFlashMessage] = useState(""); // State for flash message
+  const [userData, setUserData] = useState({
+    username: '',
+    role: '',
 
+  });
 
 
 
@@ -50,6 +55,36 @@ function ChallengeDetails() {
       fetchCompany();
     }
   }, [challenge]);
+
+  useEffect(() => {
+    const localStorageData = localStorage.getItem('user');
+   
+
+    if (localStorageData) {
+
+     const parsedData = JSON.parse(localStorageData);
+
+      setUserData(parsedData);
+    
+    } else {
+      console.log('No user data found in local storage');
+    }
+
+    const fetchUserData = async () => {
+     try {
+       // Fetch user data from the backend
+       const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
+       const userData = response.data;
+       setUserData(userData);
+       setProfileImageUrl(`/uploads/${userData.image}`);
+     } catch (error) {
+       console.error('Error fetching user data:', error);
+     }
+   };
+
+   fetchUserData();
+   
+  }, []);
 
   // Function to format date to display month, day, and optionally year
   const formatDate = (dateString) => {
@@ -115,7 +150,7 @@ function ChallengeDetails() {
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
                         <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        
+                        {userData?.role === 'company' && (
                           <div className="flex justify-end gap-4.5">
                           {flashMessage && <p className="text-red-500">{flashMessage}</p>}
       <div>
@@ -141,6 +176,8 @@ function ChallengeDetails() {
                             )}
                             </div>
                           </div>
+                        )}
+
                       </div>
 
 
