@@ -43,9 +43,15 @@ function MyTeams() {
 
     fetchTeams();
   }, []);
-  const filteredUsers = users.filter(user =>
-    user.username.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  if (Array.isArray(users)) {
+    const filteredUsers = users.filter(user =>
+      user.username.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    // Now you can use filteredUsers
+  } else {
+    // Handle the case where users is not an array
+  }
+  
   // Function to handle deleting a team
   const handleDeleteTeam = async (teamId) => {
     try {
@@ -198,13 +204,14 @@ function MyTeams() {
         ))}
         {selectedTeam.members.map((member) => (
           <div key={member._id} className="flex items-center mb-2">
-            <p className="mr-2">{member.username}</p>
-            <button
+          <button
               onClick={() => handleSaveChanges(member._id)}
-              className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
+              className="bg-red-500 text-white py-1 mx-2 px-3 rounded hover:bg-red-600"
             >
               Remove
             </button>
+            <p className="mr-2">{member.username}</p>
+            
           </div>
         ))}
       </div>
