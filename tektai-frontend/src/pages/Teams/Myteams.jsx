@@ -10,7 +10,8 @@ function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  
+  const [successMessage, setSuccessMessage] = useState(null);
+
   const [newTeamName, setNewTeamName] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -116,30 +117,26 @@ function MyTeams() {
       setSelectedMembers([...selectedMembers, userId]);
     }
   };
- const handleRemoveMember = async (userId) => {
-  try {
-    // Create an updated team object without the removed member
-    const updatedTeam = {
-      ...selectedTeam,
-      members: selectedTeam.members.filter(member => member._id !== userId)
-    };
-
-    // Send a PUT request to the server to update the team
-    await fetch(`/teams/${selectedTeam._id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedTeam)
-    });
-
-    // Update the state with the new selected team
-    setSelectedTeam(updatedTeam);
-  } catch (error) {
-    console.error('Error removing member from team:', error);
-  }
-};
-
+  const handleRemoveMember = async (memberId) => {
+    try {
+      // Remove the member from the selected team's members list
+      setSelectedTeam(prevTeam => ({
+        ...prevTeam,
+        members: prevTeam.members.filter(member => member._id !== memberId)
+      }));
+      // Call the remove member API endpoint
+      await TeamsService.removeMember(selectedTeam._id, memberId);
+      // Set success message
+      
+      setSuccessMessage('Member removed successfully');
+      setTimeout(() => {
+        setSuccessMessage(null);      }, 3000);
+    } catch (error) {
+      console.error('Error removing member:', error);
+      // Handle error (e.g., display an error message)
+    }
+  };
+  
   return (
     // add condition to display only teams that belong to the current user
     <div>       <div className='pb-16'><Header/></div> 
@@ -202,18 +199,23 @@ function MyTeams() {
             <label htmlFor={user._id}>{user.username}</label>
           </div>
         ))}
-        {selectedTeam.members.map((member) => (
-          <div key={member._id} className="flex items-center mb-2">
+      {successMessage &&   
+      <div className='m-2' >
+       <Alert status='success' variant='subtle'>
+       <AlertIcon />
+       {successMessage}
+     </Alert></div>}
+      {selectedTeam.members.map((member) => (
+        <div key={member._id} className="flex items-center mb-2">
           <button
-              onClick={() => handleSaveChanges(member._id)}
-              className="bg-red-500 text-white py-1 mx-2 px-3 rounded hover:bg-red-600"
-            >
-              Remove
-            </button>
-            <p className="mr-2">{member.username}</p>
-            
-          </div>
-        ))}
+            onClick={() => handleRemoveMember(member._id)}
+            className="bg-red-500 text-white py-1 mx-2 px-3 rounded hover:bg-red-600"
+          >
+            Remove
+          </button>
+          <p className="mr-2">{member.username}</p>
+        </div>
+      ))}
       </div>
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row justify-end">

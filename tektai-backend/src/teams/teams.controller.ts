@@ -1,4 +1,4 @@
-import {Controller, Get, Post, Body, Param, Delete, Put} from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, Delete, Put, NotFoundException} from '@nestjs/common';
 import { TeamsService } from './teams.service';
 import { TeamDto } from './dto/team.dto';
 
@@ -30,5 +30,24 @@ export class TeamsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.teamsService.remove(id);
+  }
+  @Post(':teamId/members/:memberId')
+  async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.addMember(teamId, memberId);
+      return { success: true, message: 'Member added successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Delete(':teamId/members/:memberId')
+  async removeMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.removeMember(teamId, memberId);
+      return { success: true, message: 'Member removed successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }

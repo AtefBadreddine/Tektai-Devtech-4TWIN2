@@ -50,7 +50,25 @@ const TeamsService = {
       console.error('Error deleting team:', error);
       throw error;
     }
+  },
+  addMember: async (teamId, memberId) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/teams/${teamId}/members/${memberId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  removeMember: async (teamId, memberId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/teams/${teamId}/members/${memberId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
   }
 };
+
 
 export default TeamsService;
