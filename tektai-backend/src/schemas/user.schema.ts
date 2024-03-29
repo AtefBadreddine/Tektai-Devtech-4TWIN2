@@ -6,19 +6,14 @@ import {
 import {
   Document
 } from 'mongoose';
-import * as mongoose from "mongoose";
-import {classToPlain, Exclude} from 'class-transformer';
+
 
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
-  @Prop()
-  userId : string;
 
-  @Prop({ default: () => new mongoose.Types.ObjectId() })
-  _id: string;
 
   @Prop({ required: true, unique: true })
   username: string;
@@ -26,8 +21,7 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
-  @Exclude({ toPlainOnly: true })
+  @Prop({ required: true , type : String /*, select : false*/ })
   password: string;
 
   @Prop({ default : null })
@@ -53,6 +47,11 @@ export class User {
 
   @Prop({ default: "challenger" })
   role: string;
+
+
+  @Prop({ nullable: true, default: null }) 
+  image?: string;
+
 
 
 

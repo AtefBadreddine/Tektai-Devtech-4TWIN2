@@ -218,7 +218,7 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
             </label>
             <input
                 id="confirmPassword"
-                type={showPassword ? 'text' : 'password'} // Toggle between text and password
+                type="password"
                 name="confirmPassword"
                 value={confirmPassword}
                 onChange={handleConfirmPasswordChange} // Update confirmation field
@@ -226,7 +226,6 @@ export default function StepOne  ({ formData,fromAuth, handleInput, handleNext }
                 placeholder="Confirm your password"
                 required
             />
-           
             {/* Error message if passwords don't match */}
             {!passwordsMatch && (
                 <p className="text-red-600 text-sm mt-1">Passwords do not match</p>

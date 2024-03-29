@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; // Import useNavigate
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"; // Import useNavigate
 
 const UserSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -46,34 +46,28 @@ const UserSearch = () => {
   }, [searchTerm, searchBy]);
 
   const renderSearchInput = () => (
-    <div className="search-input-container border border-blue flex items-center bg-transparent focus:outline-none  rounded-full overflow-hidden">
-      <div className="relative flex-grow dark:text-white  text-black">
+    <div className="search-input-container flex">
+      <div className="relative w-full">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <FontAwesomeIcon icon="fa-solid fa-magnifying-glass" />
         </div>
         <input
-          type="text"
-          placeholder="Search..."
-          className="w-full mr-[17.3rem] pl-12 bg-transparent border-none focus:ring-0 rounded-full" // Adjust padding and styles
-          value={searchTerm}
-          onChange={handleSearchChange}
+            type="text"
+            placeholder="Search..."
+            className="w-full pl-12 pr-4 bg-transparent text-black focus:outline-none dark:text-white xl:w-125"
+            value={searchTerm}
+            onChange={handleSearchChange}
         />
       </div>
-      <div className="divider h-full bg-blue" style={{ width: '1px' }}></div> {/* Adjust the width */}
-      <select
-        value={searchBy}
-        onChange={handleSearchByChange}
-        className="bg-transparent border-0  border-l focus:ring-0  pr-4 pl-2 rounded-r-full" // Match styles with input
-      >
+
+
+      <select value={searchBy} onChange={handleSearchByChange}>
         <option value="username">Username</option>
         <option value="role">Role</option>
         <option value="email">Email</option>
       </select>
     </div>
   );
-  
-  
-  
 
   return (
     <div>

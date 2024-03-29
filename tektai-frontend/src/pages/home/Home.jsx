@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import axios from 'axios';
 import Header from '../../layout/Header';
 import HeroHome from './partials/HeroHome';
 import FeaturesHome from './partials/Features';
@@ -14,24 +13,10 @@ import { LampContainer, LampDemo } from './partials/lamp';
 import { InfiniteMovingCards } from './partials/team';
 import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
+import { Tabs } from '@chakra-ui/tabs';
 import Transition from '../../utils/Transition'; // Assuming Transition component file location
 
 function Home() {
-
-  const [aboutUs, setAboutUs] = useState('');
-
-  useEffect(() => {
-    const fetchAboutUs = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/settings/65f8a38e39a328e497879df2'); // Replace with your actual endpoint
-        setAboutUs(response.data.about);
-      } catch (error) {
-        console.error('Error fetching about us data:', error);
-      }
-    };
-
-    fetchAboutUs();
-  }, []);
   const products = [
     {
       title: "T-shirt",
@@ -110,13 +95,14 @@ function Home() {
       flagImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Flag_of_Tunisia.svg/1200px-Flag_of_Tunisia.svg.png",
       email:"sirine.benyounes@esprit.tn"
 
-    
 
     },
     // Add more data objects as needed
   ];
     // Add more items as needed
- 
+
+  const localStorageData = localStorage.getItem('user');
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
@@ -129,27 +115,26 @@ function Home() {
         {/*  Page sections */}
         <Transition show appear>
 
-        <HeroHome />        
+
+        <HeroHome />
         </Transition>
- <FeaturesHome/>
-        
-       <FeaturesBlocks />  
+        <FeaturesHome/>
+
+       <FeaturesBlocks />
+
         {/* <HeroParallax products={products} /> */}
         <Slider userData={data} />
         <div className="container">
     </div>
-        
+
  {/* <Testimonials /> */}
-
-
         {/* <Newsletter /> */}
         <Transition show appear>
 
         <div className="py-32 max-w-3xl mx-auto text-center pb-12 md:pb-20">
           <div className=''></div>
               <h2 className="h2 mb-4">About <span className="px-2 text-white bg-blue-600 rounded ">Us</span> </h2>
-              <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> {aboutUs}
-</p>
+              <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> is a collaborative platform for data science enthusiasts. Companies submit challenges, developers innovate. With transparent processes and community engagement, TektAI is a hub for pushing the boundaries of data. Join us to revolutionize data science, one challenge at a time.</p>
             </div>
             </Transition>
 

@@ -11,20 +11,11 @@ import FeaturesElement from '../../../images/features-element.png';
 
 
   function Features() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-  
-    // Function to handle login
-    const handleLogin = () => {
-      // Perform login actions (e.g., set session, store tokens)
-      setIsLoggedIn(true);
+    const isLoggedIn = () => {
+      const storedToken = localStorage.getItem('token');
+      return !!storedToken;
     };
-  
-    // Function to handle logout
-    const handleLogout = () => {
-      // Perform logout actions (e.g., clear session, remove tokens)
-      setIsLoggedIn(false);
-    };
-  
+    
     const [tab, setTab] = useState(1);
     const tabs = useRef(null);
   
@@ -48,18 +39,28 @@ import FeaturesElement from '../../../images/features-element.png';
         <div className="pt-12 md:pt-20">
       
  {/* Why Choose Us section */}
- {!isLoggedIn && (
-        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-          <h1 className="h2 mb-4">Join our community</h1>
-          <p className="text-xl text-gray-600">Take the first step towards unleashing your potential – sign up now and embark on an exciting adventure in the world of data science.</p>
-          {/* Button */}
-          <Link to="/signup" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
-            Get started <FaArrowRight className="ml-2" />
-          </Link>
-        </div>
-      )}
-
-
+ 
+ {isLoggedIn() ? (
+  // Why Choose Us section
+  <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
+    <h1 className="h2 mb-4">Latest Challenges</h1>
+    <p className="text-xl text-gray-600">Explore our latest challenges and showcase your skills!</p>
+    {/* Button */}
+    <Link to="/challenges" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
+      Explore Challenges <FaArrowRight className="ml-2" />
+    </Link>
+  </div>
+) : (
+  // Sign up section
+  <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
+    <h1 className="h2 mb-4">Join our community</h1>
+    <p className="text-xl text-gray-600">Take the first step towards unleashing your potential – sign up now and embark on an exciting adventure in the world of data science.</p>
+    {/* Button */}
+    <Link to="/signup" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
+      Get started <FaArrowRight className="ml-2" />
+    </Link>
+  </div>
+)}
 
 
           <div className="md:grid md:grid-cols-12 md:gap-6">
@@ -180,6 +181,7 @@ import FeaturesElement from '../../../images/features-element.png';
       </div >
     </section >
   );
+  
 }
 
 export default Features;

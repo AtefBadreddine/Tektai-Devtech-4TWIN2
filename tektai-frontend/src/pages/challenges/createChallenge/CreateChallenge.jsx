@@ -10,6 +10,8 @@ function CreateChallenge() {
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
+    const [dataSetFileUrl, setdataSetFile] = useState('');
+
     const [formData, setFormData] = useState({
         title: "",
         image: "",

@@ -167,7 +167,7 @@ function SignUp( ) {
                                         </> : '' }
 
                                         <div className="text-gray-600 text-center mt-6">
-                                        Already have an account? <Link to="/signin" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>
+                                            Already using Tektai? <Link to="/signin" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>
                                         </div>
 
                                     </div>

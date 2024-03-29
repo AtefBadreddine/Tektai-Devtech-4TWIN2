@@ -133,30 +133,28 @@ function SignIn() {
                             Password
                           </label>
                           <div className="relative">
-  <input
-    id="password"
-    type={showPassword ? 'text' : 'password'}
-    name="password"
-    onChange={handleInput}
-    className="form-input w-full text-gray-800"
-    placeholder="Enter your password"
-    required
-  />
-  <span
-    className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer ${
-      showPassword ? 'eye-icon-hide' : ''
-    }`}
-    onClick={() => setShowPassword(!showPassword)}
-    style={{ top: '50%', transform: 'translateY(-50%)' }} // Center vertically
-  >
-    {showPassword ? (
-      <FontAwesomeIcon icon={faEyeSlash} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600" />
-    ) : (
-      <FontAwesomeIcon icon={faEye} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-600" />
-    )}
-  </span>
-</div>
-
+                            <input
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                name="password"
+                                onChange={handleInput}
+                                className="form-input w-full text-gray-800"
+                                placeholder="Enter your password"
+                                required
+                            />
+                            <span
+                                className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer ${
+                                    showPassword ? 'eye-icon-hide' : ''
+                                }`}
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                          {showPassword ? (
+                              <FontAwesomeIcon icon={faEyeSlash} className="h-6 w-6 text-blue-600 eye-icon" />
+                          ) : (
+                              <FontAwesomeIcon icon={faEye} className="h-6 w-6 text-blue-600 eye-icon" />
+                          )}
+                        </span>
+                          </div>
                         </div>
                       </div>
                       <ReCAPTCHA
@@ -243,6 +241,7 @@ function SignIn() {
                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                       <div className="text-gray-600 italic">Or</div>
                       <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
+
                     </div>
                     <form>
                       <div className="flex flex-wrap -mx-3 mb-3">
@@ -267,9 +266,16 @@ function SignIn() {
                       </div>
                     </form>
                     <div className="text-gray-600 text-center mt-6">
-                    Not registered?{' '}
+                      Have problems logging in ?{' '}
+                      <Link to="/reset-password" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
+                        Reset password
+                      </Link>
+                    </div>
+
+                    <div className="text-gray-600 text-center mt-6">
+                      Don’t you have an account?{' '}
                       <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
-                      Create an account.
+                        Sign up
                       </Link>
                     </div>
                   </div>
@@ -278,9 +284,11 @@ function SignIn() {
             </section>
           </main>
           <footer className="text-center pb-8">
+
             <Link to="/contact" className="text-gray-600 hover:underline">
               Contact Us
             </Link>
+
           </footer>
           <style>
             {`

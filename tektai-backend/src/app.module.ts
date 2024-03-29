@@ -5,13 +5,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { TeamsModule } from './teams/teams.module';
 import * as process from 'process';
+import { ContactModule } from './contact/contact.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { ChallengesModule } from './challenge/challenges.module';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
-import { ChallengesModule } from './challenge/challenges.module';
-import { MulterConfigModule } from './multer.module';
-import { HistorychallengesModule } from './historychallenges/historychallenges.module';
-import { HistorychallengesService } from './historychallenges/historychallenges.service';
 
 @Module({
   imports: [
@@ -21,11 +22,15 @@ import { HistorychallengesService } from './historychallenges/historychallenges.
     UsersModule,
     SettingsModule,
     TermModule,
+    ContactModule,
     ChallengesModule,
-    MulterConfigModule,
-    HistorychallengesModule
-    ],
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // relative path to uploads directory
+      serveRoot: '/uploads', // Base URL path to serve the files from
+    }),
+    TeamsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,HistorychallengesService],
+  providers: [AppService],
 })
 export class AppModule {}
