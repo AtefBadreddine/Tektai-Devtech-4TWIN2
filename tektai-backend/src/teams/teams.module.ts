@@ -3,12 +3,18 @@ import { TeamsService } from './teams.service';
 import { TeamsController } from './teams.controller';
 import {MongooseModule} from "@nestjs/mongoose";
 import {Team, TeamSchema} from "../schemas/team.schema";
-import { UsersModule } from 'src/users/users.module';
+
+import {Invitation, InvitationSchema} from "../schemas/invitation.schema";
+// import {UsersService} from "../users/users.service";
+import {UsersModule} from "../users/users.module";
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name : Team.name , schema : TeamSchema}])
-  ,
-  UsersModule,],
+  imports: [
+      UsersModule,
+      MongooseModule.forFeature([{ name : Team.name , schema : TeamSchema}]),
+      MongooseModule.forFeature([{ name : Invitation.name , schema : InvitationSchema}]),
+  ],
+
   controllers: [TeamsController],
   providers: [TeamsService],
 })

@@ -15,6 +15,7 @@ import {UserDto} from "../users/user.dto";
 import {ResetPasswordDto} from "../schemas/reset-password.dto";
 import {GoogleAuthGuard} from "./guards/google-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
+import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 
 @Controller('auth')
 export class AuthController {
@@ -49,6 +50,13 @@ export class AuthController {
       throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  @Get('currentUser')
+  @UseGuards(JwtAuthGuard)
+  async getCurrentUser(@Request() req) {
+    return req.user;
+  }
+
 
   @Post('/forget-password')
   async forgetPassword(@Body('email') email: string) {
