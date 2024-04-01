@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import submissionService from "../../services/submissionService";
-import teamsService from "../../services/teamServices"; // Importez le service pour récupérer les équipes
+import teamsService from "../../services/teamServices";
 
 function FileUploadForm() {
   const [teamId, setTeamId] = useState('');
@@ -9,7 +9,6 @@ function FileUploadForm() {
   const [teams, setTeams] = useState([]);
 
   useEffect(() => {
-    // Chargez les équipes lorsque le composant est monté
     fetchTeams();
   }, []);
 

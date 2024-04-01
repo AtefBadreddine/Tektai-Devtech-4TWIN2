@@ -27,7 +27,7 @@ import MapComponent from './pages/Localisation/MapComponent';
   import DefaultLayout from './layout/DefaultLayout';
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
-  import Settings from './components/Settings';
+  import Settings from './Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
 import SpinnerWithBackground from './components/spinner/spinner';
