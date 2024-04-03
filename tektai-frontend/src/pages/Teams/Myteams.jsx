@@ -44,14 +44,9 @@ function MyTeams() {
 
     fetchTeams();
   }, []);
-  if (Array.isArray(users)) {
-    const filteredUsers = users.filter(user =>
-      user.username.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    // Now you can use filteredUsers
-  } else {
-    // Handle the case where users is not an array
-  }
+  const filteredUsers = users.filter(user =>
+    user.username.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   
   // Function to handle deleting a team
   const handleDeleteTeam = async (teamId) => {
@@ -136,6 +131,19 @@ function MyTeams() {
       // Handle error (e.g., display an error message)
     }
   };
+  const sendInvitation = async (teamId) => {
+    try {
+      // Iterate over selectedMembers array and send individual invitations
+      for (const memberId of selectedMembers) {
+        await TeamsService.sendInvitation(teamId, memberId);
+      }
+      console.log('Invitations sent successfully');
+      // Logic to indicate invitations sent successfully
+    } catch (error) {
+      console.error('Error sending invitations:', error);
+      // Handle error
+    }
+  }
   
   return (
     // add condition to display only teams that belong to the current user
@@ -158,13 +166,14 @@ function MyTeams() {
       <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
       <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
       <div className="overflow-y-auto max-h-60">
-        {filteredUsers.map((user) => (
-          <div key={user._id} className="flex items-center mb-2">
-            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
-            <label htmlFor={user._id} className="ml-2">{user.username}</label>
-          </div>
-        ))}
-      </div>
+  {filteredUsers && filteredUsers.map((user) => (
+    <div key={user._id} className="flex items-center mb-2">
+      <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
+      <label htmlFor={user._id} className="ml-2">{user.username}</label>
+    </div>
+  ))}
+</div>
+
       <div className="flex justify-end">
         <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
         <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" onClick={() => setShowModal(false)}>Cancel</button>
@@ -182,23 +191,39 @@ function MyTeams() {
     
     {/* Modal content */}
     <div className="bg-white rounded-lg p-8 relative z-10 w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
-      {/* Input field for team name */}
-      <input
-        type="text"
-        value={selectedTeam ? selectedTeam.name : ''}
-        onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
-        placeholder="Enter Team Name"
-        className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
-      />
-      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
-      <div className="overflow-y-auto max-h-60">
-        {searchQuery && filteredUsers.map((user) => (
-          <div key={user._id} className="flex items-center mb-2">
-            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} className="mr-2" />
-            <label htmlFor={user._id}>{user.username}</label>
-          </div>
-        ))}
+    <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
+{/* Input field for team name */}
+<input
+  type="text"
+  value={selectedTeam ? selectedTeam.name : ''}
+  onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
+  placeholder="Enter Team Name"
+  className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+/>
+<input
+  type="text"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  placeholder="Search members..."
+  className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+/>
+<div className="overflow-y-auto max-h-60">
+{searchQuery &&
+    filteredUsers &&
+    filteredUsers.map((user) => (
+      <div key={user._id} className="flex items-center mb-2">
+        <input
+          type="checkbox"
+          id={user._id}
+          checked={selectedMembers.includes(user._id)}
+          onChange={() => handleMemberSelection(user._id)}
+          className="mr-2"
+        />
+        <label htmlFor={user._id}>{user.username}</label>
+        <button className='btn bg-green-300 m-2 w-10 text-sm h-4' onClick={() => sendInvitation(selectedTeam?.teamId)}>Invite</button>
+        {/* Use optional chaining to avoid errors if selectedTeam is null or undefined */}
+      </div>
+  ))}
       {successMessage &&   
       <div className='m-2' >
        <Alert status='success' variant='subtle'>
