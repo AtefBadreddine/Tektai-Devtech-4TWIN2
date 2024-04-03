@@ -35,15 +35,18 @@ function MyTeams() {
   useEffect(() => {
     async function fetchTeams() {
       try {
+        const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
         const allTeams = await TeamsService.getAllTeams();
-        setTeams(allTeams);
+        const userTeams = allTeams.filter(team => team.leader.username === loggedInUser.username);
+        setTeams(userTeams);
       } catch (error) {
         console.error('Error fetching teams:', error);
       }
     }
-
+  
     fetchTeams();
   }, []);
+  
   const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -131,6 +134,8 @@ function MyTeams() {
       // Handle error (e.g., display an error message)
     }
   };
+  const [invitationSent, setInvitationSent] = useState({});
+
   const sendInvitation = async (teamId) => {
     try {
       // Iterate over selectedMembers array and send individual invitations
@@ -220,7 +225,13 @@ function MyTeams() {
           className="mr-2"
         />
         <label htmlFor={user._id}>{user.username}</label>
-        <button className='btn bg-green-300 m-2 w-10 text-sm h-4' onClick={() => sendInvitation(selectedTeam?.teamId)}>Invite</button>
+        <button
+                className='btn bg-green-300 m-2 w-10 text-sm h-4'
+                disabled={invitationSent[user._id]}
+                onClick={() => sendInvitation(selectedTeam?.teamId, user._id)}
+              >
+                {invitationSent[user._id] ? 'Invited' : 'Invite'}
+              </button>        
         {/* Use optional chaining to avoid errors if selectedTeam is null or undefined */}
       </div>
   ))}
