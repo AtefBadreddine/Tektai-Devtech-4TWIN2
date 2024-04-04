@@ -50,7 +50,73 @@ const TeamsService = {
       console.error('Error deleting team:', error);
       throw error;
     }
-  }
+  },
+  addMember: async (teamId, memberId) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/teams/${teamId}/members/${memberId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  },
+
+  removeMember: async (teamId, memberId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/teams/${teamId}/members/${memberId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  },  updateTeamName: async (teamId, newName) => {
+    try {
+      const response = await axios.put(`${API_BASE_URL}/teams/${teamId}/update-name`, { name: newName });
+      return response.data;
+    } catch (error) {
+      console.error('Error updating team name:', error);
+      throw error;
+    }
+  },
+
+  changeTeamLeader: async (teamId, newLeaderId) => {
+    try {
+      const response = await axios.put(`${API_BASE_URL}/teams/${teamId}/change-leader`, { newLeaderId: newLeaderId });
+      return response.data;
+    } catch (error) {
+      console.error('Error changing team leader:', error);
+      throw error;
+    }
+  },
+  sendInvitation: async (teamId, memberId) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/teams/invitations/${teamId}/send`, { memberId: memberId });
+      return response.data;
+    } catch (error) {
+      console.error('Error sending invitation:', error);
+      throw error;
+    }
+  },
+
+  acceptInvitation: async (invitationId) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/teams/invitations/${invitationId}/accept`);
+      return response.data;
+    } catch (error) {
+      console.error('Error accepting invitation:', error);
+      throw error;
+    }
+  },
+
+  removeInvitation: async (invitationId) => {
+    try {
+      const response = await axios.delete(`${API_BASE_URL}/teams/invitations/${invitationId}/remove`);
+      return response.data;
+    } catch (error) {
+      console.error('Error removing invitation:', error);
+      throw error;
+    }
+  },
+
 };
+
 
 export default TeamsService;
