@@ -5,15 +5,21 @@ import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
 import {UserDto} from "../../users/user.dto";
-import {User} from "../../schemas/user.schema";
+import {User, UserDocument} from "../../schemas/user.schema";
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
+import {InjectModel} from "@nestjs/mongoose";
+import {Model} from "mongoose";
+
+
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger();
-  constructor(private usersService : UsersService, private jwtService : JwtService , private  hashService : HashService) {
+  constructor(private usersService : UsersService
+              , private jwtService : JwtService
+              , private  hashService : HashService) {
   }
 
   async validateUser(username: string, pass: string): Promise<any> {
@@ -29,14 +35,15 @@ export class AuthService {
 
   async login(user: any,rememberMe: boolean = false) {
       const expiresIn = rememberMe ? '7d' : '1d';
+      const { _id, username, email, isBlocked, role, image } = user;
 
-    const payload = { username: user.username, sub: user._id };
-    return {
-      access_token: this.jwtService.sign(payload,{ expiresIn : expiresIn }),
+      return {
+      access_token: this.jwtService.sign({ _id, username, email, isBlocked, role, image },{ expiresIn : expiresIn }),
     };
   }
   async signup(userDTO : UserDto): Promise<any> {
     const existingUser = await this.usersService.findByUsername(userDTO.username);
+
     if (existingUser) {
       throw new ConflictException('User already exists');
     }
@@ -46,17 +53,14 @@ export class AuthService {
     return await this.usersService.createUser(userDTO);
   }
   async forgetPassword(email: string): Promise<void> {
-    const user = await this.usersService.findByEmail(email);
+    const user  = await this.usersService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');
     }
     const resetToken = uuidv4();
-    const st = await this.usersService.storePwdToken(resetToken,user._id);
+    await this.usersService.storePwdToken(resetToken,user._id);
+    const resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
 
-    // Créer le lien de réinitialisation de mot de passe avec le jeton
-    let resetPasswordLink = `http://localhost:3000/auth/reset-password?token=${resetToken}`;
-     resetPasswordLink = `http://localhost:5173/forget-password?token=${resetToken}`;
-    // Créer un objet Sendinblue
     const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
     const apiKey = process.env.SENDINBLUE;
     const defaultClient = SibApiV3Sdk.ApiClient.instance;
@@ -79,14 +83,6 @@ export class AuthService {
       throw new Error('Failed to send email');
     }
   }
-  async generateResetToken(userId: string): Promise<string> {
-    const token = uuidv4();
-    const expirationDate = new Date();
-    expirationDate.setHours(expirationDate.getHours() + 1); // Expiration dans 1 heure
-    await this.usersService.updateResetToken(userId, token, expirationDate); // Mettre à jour le token de réinitialisation dans l'utilisateur
-    return token;
-  }
-
 
   async resetPassword(token: string,  newPassword: string): Promise<void> {
     const user = await this.usersService.findByResetToken(token);

@@ -3,28 +3,16 @@ import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-
 
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
 
 function ChallengeDetails() {
-
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
   const [companyName, setCompanyName] = useState('');
   const [loadingCompany, setLoadingCompany] = useState(true);
   const { id } = useParams();
-  const [deleted, setDeleted] = useState(false);
-  const [flashMessage, setFlashMessage] = useState(""); // State for flash message
-  const [userData, setUserData] = useState({
-    username: '',
-    role: '',
-
-  });
-
-
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -56,36 +44,6 @@ function ChallengeDetails() {
     }
   }, [challenge]);
 
-  useEffect(() => {
-    const localStorageData = localStorage.getItem('user');
-   
-
-    if (localStorageData) {
-
-     const parsedData = JSON.parse(localStorageData);
-
-      setUserData(parsedData);
-    
-    } else {
-      console.log('No user data found in local storage');
-    }
-
-    const fetchUserData = async () => {
-     try {
-       // Fetch user data from the backend
-       const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
-       const userData = response.data;
-       setUserData(userData);
-       setProfileImageUrl(`/uploads/${userData.image}`);
-     } catch (error) {
-       console.error('Error fetching user data:', error);
-     }
-   };
-
-   fetchUserData();
-   
-  }, []);
-
   // Function to format date to display month, day, and optionally year
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -100,30 +58,6 @@ function ChallengeDetails() {
     } else {
       // If it's a different year, display month, day, and year
       return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      if (challenge.status === 'Upcoming' || challenge.status === 'Completed') {
-      await axios.delete(`http://localhost:3000/challenges/${id}`);
-      setDeleted(true);
-      window.location.href = '/historychallenges';
-    } else {
-      // Display a message indicating that the challenge cannot be deleted
-      alert("You cannot delete an ongoing challenge.");
-    }
-    
-    } catch (error) {
-      console.error('Error deleting challenge:', error);
-    }
-  };
-  const handleEditClick = () => {
-    if (challenge.status !== 'Upcoming') {
-      setFlashMessage("You cannot update a past challenge.");
-    } else {
-      // Redirect to the edit page
-      window.location.href = `/challenge/setting/${id}`;
     }
   };
 
@@ -148,39 +82,9 @@ function ChallengeDetails() {
                       <div>
                         <h2 className="text-xl font-semibold mb-2">{challenge.title}</h2>
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
+                        <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">${challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        {userData?.role === 'company' && (
-                          <div className="flex justify-end gap-4.5">
-                          {flashMessage && <p className="text-red-500">{flashMessage}</p>}
-      <div>
-        <button
-          className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-          type="button"
-          onClick={handleEditClick}
-        >
-          Edit
-        </button>
-      </div>
-        
-
-                            <div>
-                            {deleted ? (
-                             <p>Deleted successfully!</p>
-                             ) : (
-                             <button 
-                              className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
-                              onClick={handleDelete}>
-                              Delete
-                             </button>
-                            )}
-                            </div>
-                          </div>
-                        )}
-
                       </div>
-
-
                       <img src={imageSrc} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg" />
                     </div>
                     <h2 className="h4">Description :</h2>

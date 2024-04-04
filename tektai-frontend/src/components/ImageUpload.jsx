@@ -71,8 +71,6 @@ const UploadImageForm = ({ userId }) => {
         },
       });
       console.log('Image uploaded successfully:', response.data);
-      window.location.href = '/profile';
-
       // Provide feedback to the user, e.g., display a success message
     } catch (error) {
       console.error('Failed to upload image:', error);

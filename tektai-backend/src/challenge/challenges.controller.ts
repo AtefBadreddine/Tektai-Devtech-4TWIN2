@@ -1,5 +1,5 @@
 // challenges.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query,UseGuards } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
@@ -10,7 +10,7 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('challenges')
 export class ChallengesController {
-  constructor(private challengesService: ChallengesService) {}
+  constructor(private readonly challengesService: ChallengesService) {}
 
   @Get()
   async findAll(): Promise<Challenges[]> {
@@ -31,13 +31,9 @@ export class ChallengesController {
     // Parse startDate and deadline to Date objects if needed
     const startDateFilter = startDate ? new Date(startDate) : null;
     const deadlineFilter = deadline ? new Date(deadline) : null;
+
     // Fetch filtered challenges from the service
     return this.challengesService.getFilteredChallenges(status, startDateFilter, deadlineFilter);
-  }
-
-  @Get(':id')
-  async findById(@Param('id') id: string): Promise<Challenges> {
-    return this.challengesService.findById(id);
   }
 
   @Get('company/:companyId')
@@ -46,23 +42,30 @@ export class ChallengesController {
     return this.challengesService.getChallengesByCompanyId(companyId);
   }
 
+  @Get(':id')
+  async findById(@Param('id') id: string): Promise<Challenges> {
+    return this.challengesService.findById(id);
+  }
+
   @Post()
-  @UseGuards(JwtAuthGuard) 
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
   }
 
-  //@UseGuards(JwtAuthGuard)
-  @Put('setting/:id')
+    @Put('setting/:id')
   async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.updateChallenge(id, challengeDto);
+  }
+
+  @Put(':id')
+  async update(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesService.update(id, challengeDto);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string): Promise<void> {
     return this.challengesService.delete(id);
   }
-
   @Post('upload')
   @UseInterceptors(FileInterceptor('image'))
   async uploadChallengeImage(@UploadedFile() file) {
@@ -85,7 +88,4 @@ export class ChallengesController {
       console.error('Error uploading file:', error);
       return { error: 'Failed to upload file' };
     }
-  }
-
-
-}
+  }}
