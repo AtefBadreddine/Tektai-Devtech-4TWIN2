@@ -1,22 +1,37 @@
-import React from 'react';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { Avatar } from '@chakra-ui/react';
 
 const DropdownNotification = () => {
   const [dropdownOpen1, setDropdownOpen1] = useState(false);
+  const [invitations, setInvitations] = useState([]);
   const [notifying, setNotifying] = useState(true);
 
-  const trigger = useRef<any>(null);
-  const dropdown = useRef<any>(null);
+  const trigger = useRef(null);
+  const dropdown = useRef(null);
 
   useEffect(() => {
-    const clickHandler = ({ target }: MouseEvent) => {
+    const fetchInvitations = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        const userId = user ? user._id : null;
+    
+        const response = await axios.get(`http://localhost:3000/teams/invitations/user/${userId}`);
+        console.log(response.data);
+        setInvitations(response.data);
+      } catch (error) {
+        console.error('Error fetching invitations:', error);
+      }
+    };
+    
+    fetchInvitations();
+  }, []);
+
+  useEffect(() => {
+    const clickHandler = ({ target }) => {
       if (!dropdown.current) return;
-      if (
-        !dropdownOpen1 ||
-        dropdown.current.contains(target) ||
-        trigger.current.contains(target)
-      )
+      if (!dropdownOpen1 || dropdown.current.contains(target) || trigger.current.contains(target))
         return;
       setDropdownOpen1(false);
     };
@@ -24,9 +39,8 @@ const DropdownNotification = () => {
     return () => document.removeEventListener('click', clickHandler);
   });
 
-  // close if the esc key is pressed
   useEffect(() => {
-    const keyHandler = ({ keyCode }: KeyboardEvent) => {
+    const keyHandler = ({ keyCode }) => {
       if (!dropdownOpen1 || keyCode !== 27) return;
       setDropdownOpen1(false);
     };
@@ -77,74 +91,31 @@ const DropdownNotification = () => {
         }`}
       >
         <div className="px-4.5 py-3">
-          <h5 className="text-sm font-medium text-bodydark2">Notification</h5>
+          <h5 className="text-sm font-medium text-bodydark2">Notification </h5>
         </div>
 
         <ul className="flex h-auto flex-col overflow-y-auto">
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  Edit your information in a swipe
-                </span>{' '}
-                Sint occaecat cupidatat non proident, sunt in culpa qui officia
-                deserunt mollit anim.
-              </p>
+  {invitations.map(invitation => (
+    <li key={invitation._id}>
+      <Link
+        className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
+        to="#"
+      >
+        <div className="flex items-center">
+          <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={invitation.team.leader?.username} src={`http://localhost:3000/uploads/${invitation.team.leader.image}`} />
+          <strong className="text-black dark:text-white">{invitation.team.leader?.username}</strong>
 
-              <p className="text-xs">12 May, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  It is a long established fact
-                </span>{' '}
-                that a reader will be distracted by the readable.
-              </p>
+        </div>
+        <div className="flex items-center">
+          <div className="text-black dark:text-white">Invited you to <b>{invitation.team.name.toUpperCase()}</b></div>
+          
+        </div>
+        <p className="text-xs">{new Date(invitation.createdAt).toLocaleDateString()}</p>
+      </Link>
+    </li>
+  ))}
+</ul>
 
-              <p className="text-xs">24 Feb, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">04 Jan, 2025</p>
-            </Link>
-          </li>
-          <li>
-            <Link
-              className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-              to="#"
-            >
-              <p className="text-sm">
-                <span className="text-black dark:text-white">
-                  There are many variations
-                </span>{' '}
-                of passages of Lorem Ipsum available, but the majority have
-                suffered
-              </p>
-
-              <p className="text-xs">01 Dec, 2024</p>
-            </Link>
-          </li>
-        </ul>
       </div>
     </div>
   );

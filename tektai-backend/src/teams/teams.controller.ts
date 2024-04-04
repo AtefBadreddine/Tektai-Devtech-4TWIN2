@@ -29,7 +29,7 @@ export class TeamsController {
   // @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
-    return this.teamsService.findAll();
+    return this.teamsService.findAllWithLeader();
   }
 
   @UseGuards(JwtAuthGuard)

@@ -45,6 +45,9 @@ export class TeamsService {
   async findAll(): Promise<TeamDocument[]> {
     return this.teamModel.find().populate('leader members').exec();
   }
+  async findAllWithLeader(): Promise<TeamDocument[]> {
+    return this.teamModel.find().populate('leader').exec();
+  }
 
   async findOne(id: string): Promise<TeamDocument> {
     const team = await this.teamModel.findById(id).populate('leader members').exec();
@@ -153,9 +156,14 @@ async remove(id: string): Promise<TeamDocument> {
     }
 
     async findInvitationByUser(userId: string): Promise<InvitationDocument[]> {
-        return this.invitationModel.find({ recipient: userId }).exec();
+      return this.invitationModel
+        .find({ recipient: userId })
+        .populate({
+          path: 'team',
+          populate: { path: 'leader' },
+        })
+        .exec();
     }
-
 
    async findInvitation(id: string): Promise<InvitationDocument> {
     const invitation = await this.invitationModel.findById(id).exec();
