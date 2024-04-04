@@ -5,7 +5,6 @@ import { useAuth } from '../../auth/useAuth';
 import userService from '../../services/userService';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import ReCAPTCHA from "react-google-recaptcha";
 
 // Import the CAPTCHA component (replace 'CaptchaComponent' with the actual component)
 import CaptchaComponent from './CaptchaComponent';
@@ -32,9 +31,7 @@ function SignIn() {
   const handleCheckboxChange = (event) => {
     setRememberMe(event.target.checked);
   };
-  const handleCaptchaVerify = (response) => {
-    setCaptchaValid(true);
-  };
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
@@ -95,20 +92,12 @@ function SignIn() {
         {/*  Site header */}
         <Header />
         {/*<PopupAd />*/}
-        <div className="bg-gradient-to-br from-blue-100 to-purple-100 flex min-h-screen">
-        {/* <div className="" style={{backgroundImage: 'url("https://cdni.iconscout.com/illustration/premium/thumb/coding-4841682-4037522.png?f=webp")'}}></div> */}
-        
-                <img
-              src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
-              className=" ml-24 hidden md:block w-1/2 bg-cover bg-center"
-              alt="Phone image"
-            />
-          <main className="flex-grow bg-transparent  rounded-lg overflow-hidden" >
-            <section className="bg-transparent">
+        <div className="flex flex-col  min-h-screen overflow-hidden">
+          <main className="flex-grow" >
+            <section className="bg-gradient-to-b from-gray-100 to-white">
               <div className="max-w-6xl mx-auto px-4 sm:px-6">
-                <div className="pt-8 sm:pt-32 pb-12 md:pt-24 md:pb-20">
+                <div className="pt-20 sm:pt-32 pb-12 md:pt-40 md:pb-20">
                   <div className="max-w-sm mx-auto">
-                  <div className="border shadow-lg border-gray-300 rounded-lg p-6">
                     <form onSubmit={handleSubmit}>
                       <div className="flex flex-wrap -mx-3 mb-4">
                         <div className="w-full px-3">
@@ -157,12 +146,7 @@ function SignIn() {
                           </div>
                         </div>
                       </div>
-                      <ReCAPTCHA
-    sitekey="6LcGCJ0pAAAAAPHo1K4WnSoMZE4e_mTplFnd4Uc9"
-    onChange={handleCaptchaVerify}
-
-  />
-                      {/* <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} /> */}
+                      <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} />
                       {captchaValid ? null : (
                           <div className="text-red-600">Please complete the CAPTCHA verification</div>
                       )}
@@ -236,12 +220,11 @@ function SignIn() {
                           )}
                         </div>
                       </div>
-                    </form></div>
+                    </form>
                     <div className="flex items-center my-6">
                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                       <div className="text-gray-600 italic">Or</div>
                       <div className="border-t border-gray-300 flex-grow ml-3" aria-hidden="true"></div>
-
                     </div>
                     <form>
                       <div className="flex flex-wrap -mx-3 mb-3">
@@ -266,13 +249,6 @@ function SignIn() {
                       </div>
                     </form>
                     <div className="text-gray-600 text-center mt-6">
-                      Have problems logging in ?{' '}
-                      <Link to="/reset-password" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
-                        Reset password
-                      </Link>
-                    </div>
-
-                    <div className="text-gray-600 text-center mt-6">
                       Don’t you have an account?{' '}
                       <Link to="/signup" className="text-blue-600 hover:underline transition duration-150 ease-in-out">
                         Sign up
@@ -284,11 +260,9 @@ function SignIn() {
             </section>
           </main>
           <footer className="text-center pb-8">
-
             <Link to="/contact" className="text-gray-600 hover:underline">
               Contact Us
             </Link>
-
           </footer>
           <style>
             {`
@@ -308,7 +282,8 @@ function SignIn() {
           </style>
         </div>
         {/*  Page content */}
-       
+        <main className="flex-grow">
+        </main>
         <Footer/>
       </div>
 

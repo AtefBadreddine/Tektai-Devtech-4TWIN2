@@ -7,11 +7,11 @@ import { ChallengeDto } from './challeges.dto';
 import { User, UserDocument } from 'src/schemas/user.schema'; // Import User and UserDocument from the user schema
 import { extname } from 'path';
 
-
 @Injectable()
 export class ChallengesService {
   constructor(
     @InjectModel(Challenges.name) private readonly challengesModel: Model<ChallengesDocument>,  
+
   ) {}
 
   async findAll(): Promise<Challenges[]> {
@@ -27,13 +27,14 @@ export class ChallengesService {
     return createdChallenge.save();
   }
 
-  async update(id: string, challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesModel.findByIdAndUpdate(id, challengeDto, { new: true });
+  async updateChallenge(_id: string, challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesModel.findByIdAndUpdate(_id, challengeDto, { new: true });
   }
 
   async delete(id: string): Promise<void> {
     await this.challengesModel.findByIdAndDelete(id);
   }
+
   async getFilteredChallenges(status: string, startDate: Date, deadline: Date): Promise<Challenges[]> {
     const query: any = {};
 

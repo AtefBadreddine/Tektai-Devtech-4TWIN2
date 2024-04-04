@@ -8,7 +8,6 @@ function ContactUs() {
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (data) => {
-
     setDisabled(true);
     try {
       const response = await fetch('http://localhost:3000/contact', {
@@ -25,7 +24,6 @@ function ContactUs() {
     }
     setDisabled(false);
   };
-
 
 
   return (

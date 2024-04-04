@@ -6,17 +6,13 @@ import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
-import { diskStorage } from 'multer';
-import * as fs from 'fs';
-import * as nodePath from 'path'; // Import the path module from Node.js
-
 import { Response } from 'express';
 
 
 
 @Controller('challenges')
 export class ChallengesController {
-  constructor(private readonly challengesService: ChallengesService) {}
+  constructor(private challengesService: ChallengesService) {}
 
   @Get()
   async findAll(): Promise<Challenges[]> {
@@ -39,7 +35,6 @@ export class ChallengesController {
     // Parse startDate and deadline to Date objects if needed
     const startDateFilter = startDate ? new Date(startDate) : null;
     const deadlineFilter = deadline ? new Date(deadline) : null;
-
     // Fetch filtered challenges from the service
     return this.challengesService.getFilteredChallenges(status, startDateFilter, deadlineFilter);
   }
@@ -56,18 +51,16 @@ export class ChallengesController {
     return this.challengesService.getChallengesByCompanyId(companyId);
   }
 
-
-
-
-  @UseGuards(JwtAuthGuard) 
   @Post()
+  @UseGuards(JwtAuthGuard) 
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
   }
 
-  @Put(':id')
-  async update(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesService.update(id, challengeDto);
+  //@UseGuards(JwtAuthGuard)
+  @Put('setting/:id')
+  async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesService.updateChallenge(id, challengeDto);
   }
 
   @Delete(':id')
@@ -109,9 +102,7 @@ export class ChallengesController {
     }
   } 
   
-
-}
-
+  
   /*@Post('upload')
   @UseInterceptors(FileInterceptor('image'))
   async uploadChallengeImage(@UploadedFile() file) {
@@ -134,5 +125,8 @@ export class ChallengesController {
       console.error('Error uploading file:', error);
       return { error: 'Failed to upload file' };
     }
-  }}*/
+  }*/
+}
+
+
 

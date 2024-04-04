@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import CaptchaComponent from "../signin/CaptchaComponent";
-import ReCAPTCHA from "react-google-recaptcha";
 
 export default function StepOnePartTwo({ formData, fromAuth, handleInput, handleNext }) {
 
@@ -31,9 +30,7 @@ export default function StepOnePartTwo({ formData, fromAuth, handleInput, handle
 
         setFormValid(isValid);
     }, [formData, confirmPassword, captchaValid]);
-    const handleCaptchaVerify = (response) => {
-        setCaptchaValid(true);
-      };
+
     const handleInput2 = (event) => {
         const inputDate = new Date(event.target.value);
         const today = new Date();
@@ -154,12 +151,8 @@ export default function StepOnePartTwo({ formData, fromAuth, handleInput, handle
                 <p className="text-red-600 text-sm mt-1">Passwords do not match</p>
             )}
 
-            
-            <ReCAPTCHA
-    sitekey="6LcGCJ0pAAAAAPHo1K4WnSoMZE4e_mTplFnd4Uc9"
-    onChange={handleCaptchaVerify}
+            <CaptchaComponent onVerify={(isValid) => setCaptchaValid(isValid)} />
 
-  />
             <div className="flex flex-wrap -mx-3 mt-6">
                 <div className="w-full px-3">
                     <button

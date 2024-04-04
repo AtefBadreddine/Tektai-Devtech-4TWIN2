@@ -18,7 +18,6 @@ function SignUp( ) {
         companyName : "",
         adresse : "",
         role : "challenger"
-
     });
 
     const [fromAuth,setFromAuth] = useState({
@@ -205,7 +204,6 @@ function SignUp( ) {
                 </section>
 
             </main>
-
 
             {/* <Footer/> */}
         </div>

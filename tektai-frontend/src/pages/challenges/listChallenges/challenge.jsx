@@ -30,6 +30,7 @@ const Challenges = ({ status }) => {
     fetchChallenges();
   }, [status, currentPage, challengesPerPage]);
 
+  
 
   const indexOfLastChallenge = currentPage * challengesPerPage;
   const indexOfFirstChallenge = indexOfLastChallenge - challengesPerPage;
@@ -68,7 +69,7 @@ const Challenges = ({ status }) => {
            {/* Truncate the title to display a specific length */}
         <div className="font-bold text-xl mb-2">{truncateText(challenge.title, 15)}</div>
         {/* Truncate the company name to display a specific length */}
-        <p className="text-gray-700 text-base">Company: {loadingCompany ? 'Loading...' : companyName}</p>
+        <p className="text-gray-700 text-base">Company: {loadingCompany ? 'Loading...' : truncateText(companyName, 10)}</p>
         {/* Display prize without truncation */}
         <p className="text-gray-700 text-base">Prize: <span className='text-[#3aa856] font-bold'>{truncateText(challenge.prize, 10)}</span></p>
           <p className="text-gray-700 text-base mb-20">Status: <span className='text-[#7747ff] font-bold'>{challenge.status}</span></p>

@@ -30,14 +30,32 @@ const Profile: React.FC = () => {
    let bptss: number = 0;
    const [userData, setUserData] = useState<UserData | null>(null);
    const [profileImageUrl, setProfileImageUrl] = useState('');
-
+   const storedUser = localStorage.getItem('user');
+   const user = storedUser ? JSON.parse(storedUser) : null;
+   
    useEffect(() => {
-    const localStorageData = localStorage.getItem('user');
+     const localStorageData = localStorage.getItem('user');
+    
 
-    const fetchUserData = async (username) => {
+     if (localStorageData) {
+
+      const parsedData = JSON.parse(localStorageData);
+
+       setUserData(parsedData);
+       console.log('gpts:', userData?.gpts);
+       console.log('spts:', userData?.spts);
+       console.log('bpts:', userData?.bpts);
+       let gptss: number = userData?.gpts ?? 0;
+       let sptss: number = userData?.spts ?? 0;
+       let bptss: number = userData?.bpts ?? 0;
+     } else {
+       console.log('No user data found in local storage');
+     }
+
+     const fetchUserData = async () => {
       try {
         // Fetch user data from the backend
-        const response = await axios.get(`http://localhost:3000/users/get/${username}`);
+        const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
@@ -46,24 +64,9 @@ const Profile: React.FC = () => {
       }
     };
 
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData);
-      setUserData(parsedData);
-      console.log('gpts:', parsedData.gpts);
-      console.log('spts:', parsedData.spts);
-      console.log('bpts:', parsedData.bpts);
-
-      fetchUserData(parsedData.username); // Move fetchUserData here
-    } else {
-      console.log('No user data found in local storage');
-    }
-
-    console.log(userData?.bio);
-  }, []);
-
-
-   const imageUrl = userData?.image; // Assuming you retrieve the profile image URL from the API response
-   console.log("userData",userData);
+    fetchUserData();
+    
+   }, []);
 
    
   return (
@@ -96,13 +99,13 @@ const Profile: React.FC = () => {
       <img
         src={`http://localhost:3000/uploads/${userData.image}`}
         alt="Profile"
-        className="shadow-xl rounded-full h-35 w-35 object-cover align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />
     ) : (
       <img
-        src="../../public/default-profile-picture.png" // Adjust the path to your static image
+        src="../../public/default-profile-picture.png" // path to the static default image
         alt="Default Profile"
-        className="shadow-xl rounded-full h-35 w-35 object-cover  align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+        className="shadow-xl rounded-full h-35 w-35 object-cover border-none align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />
     )}
   </div>
@@ -111,13 +114,13 @@ const Profile: React.FC = () => {
                   
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:pt-4">
                     {/* <div className="py-6 px-3 mt-32 sm:mt-0"> */}
-                    {userData?.role === 'challenger' ? (
-                        <Link to="/MyTeams">
-
-                        <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 hover:text-gray-100 font-bold py-2 px-4 rounded-l uppercase font-bold hover:shadow-md shadow text-xs outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 " type="button">
+                    {userData?.role === 'challenger' && (
+                        <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1"
+                         type="button">
                         Manage Teams
-                      </button></Link>
-                    ): (
+                      </button>
+                    )}
+                    {userData?.role === 'company' && (
                   <div className="flex justify-center ">
  <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
   <Link to="/challenges/new">
@@ -141,6 +144,8 @@ const Profile: React.FC = () => {
 </div>
                     </div>
                     )}
+
+                    
                     {/* </div> */}
                   </div>
 
@@ -203,11 +208,11 @@ const Profile: React.FC = () => {
                  <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                   <div className="flex flex-wrap justify-center">                  
                     <div className="w-full lg:w-9/12 px-4">
-                    <h3 className="text-2xl font-semibold leading-normal mb-2 text-black dark:text-white">BIO</h3>
-                      <div className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        
+                    <h3 className="text-2xl font-semibold leading-normal mb-2 mb-2 text-black dark:text-white">BIO</h3>
+
+                      <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
                       {userData?.bio??'Loading...'}
-                      </div>
+                      </p>
                       {/* <a href="#pablo" className="font-normal text-pink-500">Show more</a> */}
                     </div>
                   </div>

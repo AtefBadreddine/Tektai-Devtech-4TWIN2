@@ -1,10 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose'; // Import Types from mongoose
+import * as mongoose from "mongoose";
 
 export type ChallengesDocument = Challenges & Document;
 
 @Schema()
 export class Challenges {
+  // @Prop({ default: () => new mongoose.Types.ObjectId() })
+  // _id: string;
+
   @Prop()
   title: string;
 

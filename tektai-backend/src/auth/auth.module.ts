@@ -11,7 +11,6 @@ import * as process from 'process';
 import { ConfigModule } from "@nestjs/config";
 import { GithubStrategy } from './strategies/github.strategy';
 import {GoogleStrategy} from "./strategies/google.strategy";
-
 @Module({
   imports: [
     UsersModule,
