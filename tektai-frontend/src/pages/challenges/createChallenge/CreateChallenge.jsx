@@ -111,6 +111,7 @@ function CreateChallenge() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
+
         // Validate form before submitting
         const validationErrors = {};
         if (formData.title.trim() === "") {
@@ -129,6 +130,7 @@ function CreateChallenge() {
             validationErrors.deadline = "Deadline is required";
         }
     
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;

@@ -1,3 +1,4 @@
+
 import {
   Controller,
   Get,
@@ -9,8 +10,9 @@ import {
   UseGuards,
   Req,
   ConflictException,
-  Put, Logger
+  Put, Logger, NotFoundException
 } from '@nestjs/common';
+
 
 import { TeamsService } from './teams.service';
 import { TeamDto } from './dto/team.dto';
@@ -57,6 +59,15 @@ export class TeamsController {
     return this.teamsService.create(createTeamDto);
   }
 
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateTeamDto: TeamDto) {
+    return this.teamsService.update(id, updateTeamDto);
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.teamsService.remove(id);
+  }
   @UseGuards(JwtAuthGuard)
   @Put(':id/update-name')
   async updateTeamName(@Req() req: Request, @Param('id') id: string, @Body('name') newName: string) {
@@ -81,16 +92,16 @@ export class TeamsController {
     return this.teamsService.changeTeamLeader(id, newLeaderId);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Patch(':id/remove-member/:memberId')
-  async removeMember(@Req() req: Request, @Param('id') id: string, @Param('memberId') memberId: string) {
-    const team = await this.teamsService.findOne(id);
-    const userId = req.user['_id'];
-    if (! team.leader._id.equals(userId)) {
-      throw new ConflictException(`Current user is not authorized to remove members from the team`);
-    }
-    return this.teamsService.removeMember(id, memberId);
-  }
+  // @UseGuards(JwtAuthGuard)
+  // @Patch(':id/remove-member/:memberId')
+  // async removeMember(@Req() req: Request, @Param('id') id: string, @Param('memberId') memberId: string) {
+  //   const team = await this.teamsService.findOne(id);
+  //   const userId = req.user['_id'];
+  //   if (! team.leader._id.equals(userId)) {
+  //     throw new ConflictException(`Current user is not authorized to remove members from the team`);
+  //   }
+  //   return this.teamsService.removeMember(id, memberId);
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
@@ -138,5 +149,24 @@ export class TeamsController {
       throw new ConflictException(`Current user is not authorized to decline this invitation`);
     }
     return this.teamsService.declineInvitation(invitationId);
+  }
+  @Post(':teamId/members/:memberId')
+  async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.addMember(teamId, memberId);
+      return { success: true, message: 'Member added successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+  @Delete(':teamId/members/:memberId')
+  async removeMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.removeMember(teamId, memberId);
+      return { success: true, message: 'Member removed successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
   }
 }
