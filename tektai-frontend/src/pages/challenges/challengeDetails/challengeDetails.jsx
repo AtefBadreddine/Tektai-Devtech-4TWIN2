@@ -82,7 +82,7 @@ function ChallengeDetails() {
                       <div>
                         <h2 className="text-xl font-semibold mb-2">{challenge.title}</h2>
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
+                        <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">${challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
                       </div>
                       <img src={imageSrc} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg" />

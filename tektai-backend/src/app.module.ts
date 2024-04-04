@@ -14,6 +14,7 @@ import { ChallengesModule } from './challenge/challenges.module';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
 
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -22,6 +23,7 @@ import { TermModule } from './termOfUse/term.module';
     UsersModule,
     SettingsModule,
     TermModule,
+
     ContactModule,
     ChallengesModule,
     ServeStaticModule.forRoot({

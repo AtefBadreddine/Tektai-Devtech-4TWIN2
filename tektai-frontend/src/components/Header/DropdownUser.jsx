@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../auth/AuthProvider';
 import {useAuth} from "../../auth/useAuth";
+import { Avatar } from '@chakra-ui/react';
+import DropdownNotification from './DropdownNotification';
 // import UserOne from '../../images/user/user-01.png';
 
 const DropdownUser = () => {
@@ -71,8 +73,12 @@ const DropdownUser = () => {
 
 
         <span className="h-12 w-12 rounded-full">
-          {/* <img src={UserOne} alt="User" /> */}
-        </span>
+
+        {userData && userData.image && (
+  <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md'  src={`http://localhost:3000/uploads/${userData.image}`} />
+)}
+     
+          </span>
 
         <svg
           className="hidden fill-current sm:block"
