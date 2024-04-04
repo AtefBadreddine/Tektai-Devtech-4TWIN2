@@ -42,14 +42,14 @@ const toast = useToast()
       
       console.log(`Invitations sent to ${selectedUsers.length} users.`);
       const examplePromise = new Promise((resolve, reject) => {
-        setTimeout(() => resolve(200), 5000)
+        setTimeout(() => resolve(200), 2000)
       })
 
       // Will display the loading toast until the promise is either resolved
       // or rejected.
       toast.promise(examplePromise, {
         success: { title: 'All good', description: `Invitations sent to ${selectedUsers.length} users.` },
-        error: { title: 'Rejected', description: 'Something wrong' },
+        error: { title: 'Rejected', description: 'user already invited' },
         loading: { title: 'Processing', description: 'Please wait' },
       })
     
