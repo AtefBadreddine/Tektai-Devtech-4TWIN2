@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const DropdownNotification = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpen1, setDropdownOpen1] = useState(false);
   const [notifying, setNotifying] = useState(true);
 
   const trigger = useRef<any>(null);
@@ -13,12 +13,12 @@ const DropdownNotification = () => {
     const clickHandler = ({ target }: MouseEvent) => {
       if (!dropdown.current) return;
       if (
-        !dropdownOpen ||
+        !dropdownOpen1 ||
         dropdown.current.contains(target) ||
         trigger.current.contains(target)
       )
         return;
-      setDropdownOpen(false);
+      setDropdownOpen1(false);
     };
     document.addEventListener('click', clickHandler);
     return () => document.removeEventListener('click', clickHandler);
@@ -27,20 +27,20 @@ const DropdownNotification = () => {
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
-      if (!dropdownOpen || keyCode !== 27) return;
-      setDropdownOpen(false);
+      if (!dropdownOpen1 || keyCode !== 27) return;
+      setDropdownOpen1(false);
     };
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
 
   return (
-    <li className="relative">
+    <div className="relative">
       <Link
         ref={trigger}
         onClick={() => {
           setNotifying(false);
-          setDropdownOpen(!dropdownOpen);
+          setDropdownOpen1(!dropdownOpen1);
         }}
         to="#"
         className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
@@ -70,10 +70,10 @@ const DropdownNotification = () => {
 
       <div
         ref={dropdown}
-        onFocus={() => setDropdownOpen(true)}
-        onBlur={() => setDropdownOpen(false)}
+        onFocus={() => setDropdownOpen1(true)}
+        onBlur={() => setDropdownOpen1(false)}
         className={`absolute -right-27 mt-2.5 flex h-90 w-75 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark sm:right-0 sm:w-80 ${
-          dropdownOpen === true ? 'block' : 'hidden'
+          dropdownOpen1 === true ? 'block' : 'hidden'
         }`}
       >
         <div className="px-4.5 py-3">
@@ -146,7 +146,7 @@ const DropdownNotification = () => {
           </li>
         </ul>
       </div>
-    </li>
+    </div>
   );
 };
 

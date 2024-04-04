@@ -29,6 +29,7 @@ const Challenges = ({ status }) => {
   
     fetchChallenges();
   }, [status, currentPage, challengesPerPage]);
+
   
 
   const indexOfLastChallenge = currentPage * challengesPerPage;

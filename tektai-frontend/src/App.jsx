@@ -49,7 +49,8 @@ import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
-
+import Teams from './pages/Teams/Teams';
+import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
 
@@ -116,6 +117,7 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
             <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
           </Route>
+          <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />

@@ -1,11 +1,13 @@
 // challenges.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards } from '@nestjs/common';
+
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards, Res, HttpStatus, NotFoundException } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import * as fs from 'fs';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { Response } from 'express';
+
 
 
 @Controller('challenges')
@@ -17,10 +19,12 @@ export class ChallengesController {
     return this.challengesService.findAll();
   }
 
+
   @Get('search')
   findByTitle(@Query('title') title: string): Promise<Challenges[]> {
     return this.challengesService.findByTitle(title);
   }
+
 
   @Get('filter')
   async getFilteredChallenges(
@@ -39,6 +43,7 @@ export class ChallengesController {
   async findById(@Param('id') id: string): Promise<Challenges> {
     return this.challengesService.findById(id);
   }
+
 
   @Get('company/:companyId')
   @UseGuards(JwtAuthGuard) 
@@ -63,7 +68,42 @@ export class ChallengesController {
     return this.challengesService.delete(id);
   }
 
-  @Post('upload')
+
+
+  @Post('/upload/:challengeId')
+  @UseInterceptors(FileInterceptor('dataset')) // Use FileInterceptor for handling file uploads
+  async uploadDatasetToChallenge(
+      @Param('challengeId') challengeId: string,
+      @Body() challengeDto: ChallengeDto,
+      @UploadedFile() file: Express.Multer.File,
+  ) {
+      return await this.challengesService.uploadDatasetToChallenge(challengeId, challengeDto, file);
+  }
+  
+  @Get('download/dataset/:challengeId')
+  async downloadDataset(@Param('challengeId') challengeId: string, @Res() res: Response) {
+    try {
+      // Get the dataset from the service
+      const dataset = await this.challengesService.getDatasetByChallengeId(challengeId);
+
+      // Set response headers
+      res.setHeader('Content-Disposition', `attachment; filename="dataset_${challengeId}.txt"`);
+      res.setHeader('Content-Type', 'text/plain');
+
+      // Send the dataset as the response
+      res.send(dataset);
+    } catch (error) {
+      // Handle errors
+      if (error instanceof NotFoundException) {
+        return res.status(404).send(error.message);
+      }
+      console.error('Error downloading dataset:', error);
+      res.status(500).send('Failed to download dataset');
+    }
+  } 
+  
+  
+  /*@Post('upload')
   @UseInterceptors(FileInterceptor('image'))
   async uploadChallengeImage(@UploadedFile() file) {
     try {
@@ -85,7 +125,8 @@ export class ChallengesController {
       console.error('Error uploading file:', error);
       return { error: 'Failed to upload file' };
     }
-  }
-
-
+  }*/
 }
+
+
+

@@ -10,6 +10,9 @@ import { ContactModule } from './contact/contact.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
+import { SettingsModule } from './settings/settings/settings.module';
+import { TermModule } from './termOfUse/term.module';
+
 import { HistorychallengesModule } from './historychallenges/historychallenges.module';
 
 @Module({
@@ -18,6 +21,9 @@ import { HistorychallengesModule } from './historychallenges/historychallenges.m
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
+    SettingsModule,
+    TermModule,
+
     ContactModule,
     ChallengesModule,
     HistorychallengesModule,

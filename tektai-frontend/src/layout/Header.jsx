@@ -13,6 +13,8 @@
   faSignIn, faSignInAlt
   } from '@fortawesome/free-solid-svg-icons';
   import DropdownUser from '../components/Header/DropdownUser';
+  import DropdownNotification from '../components/Header/DropdownNotification';
+  
   import './Header.css'; // Import CSS file for Header styles
   import { Tooltip } from '@chakra-ui/react'
   import {
@@ -297,8 +299,14 @@ import UserSearchF from '../pages/usersearch/UsersearchF';
           </div>
         ) : (
           <div className="flex items-center">
+            <div className='pb-2 m-3 block text-sm font-medium'>           <DropdownNotification />
+</div> 
             <DropdownUser />
+         
           </div>
+         
+        
+
         )}
       </div>
             </nav>
