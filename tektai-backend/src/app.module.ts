@@ -18,6 +18,7 @@ import { ChallengesModule } from './challenge/challenges.module';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
+    TeamsModule,
 
     ContactModule,
     ChallengesModule,

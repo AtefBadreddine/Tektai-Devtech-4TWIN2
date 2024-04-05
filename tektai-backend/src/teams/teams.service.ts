@@ -206,18 +206,19 @@ async remove(id: string): Promise<TeamDocument> {
 //     team.members.splice(memberIndex, 1);
 //     return this.teamModel.findByIdAndUpdate(teamId, team, { new: true }).exec();
 // }
-async update(id: string, updateTeamDto: TeamDto): Promise<Team> {
-  const existingTeam = await this.teamModel.findByIdAndUpdate(id, updateTeamDto, { new: true }).exec();
-  if (!existingTeam) {
-    throw new NotFoundException(`Team with ID ${id} not found`);
-  }
-  return existingTeam;
+// async update(id: string, updateTeamDto: TeamDto): Promise<Team> {
+//   const existingTeam = await this.teamModel.findByIdAndUpdate(id, updateTeamDto, { new: true }).exec();
+//   if (!existingTeam) {
+//     throw new NotFoundException(`Team with ID ${id} not found`);
+//   }
+//   return existingTeam;
+// }
+
+// async remove(id: string): Promise<Team> {
+
+//   return this.teamModel.findByIdAndDelete(id);
+
+//  }
+
 }
-
-async remove(id: string): Promise<Team> {
-
-  return this.teamModel.findByIdAndDelete(id);
-
- }
-
 }
