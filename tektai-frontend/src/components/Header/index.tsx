@@ -6,8 +6,8 @@ import DarkModeSwitcher from './DarkModeSwitcher';
 // @ts-ignore
 import React from 'react';
 import UserSearch from '../../pages/usersearch/UserSearch';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-
+import ThemeProvider from '../../theme';
+import LanguagePopover from '../language-popover';
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
@@ -73,6 +73,10 @@ const Header = (props: {
 
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
+            <ThemeProvider>
+              <LanguagePopover />
+            </ThemeProvider>
+
             {/* <!-- Dark Mode Toggler --> */}
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
