@@ -114,6 +114,9 @@ export class TeamsController {
     return this.teamsService.removeTeam(id);
   }
 
+
+
+  // @UseGuards(JwtAuthGuard)
   @Post(':teamId/members/:memberId')
   async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
     try {
@@ -148,7 +151,7 @@ export class TeamsController {
     async getById(@Param('id') id: string) {
         return this.teamsService.findInvitation(id);
   }
-     // @UseGuards(JwtAuthGuard)
+   // @UseGuards(JwtAuthGuard)
   @Post('invitations/:teamId/send')
   async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string,@Body('memberId') memberId: string) {
    // to do make it unique on table invitation

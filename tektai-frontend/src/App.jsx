@@ -52,7 +52,8 @@ import UserList from './components/User/Userlist';
 import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 
-
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
 
 
 
@@ -97,6 +98,8 @@ import MyTeams from './pages/Teams/Myteams';
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
+          <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
+
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
@@ -114,6 +117,8 @@ import MyTeams from './pages/Teams/Myteams';
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} />
+
           </Route>
 
           <Route element={<ProtectedRoute adminOnly />}>

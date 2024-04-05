@@ -1,10 +1,11 @@
 // challenges.controller.ts
-import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query,UseGuards } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 
 @Controller('challenges')
@@ -15,6 +16,12 @@ export class ChallengesController {
   async findAll(): Promise<Challenges[]> {
     return this.challengesService.findAll();
   }
+
+  @Get('search')
+  findByTitle(@Query('title') title: string): Promise<Challenges[]> {
+    return this.challengesService.findByTitle(title);
+  }
+
   @Get('filter')
   async getFilteredChallenges(
     @Query('status') status: string,
@@ -29,6 +36,12 @@ export class ChallengesController {
     return this.challengesService.getFilteredChallenges(status, startDateFilter, deadlineFilter);
   }
 
+  @Get('company/:companyId')
+  @UseGuards(JwtAuthGuard) 
+  async getChallengesByCompanyId(@Param('companyId') companyId: string): Promise<Challenges[]> {
+    return this.challengesService.getChallengesByCompanyId(companyId);
+  }
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Challenges> {
     return this.challengesService.findById(id);
@@ -37,6 +50,11 @@ export class ChallengesController {
   @Post()
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
+  }
+
+    @Put('setting/:id')
+  async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesService.updateChallenge(id, challengeDto);
   }
 
   @Put(':id')
