@@ -8,7 +8,8 @@ function HistoryChallenges() {
     const defaultCompanyId = "65de2f67e35266b9b459132b";
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
-    const storedUser = localStorage.getItem('user');
+
+     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     
     const truncateText = (text, maxLength) => {
@@ -18,6 +19,7 @@ function HistoryChallenges() {
           return text;
         }
       };
+
     useEffect(() => {
         const fetchChallenges = async () => {
             try {

@@ -114,6 +114,7 @@ export class TeamsService {
     return team;
   }
 
+
  
   async addMember(teamId: string, memberId: string): Promise<TeamDocument> {
     const team = await this.findOne(teamId);
@@ -171,6 +172,7 @@ async remove(id: string): Promise<TeamDocument> {
     if (!recipient || !team ) {
       throw new NotFoundException(`member or team not found`);
 
+
     }
     const invitation = new this.invitationModel({  recipient: recipient, team: team });
     return invitation.save();
@@ -190,8 +192,31 @@ async remove(id: string): Promise<TeamDocument> {
     return team.save();
   }
 
+
   async declineInvitation(invitationId: string): Promise<InvitationDocument> {
     return this.invitationModel.findByIdAndDelete(invitationId);
 
+
+// async removeMember(teamId: string, memberId: string): Promise<Team> {
+//     const team = await this.findOne(teamId);
+//     const memberIndex = team.members.findIndex(member => member._id == memberId);
+//     if (memberIndex === -1) {
+//       throw new NotFoundException(`Member with ID ${memberId} not found in team with ID ${teamId}`);
+//     }
+//     team.members.splice(memberIndex, 1);
+//     return this.teamModel.findByIdAndUpdate(teamId, team, { new: true }).exec();
+// }
+async update(id: string, updateTeamDto: TeamDto): Promise<Team> {
+  const existingTeam = await this.teamModel.findByIdAndUpdate(id, updateTeamDto, { new: true }).exec();
+  if (!existingTeam) {
+    throw new NotFoundException(`Team with ID ${id} not found`);
   }
+  return existingTeam;
+}
+
+async remove(id: string): Promise<Team> {
+
+  return this.teamModel.findByIdAndDelete(id);
+
+ }
 }

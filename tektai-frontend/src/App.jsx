@@ -53,6 +53,9 @@ import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
+
 
 
 
@@ -96,6 +99,8 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
+          <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
+
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
@@ -113,6 +118,8 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
             <Route path="/pages/settings" element={<Settings />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} />
+
           </Route>
           <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
@@ -121,7 +128,6 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
-
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
