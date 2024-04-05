@@ -5,7 +5,7 @@ import { UsersService } from "../../users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { HashService } from "./hash.service";
 import {UserDto} from "../../users/user.dto";
-import {User} from "../../schemas/user.schema";
+import {User, UserDocument} from "../../schemas/user.schema";
 import { v4 as uuidv4 } from 'uuid';
 import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 import * as process from "process";
@@ -29,10 +29,10 @@ export class AuthService {
 
   async login(user: any,rememberMe: boolean = false) {
       const expiresIn = rememberMe ? '7d' : '1d';
+      const { _id, username, email, isBlocked, role, image } = user;
 
-    const payload = { username: user.username, sub: user._id };
-    return {
-      access_token: this.jwtService.sign(payload,{ expiresIn : expiresIn }),
+      return {
+      access_token: this.jwtService.sign({ _id, username, email, isBlocked, role, image },{ expiresIn : expiresIn }),
     };
   }
   async signup(userDTO : UserDto): Promise<any> {

@@ -315,7 +315,6 @@ const Profile: React.FC = () => {
               <div className="w-full md:w-6/12 px-4 mx-auto text-center">
                   <div className="text-sm text-blueGray-500 font-semibold py-1">
             
-                  <Footer /> 
 
                   
                   </div>
@@ -324,6 +323,8 @@ const Profile: React.FC = () => {
             </div>
           </footer>
         </section>
+        <Footer /> 
+
       </main>
 
       
