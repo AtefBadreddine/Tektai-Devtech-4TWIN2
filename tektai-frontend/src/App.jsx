@@ -49,12 +49,11 @@ import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 import SearchResultF from './pages/usersearch/SearchResultF';
 import UserList from './components/User/Userlist';
+import Teams from './pages/Teams/Teams';
+import MyTeams from './pages/Teams/Myteams';
 
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
-
-
-
 
 
 
@@ -98,13 +97,16 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
           <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
+
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
           <Route path="/profile/:id" element={<ProfileAll/>} />
           <Route path="/UserSearchF" element={<UserSearchF/>} />
-          
+          <Route path="/Teams" element={<Teams/>} />
+          <Route path="/MyTeams" element={<MyTeams/>} />
+
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
 
@@ -112,7 +114,7 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="/profile/settings" element={<Settings />} />
+            <Route path="/pages/settings" element={<Settings />} />
             <Route path="/historychallenges" element={<HistoryChallenges/>} />
 
           </Route>
@@ -122,6 +124,7 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
+
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
