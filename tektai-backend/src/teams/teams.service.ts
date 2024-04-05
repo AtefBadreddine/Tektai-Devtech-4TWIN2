@@ -20,6 +20,10 @@ export class TeamsService {
       @InjectModel(Invitation.name) private invitationModel: Model<InvitationDocument>,
   ) {}
 
+  async findInvitationsByTeamId(teamId: string): Promise<Invitation[]> {
+    // Assuming you have a method to fetch invitations by team ID from your database
+    return this.invitationModel.find({ teamId }).exec();
+}
 
   async create(createTeamDto: TeamDto): Promise<TeamDocument> {
     const { name, leader } = createTeamDto;
@@ -43,7 +47,7 @@ export class TeamsService {
 
 
   async findAll(): Promise<TeamDocument[]> {
-    return this.teamModel.find().populate('leader members').exec();
+    return this.teamModel.find().populate('leader members ').exec();
   }
   async findAllWithLeader(): Promise<TeamDocument[]> {
     try {
@@ -178,8 +182,10 @@ async remove(id: string): Promise<TeamDocument> {
         path: 'team',
         populate: { path: 'leader' },
       })
+      .populate('recipient') // Populate the recipient field
       .exec();
   }
+  
   
     async findInvitationByUser(userId: string): Promise<InvitationDocument[]> {
       return this.invitationModel

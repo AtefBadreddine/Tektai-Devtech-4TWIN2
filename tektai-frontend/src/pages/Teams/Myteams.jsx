@@ -7,6 +7,7 @@ import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 import { Alert, AlertIcon, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 import InviteMembers from './InviteMembers';
+import PendingInvitations from './pedning';
 function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -308,10 +309,12 @@ function MyTeams() {
         Invite Members
       </button>
       {showInviteMembers && <InviteMembers teamId={team._id} onClose={() => setShowInviteMembers(false)} />}
-
+      <div>  <PendingInvitations teamId={team._id} />
+</div>
        <div className="mt-4 grid gap-4 md:flex md:flex-row md:overflow-x-auto">
         
   <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
+
   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     {team.members
       .map(member => ({

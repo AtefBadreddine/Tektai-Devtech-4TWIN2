@@ -40,7 +40,10 @@ export class TeamsController {
   async findOne(@Param('id') id: string) {
     return this.teamsService.findOne(id);
   }
-
+  @Get('invitationsbyteam/:id')
+  async getByIdtea(@Param('id') teamId: string) {
+      return this.teamsService.findInvitationsByTeamId(teamId);
+  }
   @UseGuards(JwtAuthGuard)
   @Get('/user/joined')
   async findTeamsByUser(@Req() req: Request) {
@@ -151,6 +154,7 @@ export class TeamsController {
     async getById(@Param('id') id: string) {
         return this.teamsService.findInvitation(id);
   }
+  
    // @UseGuards(JwtAuthGuard)
   @Post('invitations/:teamId/send')
   async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string,@Body('memberId') memberId: string) {
