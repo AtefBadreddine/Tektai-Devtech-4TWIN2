@@ -10,7 +10,7 @@ import {
   UseGuards,
   Req,
   ConflictException,
-  Put, Logger, NotFoundException
+  Put, Logger, NotFoundException, ForbiddenException
 } from '@nestjs/common';
 
 
@@ -25,7 +25,10 @@ export class TeamsController {
 
   constructor(private readonly teamsService: TeamsService) {}
 
-
+  @Get('invitations')
+  async getAll() {
+      return this.teamsService.findAllInvitations();
+  }
   // @UseGuards(JwtAuthGuard)
   @Get()
   async findAll() {
@@ -134,10 +137,7 @@ export class TeamsController {
     }
   }
 
-    @Get('invitations')
-    async getAll() {
-        return this.teamsService.findAllInvitations();
-    }
+    
 
     @Get('invitations/user/:userId')
     async getByUser(@Param('userId') userId: string) {
@@ -164,23 +164,36 @@ export class TeamsController {
   @Post('invitations/:invitationId/accept')
   async acceptInvitation(@Req() req: Request, @Param('invitationId') invitationId: string) {
     const invitation = await this.teamsService.findInvitation(invitationId);
-    const userId = req.user && req.user['_id'];
-    if (! invitation.recipient._id.equals(userId)) {
-      throw new ConflictException(`Current user is not authorized to accept this invitation`);
-    }
+    invitation.accepted = true; // Set accepted to true
+    
+    // const userId = req.user && req.user['_id'];
+    // if (!invitation.recipient._id.equals(userId)) {
+    //   throw new ConflictException(`Current user is not authorized to accept this invitation`);
+    // }
+    
     return this.teamsService.acceptInvitation(invitationId);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete('invitations/:invitationId/remove')
   async removeInvitation(@Req() req: Request, @Param('invitationId') invitationId: string) {
     const invitation = await this.teamsService.findInvitation(invitationId);
-    const team = await this.teamsService.findOne(invitation.team._id.toString());
-    const userId = req.user['_id'];
-    if (! invitation.recipient._id.equals(userId) && team.leader._id.equals(userId)) {
-      throw new ConflictException(`Current user is not authorized to decline this invitation`);
+    // Check if the invitation exists
+    if (!invitation) {
+      throw new NotFoundException(`Invitation with ID ${invitationId} not found`);
     }
-    return this.teamsService.declineInvitation(invitationId);
+  
+    // Check if the invitation recipient is the current user
+    const userId = req.user['_id'];
+    if (invitation.recipient._id !== userId) {
+      throw new ForbiddenException(`Current user is not authorized to decline this invitation`);
+    }
+  
+    // Remove the member from the team
+    const updatedTeam = await this.teamsService.removeMember(invitation.team._id, userId);
+  
+    // Return the updated team
+    return updatedTeam;
   }
-
+  
 }

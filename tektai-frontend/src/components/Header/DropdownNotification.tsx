@@ -2,11 +2,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Avatar } from '@chakra-ui/react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 
 const DropdownNotification = () => {
   const [dropdownOpen1, setDropdownOpen1] = useState(false);
   const [invitations, setInvitations] = useState([]);
   const [notifying, setNotifying] = useState(true);
+  const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -17,9 +20,9 @@ const DropdownNotification = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         const userId = user ? user._id : null;
     
-        const response = await axios.get(`http://localhost:3000/teams/invitations/user/${userId}`);
+        const response = await axios.get(`http://localhost:3000/teams/invitations/`);
         console.log(response.data);
-        setInvitations(response.data);
+        setInvitations(response.data.filter(invitation => invitation.recipient === loggedInUser._id));
       } catch (error) {
         console.error('Error fetching invitations:', error);
       }
@@ -47,6 +50,26 @@ const DropdownNotification = () => {
     document.addEventListener('keydown', keyHandler);
     return () => document.removeEventListener('keydown', keyHandler);
   });
+
+  const handleAccept = async (invitationId) => {
+    try {
+      await axios.post(`http://localhost:3000/teams/invitations/${invitationId}/accept`);
+      // After accepting, fetch updated invitations
+     
+    } catch (error) {
+      console.error('Error accepting invitation:', error);
+    }
+  };
+
+  const handleDecline = async (invitationId) => {
+    try {
+      await axios.delete(`http://localhost:3000/teams/invitations/${invitationId}/remove`);
+      // After declining, fetch updated invitations
+     
+    } catch (error) {
+      console.error('Error removing invitation:', error);
+    }
+  };
 
   return (
     <div className="relative">
@@ -95,27 +118,34 @@ const DropdownNotification = () => {
         </div>
 
         <ul className="flex h-auto flex-col overflow-y-auto">
-  {invitations.map(invitation => (
-    <li key={invitation._id}>
-      <Link
-        className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4"
-        to="#"
-      >
-        <div className="flex items-center">
-          <Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={invitation.team.leader?.username} src={`http://localhost:3000/uploads/${invitation.team.leader.image}`} />
-          <strong className="text-black dark:text-white">{invitation.team.leader?.username}</strong>
+          {invitations.length === 0 ? (
+            <li className="px-4.5 py-2 text-sm text-gray-500 dark:text-gray-400">No notifications for you.</li>
+          ) : (
+            invitations.map((invitation) => (
+              <li key={invitation._id}>
+                <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
+                  <div className="flex items-center">
+                    <Avatar className="mx-2 transition duration-300 ease-in-out transform hover:scale-110" size="md" name={invitation.team?.leader?.username} src={`http://localhost:3000/uploads/${invitation.team?.leader?.image}`} />
+                    <strong className="text-black dark:text-white">{invitation.team?.leader?.username}</strong>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="text-black dark:text-white">Invited you to <b>{invitation.team?.name.toUpperCase()}</b></div>
+                  </div>
+                  <p className="text-xs">{new Date(invitation.createdAt).toLocaleDateString()}</p>
 
-        </div>
-        <div className="flex items-center">
-          <div className="text-black dark:text-white">Invited you to <b>{invitation.team.name.toUpperCase()}</b></div>
-          
-        </div>
-        <p className="text-xs">{new Date(invitation.createdAt).toLocaleDateString()}</p>
-      </Link>
-    </li>
-  ))}
-</ul>
-
+                  <div className="flex items-center justify-between mt-2">
+                    <button className="pl-25 text-green-500 hover:text-green-600 hover:scale-110" onClick={() => handleAccept(invitation._id)}>
+                      <FontAwesomeIcon icon={faCheck} className="text-lg" />
+                    </button>
+                    <button className="pr-25 text-red-500 hover:text-red-600 hover:scale-110" onClick={() => handleDecline(invitation._id)}>
+                      <FontAwesomeIcon icon={faTimes} className="text-lg" />
+                    </button>
+                  </div>
+                </div>
+              </li>
+            ))
+          )}
+        </ul>
       </div>
     </div>
   );

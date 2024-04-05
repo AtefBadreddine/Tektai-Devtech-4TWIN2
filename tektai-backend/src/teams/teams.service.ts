@@ -46,8 +46,16 @@ export class TeamsService {
     return this.teamModel.find().populate('leader members').exec();
   }
   async findAllWithLeader(): Promise<TeamDocument[]> {
-    return this.teamModel.find().populate('leader').exec();
+    try {
+      return await this.teamModel.find()
+        .populate('leader')
+        .populate('members')
+        .exec();
+    } catch (error) {
+      throw new Error(`Failed to fetch teams with leaders and members: ${error.message}`);
+    }
   }
+  
 
   async findOne(id: string): Promise<TeamDocument> {
     const team = await this.teamModel.findById(id).populate('leader members').exec();
@@ -101,9 +109,13 @@ export class TeamsService {
     if (!team) {
       throw new NotFoundException(`Team with ID ${teamId} not found`);
     }
-
-    team.members = team.members.filter(member => member._id !== new Types.ObjectId(memberId));
-
+  
+    // Convert memberId to ObjectId for comparison
+    const memberIdObj = new Types.ObjectId(memberId);
+  
+    // Filter out the member with the specified ID
+    team.members = team.members.filter(member => member._id.toString() !== memberIdObj.toString());
+  
     return team.save();
   }
 
@@ -151,10 +163,16 @@ async remove(id: string): Promise<TeamDocument> {
 
   }
   
-   async findAllInvitations(): Promise<InvitationDocument[]> {
-        return this.invitationModel.find().exec();
-    }
-
+  async findAllInvitations(): Promise<InvitationDocument[]> {
+    return this.invitationModel
+      .find()
+      .populate({
+        path: 'team',
+        populate: { path: 'leader' },
+      })
+      .exec();
+  }
+  
     async findInvitationByUser(userId: string): Promise<InvitationDocument[]> {
       return this.invitationModel
         .find({ recipient: userId })
@@ -195,6 +213,8 @@ async remove(id: string): Promise<TeamDocument> {
       throw new Error(`User with ID ${newMember} is already a member of the team`);
     }
     team.members.push(newMember);
+    invitation.accepted=true;
+    invitation.save();
     return team.save();
   }
 

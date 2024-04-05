@@ -375,7 +375,7 @@ function MyTeams() {
           <div key={member._id} className="ml-4">
             <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
             <div> <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
-              {member.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
+              {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
             </a>
           </div>
         ))}
