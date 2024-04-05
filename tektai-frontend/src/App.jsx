@@ -57,6 +57,8 @@ import MyTeams from './pages/Teams/Myteams';
 
 
 
+
+
   function App() {
 
     const location = useLocation();
@@ -119,7 +121,6 @@ import MyTeams from './pages/Teams/Myteams';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
-
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
