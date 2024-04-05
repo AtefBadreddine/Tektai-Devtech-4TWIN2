@@ -24,6 +24,10 @@ export class ChallengesService {
     return createdChallenge.save();
   }
 
+  async updateChallenge(_id: string, challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesModel.findByIdAndUpdate(_id, challengeDto, { new: true });
+  }
+
   async update(id: string, challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesModel.findByIdAndUpdate(id, challengeDto, { new: true });
   }
@@ -47,5 +51,13 @@ export class ChallengesService {
     }
 
     return this.challengesModel.find(query).exec();
+  }
+    async findByTitle(title: string): Promise<Challenges[]> {
+    const regex = new RegExp(title, 'i'); // Case-insensitive search
+    return this.challengesModel.find({ title: { $regex: regex } }).exec();
+  }
+  async getChallengesByCompanyId(company_id: string): Promise<Challenges[]> {
+    const regex = new RegExp(company_id, 'i'); // Case-insensitive search
+    return this.challengesModel.find({ company_id: { $regex: regex } }).exec();
   }
 }
