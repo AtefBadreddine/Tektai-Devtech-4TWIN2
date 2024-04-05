@@ -105,9 +105,12 @@ export class TeamsService {
   }
 
   async removeMember(teamId: string, memberId: string): Promise<TeamDocument> {
+    // Find the team by its ID
     const team = await this.teamModel.findById(teamId).exec();
+    
+    // Check if the team exists
     if (!team) {
-      throw new NotFoundException(`Team with ID ${teamId} not found`);
+        throw new NotFoundException(`Team with ID ${teamId} not found`);
     }
   
     // Convert memberId to ObjectId for comparison
@@ -116,8 +119,12 @@ export class TeamsService {
     // Filter out the member with the specified ID
     team.members = team.members.filter(member => member._id.toString() !== memberIdObj.toString());
   
-    return team.save();
-  }
+    // Save the updated team
+    const updatedTeam = await team.save();
+
+    return updatedTeam;
+}
+
 
   async removeTeam(id: string) {
     const team = await this.teamModel.findById(id).exec();
@@ -223,28 +230,19 @@ async remove(id: string): Promise<TeamDocument> {
 
   async declineInvitation(invitationId: string): Promise<InvitationDocument> {
     return this.invitationModel.findByIdAndDelete(invitationId);
-
-
-// async removeMember(teamId: string, memberId: string): Promise<Team> {
-//     const team = await this.findOne(teamId);
-//     const memberIndex = team.members.findIndex(member => member._id == memberId);
-//     if (memberIndex === -1) {
-//       throw new NotFoundException(`Member with ID ${memberId} not found in team with ID ${teamId}`);
-//     }
-//     team.members.splice(memberIndex, 1);
-//     return this.teamModel.findByIdAndUpdate(teamId, team, { new: true }).exec();
-// }
-async update(id: string, updateTeamDto: TeamDto): Promise<Team> {
-  const existingTeam = await this.teamModel.findByIdAndUpdate(id, updateTeamDto, { new: true }).exec();
-  if (!existingTeam) {
-    throw new NotFoundException(`Team with ID ${id} not found`);
   }
-  return existingTeam;
-}
 
-async remove(id: string): Promise<Team> {
+// async update(id: string, updateTeamDto: TeamDto): Promise<Team> {
+//   const existingTeam = await this.teamModel.findByIdAndUpdate(id, updateTeamDto, { new: true }).exec();
+//   if (!existingTeam) {
+//     throw new NotFoundException(`Team with ID ${id} not found`);
+//   }
+//   return existingTeam;
+// }
 
-  return this.teamModel.findByIdAndDelete(id);
+// async remove(id: string): Promise<Team> {
 
- }
+//   return this.teamModel.findByIdAndDelete(id);
+
+//  }
 }

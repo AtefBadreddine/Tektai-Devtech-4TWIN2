@@ -75,59 +75,55 @@ const toast = useToast()
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Invite Members</h2>
-        <ul>
-          {users.map(user => (
-            <li key={user._id}>
-              <label>
-                <input
-                  type="checkbox"
-                  value={user.id}
-                  checked={selectedUsers.includes(user._id)}
-                  onChange={() => handleUserToggle(user._id)}
-                />
-                {user.username}
-              </label>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex justify-end">
-        <div className="flex justify-end">
-    {selectedUsers.length > 0 ? (
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 mr-2"
-        onClick={handleInvite}
-      >
-        Invite
-        
-      </button>
-    ) : (
-      <button
-        onClick={() =>
-          toast({
-            title: 'Account created.',
-            description: "We've created your account for you.",
-            status: 'success',
-            duration: 9000,
-            isClosable: true,
-          })
-        }
-      >
-        Show Toast
-      </button>
-    )}
-  </div>
-          <button 
-            className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow-md hover:bg-gray-400"
-            onClick={handleCancel}
-          >
-            Cancel
-          </button>
-        </div>
+    <div className="bg-white p-8 rounded-lg shadow-lg">
+      <h2 className="text-xl font-semibold mb-4">Invite Members</h2>
+      <ul>
+        {users.map(user => (
+          <li key={user._id} className="flex items-center mb-2">
+            <input
+              type="checkbox"
+              value={user.id}
+              checked={selectedUsers.includes(user._id)}
+              onChange={() => handleUserToggle(user._id)}
+              className="mr-2"
+            />
+            
+            {user.image && (
+              <img
+                src={`http://localhost:3000/uploads/${user.image}`}
+                alt={`${user.username}'s avatar`}
+                className="w-8 h-8 rounded-full mr-2"
+              />
+            )}
+            <label className="flex items-center">
+              {user.username}
+            </label>
+          </li>
+        ))}
+      </ul>
+  
+      <div className="flex justify-between mt-4">
+        <button
+          className={`${
+            selectedUsers.length > 0
+              ? 'bg-blue-500 hover:bg-blue-600'
+              : 'bg-blue-300 cursor-not-allowed'
+          } text-white px-4 py-2 rounded-md shadow-md mr-2`}
+          onClick={handleInvite}
+          disabled={selectedUsers.length === 0}
+        >
+          Invite
+        </button>
+        <button 
+          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md shadow-md hover:bg-gray-400"
+          onClick={handleCancel}
+        >
+          Cancel
+        </button>
       </div>
     </div>
+  </div>
+  
   );
 }
 

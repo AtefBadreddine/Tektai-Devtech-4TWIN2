@@ -178,25 +178,24 @@ export class TeamsController {
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Delete('invitations/:invitationId/remove')
-  async removeInvitation(@Req() req: Request, @Param('invitationId') invitationId: string) {
+  @Delete('invitations/:invitationId/remove/:userId')
+  async removeInvitation(
+    @Param('invitationId') invitationId: string,
+    @Param('userId') userId: string
+  ) {
     const invitation = await this.teamsService.findInvitation(invitationId);
     // Check if the invitation exists
-    if (!invitation) {
-      throw new NotFoundException(`Invitation with ID ${invitationId} not found`);
-    }
+    // if (!invitation) {
+    //   throw new NotFoundException(`Invitation with ID ${invitationId} not found`);
+    // }
   
-    // Check if the invitation recipient is the current user
-    const userId = req.user['_id'];
-    if (invitation.recipient._id !== userId) {
-      throw new ForbiddenException(`Current user is not authorized to decline this invitation`);
-    }
-  
+   
     // Remove the member from the team
-    const updatedTeam = await this.teamsService.removeMember(invitation.team._id, userId);
+    const updatedTeam = await this.teamsService.declineInvitation(invitation._id);
   
     // Return the updated team
     return updatedTeam;
   }
+  
   
 }
