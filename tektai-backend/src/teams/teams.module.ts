@@ -3,9 +3,7 @@ import { TeamsService } from './teams.service';
 import { TeamsController } from './teams.controller';
 import {MongooseModule} from "@nestjs/mongoose";
 import {Team, TeamSchema} from "../schemas/team.schema";
-
 import {Invitation, InvitationSchema} from "../schemas/invitation.schema";
-// import {UsersService} from "../users/users.service";
 import {UsersModule} from "../users/users.module";
 
 @Module({

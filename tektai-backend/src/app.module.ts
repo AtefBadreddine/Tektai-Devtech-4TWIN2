@@ -11,6 +11,9 @@ import { ContactModule } from './contact/contact.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
+import { SettingsModule } from './settings/settings/settings.module';
+import { TermModule } from './termOfUse/term.module';
+
 
 @Module({
   imports: [
@@ -18,6 +21,8 @@ import { ChallengesModule } from './challenge/challenges.module';
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
     UsersModule,
+    SettingsModule,
+    TermModule,
 
     ContactModule,
     ChallengesModule,

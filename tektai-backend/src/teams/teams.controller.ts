@@ -18,6 +18,7 @@ import { TeamsService } from './teams.service';
 import { TeamDto } from './dto/team.dto';
 import { Request } from 'express';
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
+import axios from "axios";
 
 @Controller('teams')
 export class TeamsController {
@@ -30,6 +31,7 @@ export class TeamsController {
       return this.teamsService.findAllInvitations();
   }
   // @UseGuards(JwtAuthGuard)
+
   @Get()
   async findAll() {
     return this.teamsService.findAllWithLeader();
@@ -133,6 +135,8 @@ export class TeamsController {
     }
   }
 
+
+  //@UseGuards(JwtAuthGuard)
   @Delete(':teamId/members/:memberId')
   async removeMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
     try {
@@ -154,8 +158,8 @@ export class TeamsController {
     async getById(@Param('id') id: string) {
         return this.teamsService.findInvitation(id);
   }
-  
-   // @UseGuards(JwtAuthGuard)
+
+
   @Post('invitations/:teamId/send')
   async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string,@Body('memberId') memberId: string) {
    // to do make it unique on table invitation
