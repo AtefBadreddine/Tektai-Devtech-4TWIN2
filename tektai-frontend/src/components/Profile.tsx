@@ -30,7 +30,9 @@ const Profile: React.FC = () => {
    let bptss: number = 0;
    const [userData, setUserData] = useState<UserData | null>(null);
    const [profileImageUrl, setProfileImageUrl] = useState('');
-
+   const storedUser = localStorage.getItem('user');
+   const user = storedUser ? JSON.parse(storedUser) : null;
+   
    useEffect(() => {
     const localStorageData = localStorage.getItem('user');
 
@@ -60,11 +62,6 @@ const Profile: React.FC = () => {
 
     console.log(userData?.bio);
   }, []);
-
-
-   const imageUrl = userData?.image; // Assuming you retrieve the profile image URL from the API response
-   console.log("userData",userData);
-
    
   return (
     <>
@@ -100,7 +97,7 @@ const Profile: React.FC = () => {
       />
     ) : (
       <img
-        src="../../public/default-profile-picture.png" // Adjust the path to your static image
+        src="../../public/default-profile-picture.png" // path to the static default image
         alt="Default Profile"
         className="shadow-xl rounded-full h-35 w-35 object-cover  align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />
@@ -119,7 +116,7 @@ const Profile: React.FC = () => {
                     )}
                     {userData?.role === 'company' && (
                   <div className="flex justify-center ">
- <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
+ {/* <div className="mr-4 p-3 text-center flex items-center">
   <Link to="/challenges/new">
     <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1">
       <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +125,7 @@ const Profile: React.FC = () => {
       New Challenge
     </button>
   </Link>
-</div>
+</div> */}
 <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
   <Link to="/historychallenges">
     <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1"> {/* Added flex and items-center */}
