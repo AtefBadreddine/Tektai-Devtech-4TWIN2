@@ -6,14 +6,13 @@ import {Team, TeamSchema} from "../schemas/team.schema";
 import {Invitation, InvitationSchema} from "../schemas/invitation.schema";
 import {UsersModule} from "../users/users.module";
 
-// import {UsersService} from "../users/users.service";
-
 @Module({
   imports: [
       UsersModule,
       MongooseModule.forFeature([{ name : Team.name , schema : TeamSchema}]),
       MongooseModule.forFeature([{ name : Invitation.name , schema : InvitationSchema}]),
   ],
+
   controllers: [TeamsController],
   providers: [TeamsService],
 })
