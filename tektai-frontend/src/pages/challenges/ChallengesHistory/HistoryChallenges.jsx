@@ -5,7 +5,6 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 
 function HistoryChallenges() {
-    const defaultCompanyId = "65de2f67e35266b9b459132b";
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
 
