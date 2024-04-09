@@ -1,4 +1,5 @@
 // challenges.controller.ts
+
 import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards, Res, HttpStatus, NotFoundException } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
@@ -10,8 +11,6 @@ import * as fs from 'fs';
 import * as nodePath from 'path'; // Import the path module from Node.js
 
 import { Response } from 'express';
-
-
 
 
 
@@ -29,6 +28,7 @@ export class ChallengesController {
   findByTitle(@Query('title') title: string): Promise<Challenges[]> {
     return this.challengesService.findByTitle(title);
   }
+
 
   @Get('filter')
   async getFilteredChallenges(
@@ -58,9 +58,9 @@ export class ChallengesController {
 
 
 
-  
-  @Post()
+
   @UseGuards(JwtAuthGuard) 
+  @Post()
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
   }
@@ -74,6 +74,7 @@ export class ChallengesController {
   async delete(@Param('id') id: string): Promise<void> {
     return this.challengesService.delete(id);
   }
+
 
 
   @Post('/upload/:challengeId')
@@ -110,3 +111,28 @@ export class ChallengesController {
   
 
 }
+
+  /*@Post('upload')
+  @UseInterceptors(FileInterceptor('image'))
+  async uploadChallengeImage(@UploadedFile() file) {
+    try {
+      if (!file) {
+        return { message: 'No file uploaded' };
+      }
+
+      // Save the file to a specific location
+      const path = `uploads/${file.originalname}`;
+      fs.writeFileSync(path, file.buffer);
+
+      // Perform additional processing if needed, such as saving the file path to a database or storage
+      // For example:
+      // const imageUrl = `http://localhost:3000/${path}`;
+      // Save the imageUrl to your database
+      
+      return { message: 'File uploaded successfully', file };
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      return { error: 'Failed to upload file' };
+    }
+  }}*/
+

@@ -35,6 +35,11 @@ export class UserController {
     async getProfile(@Param('userId') userId: string) {
         return await this.userService.findById(userId);
     }
+    
+    @Get('getById/:userId') // Define the route for getById endpoint
+    async getUserById(@Param('userId') userId: string): Promise<User> { // Define the method to handle getById logic
+        return await this.userService.findById(userId); // Call the findById method of UsersService
+    }
 
     @UseGuards(JwtAuthGuard)
     @Get('getall')
@@ -101,12 +106,5 @@ async searchUsers(@Query() query: any): Promise<User[]> {
   const users = await this.userService.searchUsers(query);
   return users || [];
 }
-@Get(':userId') // Define route to get user by ID
-async getUserById(@Param('userId') userId: string): Promise<User> {
-    const user = await this.userService.findById(userId);
-    if (!user) {
-        throw new NotFoundException('User not found');
-    }
-    return user;
-}
+
 }

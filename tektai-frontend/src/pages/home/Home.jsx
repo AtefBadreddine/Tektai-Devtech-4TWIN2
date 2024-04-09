@@ -10,6 +10,7 @@ import Footer from '../../layout/Footer';
 import PopupAd from '../../components/premium/premium';
 import { HeroParallax } from './partials/whyus';
 import { LampContainer, LampDemo } from './partials/lamp';
+import { InfiniteMovingCards } from './partials/team';
 import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import { Tabs } from '@chakra-ui/tabs';
@@ -137,6 +138,7 @@ function Home() {
             </div>
             </Transition>
 
+            <InfiniteMovingCards items={data} />
 
         <ContactUs></ContactUs>
 

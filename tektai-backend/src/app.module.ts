@@ -13,6 +13,11 @@ import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
+import { CommentsModule } from './comments/comments.module';
+import { ReviewController } from './review/review.controller';
+import { ReviewService } from './review/review.service';
+import { ReviewModule } from './review/review.module';
+
 
 @Module({
   imports: [
@@ -22,6 +27,7 @@ import { TermModule } from './termOfUse/term.module';
     UsersModule,
     SettingsModule,
     TermModule,
+
     ContactModule,
     ChallengesModule,
     ServeStaticModule.forRoot({
@@ -29,8 +35,10 @@ import { TermModule } from './termOfUse/term.module';
       serveRoot: '/uploads', // Base URL path to serve the files from
     }),
     TeamsModule,
+    CommentsModule,
+    ReviewModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AppController, ReviewController],
+  providers: [AppService, ReviewService],
 })
 export class AppModule {}

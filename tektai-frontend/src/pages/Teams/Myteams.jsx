@@ -10,7 +10,8 @@ function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  
+  const [successMessage, setSuccessMessage] = useState(null);
+
   const [newTeamName, setNewTeamName] = useState('');
   const [users, setUsers] = useState([]);
   const [selectedMembers, setSelectedMembers] = useState([]);
@@ -34,18 +35,22 @@ function MyTeams() {
   useEffect(() => {
     async function fetchTeams() {
       try {
+        const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
         const allTeams = await TeamsService.getAllTeams();
-        setTeams(allTeams);
+        const userTeams = allTeams.filter(team => team.leader.username === loggedInUser.username);
+        setTeams(userTeams);
       } catch (error) {
         console.error('Error fetching teams:', error);
       }
     }
-
+  
     fetchTeams();
   }, []);
+  
   const filteredUsers = users.filter(user =>
     user.username.toLowerCase().includes(searchQuery.toLowerCase())
   );
+  
   // Function to handle deleting a team
   const handleDeleteTeam = async (teamId) => {
     try {
@@ -110,30 +115,41 @@ function MyTeams() {
       setSelectedMembers([...selectedMembers, userId]);
     }
   };
- const handleRemoveMember = async (userId) => {
-  try {
-    // Create an updated team object without the removed member
-    const updatedTeam = {
-      ...selectedTeam,
-      members: selectedTeam.members.filter(member => member._id !== userId)
-    };
+  const handleRemoveMember = async (memberId) => {
+    try {
+      // Remove the member from the selected team's members list
+      setSelectedTeam(prevTeam => ({
+        ...prevTeam,
+        members: prevTeam.members.filter(member => member._id !== memberId)
+      }));
+      // Call the remove member API endpoint
+      await TeamsService.removeMember(selectedTeam._id, memberId);
+      // Set success message
+      
+      setSuccessMessage('Member removed successfully');
+      setTimeout(() => {
+        setSuccessMessage(null);      }, 3000);
+    } catch (error) {
+      console.error('Error removing member:', error);
+      // Handle error (e.g., display an error message)
+    }
+  };
+  const [invitationSent, setInvitationSent] = useState({});
 
-    // Send a PUT request to the server to update the team
-    await fetch(`/teams/${selectedTeam._id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(updatedTeam)
-    });
-
-    // Update the state with the new selected team
-    setSelectedTeam(updatedTeam);
-  } catch (error) {
-    console.error('Error removing member from team:', error);
+  const sendInvitation = async (teamId) => {
+    try {
+      // Iterate over selectedMembers array and send individual invitations
+      for (const memberId of selectedMembers) {
+        await TeamsService.sendInvitation(teamId, memberId);
+      }
+      console.log('Invitations sent successfully');
+      // Logic to indicate invitations sent successfully
+    } catch (error) {
+      console.error('Error sending invitations:', error);
+      // Handle error
+    }
   }
-};
-
+  
   return (
     // add condition to display only teams that belong to the current user
     <div>       <div className='pb-16'><Header/></div> 
@@ -155,13 +171,14 @@ function MyTeams() {
       <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
       <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
       <div className="overflow-y-auto max-h-60">
-        {filteredUsers.map((user) => (
-          <div key={user._id} className="flex items-center mb-2">
-            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
-            <label htmlFor={user._id} className="ml-2">{user.username}</label>
-          </div>
-        ))}
-      </div>
+  {filteredUsers && filteredUsers.map((user) => (
+    <div key={user._id} className="flex items-center mb-2">
+      <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} />
+      <label htmlFor={user._id} className="ml-2">{user.username}</label>
+    </div>
+  ))}
+</div>
+
       <div className="flex justify-end">
         <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
         <button className="bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400" onClick={() => setShowModal(false)}>Cancel</button>
@@ -179,34 +196,62 @@ function MyTeams() {
     
     {/* Modal content */}
     <div className="bg-white rounded-lg p-8 relative z-10 w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
-      {/* Input field for team name */}
-      <input
-        type="text"
-        value={selectedTeam ? selectedTeam.name : ''}
-        onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
-        placeholder="Enter Team Name"
-        className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
-      />
-      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
-      <div className="overflow-y-auto max-h-60">
-        {searchQuery && filteredUsers.map((user) => (
-          <div key={user._id} className="flex items-center mb-2">
-            <input type="checkbox" id={user._id} checked={selectedMembers.includes(user._id)} onChange={() => handleMemberSelection(user._id)} className="mr-2" />
-            <label htmlFor={user._id}>{user.username}</label>
-          </div>
-        ))}
-        {selectedTeam.members.map((member) => (
-          <div key={member._id} className="flex items-center mb-2">
-            <p className="mr-2">{member.username}</p>
-            <button
-              onClick={() => handleSaveChanges(member._id)}
-              className="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600"
-            >
-              Remove
-            </button>
-          </div>
-        ))}
+    <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
+{/* Input field for team name */}
+<input
+  type="text"
+  value={selectedTeam ? selectedTeam.name : ''}
+  onChange={(e) => setSelectedTeam({ ...selectedTeam, name: e.target.value })}
+  placeholder="Enter Team Name"
+  className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+/>
+<input
+  type="text"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  placeholder="Search members..."
+  className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full"
+/>
+<div className="overflow-y-auto max-h-60">
+{searchQuery &&
+    filteredUsers &&
+    filteredUsers.map((user) => (
+      <div key={user._id} className="flex items-center mb-2">
+        <input
+          type="checkbox"
+          id={user._id}
+          checked={selectedMembers.includes(user._id)}
+          onChange={() => handleMemberSelection(user._id)}
+          className="mr-2"
+        />
+        <label htmlFor={user._id}>{user.username}</label>
+        <button
+                className='btn bg-green-300 m-2 w-10 text-sm h-4'
+                disabled={invitationSent[user._id]}
+                onClick={() => sendInvitation(selectedTeam?.teamId, user._id)}
+              >
+                {invitationSent[user._id] ? 'Invited' : 'Invite'}
+              </button>        
+        {/* Use optional chaining to avoid errors if selectedTeam is null or undefined */}
+      </div>
+  ))}
+      {successMessage &&   
+      <div className='m-2' >
+       <Alert status='success' variant='subtle'>
+       <AlertIcon />
+       {successMessage}
+     </Alert></div>}
+      {selectedTeam.members.map((member) => (
+        <div key={member._id} className="flex items-center mb-2">
+          <button
+            onClick={() => handleRemoveMember(member._id)}
+            className="bg-red-500 text-white py-1 mx-2 px-3 rounded hover:bg-red-600"
+          >
+            Remove
+          </button>
+          <p className="mr-2">{member.username}</p>
+        </div>
+      ))}
       </div>
       {/* Buttons */}
       <div className="flex flex-col sm:flex-row justify-end">
