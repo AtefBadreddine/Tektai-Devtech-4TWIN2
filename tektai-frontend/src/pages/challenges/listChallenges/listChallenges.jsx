@@ -27,7 +27,7 @@ function ListChallenges() {
                     <div className="relative shadow-sm sm:rounded-lg">
                         <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                             <div className="w-full md:w-1/2">
-                                <form className="flex items-center">
+                            <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
                                         <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -46,7 +46,14 @@ function ListChallenges() {
                                     </div>
                                 </form>
                             </div>
-
+<div className="flex items-center">
+  <Link to="/challenges/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+    </svg>
+    Create Challenge
+  </Link>
+</div>
                         </div>
                     </div>
                 </div>
