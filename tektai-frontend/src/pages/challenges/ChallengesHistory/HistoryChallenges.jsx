@@ -8,7 +8,7 @@ function HistoryChallenges() {
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
 
-     const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     
     const truncateText = (text, maxLength) => {
