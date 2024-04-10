@@ -11,6 +11,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import CaptchaComponent from './CaptchaComponent';
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
+import SecurityQuestionComponent from './SecurityQuestionComponent';
 
 
 function SignIn() {
@@ -29,6 +30,8 @@ function SignIn() {
   const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
   const [rememberMe, setRememberMe] = useState(false);
   const [loginAttemptFailed, setLoginAttemptFailed] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0); // Track failed login attempts
+  const [showSecurityQuestion, setShowSecurityQuestion] = useState(false);
 
   const handleCheckboxChange = (event) => {
     setRememberMe(event.target.checked);
@@ -46,32 +49,31 @@ function SignIn() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!captchaValid) {
       console.log('Please complete the CAPTCHA verification');
       return;
     }
-
+  
     if (input.email !== '' && input.password !== '') {
       try {
         setLoading(true);
-
+  
         const { email, password } = input;
-
-        const data = await userService.getJWT(email, password,rememberMe);
-
-
+  
+        const data = await userService.getJWT(email, password, rememberMe);
+  
         if (data && data.access_token) {
           const { access_token } = data;
-
+  
           const user = await userService.getUser(access_token, email);
           setUserData(user);
-
+  
           auth.login(access_token, user);
-
+  
           setLoginSuccess(true);
           setLoginAttemptFailed(false); // Reset login attempt status
-
+  
           setTimeout(() => {
             if (user && user.role === 'admin') {
               navigate('/admin');
@@ -79,11 +81,13 @@ function SignIn() {
               navigate('/');
             }
           }, 2000);
-
+  
+          setFailedAttempts(0); // Reset failed attempts counter
+  
         } else {
           console.error('Token not found in response');
           setLoginAttemptFailed(true); // Reset login attempt status
-
+          setFailedAttempts(failedAttempts + 1); // Increment failed attempts
         }
       } catch (error) {
         console.error('Login failed:', error);
@@ -94,12 +98,32 @@ function SignIn() {
       alert('Please provide a valid input');
     }
   };
+  
+  useEffect(() => {
+    if (failedAttempts === 3) {
+      console.log('aaa')
+      setShowSecurityQuestion(true);
 
+    }
+  }, [failedAttempts]);
+  const handleSecurityQuestionSubmit = (isCorrect) => {
+    if (isCorrect) {
+      // Reset failed attempts and hide the security question component
+      setFailedAttempts(0);
+      setShowSecurityQuestion(false);
+    } else {
+      // Handle incorrect answer
+      setFailedAttempts(failedAttempts + 1);
+    }
+  };
   return (
       <div className="flex flex-col min-h-screen overflow-hidden">
         {/*  Site header */}
         <Header />
         {/*<PopupAd />*/}
+        {showSecurityQuestion && (
+        <SecurityQuestionComponent onSubmit={handleSecurityQuestionSubmit} />
+      )}
         <div className="bg-gradient-to-br from-blue-100 to-purple-100 flex min-h-screen">
         {/* <div className="" style={{backgroundImage: 'url("https://cdni.iconscout.com/illustration/premium/thumb/coding-4841682-4037522.png?f=webp")'}}></div> */}
         
