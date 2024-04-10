@@ -1,13 +1,5 @@
-import {
-  Schema,
-  SchemaFactory,
-  Prop
-} from "@nestjs/mongoose";
-import {
-  Document
-} from 'mongoose';
-
-
+import { SchemaFactory, Prop, Schema } from '@nestjs/mongoose';
+import { Document, Types } from 'mongoose';
 
 export type UserDocument = User & Document;
 
@@ -52,8 +44,8 @@ export class User {
   @Prop({ nullable: true, default: null }) 
   image?: string;
 
-
-
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Challenges' }], default: [] })
+  favoriteChallenges: Types.ObjectId[];
 
 }
 

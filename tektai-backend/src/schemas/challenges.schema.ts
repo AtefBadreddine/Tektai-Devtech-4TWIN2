@@ -31,6 +31,7 @@ export class Challenges {
 
   @Prop()
   dataset: string;
+
 }
 
 export const ChallengesSchema = SchemaFactory.createForClass(Challenges);

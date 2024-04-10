@@ -1,6 +1,5 @@
 
-import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards, Res, HttpStatus, NotFoundException } from '@nestjs/common';
-
+import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards, Res, HttpStatus, NotFoundException, Req, Header } from '@nestjs/common';
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
@@ -9,8 +8,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { diskStorage } from 'multer';
 import * as fs from 'fs';
 import * as nodePath from 'path'; // Import the path module from Node.js
-
-import { Response } from 'express';
+import { CustomRequest } from 'src/types';
+import { Request, Response } from 'express'; // Import Request and Response from express
+import { Types } from 'mongoose';
 
 
 
@@ -62,9 +62,6 @@ export class ChallengesController {
     return this.challengesService.getChallengesByCompanyId(companyId);
   }
 
-
-
-
   @UseGuards(JwtAuthGuard) 
   @Post()
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
@@ -85,7 +82,6 @@ export class ChallengesController {
   async delete(@Param('id') id: string): Promise<void> {
     return this.challengesService.delete(id);
   }
-
 
 
   @Post('/upload/:challengeId')
@@ -119,7 +115,10 @@ export class ChallengesController {
       res.status(500).send('Failed to download dataset');
     }
   } 
+
   
+
+
 
 }
 

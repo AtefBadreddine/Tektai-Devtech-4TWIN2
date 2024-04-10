@@ -14,6 +14,7 @@ import {
 
     UseInterceptors,
     UploadedFile,
+    Post,
 
 
 } from "@nestjs/common";
@@ -23,6 +24,7 @@ import { UsersService } from "src/users/users.service";
 import {User} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller('users')
 export class UserController {
@@ -108,5 +110,11 @@ async getUserById(@Param('userId') userId: string): Promise<User> {
         throw new NotFoundException('User not found');
     }
     return user;
+}
+
+//@UseGuards(AuthGuard('jwt'))
+@Post(':id/favorites/add/:challengeId')
+async addFavoriteChallenge(@Param('id') userId: string, @Param('challengeId') challengeId: string) {
+  return this.userService.addFavoriteChallenge(userId, challengeId);
 }
 }

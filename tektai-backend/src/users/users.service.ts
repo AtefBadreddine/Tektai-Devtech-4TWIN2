@@ -4,13 +4,19 @@ import {Model} from "mongoose";
 import {User, UserDocument} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { extname } from "path";
+import { Challenges, ChallengesDocument } from "src/schemas/challenges.schema";
+import { ObjectId } from "mongodb";
 
 
 
 @Injectable()
 export class UsersService {
   private readonly logger = new Logger();
-  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Challenges.name) private challengeModel: Model<ChallengesDocument>, // Inject the Challenge model
+
+  ) {}
 
 
   async findById(id: string): Promise<UserDocument> {
@@ -102,11 +108,6 @@ export class UsersService {
     }
   }
 
-
-
-
-  
-
   async storePwdToken(token: string, id: string) {
     const user = await this.userModel.findById(id).exec();
     user.resetPasswordToken = token;
@@ -171,5 +172,23 @@ export class UsersService {
     return  await user.save();
 
   }
+
+  async addFavoriteChallenge(userId: string, challengeId: string) {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const challengeObjectId = new ObjectId(challengeId); // Convert challengeId to ObjectId
+
+    if (!user.favoriteChallenges.map(obj => obj.toString()).includes(challengeObjectId.toString())) {
+      user.favoriteChallenges.push(challengeObjectId);
+      await user.save();
+    }
+
+    return user;
+
+  }
+
 
 }
