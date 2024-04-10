@@ -5,184 +5,208 @@ import React, { useEffect, useState, useRef } from "react";
 
 import { useParams } from "react-router-dom";
 import './likes.css';
-
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
 
 function Comments() {
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
-  const [challenge, setChallenge] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [userName, setUserName] = useState('');
-  const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
-  const challengeId = challenge ? challenge._id : ""; // Set default company_id to user._id
-  const [commentText, setCommentText] = useState('');
-  const commentSectionRef = useRef(null); // Declare the ref here
-  const [likes, setLikes] = useState(0);
-  const [comments, setComments] = useState([]);
-  const { id } = useParams();
+    const [challenge, setChallenge] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [userName, setUserName] = useState([]);
+    const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
+    const challengeId = challenge ? challenge._id : ""; // Set default company_id to user._id
+    const [commentText, setCommentText] = useState('');
+    const commentSectionRef = useRef(null); // Declare the ref here
+    const [likes, setLikes] = useState(0);
+    const [comments, setComments] = useState([]);
+    const { id } = useParams();
 
-  const [isChecked, setIsChecked] = useState(false);
-  const handleChange = (event) => {
-    setFormData({ ...formData, description: event.target.value });
-  };
-  // JavaScript
-const commentId = "<comment_id>"; // Replace "<comment_id>" with the actual comment ID
+    const [isChecked, setIsChecked] = useState(false);
+    const handleChange = (event) => {
+        setFormData({ ...formData, description: event.target.value });
+    };
 
-// Dynamically select the label and input elements based on the comment ID
-const label = document.getElementById(`like-checkbox-${commentId}`);
-const input = document.getElementById(`like-checkbox-${commentId}`);
-
-// Apply styles dynamically
-if (label && input) {
-  label.style.display = "none"; // Example of applying a style dynamically
-}
-
-  
-
-  
-  const [formData, setFormData] = useState({
-    userName: defaultCompanyId,
-    likes: "",
-    replies: "Upcoming",
-    description: "",
-    date: "",
-    challengeId: challengeId
-});
-
-
-
-// Function to format the date
-function commentDate(dateString) {
-  const date = new Date(dateString);
-  const now = new Date();
-
-  const diff = Math.abs(now - date) / 1000; // Difference in seconds
-
-  if (diff < 60) {
-    return `${Math.floor(diff)} s`;
-  } else if (diff < 3600) {
-    return `${Math.floor(diff / 60)} m`;
-  } else if (diff < 86400) {
-    return `${Math.floor(diff / 3600)} h`;
-  } else if (diff < 604800) {
-    const days = Math.floor(diff / 86400);
-    return `${days} d${days > 1 ? 's' : ''} `;
-  } else if (diff < 31536000) {
-    const weeks = Math.floor(diff / 604800);
-    return `${weeks} w${weeks > 1 ? 's' : ''} `;
-  } else {
-    const years = Math.floor(diff / 31536000);
-    return `${years} y${years > 1 ? 's' : ''} `;
-  }
-}
-  // Function to handle like checkbox change for a specific comment
-const handleLikeCheckboxChange = async (commentId, isChecked) => {
-    try {
-        if (isChecked) {
-            // Increment likes for the specific comment
-            await axios.post(`http://localhost:3000/comments/${commentId}/increment-likes`);
-        } else {
-            // Decrement likes for the specific comment
-            await axios.post(`http://localhost:3000/comments/${commentId}/decrement-likes`);
-        }
-        // Update the like status for the specific comment in the state
+    useEffect(() => {
+        // Load liked comments from local storage
+        const storedLikedComments = JSON.parse(localStorage.getItem('likedComments')) || {};
+        setLikedComments(storedLikedComments);
+    
+        // Update the like status for each comment in the state
         setComments(prevComments => {
             return prevComments.map(comment => {
-                if (comment._id === commentId) {
-                    return { ...comment, likes: isChecked ? comment.likes + 1 : comment.likes - 1 };
-                }
-                return comment;
+                return { ...comment, likes: comment.likes + (storedLikedComments[comment._id] ? 1 : 0) };
             });
         });
-    } catch (error) {
-        console.error('Error updating likes:', error);
+    }, []);
+    
+    
+  
+    const [formData, setFormData] = useState({
+        userName: defaultCompanyId,
+        likes: "",
+        replies: "Upcoming",
+        description: "",
+        date: "",
+        challengeId: challengeId
+    });
+
+    // Function to format the date
+    function commentDate(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diff = Math.abs(now - date) / 1000; // Difference in seconds
+        if (diff < 60) {
+            return `${Math.floor(diff)} s`;
+        } else if (diff < 3600) {
+            return `${Math.floor(diff / 60)} m`;
+        } else if (diff < 86400) {
+            return `${Math.floor(diff / 3600)} h`;
+        } else if (diff < 604800) {
+            const days = Math.floor(diff / 86400);
+            return `${days} d${days > 1 ? 's' : ''} `;
+        } else if (diff < 31536000) {
+            const weeks = Math.floor(diff / 604800);
+            return `${weeks} w${weeks > 1 ? 's' : ''} `;
+        } else {
+            const years = Math.floor(diff / 31536000);
+            return `${years} y${years > 1 ? 's' : ''} `;
+        }
     }
+
+    const [likedComments, setLikedComments] = useState({}); // State for liked comments
+    const handleLikeCheckboxChange = async (commentId, isChecked) => {
+        try {
+            const alreadyLiked = isCommentLiked(commentId);
+            if (isChecked && !alreadyLiked) {
+                await axios.post(`http://localhost:3000/comments/${commentId}/increment-likes`);
+                localStorage.setItem('likedComments', JSON.stringify({ ...likedComments, [commentId]: true }));
+                setLikedComments(prevLikedComments => ({ ...prevLikedComments, [commentId]: true }));
+                setComments(prevComments => {
+                    return prevComments.map(comment => {
+                        if (comment._id === commentId) {
+                            return { ...comment, likes: comment.likes + 1 };
+                        }
+                        return comment;
+                    });
+                });
+            } else if (!isChecked && alreadyLiked) {
+                await axios.post(`http://localhost:3000/comments/${commentId}/decrement-likes`);
+                const updatedLikedComments = { ...likedComments };
+                delete updatedLikedComments[commentId];
+                localStorage.setItem('likedComments', JSON.stringify(updatedLikedComments));
+                setLikedComments(prevLikedComments => {
+                    const { [commentId]: removedLike, ...rest } = prevLikedComments;
+                    return rest;
+                });
+                setComments(prevComments => {
+                    return prevComments.map(comment => {
+                        if (comment._id === commentId) {
+                            return { ...comment, likes: comment.likes - 1 };
+                        }
+                        return comment;
+                    });
+                });
+            }
+            
+            // Trigger the animation immediately upon updating the state
+            const likeIcon = document.getElementById(`icon-like-${isChecked ? 'solid' : 'regular'}`);
+            if (likeIcon) {
+                likeIcon.classList.add('checked-like-fx');
+                setTimeout(() => {
+                    likeIcon.classList.remove('checked-like-fx');
+                }, 1000); // Adjust the timing as needed
+            }
+        } catch (error) {
+            console.error('Error updating likes:', error);
+        }
+    };
+    
+    
+    
+
+
+  const isCommentLiked = (commentId) => {
+    return localStorage.getItem(`likedComments`) && JSON.parse(localStorage.getItem('likedComments'))[commentId];
 };
 
 
-  useEffect(() => {
-    const fetchChallenge = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/challenges/${id}`);
-        setChallenge(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Error fetching challenge:', error);
-      }
+    const toggleLike = async (commentId) => {
+        const alreadyLiked = isCommentLiked(commentId);
+        if (!alreadyLiked) {
+            await handleLike(commentId);
+            localStorage.setItem(`liked_${commentId}`, "true");
+        }
     };
 
-    fetchChallenge();
-  }, [id]);
-
-
-
-
-  useEffect(() => {
-    // Fetch usernames for each comment...
-    const fetchUsernames = async () => {
-        const usernamePromises = comments.map(async (comment) => {
+    useEffect(() => {
+        const fetchChallenge = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
-                const user = response.data; // Assuming response.data contains the user document
-                return user.username; // Return username
+                const response = await axios.get(`http://localhost:3000/challenges/${id}`);
+                setChallenge(response.data);
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching username:', error.message);
-                return null; // Return null if an error occurs
+                console.error('Error fetching challenge:', error);
             }
-        });
+        };
 
-        const usernames = await Promise.all(usernamePromises);
-        setUserName(usernames); // Set an array of usernames
-    };
+        fetchChallenge();
+    }, [id]);
 
-    fetchUsernames();
-}, [comments]);
-
-
-
-
-
-
-
-
-
-useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3000/comments`);
-        // Filter comments based on the challengeId
-        const filteredComments = response.data.filter(comment => comment.challengeId === id);
-        setComments(filteredComments);
-      } catch (error) {
-        console.error('Error fetching comments:', error);
-      }
-    };
+    useEffect(() => {
+        const fetchUsernames = async () => {
+            const usernamePromises = comments.map(async (comment) => {
+                try {
+                    const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
+                    const user = response.data; // Assuming response.data contains the user document
+                    return { username: user.username, role: user.role }; // Return username and role
+                } catch (error) {
+                    console.error('Error fetching username:', error.message);
+                    return null; // Return null if an error occurs
+                }
+            });
     
-    fetchComments();
-  }, [id]);
+            const fetchedUsernames = await Promise.all(usernamePromises);
+            setUserName(fetchedUsernames.filter(Boolean)); // Set an array of usernames and roles
+        };
+    
+        fetchUsernames();
+    }, [comments]);
+    
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const response = await axios.get(`http://localhost:3000/comments`);
+                // Filter comments based on the challengeId
+                const filteredComments = response.data.filter(comment => comment.challengeId === id);
+                setComments(filteredComments);
+            } catch (error) {
+                console.error('Error fetching comments:', error);
+            }
+        };
+        
+        fetchComments();
+    }, [id]);
 
-  // Function to format date to display month, day, and optionally year
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const currentDate = new Date();
+    // Function to format date to display month, day, and optionally year
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const currentDate = new Date();
 
-    // Check if the year of the deadline is the same as the current year
-    const sameYear = date.getFullYear() === currentDate.getFullYear();
-  
-    if (sameYear) {
-      // If it's the same year, display only month and day
-      return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
-    } else {
-      // If it's a different year, display month, day, and year
-      return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-    }
-  };
+        // Check if the year of the deadline is the same as the current year
+        const sameYear = date.getFullYear() === currentDate.getFullYear();
+      
+        if (sameYear) {
+            // If it's the same year, display only month and day
+            return date.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+        } else {
+            // If it's a different year, display month, day, and year
+            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+    };
 
-  // Determine image source
-  const imageSrc = challenge && challenge.image ? challenge.image : defaultImagePath;
-
+    // Determine image source
+    const imageSrc = challenge && challenge.image ? challenge.image : defaultImagePath;
 
   return (
     
@@ -206,8 +230,8 @@ useEffect(() => {
                   )}
                   <div className="flex flex-col gap-1">
                     <div className="flex gap-3 items-center">
-                      <p className="font-semibold cursor-pointer">{userName[index]}</p>
-                      <p className="text-sm text-[#ff6154] cursor-pointer">Follow</p>
+                    <p className="font-semibold cursor-pointer">{userName[index]?.username}</p>
+                      <p className="text-sm text-[#ff6154] cursor-pointer">{userName[index]?.role}</p>
                     </div>
                   </div>
                 </div>
@@ -256,6 +280,7 @@ useEffect(() => {
                               id="like-checkbox"
                               className="input-box"
                               type="checkbox"
+                              checked={isCommentLiked(comment._id)} // Check if the comment is liked
                               onChange={(e) => handleLikeCheckboxChange(comment._id, e.target.checked)}
                             />
                             <svg className="svgs" id="icon-like-solid" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -277,7 +302,7 @@ useEffect(() => {
               </div>
             ))
           ) : (
-            <div>No comments available</div>
+            <div>No comments yet.</div>
           )}
         </div>
       );
