@@ -182,60 +182,87 @@ function SignIn() {
                         </div>
                       </div>
                       <div className="flex flex-wrap -mx-3 mt-6">
-                        <div className="w-full px-3">
-                          {loading ? (
-                              <svg
-                                  className="animate-spin h-6 w-6 text-blue-600 mx-auto"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  viewBox="0 0 24 24"
-                              >
-                                <circle
-                                    className="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    strokeWidth="4"
-                                    fill="none"
-                                ></circle>
-                                <path
-                                    className="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 008-8h-4c0 2.762-1.316 5.225-3.35 6.809L12 20zm5.357-7.938A7.962 7.962 0 0120 12h-4c0 2.762 1.316 5.225 3.35 6.809l3-2.647zM12 4c3.042 0 5.824 1.135 7.938 3h-2c-2.21 0-4 1.79-4 4H8c0-2.21-1.79-4-4-4H0c0-3.042 1.135-5.824 3-7.938L6.357 4H12z"
-                                ></path>
-                              </svg>
-                          ) : loginSuccess ? (
-                              <div className="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
-                                <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
-                                  <svg
-                                      width="16"
-                                      height="12"
-                                      viewBox="0 0 16 12"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                  >
-                                    <path
-                                        d="M15.2984 0.826822L15.2868 0.811827L15.2741 0.797751C14.9173 0.401867 14.3238 0.400754 13.9657 0.794406L5.91888 9.45376L2.05667 5.2868C1.69856 4.89287 1.10487 4.89389 0.747996 5.28987C0.417335 5.65675 0.417335 6.22337 0.747996 6.59026L0.747959 6.59029L0.752701 6.59541L4.86742 11.0348C5.14445 11.3405 5.52858 11.5 5.89581 11.5C6.29242 11.5 6.65178 11.3355 6.92401 11.035L15.2162 2.11161C15.5833 1.74452 15.576 1.18615 15.2984 0.826822Z"
-                                        fill="white"
-                                        stroke="white"
-                                    ></path>
-                                  </svg>
-                                </div>
-                                <div className="w-full">
-                                  <h5 className="mb-3 text-lg font-semibold text-black dark:text-[#34D399] ">
-                                    Login Successfull
-                                  </h5>
-                                  <p className="text-base leading-relaxed text-body">
-                                    welcome {userData?.username ?? ''}
+  <div className="w-full px-3">
+    {loading ? (
+      <svg
+        className="animate-spin h-6 w-6 text-blue-600 mx-auto"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+          fill="none"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647zM12 20a8 8 0 008-8h-4c0 2.762-1.316 5.225-3.35 6.809L12 20zm5.357-7.938A7.962 7.962 0 0120 12h-4c0 2.762 1.316 5.225 3.35 6.809l3-2.647zM12 4c3.042 0 5.824 1.135 7.938 3h-2c-2.21 0-4 1.79-4 4H8c0-2.21-1.79-4-4-4H0c0-3.042 1.135-5.824 3-7.938L6.357 4H12z"
+        ></path>
+      </svg>
+    ) : loginSuccess ? (
+      <div className="flex w-full border-l-6 border-[#34D399] bg-[#34D399] bg-opacity-[15%] px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
+        <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-[#34D399]">
+          <svg
+            width="16"
+            height="12"
+            viewBox="0 0 16 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15.2984 0.826822L15.2868 0.811827L15.2741 0.797751C14.9173 0.401867 14.3238 0.400754 13.9657 0.794406L5.91888 9.45376L2.05667 5.2868C1.69856 4.89287 1.10487 4.89389 0.747996 5.28987C0.417335 5.65675 0.417335 6.22337 0.747996 6.59026L0.747959 6.59029L0.752701 6.59541L4.86742 11.0348C5.14445 11.3405 5.52858 11.5 5.89581 11.5C6.29242 11.5 6.65178 11.3355 6.92401 11.035L15.2162 2.11161C15.5833 1.74452 15.576 1.18615 15.2984 0.826822Z"
+              fill="white"
+              stroke="white"
+            ></path>
+          </svg>
+        </div>
+        <div className="w-full">
+          <h5 className="mb-3 text-lg font-semibold text-black dark:text-[#34D399] ">
+            Login Successful
+          </h5>
+          <p className="text-base leading-relaxed text-body">
+            Welcome {userData?.username ?? ''}
+          </p>
+        </div>
+      </div>
+    ) : (
+      <div className="flex w-full border-l-6 border-red-600 bg-red-600 bg-opacity-15 px-7 py-8 shadow-md dark:bg-[#1B1B24] dark:bg-opacity-30 md:p-9">
+        <div className="mr-5 flex h-9 w-full max-w-[36px] items-center justify-center rounded-lg bg-red-600">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 0C3.582 0 0 3.582 0 8c0 4.418 3.582 8 8 8 4.418 0 8-3.582 8-8 0-4.418-3.582-8-8-8zM8 14.667c-3.68 0-6.667-2.987-6.667-6.667S4.32 1.333 8 1.333s6.667 2.987 6.667 6.667S11.68 14.667 8 14.667z"
+              fill="currentColor"
+            ></path>
+            <path
+              d="M8 10.667c-.368 0-.667-.299-.667-.667V6.667c0-.368.299-.667.667-.667s.667.299.667.667v3.333c0 .368-.299.667-.667.667zM8 5.333a.667.667 0 100-1.333.667.667 0 000 1.333z"
+              fill="currentColor"
+            ></path>
+          </svg>
+        </div>
+        <div className="w-full">
+          <h5 className="mb-3 text-lg font-semibold text-black dark:text-red-600">
+            Login Failed
+          </h5>
+          <p className="text-base leading-relaxed text-body">
+            Incorrect username or password. Please try again.
+          </p>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
 
-                                  </p>
-                                </div>
-                              </div>
-                          ) : (
-                              <button className={`btn text-white bg-blue-600 hover:bg-blue-700 w-full ${captchaValid ? '' : 'disabled'}`} disabled={!captchaValid}>Sign in</button>
-                          )}
-                        </div>
-                      </div>
                     </form></div>
                     <div className="flex items-center my-6">
                       <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
