@@ -116,7 +116,45 @@ export class TeamsController {
   }
 
 
-  @UseGuards(JwtAuthGuard)
+
+  // @UseGuards(JwtAuthGuard)
+  @Post(':teamId/members/:memberId')
+  async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.addMember(teamId, memberId);
+      return { success: true, message: 'Member added successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+
+  //@UseGuards(JwtAuthGuard)
+  @Delete(':teamId/members/:memberId')
+  async removeMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
+    try {
+      const team = await this.teamsService.removeMember(teamId, memberId);
+      return { success: true, message: 'Member removed successfully', team };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
+    @Get('invitations')
+    async getAll() {
+        return this.teamsService.findAllInvitations();
+    }
+
+    @Get('invitations/user/:userId')
+    async getByUser(@Param('userId') userId: string) {
+        return this.teamsService.findInvitationByUser(userId);
+    }
+
+    @Get('invitations/:id')
+    async getById(@Param('id') id: string) {
+        return this.teamsService.findInvitation(id);
+  }
+
   @Post('invitations/:teamId/send')
   async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string,@Body('memberId') memberId: string) {
    // to do make it unique on table invitation
@@ -150,6 +188,7 @@ export class TeamsController {
     }
     return this.teamsService.declineInvitation(invitationId);
   }
+<<<<<<< HEAD
   @Post(':teamId/members/:memberId')
   async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
     try {
@@ -169,4 +208,7 @@ export class TeamsController {
       throw new NotFoundException(error.message);
     }
   }
+=======
+
+>>>>>>> de53c5dd49b7cb5851e64108b3c94ad40d95feb8
 }

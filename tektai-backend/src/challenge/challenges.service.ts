@@ -12,7 +12,6 @@ import { extname } from 'path';
 export class ChallengesService {
   constructor(
     @InjectModel(Challenges.name) private readonly challengesModel: Model<ChallengesDocument>,  
-
   ) {}
 
   async findAll(): Promise<Challenges[]> {
@@ -26,6 +25,10 @@ export class ChallengesService {
   async create(challengeDto: ChallengeDto): Promise<Challenges> {
     const createdChallenge = new this.challengesModel(challengeDto);
     return createdChallenge.save();
+  }
+
+  async updateChallenge(_id: string, challengeDto: ChallengeDto): Promise<Challenges> {
+    return this.challengesModel.findByIdAndUpdate(_id, challengeDto, { new: true });
   }
 
   async update(id: string, challengeDto: ChallengeDto): Promise<Challenges> {
@@ -53,8 +56,8 @@ export class ChallengesService {
     return this.challengesModel.find(query).exec();
   }
 
-
   async findByTitle(title: string): Promise<Challenges[]> {
+
     const regex = new RegExp(title, 'i'); // Case-insensitive search
     return this.challengesModel.find({ title: { $regex: regex } }).exec();
   }
@@ -95,4 +98,4 @@ export class ChallengesService {
   }
 
   
-}
+

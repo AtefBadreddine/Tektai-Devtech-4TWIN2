@@ -163,6 +163,14 @@
     animation: checked-icon-like 0.5s;
   }
   
+
+
+
+
+
+
+
+  
   .like-dislike-container .icons #icon-dislike-regular {
     display: block;
     transform: rotate(180deg);
@@ -187,6 +195,13 @@
     animation: checked-icon-dislike 0.5s;
   }
   
+
+
+
+
+
+
+
   .like-dislike-container .icons .fireworks {
     transform: scale(0.4);
   }
