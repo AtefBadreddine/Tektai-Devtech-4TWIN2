@@ -41,29 +41,64 @@ const Challenges = ({ status }) => {
     fetchChallenges();
   }, [status, currentPage, challengesPerPage]);
 
-
   const indexOfLastChallenge = currentPage * challengesPerPage;
   const indexOfFirstChallenge = indexOfLastChallenge - challengesPerPage;
   const currentChallenges = challenges.slice(indexOfFirstChallenge, indexOfLastChallenge);
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
+  
+      const Challenge = ({ challenge}) => {
+   // const Challenge: React.FC = () => {
 
   
-  const Challenge = ({ challenge, user }) => {
-  
+    const [userData, setUserData] = useState<UserData | null>(null);
+    const [flashMessage, setFlashMessage] = useState(""); // State for flash message
     const [loadingCompany, setLoadingCompany] = useState(true);
     const [companyData, setCompanyData] = useState(null);
-    const [userData, setUserData] = useState<UserData | null>(null);
     const [profileImageUrl, setProfileImageUrl] = useState('');
     const [isFavorite, setIsFavorite] = useState(false);
 
-    const addFavoriteChallenge = async () => {
+    const storedUser = localStorage.getItem('user');
+   const user = storedUser ? JSON.parse(storedUser) : null;
+   
+   useEffect(() => {
+    const localStorageData = localStorage.getItem('user');
+
+    const fetchUserData = async (username) => {
       try {
-        console.log('Adding challenge to favorites:', user, challenge);
-        await axios.post(`http://localhost:3000/users/${user}/favorites/add/${challenge}`);
-        setIsFavorite(true);
+        // Fetch user data from the backend
+        const response = await axios.get(`http://localhost:3000/users/get/${username}`);
+        const userData = response.data;
+        setUserData(userData);
+        setProfileImageUrl(`/uploads/${userData.image}`);
       } catch (error) {
-        console.error('Error adding challenge to favorites:', error);
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    if (localStorageData) {
+      const parsedData = JSON.parse(localStorageData);
+      setUserData(parsedData);
+
+      fetchUserData(parsedData.username); // Move fetchUserData here
+    } else {
+      console.log('No user data found in local storage');
+    }
+
+    console.log(userData?.companyName);
+  }, []);
+
+    const handleClickAddFavorite = async (challengeId) => {
+      const userId = userData?._id;
+      try {
+        const response = await axios.post(`http://localhost:3000/users/${userId}/favorites/add/${challengeId}`);
+        console.log('User ID:', userId);
+        console.log('Challenge ID:', challengeId);
+        setIsFavorite(true);
+
+        // Handle successful response (e.g., update UI to reflect the added favorite)
+      } catch (error) {
+        // Handle potential errors during the API request
       }
     };
     
@@ -84,27 +119,7 @@ const Challenges = ({ status }) => {
       console.log(userData);
       fetchUserData();
     }, [challenge.company_id]);
-
-
-    // useEffect(() => {
-    //   const fetchCompanyDetails = async () => {
-    //     try {
-    //       // Fetch company details from backend using the company ID associated with the challenge
-    //       const response = await axios.get(`http://localhost:3000/users/profile/${challenge.company_id}`);
-    //       setCompanyDetails(response.data);
-    //       setLoading(false);
-    //     } catch (error) {
-    //       console.error('Error fetching company details:', error);
-    //     }
-    //   };
   
-    //   fetchCompanyDetails();
-    // }, [challenge.company_id]);
-  
-
-
-    const imageSrc = challenge.image ? challenge.image : defaultImagePath;
-    
     return (
       <>
       <article className="mb-4 p-6 rounded-xl bg-blue-100 flex flex-col bg-clip-border">
@@ -112,14 +127,25 @@ const Challenges = ({ status }) => {
         <div className="flex pb-6 items-center justify-between">
           <div className="flex">
             <a className="inline-block mr-4" href="#">
-              <img className="rounded-full max-w-none w-12 h-12" src={imageSrc} />
+            {userData && userData.image ? (
+      <img
+        src={`http://localhost:3000/uploads/${userData.image}`}
+        alt="Profile"
+        className="rounded-full max-w-none w-12 h-12"      />
+    ) : (
+      <img
+        src="../../public/default-profile-picture.png" // path to the static default image
+        alt="Default Profile"
+        className="rounded-full max-w-none w-12 h-12"      />
+    )}
+             
             </a>
             <div className="flex flex-col">
               <div>
-                <a className="inline-block text-lg font-bold dark:text-white company-name" href="#">{userData?.companyName??'Loading...'}</a>
+                <a className="inline-block text-lg font-bold dark:text-white company-name" href="#">{userData?.username??'Loading...'}</a>
                 </div>
               <div className="text-slate-500 dark:text-slate-300 dark:text-slate-400">
-              {userData?.adresse??'Loading...'}
+              {userData?.role?? 'Loading...'}
               </div>
             </div>
           </div>
@@ -135,7 +161,7 @@ const Challenges = ({ status }) => {
         {isFavorite ? (
         <span>Added to Favorites!</span>
       ) : (
-        <button onClick={addFavoriteChallenge}>Add to Favorites</button>
+        <button onClick={() => handleClickAddFavorite(challenge._id)}>Add--Favorite</button>
       )}
         {/* <button
             onClick={handleAddToFavorites}
@@ -253,10 +279,11 @@ const Challenges = ({ status }) => {
         </div> */}
 
       </article>
-      
-     
+        
       </>
     );
+
+    
   };
 
 
