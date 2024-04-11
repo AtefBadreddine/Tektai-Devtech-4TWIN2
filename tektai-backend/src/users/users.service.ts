@@ -173,6 +173,9 @@ export class UsersService {
 
   }
 
+
+  //Favorite list///////////////
+
   async addFavoriteChallenge(userId: string, challengeId: string) {
     const user = await this.userModel.findById(userId);
     if (!user) {
@@ -189,6 +192,17 @@ export class UsersService {
     return user;
 
   }
+
+  async removeFavoriteChallenge(id: string, challengeId: string): Promise<void> {
+    // Assuming you have a method in your repository to remove the challenge from the user's favorites
+    const user = await this.userModel.findById(id).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    // Remove the challenge from the user's favorites
+    user.favoriteChallenges = user.favoriteChallenges.filter(id => String(id) !== String(challengeId));
+    await user.save();
+    }
 
 
 }

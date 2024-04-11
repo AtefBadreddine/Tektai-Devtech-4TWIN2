@@ -112,10 +112,23 @@ async getUserById(@Param('userId') userId: string): Promise<User> {
     return user;
 }
 
+
+///Favorite Liste///////////////////
+
 //@UseGuards(AuthGuard('jwt'))
 @UseGuards(JwtAuthGuard)
 @Post(':id/favorites/add/:challengeId')
 async addFavoriteChallenge(@Param('id') userId: string, @Param('challengeId') challengeId: string) {
   return this.userService.addFavoriteChallenge(userId, challengeId);
 }
+
+@Delete(':userId/favorites/remove/:challengeId')
+async removeFavoriteChallenge(
+  @Param('userId') userId: string,
+  @Param('challengeId') challengeId: string,
+): Promise<void> {
+  await this.userService.removeFavoriteChallenge(userId, challengeId);
+}
+
+
 }
