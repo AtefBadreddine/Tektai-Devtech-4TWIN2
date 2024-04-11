@@ -59,11 +59,9 @@ const Challenges = ({ status }) => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const storedUser = localStorage.getItem('user');
-   const user = storedUser ? JSON.parse(storedUser) : null;
+    const user = storedUser ? JSON.parse(storedUser) : null;
    
    useEffect(() => {
-    const localStorageData = localStorage.getItem('user');
-
     const fetchUserData = async (username) => {
       try {
         // Fetch user data from the backend
@@ -71,15 +69,16 @@ const Challenges = ({ status }) => {
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
+        
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
+    const localStorageData = localStorage.getItem('user');
 
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
       setUserData(parsedData);
-
       fetchUserData(parsedData.username); // Move fetchUserData here
     } else {
       console.log('No user data found in local storage');
@@ -91,11 +90,15 @@ const Challenges = ({ status }) => {
     const handleClickAddFavorite = async (challengeId) => {
       const userId = userData?._id;
       try {
+        if (isFavorite) {
+          await axios.delete(`http://localhost:3000/users/${userId}/favorites/remove/${challenge._id}`);
+          setIsFavorite(false);
+        } else {
         const response = await axios.post(`http://localhost:3000/users/${userId}/favorites/add/${challengeId}`);
         console.log('User ID:', userId);
         console.log('Challenge ID:', challengeId);
         setIsFavorite(true);
-
+        }
         // Handle successful response (e.g., update UI to reflect the added favorite)
       } catch (error) {
         // Handle potential errors during the API request
@@ -110,8 +113,35 @@ const Challenges = ({ status }) => {
           const response = await axios.get(`http://localhost:3000/users/get/${challenge.company_id}`);
           const userData = response.data;
           setUserData(userData);
+
+        // Check if the challenge is in the user's favorites list
+        //const isFavoriteResponse = await axios.get(`http://localhost:3000/users/${userData._id}/favorites/check/${challenge._id}`);
+        //setIsFavorite(isFavoriteResponse.data.isFavorite);
+      // Check if the user is logged in
+      const storedUser = localStorage.getItem('user');
+      const user = storedUser ? JSON.parse(storedUser) : null;
+      
+      if (user) {
+        // Fetch user data from the backend based on the logged-in user
+        const userDataResponse = await axios.get(`http://localhost:3000/users/get/${user.username}`);
+        const loggedInUserData = userDataResponse.data;
+        
+        // Set the user data and profile image URL
+        setUserData(loggedInUserData);
+        
+        // Check if the challenge is in the user's favorites list
+        const isFavoriteResponse = await axios.get(`http://localhost:3000/users/${loggedInUserData._id}/favorites/check/${challenge._id}`);
+        setIsFavorite(isFavoriteResponse.data.isFavorite);
+      }
+      
+      setLoadingCompany(false);
+        
+
+
           setProfileImageUrl(`/uploads/${userData.image}`);
           setLoading(false);
+
+
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
@@ -158,20 +188,13 @@ const Challenges = ({ status }) => {
 
 {/* favorite */}
         <div className="py-4">
-        {isFavorite ? (
-        <span>Added to Favorites!</span>
-      ) : (
-        <button onClick={() => handleClickAddFavorite(challenge._id)}>Add--Favorite</button>
-      )}
-        {/* <button
-            onClick={handleAddToFavorites}
-            className={`flex items-center space-x-1 px-2 py-1 rounded-md 
-            ${isFavorite ? 'bg-red-500 text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'} 
-            transition duration-300`}
-          >
-            <HeartIcon className="w-4 h-4" />
-            <span>{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</span>
-          </button> */}
+        <button onClick={() => handleClickAddFavorite(challenge._id)}>
+        <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" className={`${isFavorite ? 'text-red-500' : 'text-gray-500'}`} fill="none" viewBox="0 0 20 30" stroke="currentColor">
+        <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/>
+        </svg>
+        </button>
+        
+       
         </div>
 {/* btn */}
 <div className="">

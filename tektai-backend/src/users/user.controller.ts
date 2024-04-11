@@ -116,7 +116,7 @@ async getUserById(@Param('userId') userId: string): Promise<User> {
 ///Favorite Liste///////////////////
 
 //@UseGuards(AuthGuard('jwt'))
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 @Post(':id/favorites/add/:challengeId')
 async addFavoriteChallenge(@Param('id') userId: string, @Param('challengeId') challengeId: string) {
   return this.userService.addFavoriteChallenge(userId, challengeId);
