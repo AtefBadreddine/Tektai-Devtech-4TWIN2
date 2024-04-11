@@ -56,7 +56,7 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
-
+import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
 
@@ -91,6 +91,7 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
           <Route path="/Map" element={<MapComponent />} />
           <Route path="/file-upload/:id" element={<FileUploadForm />} />
           <Route path="/submissionslist" element={<SubmissionList/>} />

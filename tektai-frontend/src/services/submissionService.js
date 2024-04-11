@@ -24,6 +24,33 @@ const submissionService = {
       throw error;
     }
   },
+  
+  deleteSubmission: async (submissionId) => {
+    try {
+      await axios.delete(`${API_URL}/submissions/DeleteSubmition/${submissionId}`);
+    } catch (error) {
+      console.error('Error deleting submission:', error);
+      throw error;
+    }
+  },
+  async updateSubmission(id, files) {
+    try {
+      const formData = new FormData();
+      formData.append('pdf', files.pdf);
+      formData.append('notebook', files.notebook);
+
+      const response = await axios.put(`${API_URL}/submissions/UpdateSubmition/${id}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  
 };
 
 
