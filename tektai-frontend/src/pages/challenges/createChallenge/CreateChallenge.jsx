@@ -10,6 +10,8 @@ function CreateChallenge() {
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
+    const [dataSetFileUrl, setdataSetFile] = useState('');
+
     const [formData, setFormData] = useState({
         title: "",
         image: "",
@@ -109,6 +111,7 @@ function CreateChallenge() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
+
         // Validate form before submitting
         const validationErrors = {};
         if (formData.title.trim() === "") {
@@ -127,6 +130,7 @@ function CreateChallenge() {
             validationErrors.deadline = "Deadline is required";
         }
     
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;

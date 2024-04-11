@@ -10,7 +10,7 @@ import {
     InternalServerErrorException,
     Put,
     Body,
-    Request,
+   
 
     UseInterceptors,
     UploadedFile,
@@ -30,11 +30,15 @@ export class UserController {
     constructor(private  userService: UsersService) {}
 
 
-    @UseGuards(JwtAuthGuard)
-    @Get('profile')
-    async getProfile(@Request() req) {
-        return this.userService.findById(req.user.userId);
+   
+       @Get('profile/:userId')
+    async getProfile(@Param('userId') userId: string) {
+        if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+            throw new NotFoundException('User not found');
+        }
+        return await this.userService.findById(userId);
     }
+    
 
     @UseGuards(JwtAuthGuard)
     @Get('getall')
@@ -101,6 +105,18 @@ async searchUsers(@Query() query: any): Promise<User[]> {
   const users = await this.userService.searchUsers(query);
   return users || [];
 }
+
+@Get(':userId')
+    async getUserById(@Param('userId') userId: string): Promise<User> {
+        if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+            throw new NotFoundException('User not found');
+        }
+        const user = await this.userService.findById(userId);
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return user;
+    }
 
 
 }

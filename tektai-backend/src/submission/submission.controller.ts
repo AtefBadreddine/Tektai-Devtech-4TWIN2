@@ -1,28 +1,33 @@
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { SubmissionService } from './submission.service';
-import { Controller, Post, UploadedFiles, BadRequestException, UseInterceptors, Logger, Req } from '@nestjs/common';
+import { Controller, Post, UploadedFiles, BadRequestException, UseInterceptors, Logger, Req, Put, Body, Delete, Get, Param } from '@nestjs/common';
 import * as path from 'path';
 import { Request } from 'express'; // Import des types Request et Response depuis Express
 import { TeamsService } from 'src/teams/teams.service';
 import { ChallengesService } from 'src/challenge/challenges.service';
-
+import { Submission } from 'src/schemas/submission.schema';
+import { Types } from 'mongoose';
+import { ObjectId } from 'mongoose';
 @Controller('submissions')
 export class SubmissionController {
-  constructor(private readonly submissionService: SubmissionService ,private readonly teamsService: TeamsService
+  constructor(
+    private readonly submissionService: SubmissionService ,private readonly teamsService: TeamsService
     ,private readonly challengesService:ChallengesService ) {}
 
   private readonly logger = new Logger();
-  @Post('upload')
+
+ @Post('submit')
   @UseInterceptors(AnyFilesInterceptor())
   async uploadFile(
     @UploadedFiles() files: Array<Express.Multer.File>,
-    @Req() req: Request,
+    @Body() body: { teamId: ObjectId; challengeId: string },
   ) {
     try {
-      const { teamId, challengeId } = req.body;
-
+      const { teamId, challengeId } = body;
+      this.logger.log('Received submission files:', files);
+      this.logger.log('Received team and challenge IDs:', teamId, challengeId);
       // Vérifier si l'équipe et le défi existent
-      const team = await this.teamsService.findOne(teamId);
+      const team = await this.teamsService.findOneById(teamId);
       const challenge = await this.challengesService.findById(challengeId);
 
       if (!team || !challenge) {
@@ -33,15 +38,57 @@ export class SubmissionController {
         throw new BadRequestException('Two files are required!');
       }
 
-      const pdfPath = path.join(__dirname, '..', 'uploads', files[0].filename);
-      const notebookPath = path.join(__dirname, '..', 'uploads', files[1].filename);
+     const pdfPath = `/uploads/${files[0].filename}`;
+    const notebookPath = `/uploads/${files[1].filename}`;
 
+      // Enregistrer la soumission avec les IDs comme ObjectId
       await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath);
 
       return { message: 'Files uploaded successfully.' };
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+
+  @Get('submition/:id')
+  async getSubmissionById(@Param('id') id: string): Promise<Submission> {
+    try {
+      return await this.submissionService.getSubmissionById(id);
     } catch (error) {
       this.logger.error(error);
       throw error;
     }
   }
+
+  @Put('UpdateSubmition/:id')
+  async updateSubmission(@Param('id') id: string, @Body() updateDto: Partial<Submission>): Promise<Submission> {
+    try {
+      return await this.submissionService.updateSubmission(id, updateDto);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  @Delete('DeleteSubmition/:id')
+  async deleteSubmission(@Param('id') id: string): Promise<void> {
+    try {
+      await this.submissionService.deleteSubmission(id);
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+     @Get('Allsubmition')
+  async getAllSubmissions(): Promise<Submission[]> {
+    try {
+      return await this.submissionService.getAllSubmissions();
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+  
 }

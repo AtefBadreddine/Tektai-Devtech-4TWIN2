@@ -5,9 +5,11 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 
 function HistoryChallenges() {
+    const defaultCompanyId = "65de2f67e35266b9b459132b";
     const [challenges, setChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
-    const storedUser = localStorage.getItem('user');
+
+     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     
     const truncateText = (text, maxLength) => {
@@ -17,6 +19,7 @@ function HistoryChallenges() {
           return text;
         }
       };
+
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
@@ -105,29 +108,33 @@ function HistoryChallenges() {
             
             <main className="flex-grow container mx-auto space-y-12">
                 <section className="timeline">
-                    <ul>
-                        {challenges.map(challenge => {
-                            const startDate = new Date(challenge.start_date);
-                            const formattedStartDate = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'short' })}`;
+                <ul>
+  {challenges.length === 0 ? (
+    <h1 className="text-xl p-30">No challenges yet go play some </h1>
+  ) : (
+    challenges.map(challenge => {
+      const startDate = new Date(challenge.start_date);
+      const formattedStartDate = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'short' })}`;
 
-                            // Add year if the year is different from the current year
-                            const displayStartDate = startDate.getFullYear() === currentYear ? formattedStartDate : `${formattedStartDate} ${startDate.getFullYear()}`;
+      // Add year if the year is different from the current year
+      const displayStartDate = startDate.getFullYear() === currentYear ? formattedStartDate : `${formattedStartDate} ${startDate.getFullYear()}`;
 
-                            return (
-                                <li key={challenge._id}>
-                                    <div>
-                                        <time>{displayStartDate}</time>
-                                        <div className="discovery">
-                                            <h1 className="text-xl font-semibold mb-2">{truncateText(challenge.title, 15)}</h1>
+      return (
+        <li key={challenge._id}>
+          <div>
+            <time>{displayStartDate}</time>
+            <div className="discovery">
+              <h1 className="text-xl font-semibold mb-2">{truncateText(challenge.title, 15)}</h1>
+              <span className="text-gray-600 text-sm mb-2">Description: {truncateText(challenge.description, 20)}</span>
+              <Link to={`/challenges/${challenge._id}`} className="menu__link text-sm">View Details</Link>
+            </div>
+          </div>
+        </li>
+      );
+    })
+  )}
+</ul>
 
-                                            <span className="text-gray-600 text-sm mb-2">Description: {truncateText(challenge.description, 20)}</span>
-                                            <Link to={`/challenges/${challenge._id}`} className="menu__link text-sm">View Details</Link>
-                                        </div>
-                                    </div>
-                                </li>
-                            );
-                        })}
-                    </ul>
                 </section>
             </main>
             <Footer />

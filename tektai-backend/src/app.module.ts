@@ -1,35 +1,37 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-
 import * as process from 'process';
-import { MulterModule } from '@nestjs/platform-express';
-import { SubmissionModule } from './submission/submission.module';
-import { LocalisationModule } from './localisation/localisation.module';
-
-import { ChallengesModule } from './challenge/challenges.module';
+import { AuthModule } from './auth/auth.module';
+ // Importez UsersModule
 import { TeamsModule } from './teams/teams.module';
+import { ContactModule } from './contact/contact.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
+import { ChallengesModule } from './challenge/challenges.module';
+import { SettingsModule } from './settings/settings/settings.module';
+import { TermModule } from './termOfUse/term.module';
+import { SubmissionModule } from './submission/submission.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
-    UsersModule,
-    MulterModule.register({
-      dest: './uploads', // Répertoire de destination pour stocker les fichiers téléchargés
-    }),
+    UsersModule, // Ajoutez UsersModule ici
+    SettingsModule,
+    TermModule,
     SubmissionModule,
-    LocalisationModule,
+    ContactModule,
     ChallengesModule,
-    TeamsModule
-
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'), // relative path to uploads directory
+      serveRoot: '/uploads', // Base URL path to serve the files from
+    }),
+    TeamsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

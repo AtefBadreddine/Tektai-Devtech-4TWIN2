@@ -6,7 +6,7 @@ import {
   UseGuards,
   Body,
   Logger,
-  HttpException, HttpStatus, Res, Get, InternalServerErrorException, NotFoundException, Patch, Req, UnauthorizedException, Put, UploadedFile, UseInterceptors
+  HttpException, HttpStatus, Res, Get, InternalServerErrorException, NotFoundException, Patch, Req, UnauthorizedException
 
 } from "@nestjs/common";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
@@ -15,14 +15,11 @@ import {UserDto} from "../users/user.dto";
 import {ResetPasswordDto} from "../schemas/reset-password.dto";
 import {GoogleAuthGuard} from "./guards/google-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
-
-import { FileInterceptor } from '@nestjs/platform-express';
+import {JwtAuthGuard} from "./guards/jwt-auth.guard";
 
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger();
-    
-
   constructor(private authService: AuthService,private  userService: UsersService) {}
 
   @UseGuards(LocalAuthGuard)
@@ -54,12 +51,24 @@ export class AuthController {
     }
   }
 
+  @Get('currentUser')
+  @UseGuards(JwtAuthGuard)
+  async getCurrentUser(@Request() req) {
+    return req.user;
+  }
+
+
   @Post('/forget-password')
   async forgetPassword(@Body('email') email: string) {
     await this.authService.forgetPassword(email);
     return { message: 'Password reset email sent successfully' };
   }
- 
+  @Post('reset-password')
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto.token,resetPasswordDto.newPassword);
+    return {message: 'Password reset successfully'};
+
+  }
   
  @Patch('/change-password')
 async changePassword(
@@ -124,29 +133,6 @@ async changePassword(
   }
 
 
-   @Post('/forgot-password')
-  async forgotPassword(@Body('email') email: string): Promise<void> {
-    try {
-      this.logger.log(`Initiating password reset for email: ${email}`);
-      await this.authService.forgextPassword(email);
-      this.logger.log(`Password reset initiated successfully for email: ${email}`);
-    } catch (error) {
-      if (error instanceof NotFoundException) {
-        this.logger.error(`User not found for email: ${email}`);
-        // Gérer l'erreur si l'utilisateur n'est pas trouvé
-        // Retourner un message d'erreur approprié ou une réponse HTTP appropriée
-      } else {
-        this.logger.error(`Error resetting password for email: ${email}, error: ${error.message}`);
-        // Gérer les autres erreurs
-        // Retourner un message d'erreur approprié ou une réponse HTTP appropriée
-      }
-    }
-  }
-  @Post('/reset-password')
-  async resetPassword(@Body() dto: ResetPasswordDto): Promise<void> {
-    await this.authService.resetPassword(dto);
-  }
-  
 }
 
 

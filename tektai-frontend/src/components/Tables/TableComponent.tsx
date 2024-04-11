@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import PropTypes from 'prop-types'; // Import PropTypes for type validation
+// @ts-ignore
+import React, { useEffect, useState } from 'react';
 import {
   Modal,
   ModalOverlay,
@@ -7,143 +7,204 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure,
+  ModalCloseButton, Button, useDisclosure, Tooltip, Table, Tbody, Tr, Td, Thead, Th,
 } from '@chakra-ui/react'
+
 import userService from "../../services/userService";
+import {FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp, FaBan, FaCheck, FaUser} from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import Updatedraw from './updatedrawer';
+import ExportToExcel from './xlx';
+import ExportToPDF from './pdf';
+import {FaTrashCan} from "react-icons/fa6";
+import {Pagination} from "flowbite-react";
+
+
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(5); // Set
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
 
-
-  useEffect( () => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      fetchUsers(token);
-    }
+  useEffect(() => {
+      fetchUsers();
   }, []);
+  const sortData = (column) => {
+    if (sortColumn === column) {
+      // If the same column is clicked again, toggle sort direction
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      // If a new column is clicked, set it as the sort column and default to ascending order
+      setSortColumn(column);
+      setSortDirection('asc');
+    }
+  };
+  const sortedData = [...data].sort((a, b) => {
+    if (sortColumn) {
+      const aValue = a[sortColumn];
+      const bValue = b[sortColumn];
+      if (aValue < bValue) {
+        return sortDirection === 'asc' ? -1 : 1;
+      }
+      if (aValue > bValue) {
+        return sortDirection === 'asc' ? 1 : -1;
+      }
+      return 0;
+    }
+    return 0;
+  });
 
   // @ts-ignore
-  const fetchUsers = async (token) => {
+  const blockUser = async(user)  => {
+    const blocked = await userService.banUser(user._id);
+    if (blocked) {
+        fetchUsers();
+    }
+  }  // @ts-ignore
 
-    const userData = await userService.getAll(token);
+  const fetchUsers = async () => {
+
+    const userData = await userService.getAll();
     if (!userData.error)
       setData(userData);
   };
 
+  const openGmail = (emailAddress) => {
+    const encodedEmailAddress = encodeURIComponent(emailAddress);
+    const gmailUrl = `https://mail.google.com/mail/u/0/?fs=1&tf=cm&to=${encodedEmailAddress}`;
+    console.log(gmailUrl);
+    window.open(gmailUrl, '_blank');
+  };
   const finalRef = React.useRef(null)
   // @ts-ignore
-  const deleteUser = async () : Promise<void> => {
+  const deleteUser = async (): Promise<void> => {
     const response = await userService.deleteUser(userToDelete._id);
     if (!response.error) {
       setData(data.filter(item => item._id !== userToDelete._id));
       setUserToDelete(null);
     }
   }
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
+
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className="rounded-sm  border-strokesm:px-7.5 xl:pb-1">
       <div className="max-w-full ">
-        <table className="w-full table-auto">
-          <thead>
-            <tr className="bg-gray-2 text-left dark:bg-meta-4">
-              <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Email
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              Username
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              phoneNumber
-              </th>
-              <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
-              image
-              </th>
-              
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-              birthdate
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-              Role
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-              Actions
-              </th>
-              
-            </tr>
-          </thead>
-          <tbody>
+        <div className="flex py-4 gap-x-2">
+          <ExportToExcel users={data}/>
+          <ExportToPDF users={data}/>
+        </div>
+        <div className="overflow-x-auto w-full">
+          <Table variant="simple" className="w-full">
+            <Thead>
+              <Tr>
+                <Th>User</Th> {/* Combine Email and Username */}
+                <Th className="hidden md:table-cell">Phone Number</Th> {/* Hide on small devices */}
+                <Th>Role</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {currentUsers?.map((packageItem, key) => (
+                  <Tr key={key}>
+                    <Td>
+                      <Tooltip label="Send an Email">
+                        <div className="inline-flex gap-x-1 justify-center items-center">
 
-            {data?.map((packageItem, key) => (
-              <tr key={key}>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  <h5 className="font-medium text-black dark:text-white">
-                    {packageItem.email}
-                  </h5>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.username}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.phoneNumber}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.image}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p className="text-black dark:text-white">
-                    {packageItem.birthdate}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${
-                           packageItem.role === 'admin'
-                        ? 'bg-success text-success'
-                        : packageItem.role === 'challenger'
-                        ? 'bg-danger text-danger'
-                        : packageItem.role === 'company'
-                        ? 'bg-purple-500 text-purple-500'
-                        : 'bg-warning text-warning'
-                    }`}
-                  >
-                    {packageItem.role}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-  <div className="flex items-center space-x-3.5">
+                          <button onClick={() => openGmail(packageItem.email)} className="flex flex-col gap-1">
+                            <div  className="inline-flex gap-x-1 items-center">
+                              <FaUser size={16} color="darkblue" />
+                              {packageItem.username}
+                            </div>
+                            <div className="inline-flex gap-x-1 items-center">
+                              <FaEnvelope size={16} color="darkblue" />
+                              {packageItem.email}
+                            </div>
+                          </button>
+                        </div>
+                      </Tooltip>
+                    </Td>
+                    <Td className="hidden md:table-cell"> {/* Hide on small devices */}
+                      <Tooltip label="Contact on Whatsapp">
+                        <div className="inline-flex gap-x-1 justify-center items-center">
+                          <FaWhatsapp size={32} color="green" />
+                          <a href={`https://wa.me/${packageItem.phoneNumber}`}>
+                            {packageItem.phoneNumber}
+                          </a>
+                        </div>
+                      </Tooltip>
+                    </Td>
+                    <Td>
+          <span
+              className={`rounded-full py-1 px-3 text-sm font-medium text-white ${
+                  packageItem.role === 'admin'
+                      ? 'bg-success'
+                      : packageItem.role === 'challenger'
+                          ? 'bg-danger'
+                          : packageItem.role === 'company'
+                              ? 'bg-purple-500'
+                              : 'bg-warning text-warning'
+              }`}
+          >
+            {packageItem.role}
+          </span>
+                    </Td>
+                    <Td>
+                      <div className="flex items-center space-x-3.5">
+                        <Updatedraw user={packageItem} RefreshUsersList={fetchUsers} />
+                        <button
+                            className="inline-flex justify-center items-center gap-x-0.5 text-red-600 hover:text-red-800"
+                            onClick={() => setUserToDelete(packageItem)}
+                        >
+                          <FaTrashCan />
+                          Delete
+                        </button>
+                        {packageItem?.isBlocked ? (
+                            <button
+                                color="green"
+                                className="inline-flex text-green-600 justify-center items-center gap-x-1 hover:text-primary"
+                                onClick={() => blockUser(packageItem)}
+                            >
+                              <FaCheck color="green" />
+                              Unban
+                            </button>
+                        ) : (
+                            <button
+                                color="black"
+                                className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary"
+                                onClick={() => blockUser(packageItem)}
+                            >
+                              <FaBan color="black" />
+                              Ban
+                            </button>
+                        )}
+                      </div>
+                    </Td>
+                  </Tr>
+              ))}
+            </Tbody>
+          </Table>
 
-    <button className="hover:text-primary" onClick={() => setUserToDelete(packageItem)}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M5 5a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2h-1v5a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-5H5a1 1 0 0 1 0-2h2V5z"
-          clipRule="evenodd"
-        />
-      </svg>
-      Delete
-    </button>
+        </div>
 
 
-  </div>
-</td>
+        <div className="flex overflow-x-auto justify-center">
+          <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(sortedData.length / usersPerPage)}
+              onPageChange={onPageChange}
+          />
+        </div>
 
-
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null}  onClose={() => setUserToDelete(null)}>
+        <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null} onClose={() => setUserToDelete(null)}>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Delete User</ModalHeader>
@@ -159,7 +220,7 @@ const TableComponent = () => {
               <Button colorScheme='blue' mr={3} onClick={() => setUserToDelete(null)}>
                 No, cancel
               </Button>
-              <Button  colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
+              <Button colorScheme='red' onClick={deleteUser}> Yes, I'm sure</Button>
 
 
             </ModalFooter>
@@ -186,6 +247,7 @@ const TableComponent = () => {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );

@@ -102,6 +102,11 @@ export class UsersService {
     }
   }
 
+
+
+
+  
+
   async storePwdToken(token: string, id: string) {
     const user = await this.userModel.findById(id).exec();
     user.resetPasswordToken = token;
@@ -166,51 +171,5 @@ export class UsersService {
     return  await user.save();
 
   }
-  async storeVerificationCode(verificationCode: string, userId: string): Promise<void> {
-  try {
-    // Recherche de l'utilisateur dans la base de données
-    const user = await this.userModel.findById(userId);
-    
-    // Vérification si l'utilisateur existe
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    // Stockage du code de vérification dans l'objet utilisateur
-    user.verificationCode = verificationCode;
-    
-    // Sauvegarde de l'utilisateur avec le code de vérification mis à jour
-    await user.save();
-  } catch (error) {
-    // Gestion des erreurs
-    console.error('Error storing verification code:', error);
-    if (error instanceof NotFoundException) {
-      throw new NotFoundException('User not found');
-    } else {
-      throw new InternalServerErrorException('Failed to store verification code');
-    }
-  }
-}
-async clearVerificationCode(userId: string): Promise<void> {
-  try {
-    // Chercher l'utilisateur par son ID
-    const user = await this.userModel.findById(userId);
-
-    // Vérifier si l'utilisateur existe
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    // Effacer le code de vérification dans l'utilisateur
-    user.verificationCode = null; // Supposons que le champ s'appelle 'verificationCode'
-
-    // Enregistrer les modifications dans la base de données
-    await user.save();
-  } catch (error) {
-    // Gérer les erreurs
-    throw new InternalServerErrorException('Failed to clear verification code');
-  }
-}
-
 
 }
