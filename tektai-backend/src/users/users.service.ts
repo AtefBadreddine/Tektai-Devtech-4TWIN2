@@ -1,6 +1,6 @@
 import {Injectable, InternalServerErrorException, Logger, NotFoundException} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import {Model} from "mongoose";
+import {Model, Types} from "mongoose";
 import {User, UserDocument} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { extname } from "path";
@@ -202,7 +202,28 @@ export class UsersService {
     // Remove the challenge from the user's favorites
     user.favoriteChallenges = user.favoriteChallenges.filter(id => String(id) !== String(challengeId));
     await user.save();
+  }
+
+  async checkFavoriteChallenge(userId: string, challengeId: string): Promise<{ isFavorite: boolean }> {
+    // Assuming you have a method in your repository to check if the challenge is in the user's favorites
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      return { isFavorite: false };
     }
+
+    const isFavorite = user.favoriteChallenges.some(id => id.equals(new Types.ObjectId(challengeId)));
+    return { isFavorite };
+  }
+
+  async getUserFavorites(userId: string): Promise<string[]> {
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      // Handle case where user is not found
+      return [];
+    }
+
+    return user.favoriteChallenges.map(challengeId => challengeId.toString());
+  }
 
 
 }

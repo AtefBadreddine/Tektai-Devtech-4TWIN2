@@ -130,5 +130,19 @@ async removeFavoriteChallenge(
   await this.userService.removeFavoriteChallenge(userId, challengeId);
 }
 
+//Checking if a Challenge is in Favorites
+@Get(':userId/favorites/check/:challengeId')
+  async checkFavoriteChallenge(
+    @Param('userId') userId: string,
+    @Param('challengeId') challengeId: string,
+  ): Promise<{ isFavorite: boolean }> {
+    return await this.userService.checkFavoriteChallenge(userId, challengeId);
+  }
+
+  @Get(':userId/favorites')
+  async getUserFavorites(@Param('userId') userId: string): Promise<string[]> {
+    return await this.userService.getUserFavorites(userId);
+  }
+
 
 }
