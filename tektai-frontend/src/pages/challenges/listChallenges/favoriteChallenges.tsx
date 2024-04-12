@@ -1,129 +1,107 @@
-import React, { useEffect, useState } from "react";
-import Header from "../../../layout/Header";
-import Footer from "../../../layout/Footer";
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import Header from '../../../layout/Header';
+import Footer from '../../../layout/Footer';
 
-function HistoryChallenges() {
-    const [challenges, setChallenges] = useState([]);
-    const [loading, setLoading] = useState(true);
+interface Challenge {
+    _id: string;
+    title: string;
+    description: string;
+    image:string;
+    prize:string;
+    status:string;
+}
 
-    const storedUser = localStorage.getItem('user');
-    const user = storedUser ? JSON.parse(storedUser) : null;
-    
-    const truncateText = (text, maxLength) => {
-        if (text.length > maxLength) {
-          return text.substring(0, maxLength) + '...';
-        } else {
-          return text;
-        }
-      };
+const FavoriteChallenges = () => {
+  const [favoriteChallenges, setFavoriteChallenges] = useState<string[]>([]); // Explicitly define the type as string[]
+  const [challengesData, setChallengesData] = useState<Challenge[]>([]);
+  const [userId, setUserId] = useState<string | null>(null);
 
-    useEffect(() => {
-        const fetchChallenges = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3000/challenges/company/${user._id}`, {
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-                  });
-                                  setChallenges(response.data.reverse()); // Reverse the challenges array
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching challenges:', error);
-                setLoading(false); // Ensure loading state is updated even in case of error
-            }
-        };
+  useEffect(() => {
+    // Fetch user data and favorite challenges when the component mounts
+    const localStorageData = localStorage.getItem('user');
 
-        fetchChallenges();
-    }, []);
-
-    useEffect(() => {
-        function handleViewport() {
-            const items = document.querySelectorAll(".timeline li");
-
-            function isElementInViewport(el) {
-                var rect = el.getBoundingClientRect();
-                return (
-                    rect.top >= 0 &&
-                    rect.left >= 0 &&
-                    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-                );
-            }
-
-            for (var i = 0; i < items.length; i++) {
-                if (isElementInViewport(items[i])) {
-                    if (!items[i].classList.contains("in-view")) {
-                        items[i].classList.add("in-view");
-                    }
-                } else if (items[i].classList.contains("in-view")) {
-                    items[i].classList.remove("in-view");
-                }
-            }
-        }
-
-        // Call handleViewport on load and scroll
-        handleViewport();
-        window.addEventListener("scroll", handleViewport);
-        return () => {
-            window.removeEventListener("scroll", handleViewport);
-        };
-    }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
+    if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        setUserId(parsedData._id); // Set userId from local storage
+    } else {
+        console.log('No user data found in local storage');
     }
+}, []);
 
-    const currentDate = new Date();
-    const currentYear = currentDate.getFullYear();
+  useEffect(() => {
+    // Function to fetch the connected user's favorite challenges
+    const fetchFavoriteChallenges = async () => {
+      try {
+          if (userId) {
+              const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
+              console.log('user id: ' + userId);
+              const favoriteChallengeIds: string[] = response.data; // Assuming the response data is an array of favorite challenge IDs
+              setFavoriteChallenges(favoriteChallengeIds); // Assuming the response data is an array of favorite challenge IDs
+          }
+      } catch (error) {
+          console.error('Error fetching favorite challenges:', error);
+      }
+  };
 
-  
-    return (
-        <div className="flex flex-col min-h-screen overflow-hidden">
-            <Header />
-            <div className="pt-36">
-                <div className="px-4 md:px-8">
-                    <h1 className="text-3xl font-bold text-left mb-6"> Challenges History :</h1>
-                    <div className="w-full md:w-1/2">
-                        <form className="flex items-center">
-                            <label htmlFor="simple-search" className="sr-only">Search</label>
-                            <div className="relative w-full">
-                                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true"
-                                        className="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                        fill="currentColor" viewBox="0 0 20 20"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd"
-                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                            clipRule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input type="text" id="simple-search"
-                                    className="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary-500 focus:border-primary-500 "
-                                    placeholder="Search" required="" />
-                            </div>
-                        </form>
-                    </div>
-                </div>
+  if (userId) {
+      fetchFavoriteChallenges();
+  }
+}, [userId]);
+
+  useEffect(() => {
+    // Function to fetch details of each favorite challenge
+    const fetchChallengeDetails = async () => {
+      try {
+        const challenges = await Promise.all(
+          favoriteChallenges.map(async (challengeId) => {
+            const response = await axios.get(`http://localhost:3000/challenges/${challengeId}`);
+            return response.data;
+          })
+        );
+        setChallengesData(challenges);
+        console.log('challengess' + challenges)
+      } catch (error) {
+        console.error('Error fetching challenge details:', error);
+      }
+    };
+
+   
+    if (favoriteChallenges.length > 0) {
+      fetchChallengeDetails();
+  }
+
+  }, [favoriteChallenges]);
+
+  const handleRemoveFromFavorites = async (challengeId: string) => {
+    try {
+        if (userId) {
+            // Delete challenge from favorites
+            await axios.delete(`http://localhost:3000/users/${userId}/favorites/remove/${challengeId}`);
+            console.log('Challenge with ID deleted:', challengeId);
+            // Refresh favorite challenges
+            const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
+            const favoriteChallengeIds: string[] = response.data;
+            setFavoriteChallenges(favoriteChallengeIds);
+        }
+    } catch (error) {
+        console.error('Error removing challenge from favorites:', error);
+    }
+};
+
+  return (
+    <>
+    <Header/>
+    <main className="flex-grow container mx-auto space-y-12">
+        <div className="pt-36 mx-auto px-6 max-w-6xl text-gray-500">
+            <div className="text-center">
+                <h2 className="text-3xl text-gray-950 dark:text-white font-semibold">Favorite challenges</h2>
+                <p className="mt-6 text-gray-700 dark:text-gray-300">Harum quae dolore inventore repudiandae? orrupti aut temporibus ariatur.</p>
             </div>
-
-
-        <main className="flex-grow container mx-auto space-y-12">
-        <div className=" mx-auto px-6 max-w-6xl text-gray-500">
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-
-        {challenges.length === 0 ? (
-        <h1 className="text-xl p-30">No challenges yet go play some </h1>
-        ) : (
-        <>
-{/* challenge upcoming */}
-        {challenges.map((challenge) => {
-             const startDate = new Date(challenge.start_date);
-             const formattedStartDate = `${startDate.getDate()} ${startDate.toLocaleString('default', { month: 'short' })}`;
-             // Add year if the year is different from the current year
-             const displayStartDate = startDate.getFullYear() === currentYear ? formattedStartDate : `${formattedStartDate} ${startDate.getFullYear()}`;
-return (
+        {/* challenge upcoming */}
+        {challengesData.map((challenge) => (
 challenge.status === 'Upcoming' && (
-
 <div className="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
 <div aria-hidden="true" className="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-sky-500 to-white dark:from-white dark:to-white blur-2xl opacity-25 dark:opacity-5 dark:group-hover:opacity-10"></div>
 <div className="relative">
@@ -138,23 +116,26 @@ challenge.status === 'Upcoming' && (
     <div className="mt-6 pb-6 rounded-b-[--card-border-radius]">
         <h1 className="text-gray-900 dark:text-gray-900">{challenge.title}</h1>
         <p className="text-gray-500 dark:text-gray-500">{challenge.description}</p>
-        <p className="text-blue-400 dark:text-gray-500">{challenge.status}</p>
-        <p className="text-blue-600 dark:text-gray-500">Start Date: {displayStartDate}</p>
+        <p className="text-gray-500 dark:text-gray-500">{challenge.status}</p>
+
     </div>
     <div className="flex gap-3 -mb-8 py-4 border-t border-gray-200 dark:border-gray-800">
-        <a href={`/challenges/${challenge._id}`} className="group rounded-xl disabled:border *:select-none [&>*:not(.sr-only)]:relative *:disabled:opacity-20 disabled:text-gray-950 disabled:border-gray-200 disabled:bg-gray-100 dark:disabled:border-gray-800/50 disabled:dark:bg-gray-900 dark:*:disabled:!text-white text-gray-950 bg-gray-100 hover:bg-gray-200/75 active:bg-gray-100 dark:text-white dark:bg-gray-500/10 dark:hover:bg-gray-500/15 dark:active:bg-gray-500/10 flex gap-1.5 items-center text-sm h-8 px-3.5 justify-center">
+    <a href={`/challenges/${challenge._id}`} className="group rounded-xl disabled:border *:select-none [&>*:not(.sr-only)]:relative *:disabled:opacity-20 disabled:text-gray-950 disabled:border-gray-200 disabled:bg-gray-100 dark:disabled:border-gray-800/50 disabled:dark:bg-gray-900 dark:*:disabled:!text-white text-gray-950 bg-gray-100 hover:bg-gray-200/75 active:bg-gray-100 dark:text-white dark:bg-gray-500/10 dark:hover:bg-gray-500/15 dark:active:bg-gray-500/10 flex gap-1.5 items-center text-sm h-8 px-3.5 justify-center">
             <span>View details</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
         </a>
-       
+        
+        <button onClick={() => handleRemoveFromFavorites(challenge._id)}>
+        <svg className="size-5" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
+        </button>
+
     </div>
 </div>
 </div>
         )
-    );
-})}
+        ))}
 {/* challenge Ongoing */}
-        {challenges.map((challenge) => (
+        {challengesData.map((challenge) => (
 challenge.status === 'Ongoing' && (
 <div className="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
                     <div aria-hidden="true" className="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-green-500 to-white dark:from-white dark:to-white blur-2xl opacity-25 dark:opacity-5 dark:group-hover:opacity-10"></div>
@@ -176,7 +157,9 @@ challenge.status === 'Ongoing' && (
             <span>View details</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
         </a>
-                 
+        <button onClick={() => handleRemoveFromFavorites(challenge._id)}>
+        <svg className="size-5" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
+        </button>
                         </div>
                     </div>
                 </div>
@@ -184,7 +167,7 @@ challenge.status === 'Ongoing' && (
         )
         ))}
 {/* challenge Completed */}
-        {challenges.map((challenge) => (
+        {challengesData.map((challenge) => (
 challenge.status === 'Completed' && (
 <div className="relative group overflow-hidden p-8 rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
                     <div aria-hidden="true" className="inset-0 absolute aspect-video border rounded-full -translate-y-1/2 group-hover:-translate-y-1/4 duration-300 bg-gradient-to-b from-yellow-500 to-white dark:from-white dark:to-white blur-2xl opacity-25 dark:opacity-5 dark:group-hover:opacity-10"></div>
@@ -208,36 +191,21 @@ challenge.status === 'Completed' && (
             <span>View details</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m17 13l-5 5m0 0l-5-5m5 5V6"></path></svg>
         </a>
-                 
+        <button onClick={() => handleRemoveFromFavorites(challenge._id)}>
+        <svg className="size-5" width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 24 24"><path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181"/></svg>
+        </button>
                         </div>
                     </div>
                 </div>
 
         )
         ))}
-        </>
-    )}
         </div>
         </div>
     </main>
-            
+    <Footer/>
+    </>
+  );
+};
 
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            <Footer />
-        </div>
-    );
-}
-
-export default HistoryChallenges;
+export default FavoriteChallenges;

@@ -32,6 +32,9 @@ export class Challenges {
   @Prop()
   dataset: string;
 
+  @Prop({ default: false })
+  isFavorite: boolean;
+
 }
 
 export const ChallengesSchema = SchemaFactory.createForClass(Challenges);

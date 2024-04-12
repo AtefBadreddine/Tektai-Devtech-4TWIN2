@@ -55,6 +55,7 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
+import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
 
 
@@ -109,6 +110,8 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
           <Route path="/UserSearchF" element={<UserSearchF/>} />
           <Route path="/Teams" element={<Teams/>} />
           <Route path="/MyTeams" element={<MyTeams/>} />
+          <Route path="/favoriteChallenges" element={<FavoriteChallenges/>} />
+
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />

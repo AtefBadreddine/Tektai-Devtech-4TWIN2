@@ -109,10 +109,17 @@ const Profile: React.FC = () => {
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:pt-4">
                     {/* <div className="py-6 px-3 mt-32 sm:mt-0"> */}
                     {userData?.role === 'challenger' && (
+                      <>
                         <Link to="/MyTeams">
                         <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1" type="button">
                         Manage Teams
                       </button></Link>
+                      <Link to="/favoriteChallenges">
+                      <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1" type="button">
+                        Favorite Challenges
+                      </button>
+                    </Link>
+                    </>
                     )}
                     {userData?.role === 'company' && (
                   <div className="flex justify-center ">
