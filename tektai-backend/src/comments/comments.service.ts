@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Comment, CommentDocument }  from 'src/schemas/comments.schema';
-import { CommentsDto } from './comments.dto';
+import { Comment, CommentDocument, CommentReply }  from 'src/schemas/comments.schema';
+import { CommentReplyDto, CommentsDto } from './comments.dto';
 
 
 @Injectable()
@@ -60,4 +60,41 @@ export class CommentsService {
   async remove(id: string): Promise<Comment> {
     return this.commentModel.findByIdAndDelete(id);
   }
+
+
+  async addReplyToComment(commentId: string, replyDto: CommentReplyDto): Promise<Comment> {
+    const comment = await this.commentModel.findById(commentId);
+
+    if (!comment) {
+      throw new Error('Comment not found');
+    }
+
+    // Create a new reply
+    const newReply = {
+      senderName: replyDto.senderName,
+      description: replyDto.description,
+      date: new Date(),
+    };
+
+    // Add the reply to the comment's replies array
+    comment.replies.push(newReply);
+
+    // Save the updated comment
+    await comment.save();
+
+    // Return the updated comment
+    return comment;
+  }
+  async showRepliesByComment(commentId: string): Promise<CommentReplyDto[]> {
+    const comment = await this.commentModel.findById(commentId);
+    
+    if (!comment) {
+      throw new NotFoundException('Comment not found');
+    }
+    
+    // Return the replies of the comment
+    return comment.replies;
+  }
+  
+
 }

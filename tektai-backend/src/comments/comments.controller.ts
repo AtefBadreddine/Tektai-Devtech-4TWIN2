@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, NotFoundException } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { Comment } from 'src/schemas/comments.schema';
-import { CommentsDto } from './comments.dto';
+import { CommentReplyDto, CommentsDto } from './comments.dto';
 
 @Controller('comments')
 export class CommentsController {
@@ -42,4 +42,40 @@ export class CommentsController {
   async remove(@Param('id') id: string): Promise<Comment> {
     return this.commentsService.remove(id);
   }
+
+
+
+  @Post(':commentId/replies')
+  async addReplyToComment(
+    @Param('commentId') commentId: string,
+    @Body() replyDto: CommentReplyDto,
+  ) {
+    try {
+      const updatedComment = await this.commentsService.addReplyToComment(commentId, replyDto);
+      return { success: true, data: updatedComment };
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+  @Get(':id/replies')
+  async showRepliesByComment(@Param('id') commentId: string): Promise<Comment[]> {
+    try {
+      const replies: CommentReplyDto[] = await this.commentsService.showRepliesByComment(commentId);
+      
+      // Transform CommentReplyDto[] to Comment[]
+      const comments: Comment[] = replies.map(reply => ({
+        userName: reply.senderName, // Assuming senderName represents userName
+        challengeId: null, // You may need to fill this from somewhere
+        description: reply.description,
+        likes: 0, // You may need to adjust this according to your logic
+        replies: [], // Assuming there are no replies to replies
+        date: reply.date,
+      }));
+
+      return comments;
+    } catch (error) {
+      throw new NotFoundException(error.message);
+    }
+  }
+
 }

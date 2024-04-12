@@ -115,6 +115,15 @@ function ChallengeDetails() {
     console.error('Error submitting comment:', error);
   }
 };
+ // Function to handle change in comment text
+ const handleCommentChange = (e) => {
+  const text = e.target.value;
+  if (text.length <= 200) {
+    setCommentText(text);
+  }
+};
+
+
 
 
   // Scroll down after every 3 comments
@@ -229,24 +238,30 @@ function ChallengeDetails() {
     </div>
 
     <h5 className="pt-2 mb-2 font-bold">Comment</h5>
-    <div className="pb-8 flex flex-col gap-4">
-      <form onSubmit={handleSubmit} className="flex gap-4"> {/* Added flex and gap classes */}
-        <input
-          type="hidden"
-          name="userName"
-          value={defaultusername} // Use userName state here
-        />
-        <textarea
-          name="description"
-          placeholder={`Comment as ${user.username}`}
-          className="flex-1 p-2 border border-gray-300 rounded"
-          rows="1"
-          onChange={(e) => setCommentText(e.target.value)}
-          value={commentText}
-        ></textarea>
-        <button type="submit" className="btn-smm">Send</button>
-      </form>
+ <div className="pb-8 flex flex-col gap-4">
+  <form onSubmit={handleSubmit} className="flex gap-4">
+    <input
+      type="hidden"
+      name="userName"
+      value={defaultusername}
+    />
+    <div className="relative flex-1">
+      <textarea
+        name="description"
+        placeholder={`Comment as ${user.username}`}
+        className="p-2 border border-gray-300 rounded w-full"
+        rows="2"
+        maxLength={200} // Set maximum character limit
+        onChange={handleCommentChange} // Handle change event
+        value={commentText}
+      ></textarea>
+      <p className="absolute bottom-0 right-0 text-sm text-red-500 px-2 mb-2">{200 - commentText.length} letters left</p>
     </div>
+    <button type="submit" className="btn-smm" disabled={!commentText.trim()}>
+      Send
+    </button>
+  </form>
+</div>
   </div>
 
 

@@ -1,4 +1,4 @@
-.card {
+/* .card {
   width: 300px;
   height: 220px;
   background-color: rgb(255, 255, 255);
@@ -12,7 +12,7 @@
   position: relative;
   overflow: hidden;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
-}
+} */
 
 #cookieSvg {
   width: 50px;
@@ -198,6 +198,12 @@ transition-duration: .3s;
 width: 125px;
 transition-duration: .3s;
 }
+.btn-smm[disabled] {
+  cursor: not-allowed; /* Change cursor to not-allowed */
+  color: #ffffff; /* Change text color to gray */
+  background-color: #338ef5a1; /* Change background color to light gray */
+  border-color: #338ef5; /* Change border color to light gray */
+}
 
 .Btnn:hover .sign {
 width: 30%;
@@ -335,4 +341,537 @@ justify-content: center;
 input.selected {
 border-radius: 5px; /* Change border radius */
 background-color: pink; /* Change background color */
+}
+#heart-svg {
+  cursor: pointer;
+  overflow: visible;
+  width: 60px;
+  margin: 20px;
+}
+
+svg #heart {
+  transform-origin: center;
+  animation: animateHeartOut .3s linear forwards;
+}
+
+svg #main-circ {
+  transform-origin: 29.5px 29.5px;
+}
+
+.checkbox {
+  display: none;
+}
+
+.checkbox:checked+label svg #heart {
+  transform: scale(0.2);
+  fill: #E2264D;
+  animation: animateHeart .3s linear forwards .25s;
+}
+
+.checkbox:checked+label svg #main-circ {
+  transition: all 2s;
+  animation: animateCircle .3s linear forwards;
+  opacity: 1;
+}
+
+.checkbox:checked+label svg #grp1 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp1 #oval1 {
+  transform: scale(0) translate(0, -30px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp1 #oval2 {
+  transform: scale(0) translate(10px, -50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp2 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp2 #oval1 {
+  transform: scale(0) translate(30px, -15px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp2 #oval2 {
+  transform: scale(0) translate(60px, -15px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp3 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp3 #oval1 {
+  transform: scale(0) translate(30px, 0px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp3 #oval2 {
+  transform: scale(0) translate(60px, 10px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp4 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp4 #oval1 {
+  transform: scale(0) translate(30px, 15px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp4 #oval2 {
+  transform: scale(0) translate(40px, 50px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp5 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp5 #oval1 {
+  transform: scale(0) translate(-10px, 20px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp5 #oval2 {
+  transform: scale(0) translate(-60px, 30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp6 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp6 #oval1 {
+  transform: scale(0) translate(-30px, 0px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp6 #oval2 {
+  transform: scale(0) translate(-60px, -5px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp7 {
+  opacity: 1;
+  transition: .1s all .3s;
+}
+
+.checkbox:checked+label svg #grp7 #oval1 {
+  transform: scale(0) translate(-30px, -15px);
+  transform-origin: 0 0 0;
+  transition: .5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp7 #oval2 {
+  transform: scale(0) translate(-55px, -30px);
+  transform-origin: 0 0 0;
+  transition: 1.5s transform .3s;
+}
+
+.checkbox:checked+label svg #grp2 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+.checkbox:checked+label svg #grp3 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+.checkbox:checked+label svg #grp4 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+.checkbox:checked+label svg #grp5 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+.checkbox:checked+label svg #grp6 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+.checkbox:checked+label svg #grp7 {
+  opacity: 1;
+  transition: .1s opacity .3s;
+}
+
+@keyframes animateCircle {
+  40% {
+    transform: scale(10);
+    opacity: 1;
+    fill: #DD4688;
+  }
+  55% {
+    transform: scale(11);
+    opacity: 1;
+    fill: #D46ABF;
+  }
+  65% {
+    transform: scale(12);
+    opacity: 1;
+    fill: #CC8EF5;
+  }
+  75% {
+    transform: scale(13);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: .5;
+  }
+  85% {
+    transform: scale(17);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: .2;
+  }
+  95% {
+    transform: scale(18);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: .1;
+  }
+  100% {
+    transform: scale(19);
+    opacity: 1;
+    fill: transparent;
+    stroke: #CC8EF5;
+    stroke-width: 0;
+  }
+}
+
+@keyframes animateHeart {
+  0% {
+    transform: scale(0.2);
+  }
+  40% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes animateHeartOut {
+  0% {
+    transform: scale(1.4);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.task {
+  position: relative;
+  color: #2e2e2f;
+  cursor: move;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom: 1rem;
+  border: 3px dashed transparent;
+  max-width: 350px;
+}
+
+.task:hover {
+  box-shadow: rgba(99, 99, 99, 0.3) 0px 2px 8px 0px;
+  border-color: rgba(162, 179, 207, 0.2) !important;
+}
+
+.task p {
+  font-size: 15px;
+  margin: 1.2rem 0;
+}
+
+.tag {
+  border-radius: 100px;
+  padding: 4px 13px;
+  font-size: 12px;
+  color: #ffffff;
+  background-color: #1389eb;
+}
+
+.tags {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.options {
+  background: transparent;
+  border: 0;
+  color: #c4cad3;
+  font-size: 17px;
+}
+
+.options svg {
+  fill: #9fa4aa;
+  width: 20px;
+}
+
+.stats {
+  position: relative;
+  width: 100%;
+  color: #9fa4aa;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stats div {
+  margin-right: 1rem;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.stats svg {
+  margin-right: 5px;
+  height: 100%;
+  stroke: #9fa4aa;
+}
+
+.viewer span {
+  height: 30px;
+  width: 30px;
+  background-color: rgb(28, 117, 219);
+  margin-right: -10px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  display: grid;
+  align-items: center;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+  padding: 2px;
+}
+
+.viewer span svg {
+  stroke: #fff;
+}
+
+.card {
+  width: 302px;
+  height: 265px;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+
+  margin-right: 20px; /* Adjust as needed */
+
+  transition: 0.2s ease-in-out;
+}
+
+.cards-container {
+  display: flex;
+  justify-content: space-between;
+  width: 252px;
+
+}
+
+
+.img {
+  width: 100%;
+  height: 50%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  align-items: top;
+  justify-content: right;
+}
+
+.save {
+  transition: 0.2s ease-in-out;
+  border-radius: 10px;
+  margin: 20px;
+  width: 30px;
+  height: 30px;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-around;
+}
+
+.save .svg {
+  transition: 0.2s ease-in-out;
+  width: 15px;
+  height: 15px;
+}
+
+.icon-box {
+  margin-top: 15px;
+  width: 70%;
+  padding: 10px;
+  background-color: #e3fff9;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.icon-box svg {
+  width: 17px;
+}
+
+.text .h3 {
+  font-family: 'Lucida Sans' sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: black;
+}
+
+.text .p {
+  font-family: 'Lucida Sans' sans-serif;
+  color: #999999;
+  font-size: 13px;
+  margin-right: 8px; /* Adjust spacing between elements */
+
+}
+
+
+
+.company{
+  font-family: 'Lucida Sans' sans-serif;
+  color: #338CF5;
+  font-size: 13px;
+}
+.icon-box .span {
+  margin-left: 10px;
+  font-family: 'Lucida Sans' sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #9198e5;
+}
+
+.card:hover {
+  cursor: pointer;
+  box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+}
+
+.save:hover {
+  transform: scale(1.1) rotate(10deg);
+}
+
+.save:hover .svg {
+  fill: #ced8de;
+}
+.cardfav {
+  width: 232px;
+  height: 265px;
+  background-color: #ebe6e6;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
+  border: 2px solid rgba(7, 7, 7, 0.12);
+  font-size: 16px;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+}
+
+.icon {
+  margin: 0 auto;
+  width: 100%;
+  height: 80px;
+  max-width: 80px;
+  background: linear-gradient(90deg, #7eaaff 0%, #ff48fb 40%, rgba(0, 0, 0, 0.28) 60%);
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.8s ease;
+  background-position: 0px;
+  background-size: 200px;
+}
+
+.icon svg {
+  fill: white;
+}
+
+.cardfav .title {
+  width: 100%;
+  margin: 0;
+  text-align: center;
+  margin-top: 30px;
+  color: rgb(41, 37, 37);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+}
+
+.cardfav .text {
+  width: 80%;
+  margin: 0 auto;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 20px;
+  color: rgb(41, 37, 37);
+  font-weight: 200;
+  letter-spacing: 2px;
+  opacity: 0;
+  max-height: 0;
+  transition: all 0.3s ease;
+}
+
+.cardfav:hover {
+  height: 270px;
+}
+
+.cardfav:hover .text {
+  transition: all 0.3s ease;
+  opacity: 1;
+  max-height: 40px;
+}
+
+.cardfav:hover .icon {
+  background-position: -120px;
+  transition: all 0.3s ease;
+}
+
+.cardfav:hover .icon svg path {
+  fill:red;
+  transition: all 0.3s ease;
 }

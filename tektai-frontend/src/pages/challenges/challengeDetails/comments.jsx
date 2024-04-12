@@ -13,20 +13,39 @@ function Comments() {
     const user = storedUser ? JSON.parse(storedUser) : null;
     const [challenge, setChallenge] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [updateCommentDto, setUpdateCommentDto] = useState({});
+    const [isChecked, setIsChecked] = useState(false);
+    const [comment, setComment] = useState({ description: '' });
+
+    const handleEditClick = () => {
+      handleEditButtonClick();
+      setIsChecked(false); // Uncheck the checkbox when Edit is clicked
+    };
+  
+    const handleDeleteClick = () => {
+      handleDeleteButtonClick(comment._id);
+      setIsChecked(false); // Uncheck the checkbox when Delete is clicked
+    };
     const [userName, setUserName] = useState([]);
+    const [selectedCommentIndex, setSelectedCommentIndex] = useState(null);
     const defaultCompanyId = user ? user._id : ""; // Set default company_id to user._id
     const challengeId = challenge ? challenge._id : ""; // Set default company_id to user._id
-    const [commentText, setCommentText] = useState('');
-    const commentSectionRef = useRef(null); // Declare the ref here
-    const [likes, setLikes] = useState(0);
     const [comments, setComments] = useState([]);
     const { id } = useParams();
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(null);
+    const [editMode, setEditMode] = useState(false);
 
-    const [isChecked, setIsChecked] = useState(false);
-    const handleChange = (event) => {
-        setFormData({ ...formData, description: event.target.value });
+    // Function to handle the edit button click
+    const handleEditButtonClick = () => {
+      setEditMode(true);
+      // Additional logic if needed
     };
-
+    const handleChange = (event) => {
+      setComment({ description: event.target.value });
+    };
+    
+  
     useEffect(() => {
         // Load liked comments from local storage
         const storedLikedComments = JSON.parse(localStorage.getItem('likedComments')) || {};
@@ -39,9 +58,50 @@ function Comments() {
             });
         });
     }, []);
-    
-    
+    const handleUpdate = async (id) => {
+      try {
+        // Make PUT request to update the comment
+        const response = await axios.put(`http://localhost:3000/comments/${id}`, updateCommentDto);
+        console.log('Updated comment:', response.data);
+        // Handle success, maybe show a success message to the user
+      } catch (error) {
+        console.error('Error updating comment:', error);
+        // Handle error, maybe show an error message to the user
+      }
+    };
   
+    const handleDelete = async (commentId) => {
+      // Perform the delete action
+      try {
+        // Make a DELETE request to remove the comment
+        const response = await axios.delete(`http://localhost:3000/comments/${commentId}`);
+        console.log("Comment deleted:", response.data);
+        // Handle the response as needed
+  
+        // Close the confirmation modal
+        setShowConfirmation(false);
+      } catch (error) {
+        console.error("Error deleting comment:", error);
+      }
+    };
+  
+    const handleDeleteButtonClick = (commentId) => {
+      // Set the comment to be deleted and show the confirmation modal
+      setCommentToDelete(commentId);
+      setShowConfirmation(true); // Show the confirmation modal
+    };
+    
+    const confirmDelete = () => {
+      if (commentToDelete) {
+        handleDelete(commentToDelete);
+        setShowConfirmation(false); // Close the confirmation modal after deletion
+            // Reload the page after deletion
+    window.location.reload();
+
+      }
+    };
+
+
     const [formData, setFormData] = useState({
         userName: defaultCompanyId,
         likes: "",
@@ -51,13 +111,16 @@ function Comments() {
         challengeId: challengeId
     });
 
+    const toggleOptions = (index) => {
+      setSelectedCommentIndex(selectedCommentIndex === index ? null : index);
+  };
     // Function to format the date
     function commentDate(dateString) {
         const date = new Date(dateString);
         const now = new Date();
         const diff = Math.abs(now - date) / 1000; // Difference in seconds
         if (diff < 60) {
-            return `${Math.floor(diff)} s`;
+            return `now`;
         } else if (diff < 3600) {
             return `${Math.floor(diff / 60)} m`;
         } else if (diff < 86400) {
@@ -73,6 +136,7 @@ function Comments() {
             return `${years} y${years > 1 ? 's' : ''} `;
         }
     }
+
 
     const [likedComments, setLikedComments] = useState({}); // State for liked comments
     const handleLikeCheckboxChange = async (commentId, isChecked) => {
@@ -238,9 +302,90 @@ function Comments() {
                 <div className="mt-1 text-[#005ef6] text-xl tracking-[2px]">
                   ★★★★★
                 </div>
-                <div className="italic mt-2 text-[18px] text-[#4b587c] font-normal">
-                  {comment.description}
-                </div>
+                <div className="flex items-center justify-between"> {/* Container with flexbox */}
+  <div className="italic mt-2 text-[18px] text-[#4b587c] font-normal">
+    {!editMode && comment.description}
+  </div>
+  <label className="popup">
+      <input type="checkbox" checked={isChecked} onChange={() => setIsChecked(!isChecked)} />
+      <div className="burger" tabIndex="0">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav className="popup-window">
+        <legend>Actions</legend>
+        <ul>
+          <li>
+            <button onClick={handleEditClick}>
+              <svg
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 24 24"
+                height="14"
+                width="14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+              </svg>
+              <span>Edit</span>
+            </button>
+          </li>
+          <hr />
+          <li>
+            <button onClick={handleDeleteClick}>
+              <svg
+                strokeLinejoin="round"
+                strokeLinecap="round"
+                strokeWidth="2"
+                stroke="currentColor"
+                fill="red"
+                viewBox="0 0 24 24"
+                height="14"
+                width="14"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <line y2="18" x2="6" y1="6" x1="18"></line>
+                <line y2="18" x2="18" y1="6" x1="6"></line>
+              </svg>
+              <span>Delete</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </label>
+
+</div>
+{/* Conditionally render the form section */}
+{editMode && (
+  <div className="max-w-md relative flex flex-col p-4 rounded-md text-black">
+    <div className="text-2xl font-bold mb-2 text-[#1e0e4b] text-center"></div>
+
+    <form className="flex flex-col gap-3">
+      <div className="block relative"> 
+        <input
+          type="text"
+          id="description"
+          onChange={handleChange}
+          className="rounded border w-70 border-gray-200 text-sm font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+
+        /> 
+      </div>
+      <div className="flex justify-center"> {/* Align buttons to the center */}
+        <button type="cancel"  className="bg-[#ffffff] border-2 border-[#338CF5] px-6 py-2 rounded text-[#338CF5] text-sm font-normal mr-2">Cancel</button>
+        <button type="submit" onClick={() => handleUpdate(comment._id)} className="bg-[#338CF5] border-2 border-[#338CF5] px-6 py-2 rounded text-white text-sm font-normal">Update</button>
+      </div>
+    </form>
+  </div>
+)}
+
+
+
+
+           
                 <div className="flex gap-6 text-[#4b587c] text-[12px] mt-4">
                   <span className="flex items-center gap-1 cursor-pointer">
                     <span className="text-[8px]">
@@ -268,6 +413,9 @@ function Comments() {
                     </span>
                     Reply {comment.replies}
                   </span>
+
+               
+                    
                   <span className="flex items-center gap-1 ">{commentDate(comment.date)}</span>
                   <span className="flex items-center cursor-pointer">
                     <div className="like-dislike-container">
@@ -297,14 +445,62 @@ function Comments() {
                       </div>
                     </div>
                   </span>
+                  
                 </div>
+
+        
                 <hr className="my-4 border-gray-300" />
+
+
+         
               </div>
             ))
           ) : (
             <div>No comments yet.</div>
           )}
+                    {/* Other JSX code */}
+                    {showConfirmation && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+                    <div className="group select-none w-[250px] flex flex-col p-4 relative items-center justify-center bg-gray-800 border border-gray-800 shadow-lg rounded-2xl">
+                        <div className="">
+                            <div className="text-center p-3 flex-auto justify-center">
+                                <svg
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                    className="group-hover:animate-bounce w-12 h-12 flex items-center text-gray-600 fill-red-500 mx-auto"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        clipRule="evenodd"
+                                        d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                        fillRule="evenodd"
+                                    ></path>
+                                </svg>
+                                <h2 className="text-xl font-bold py-4 text-gray-200">Are you sure?</h2>
+                                <p className="font-bold text-sm text-gray-500 px-2">
+                                    Do you really want to continue? This process cannot be undone.
+                                </p>
+                            </div>
+                            <div className="p-2 mt-2 text-center space-x-1 md:block">
+                                <button
+                                    className="mb-2 md:mb-0 bg-gray-700 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border-2 border-gray-600 hover:border-gray-700 text-gray-300 rounded-full hover:shadow-lg hover:bg-gray-800 transition ease-in duration-300"
+                                    onClick={() => setShowConfirmation(false)}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    className="bg-red-500 hover:bg-transparent px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 hover:border-red-500 text-white hover:text-red-500 rounded-full transition ease-in duration-300"
+                                    onClick={confirmDelete}
+                                >
+                                    Confirm
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
+        
       );
     };
     

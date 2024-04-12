@@ -5,6 +5,7 @@ export class CommentsDto {
     date: Date;
     likes: number; // Number of likes for the comment
     replies: CommentReplyDto[]; // Array of replies to the comment
+  senderName: any;
 }
 
 export class CommentReplyDto {

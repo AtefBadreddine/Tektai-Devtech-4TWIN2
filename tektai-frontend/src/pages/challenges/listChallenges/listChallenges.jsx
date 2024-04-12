@@ -4,6 +4,7 @@ import Challenges from "./challenge";
 import { Link } from "react-router-dom";
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
+import '../createChallenge/card.css'
 
 function ListChallenges() {
     const [activeTab, setActiveTab] = useState('Ongoing');
@@ -102,13 +103,14 @@ function ListChallenges() {
                     </div>
                     {/* Tab content */}
                     <div>
-                        {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
+                   {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
                         {activeTab === 'Completed' && <div><h1 className="text-xl font-bold my-4">Completed Challenges</h1> <Challenges status="Completed" /></div>}
                         {activeTab === 'Upcoming' && <div><h1 className="text-xl font-bold my-4">Upcoming Challenges</h1> <Challenges status="Upcoming" /></div>}
                     </div>
                 </div>
 
                 <div className="mx-auto max-w-screen-2xl py-12 px-4 md:px-8">
+                    
                     {/* Render other content here */}
                 </div>
             </main>
