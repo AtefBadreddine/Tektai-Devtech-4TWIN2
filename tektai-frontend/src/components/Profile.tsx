@@ -25,7 +25,7 @@ interface UserData {
 
 const Profile: React.FC = () => {
 
-  let gptss: number = 0;
+   let gptss: number = 0;
    let sptss: number = 0;
    let bptss: number = 0;
    const [userData, setUserData] = useState<UserData | null>(null);
@@ -104,35 +104,33 @@ const Profile: React.FC = () => {
     )}
   </div>
 </div>
-
-                  
+                 
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:pt-4">
                     {/* <div className="py-6 px-3 mt-32 sm:mt-0"> */}
                     {userData?.role === 'challenger' && (
-                      <>
-                        <Link to="/MyTeams">
+                    <>
+                    <div className="flex justify-center ">
+
+                      <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
+                      <Link to="/MyTeams">
                         <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1" type="button">
                         Manage Teams
-                      </button></Link>
+                        </button>
+                      </Link>
+                      </div>
+                      <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
                       <Link to="/favoriteChallenges">
                       <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1" type="button">
-                        Favorite Challenges
+                        Favorites
                       </button>
-                    </Link>
+                      </Link>
+                      </div>
+                    </div>
                     </>
                     )}
                     {userData?.role === 'company' && (
-                  <div className="flex justify-center ">
- {/* <div className="mr-4 p-3 text-center flex items-center">
-  <Link to="/challenges/new">
-    <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1">
-      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-      </svg>
-      New Challenge
-    </button>
-  </Link>
-</div> */}
+                    <div className="flex justify-center ">
+
 <div className="mr-4 p-3 text-center flex items-center"> {/* Added flex and items-center */}
   <Link to="/historychallenges">
     <button className="flex justify-center text-white bg-gradient-to-r from-cyan-400 via-cyan-500 to-cyan-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 sm:mr-2 mb-1"> {/* Added flex and items-center */}
