@@ -41,7 +41,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
-
+import ProfileCompany from './components/profileCompany';
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
 import SearchResult from './pages/usersearch/SearchResult';
@@ -112,6 +112,7 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="profileCompany" element={<ProfileCompany />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
           <Route path="/historychallenges" element={<HistoryChallenges/>} />

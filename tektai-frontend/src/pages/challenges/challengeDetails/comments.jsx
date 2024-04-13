@@ -16,7 +16,9 @@ function Comments() {
     const [updateCommentDto, setUpdateCommentDto] = useState({});
     const [isChecked, setIsChecked] = useState(false);
     const [comment, setComment] = useState({ description: '' });
-
+    const [companyName, setCompanyName] = useState('');
+    const [image, setImage] = useState('');
+    
     const handleEditClick = () => {
       handleEditButtonClick();
       setIsChecked(false); // Uncheck the checkbox when Edit is clicked
@@ -218,24 +220,44 @@ function Comments() {
     }, [id]);
 
     useEffect(() => {
-        const fetchUsernames = async () => {
-            const usernamePromises = comments.map(async (comment) => {
-                try {
-                    const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
-                    const user = response.data; // Assuming response.data contains the user document
-                    return { username: user.username, role: user.role }; // Return username and role
-                } catch (error) {
-                    console.error('Error fetching username:', error.message);
-                    return null; // Return null if an error occurs
-                }
-            });
-    
-            const fetchedUsernames = await Promise.all(usernamePromises);
-            setUserName(fetchedUsernames.filter(Boolean)); // Set an array of usernames and roles
-        };
-    
-        fetchUsernames();
-    }, [comments]);
+      const fetchUsernames = async () => {
+          const usernamePromises = comments.map(async (comment) => {
+              try {
+                  const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
+                  const user = response.data; 
+                  const image = user.image; // Assuming the image URL is stored in user.image
+                  console.log("Image URL testt:", image); 
+                  console.log(`http://localhost:3000/uploads/${image}`);
+// Log the image URL
+                  setImage(image); // Set the image state
+                  return { username: user.username, role: user.role }; // Return username and role
+              } catch (error) {
+                  console.error('Error fetching username:', error.message);
+                  return null; // Return null if an error occurs
+              }
+          });
+  
+          const fetchedUsernames = await Promise.all(usernamePromises);
+          // Filter out null and undefined values
+          setUserName(fetchedUsernames.filter(Boolean));
+      };
+  
+      fetchUsernames();
+  }, [comments]);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     useEffect(() => {
         const fetchComments = async () => {
@@ -279,12 +301,9 @@ function Comments() {
             comments.map((comment, index) => (
               <div className="flex-1" key={comment._id}>
                 <div className="flex gap-4 items-center">
-                  {user && user.image ? (
-                    <img
-                      src={`http://localhost:3000/uploads/${user.image}`}
-                      alt="Profile"
-                      className="shadow-xl rounded-full h-10 w-10 object-cover align-middle border-none -ml-4"
-                    />
+                {image ? (
+                        <img  src={`http://localhost:3000/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
+
                   ) : (
                     <img
                       src="/default-profile-picture.png"

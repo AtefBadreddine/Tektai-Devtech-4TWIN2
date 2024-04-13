@@ -163,29 +163,6 @@ const Challenges = ({ status }) => {
   </div>
   
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   <div className="text">
     <p className="h3">{truncateText(challenge.title, 15)}</p>
     <div className="flex items-center">
