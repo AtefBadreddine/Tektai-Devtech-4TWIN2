@@ -38,9 +38,10 @@ export class SubmissionController {
         throw new BadRequestException('Two files are required!');
       }
 
-     const pdfPath = `/uploads/${files[0].filename}`;
-    const notebookPath = `/uploads/${files[1].filename}`;
+     const pdfPath = `uploads/${files[0].originalname}`;
+    const notebookPath = `uploads/${files[1].originalname}`;
 
+ this.logger.log('Receive files:', );
       // Enregistrer la soumission avec les IDs comme ObjectId
       await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath);
 

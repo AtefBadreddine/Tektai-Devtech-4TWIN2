@@ -11,6 +11,8 @@ import { ChallengesService } from 'src/challenge/challenges.service';
 import { Invitation, InvitationSchema } from 'src/schemas/invitation.schema';
 import { UsersService } from 'src/users/users.service';
 import { User, UserSchema } from 'src/schemas/user.schema';
+import * as multer from 'multer';
+
 
 @Module({
   imports: [
@@ -23,8 +25,18 @@ import { User, UserSchema } from 'src/schemas/user.schema';
     ]),
     MulterModule.register({
       dest: './uploads',
+      storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+          cb(null, './uploads');
+        },
+        filename: (req, file, cb) => {
+          cb(null, `${file.originalname}`);
+        },
+      }),
     }),
   ],
+   
+  
   controllers: [SubmissionController],
   providers: [SubmissionService, TeamsService, ChallengesService,UsersService], // Retirez Invitation des fournisseurs car il n'est pas nécessaire ici
   exports: [SubmissionService],
