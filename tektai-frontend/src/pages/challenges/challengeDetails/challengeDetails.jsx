@@ -172,6 +172,7 @@ function ChallengeDetails() {
                     <div className="flex items-center mb-4">
        
                       <div>
+ {user && challenge && user._id === challenge.company_id && (
 
     <div class="button-container">
   <button class="bin-button ">
@@ -225,7 +226,7 @@ function ChallengeDetails() {
 
 </div>
 
-
+)}
 
 
                         <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
