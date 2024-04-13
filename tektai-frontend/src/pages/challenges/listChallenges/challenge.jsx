@@ -6,6 +6,8 @@ import '../createChallenge/card.css'
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
 
 const Challenges = ({ status }) => {
+   const storedUser = localStorage.getItem('user');
+  const user = storedUser ? JSON.parse(storedUser) : null;
   const [challenges, setChallenges] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -41,6 +43,8 @@ const Challenges = ({ status }) => {
 
   const Challenge = ({ challenge, index }) => {
     const [companyName, setCompanyName] = useState('');
+    const [image, setImage] = useState('');
+
     const [loadingCompany, setLoadingCompany] = useState(true);
     function generateImg(index) {
       const imgs = [
@@ -58,21 +62,23 @@ const Challenges = ({ status }) => {
     
     
     
-    
     useEffect(() => {
       const fetchCompany = async () => {
         try {
           const response = await axios.get(`http://localhost:3000/users/getById/${challenge.company_id}`);
-          setCompanyName(response.data.companyName);
+          const { companyName, image } = response.data; // Assuming the image URL is provided in the response data
+          
+          setCompanyName(companyName);
+          setImage(`${image}`); // Set the correct image path received from API
           setLoadingCompany(false);
         } catch (error) {
           console.error('Error fetching company:', error);
         }
       };
-
-      fetchCompany();
-    }, [challenge.company_id]);
-
+    
+      fetchCompany(); // Call the fetchCompany function
+    }, [challenge.company_id]); // Make sure to include challenge.company_id in the dependency array to re-fetch data when it changes
+    
     const imageSrc = challenge.image ? challenge.image : defaultImagePath;
     
     return (
@@ -145,7 +151,40 @@ const Challenges = ({ status }) => {
 
 </div>
     </div>
+    
+    <div className="card__avatar">
+  {image ? (
+    <img src={`http://localhost:3000/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
+  ) : (
+    <img src="https://cdn4.vectorstock.com/i/1000x1000/09/33/company-icon-for-graphic-and-web-design-vector-31970933.jpg" height="45px" width="45px" alt="Default Logo" className='rounded-full shadow-lg' />
+  )}
+</div>
+
   </div>
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <div className="text">
     <p className="h3">{truncateText(challenge.title, 15)}</p>

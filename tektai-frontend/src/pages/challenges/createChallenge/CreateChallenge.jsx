@@ -300,7 +300,30 @@ function CreateChallenge() {
     </div>
 </div>
 
+<div className="grid grid-cols-2 gap-4">
+  <div className="mb-4">
+    <div className="mb-4">
+      <p className="mb-2 font-bold">Visibility *</p>
+      <select className="w-full p-2 border border-gray-300 rounded">
+        <option>Public</option>
+        <option>Private</option>
+      </select>
+      <p className="text-sm text-gray-500">The challenge will be visible on TektAI.</p>
+    </div>
+  </div>
+  <div className="mb-4">
+    <div className="mb-4">
+      <p className="mb-2 font-bold">Eligible Participants *</p>
+      <select className="w-full p-2 border border-gray-300 rounded">
+        <option>Anyone</option>
+        <option>Invitation-only</option>
+      </select>
+      <p className="text-sm text-gray-500">Participants can join via TektAI or by using the challenge URL.</p>
+    </div>
+  </div>
+</div>
 
+                                
 
 
                 <div className="mb-4">
