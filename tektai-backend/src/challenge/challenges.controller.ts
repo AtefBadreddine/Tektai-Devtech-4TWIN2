@@ -56,7 +56,25 @@ export class ChallengesController {
     return this.challengesService.getChallengesByCompanyId(companyId);
   }
 
+  @Get('count/:userId')
+  async getChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getChallengeCountByUser(userId);
+  }
 
+
+  @Get('completed/:userId')
+  async getCompletedChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getCompletedChallengeCountByUser(userId);
+  }
+  @Get('upcoming/:userId')
+  async getupcomingChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getupcomingChallengeCountByUser(userId);
+  }
+
+  @Get('ongoing/:userId')
+  async getongoingChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getongoingChallengeCountByUser(userId);
+  }
 
 
   @UseGuards(JwtAuthGuard) 

@@ -93,6 +93,22 @@ export class ChallengesService {
     }
     return challenge.dataset;
   }
+  async getChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId });
+    return count;
+  }
 
+  async getCompletedChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Completed' });
+    return count;
+  }
+  async getongoingChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Ongoing' });
+    return count;
+  }
+  async getupcomingChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Upcoming' });
+    return count;
+  }
   
 }

@@ -884,40 +884,40 @@ img {
   box-sizing: border-box;
 }
 
+.cardprofile {
+    width: 95%;
+    margin: 15px auto;
+    position: relative; /* Add this */
+  border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0px 1px 4px rgba(0,0,0, 0.10);
 
-.card {
-  width: 95%;
-  margin: 15px auto;
-  position: relative; /* Add this */
-
-  overflow: hidden;
-}
-.card h1 {
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-  font-weight: 600;
-  font-size: large;
-  background-color: #020c14;
-  animation: fadein 1.2s;
-  color: #ffffff;
-}
-.card img {
-  float: left;
-  width: 200px;
-  height: 200px;
-  margin: 20px;
-  position: relative;
-  z-index: 1;
-  animation: grow 0.6s;
-}
-.card .bio {
-  position: relative;
-  margin: 20px;
-  animation: slidein 1.2s;
-  max-width: 100%; /* Ensures the paragraph doesn't exceed the width of its container */
-  word-wrap: break-word; /* Allows long words to break and wrap onto the next line */
-}
+  }
+  .cardprofile h1 {
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: large;
+    background: linear-gradient(to right, #0072ff, #00c6ff);    animation: fadein 1.2s;
+    color: #ffffff;
+  }
+  .cardprofile img {
+    float: left;
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    position: relative;
+    z-index: 1;
+    animation: grow 0.6s;
+  }
+  .cardprofile .bio {
+    position: relative;
+    margin: 20px;
+    animation: slidein 1.2s;
+    max-width: 100%; /* Ensures the paragraph doesn't exceed the width of its container */
+    word-wrap: break-word; /* Allows long words to break and wrap onto the next line */
+  }
 
 @keyframes fadein {
   from {
@@ -1088,7 +1088,7 @@ input {
     z-index: 9999;
 }
 
-.container {
+.containerprofile {
     position: relative;
     max-width: 500px;
     width: 100%;
@@ -1097,7 +1097,7 @@ input {
     border-radius: 7px;
   }
   
-  .container .skill-box {
+  .containerprofile .skill-box {
     width: 100%;
     margin: 25px 0;
   }
@@ -1376,11 +1376,11 @@ input {
     line-height: 50px;
     letter-spacing: 2px;
     color: #fff;
-    background-color: #1389eb ;
+    background-color: #141415 ;
     transition: all 1.2s ease;
    }
    
-   .btn .container {
+   .btn .containerprofile {
     display: flex;
     width: auto;
     border-radius: 19px;
@@ -1579,5 +1579,57 @@ input {
   
   .cf:after {
     clear: both;
+  }
+  
+
+
+  .statistic-section {
+    padding-top: 70px;
+    padding-bottom: 70px;
+    background: #00c6ff; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
+    background: linear-gradient(to right, #0072ff, #00c6ff);
+    border-radius: 8px;
+  }
+  
+  .count-title {
+    font-size: 50px;
+    font-weight: normal;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+    font-weight: bold;
+    color: #fff;
+  }
+  
+  .stats-text {
+    font-size: 15px;
+    font-weight: normal;
+    margin-top: 15px;
+    margin-bottom: 0;
+    text-align: center;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  .stats-line-black {
+    margin: 12px auto 0;
+    width: 55px;
+    height: 2px;
+    background-color: #fff;
+  }
+  .stats-icon {
+    font-size: 35px;
+    margin: 0 auto;
+    float: none;
+    display: table;
+    color: #fff;
+  }
+  
+  @media (max-width: 992px) {
+    .counter {
+      margin-bottom: 40px;
+    }
   }
   

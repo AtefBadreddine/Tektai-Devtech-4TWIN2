@@ -12,7 +12,13 @@ const Challenges = ({ status }) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [challengesPerPage] = useState(10);
- 
+  const [allChallengesCount, setAllChallengesCount] = useState(0);
+  const id = user ? user._id : '';
+
+
+
+
+
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
