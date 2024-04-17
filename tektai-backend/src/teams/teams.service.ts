@@ -62,6 +62,7 @@ export class TeamsService {
   
 
   async findOne(id: string): Promise<TeamDocument> {
+    this.logger.log(id);
     const team = await this.teamModel.findById(id).populate('leader members').exec();
 
     if (!team) {

@@ -238,7 +238,7 @@ function MyTeams() {
         <button
                 className='btn bg-green-300 m-2 w-10 text-sm h-4'
                 disabled={invitationSent[user._id]}
-                onClick={() => sendInvitation(selectedTeam?.teamId, user._id)}
+                onClick={() => sendInvitation(selectedTeam?._id, user._id)}
               >
                 {invitationSent[user._id] ? 'Invited' : 'Invite'}
               </button>        

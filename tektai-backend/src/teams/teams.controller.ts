@@ -80,10 +80,10 @@ export class TeamsController {
   async updateTeamName(@Req() req: Request, @Param('id') id: string, @Body('name') newName: string) {
 
     const team = await this.teamsService.findOne(id);
-    const userId = req.user['_id'];
+    /*const userId = req.user['_id'];
     if (! team.leader._id.equals(userId)) {
       throw new ConflictException(`Current user is not authorized to update the team name`);
-    }
+    }*/
     return this.teamsService.updateTeamName(id, newName);
   }
 
@@ -92,10 +92,10 @@ export class TeamsController {
   async changeTeamLeader(@Req() req: Request, @Param('id') id: string, @Body('newLeaderId') newLeaderId: string) {
 
     const team = await this.teamsService.findOne(id);
-    const userId = req.user['_id'];
+    /*const userId = req.user['_id'];
     if (! team.leader._id.equals(userId)) {
       throw new ConflictException(`Current user is not authorized to change the team leader`);
-    }
+    }*/
     return this.teamsService.changeTeamLeader(id, newLeaderId);
   }
 
@@ -115,10 +115,10 @@ export class TeamsController {
   async removeTeam(@Req() req: Request, @Param('id') id: string) {
 
     const team = await this.teamsService.findOne(id);
-    const userId = req.user['_id'];
+   /* const userId = req.user['_id'];
     if (! team.leader._id.equals(userId)) {
       throw new ConflictException(`Current user is not authorized to delete the team`);
-    }
+    }*/
     return this.teamsService.removeTeam(id);
   }
 
@@ -162,7 +162,9 @@ export class TeamsController {
 
   @Post('invitations/:teamId/send')
   async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string,@Body('memberId') memberId: string) {
-   // to do make it unique on table invitation
+    // to do make it unique on table invitation
+    this.logger.log('controller', memberId);
+      this.logger.log('controller', teamId);
     const team = await this.teamsService.findOne(teamId);
     // const userId = req.user['_id'];
     if (! team.leader) {
