@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState  } from 'react';
 import axios from 'axios'; // Import Axios
 import './profilecompany.css';
 import Footer from '../layout/Footer';
@@ -7,16 +7,35 @@ import Challenges from '../pages/challenges/listChallenges/challenge';
 
 function ProfileCompany() {
     const [userData, setUserData] = useState(null);
-    const [count, setCount] = useState(0);
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     const id = user ? user._id : '';
     const [completedChallengesCount, setCompletedChallengesCount] = useState('');
     const [upcomingChallengesCount, setUpcomingChallengesCount] = useState('');
     const [ongoingChallengesCount, setOngoingChallengesCount] = useState('');
+    const [count, setCount] = useState(0);
 
+/* 
+     // Use useEffect to animate count when count state changes
+     useEffect(() => {
+        const countingElements = document.querySelectorAll('.counter');
+      
+        countingElements.forEach(element => {
+          const countTo = parseInt(element.getAttribute('count-number'), 10);
+          const duration = 3000;
+          const step = Math.max(Math.floor(duration / countTo), 1);
+          let currentCount = 0;
+      
+          const intervalId = setInterval(() => {
+            currentCount += step;
+            element.textContent = currentCount >= countTo ? countTo : currentCount;
+            if (currentCount >= countTo) clearInterval(intervalId);
+          }, step);
+        });
+      }, [count, completedChallengesCount, upcomingChallengesCount, ongoingChallengesCount]);
+      
 
-
+ */
   
   useEffect(() => {
     const fetchUserData = async () => {
@@ -263,27 +282,59 @@ function ProfileCompany() {
   </div>
   <div className="cardprofile">
     <h1>Information</h1>
-    <div class="containerprofile">
-    <button class="btn">
-  <span>Email</span>
-  <div class="containerprofile">
-    <div>{userData?.email ?? 'Loading...'}</div>
-  </div>
-</button>
-<button class="btn">
-  <span>Phone Number</span>
-  <div class="containerprofile">
-    <div>{userData?.phoneNumber ?? 'Loading...'}</div>
-  </div>
-</button>
-<button class="btn">
-  <span>Adresse</span>
-  <div class="containerprofile">
-    <div>{userData?.adresse ?? 'Loading...'}</div>
-  </div>
-</button>
-    </div>
-  </div>
+
+  <div class="profile-itemcolor">
+  <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM7.005 9C7.005 8.45 7.45 8 8 8H16C16.55 8 17 8.45 17 9V15C17 15.55 16.55 16 16 16H8C7.45 16 7 15.55 7 15L7.005 9ZM12 12.5L8.00001 9.99997V15H16V9.99997L12 12.5ZM12 11.5L8.00001 9.00001H16L12 11.5Z" fill="#000000"/>
+</svg>
+{userData?.email ?? 'Loading...'}
+     </div>
+
+     <div class="profile-itemcolor">
+     <svg width="30px" height="30px"viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    
+    <title>phone</title>
+    <desc>Created with Sketch Beta.</desc>
+    <defs>
+
+</defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-258.000000, -309.000000)" fill="#000000">
+            <path d="M289.073,313.433 L286.195,310.563 C285.401,309.77 284.112,309.77 283.317,310.563 L279,316.303 C278.341,317.274 278.206,318.38 279,319.173 L280.762,320.93 C279.456,322.68 277.888,324.588 276.123,326.348 C274.127,328.338 271.907,330.147 269.911,331.633 L268.208,329.936 C267.414,329.143 266.305,329.277 265.33,329.936 L259.574,334.241 C258.609,334.906 258.779,336.318 259.574,337.111 L262.452,339.98 C264.042,341.566 266.109,341.058 268.208,339.98 C268.208,339.98 274.561,336.424 280,331 C285.116,325.898 289.073,319.173 289.073,319.173 C289.898,316.91 290.663,315.018 289.073,313.433" id="phone" sketch:type="MSShapeGroup">
+
+</path>
+        </g>
+    </g>
+</svg>
+{userData?.phoneNumber ?? 'Loading...'}
+     </div>
+  
+
+
+
+     <div class="profile-itemcolor">
+     <svg version="1.0" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 width="30px" height="30px" viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
+<path fill="#231F20" d="M32,0C18.746,0,8,10.746,8,24c0,5.219,1.711,10.008,4.555,13.93c0.051,0.094,0.059,0.199,0.117,0.289l16,24
+	C29.414,63.332,30.664,64,32,64s2.586-0.668,3.328-1.781l16-24c0.059-0.09,0.066-0.195,0.117-0.289C54.289,34.008,56,29.219,56,24
+	C56,10.746,45.254,0,32,0z M32,32c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S36.418,32,32,32z"/>
+</svg>
+{userData?.adresse ?? 'Loading...'}
+     </div>
+
+
+
+     <button class="learn-more">
+  <span class="circle" aria-hidden="true">
+  <span class="icon arrow"></span>
+  </span>
+  <span class="button-text">Contact us</span>
+</button> 
+
+</div>
+
+
+  
 </div>
 
 
@@ -301,7 +352,7 @@ function ProfileCompany() {
     <div class="flex justify-center">
         <div class="flex flex-col items-center mr-8">
             <div class="counter">
-                <h2 class="timer count-title count-number">{count ? count : '0'}
+                <h2 class="timer count-title count-number">{count? count:0}
 </h2>
                 <div class="stats-line-black"></div>
                 <p class="stats-text">All challenges</p>

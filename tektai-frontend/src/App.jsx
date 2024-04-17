@@ -30,7 +30,6 @@
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
-  
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -52,6 +51,7 @@ import UserList from './components/User/Userlist';
 import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import CompanyProfile from './components/companyprofile';
 
 
 
@@ -104,6 +104,7 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
           <Route path="/UserSearchF" element={<UserSearchF/>} />
           <Route path="/Teams" element={<Teams/>} />
           <Route path="/MyTeams" element={<MyTeams/>} />
+          <Route path="/companyprofile" element={<CompanyProfile/>} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />

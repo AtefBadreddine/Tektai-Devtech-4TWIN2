@@ -294,6 +294,23 @@ img {
   margin-right: 10px;
 }
 
+
+.profile-itemcolor {
+  display: flex;
+  align-items: center;
+  color: #141313;
+  padding: 20px 30px;
+  white-space: nowrap;
+}
+
+.profile-itemcolor svg {
+width: 22px;
+margin-right: 10px;
+}
+
+
+
+
 .profile-contact-info {
   position: absolute;
   display: flex;
@@ -890,9 +907,24 @@ img {
     position: relative; /* Add this */
   border-radius: 8px;
     overflow: hidden;
+    /* box-shadow: 0px 1px 4px rgba(0,0,0, 0.10); */
+
+  }
+
+  .cardcompany {
+    width: 95%;
+    margin: 15px auto;
+    position: relative; /* Add this */
+  border-radius: 8px;
+    overflow: hidden;
     box-shadow: 0px 1px 4px rgba(0,0,0, 0.10);
 
   }
+
+
+
+
+
   .cardprofile h1 {
     margin: 0;
     padding: 20px;
@@ -1095,7 +1127,15 @@ input {
     margin: 15 15px;
     padding: 10px 20px;
     border-radius: 7px;
+  
   }
+
+
+
+
+
+
+
   
   .containerprofile .skill-box {
     width: 100%;
@@ -1240,64 +1280,7 @@ input {
     transition: all 1s cubic-bezier(0, 0.4, 0, 1.01);
   }
   
-  .star-4 {
-    position: absolute;
-    top: 20%;
-    left: 40%;
-    width: 8px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s cubic-bezier(0, 0.4, 0, 1.01);
-  }
   
-  .star-5 {
-    position: absolute;
-    top: 25%;
-    left: 45%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.6s cubic-bezier(0, 0.4, 0, 1.01);
-  }
-  
-  .star-6 {
-    position: absolute;
-    top: 5%;
-    left: 50%;
-    width: 5px;
-    height: auto;
-    filter: drop-shadow(0 0 0 #fffdef);
-    z-index: -5;
-    transition: all 0.8s ease;
-  }
-  
-  button:hover {
-    background: transparent;
-    color: #020c14;
-    box-shadow: 0 0 25px #A7C7E7;
-  }
-  
-  button:hover .star-1 {
-    position: absolute;
-    top: -80%;
-    left: -30%;
-    width: 25px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
-  }
-  
-  button:hover .star-2 {
-    position: absolute;
-    top: -40%;
-    left: 16%;
-    width: 15px;
-    height: auto;
-    filter: drop-shadow(0 0 10px #fffdef);
-    z-index: 2;
-  }
   
   button:hover .star-3 {
     position: absolute;
@@ -1376,7 +1359,7 @@ input {
     line-height: 50px;
     letter-spacing: 2px;
     color: #fff;
-    background-color: #141415 ;
+    background-color: 	#00008b ;
     transition: all 1.2s ease;
    }
    
@@ -1418,16 +1401,29 @@ input {
     list-style: none;
   }
   
-  .example-2 {
+  .example-2-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     margin-top: 50px;
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%; /* Ensure it spans the width of the card */
+    width: 100%;
   }
+  
+  .example-2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .socials-title {
+    margin-bottom: 20px; /* Adjust as needed */
+    font-size: 1rem; /* Adjust font size */
+    color:#520aa9;
+  }
+  
   .example-2 .icon-content {
     margin: 0 10px;
     position: relative;
@@ -1504,48 +1500,7 @@ input {
   .example-2 .icon-content a[data-social="telegram"] ~ .tooltip {
     background-color: #0088cc;
   }
-  form {
-    max-width:100%;
-    text-align: center;
-    margin: 20px auto;
-    padding: 20px;
-  }
-  form input, form textarea {
-    border: 0;
-    outline: 0;
-    padding: 1em;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-    border-radius: 8px;
-    display: block;
-    width: 100%;
-    margin-top: 1em;
-    font-family: 'Merriweather', sans-serif;
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-    resize: none;
-  }
-  form input:focus, form textarea:focus {
-    -moz-box-shadow: 0 0px 2px #1389eb !important;
-    -webkit-box-shadow: 0 0px 2px #1389eb !important;
-    box-shadow: 0 0px 2px #1389eb !important;
-  }
-  form #input-submit {
-    color: white;
-    background: #1389eb;
-    cursor: pointer;
-   
-
-  }
-  form #input-submit:hover {
-    -moz-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
-    -webkit-box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
-    box-shadow: 0 1px 1px 1px rgba(170, 170, 170, 0.6);
-  }
-  form textarea {
-    height: 126px;
-  }
+ 
   
   .half {
     float: left;
@@ -1584,11 +1539,11 @@ input {
 
 
   .statistic-section {
-    padding-top: 70px;
-    padding-bottom: 70px;
+margin: 20px;
+    padding:70px ;
     background: #00c6ff; /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #0072ff, #00c6ff);
-    background: linear-gradient(to right, #0072ff, #00c6ff);
+    background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
     border-radius: 8px;
   }
   
@@ -1632,4 +1587,234 @@ input {
       margin-bottom: 40px;
     }
   }
+  .button {
+    position: relative;
+    width: 150px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border: 1px solid #cc0000;
+    background-color: #e50000;
+    overflow: hidden;
+  }
   
+  .button, .button__icon, .button__text {
+    transition: all 0.3s;
+  }
+  
+  .button .button__text {
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .button .button__icon {
+    position: absolute;
+    transform: translateX(109px);
+    height: 100%;
+    width: 39px;
+    background-color: #cc0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .button .svg {
+    width: 20px;
+  }
+  
+  .button:hover {
+    background: #cc0000;
+  }
+  
+  .button:hover .button__text {
+    color: transparent;
+  }
+  
+  .button:hover .button__icon {
+    width: 148px;
+    transform: translateX(0);
+  }
+  
+  .button:active .button__icon {
+    background-color: #b20000;
+  }
+  
+  .button:active {
+    border: 1px solid #b20000;
+  }
+
+
+  button {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
+    border: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    background: transparent;
+    font-size: inherit;
+    font-family: inherit;
+
+   }
+  
+   
+   button.learn-more {
+    width: 12rem;
+    height: auto;
+    
+   }
+   
+   button.learn-more .circle {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: relative;
+    display: block;
+    width: 3rem;
+    height: 3rem;
+    background: #282936;
+    border-radius: 1.625rem;
+   }
+   
+   button.learn-more .circle .icon {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    background: #fff;
+   }
+   
+   button.learn-more .circle .icon.arrow {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    left: 0.625rem;
+    width: 1.125rem;
+    height: 0.125rem;
+    background: none;
+   }
+   
+   button.learn-more .circle .icon.arrow::before {
+    position: absolute;
+    content: "";
+    top: -0.29rem;
+    right: 0.0625rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    border-top: 0.125rem solid #fff;
+    border-right: 0.125rem solid #fff;
+    transform: rotate(45deg);
+   }
+   
+   button.learn-more .button-text {
+    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0.75rem 0;
+    margin: 0 0 0 1.85rem;
+    color: #282936;
+    font-weight: 700;
+    line-height: 1.6;
+    text-align: center;
+    text-transform: uppercase;
+   }
+   
+   button:hover .circle {
+    width: 100%;
+   }
+   
+   button:hover .circle .icon.arrow {
+    background: #fff;
+    transform: translate(1rem, 0);
+   }
+   
+   button:hover .button-text {
+    color: #fff;
+   }
+
+   /* === removing default button style ===*/
+
+/* button styling */
+.buttonname {
+  --border-right: 3px; /* Adjust border thickness */
+  --text-stroke-color: rgba(201, 187, 187, 0.6);
+  --animation-color: #8806df;
+  --fs-size: 1.5em; /* Adjust font size */
+  letter-spacing: 2px; /* Adjust letter spacing */
+  text-decoration: none;
+  font-size: var(--fs-size);
+  font-family: "Arial";
+  position: relative;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 0.5px var(--text-stroke-color); /* Adjust text stroke thickness */
+}
+
+/* this is the text, when you hover on button */
+.hover-text {
+  position: absolute;
+  box-sizing: border-box;
+  content: attr(data-text);
+  color: var(--animation-color);
+  width: 0%;
+  inset: 0;
+  border-right: var(--border-right) solid var(--animation-color);
+  overflow: hidden;
+  transition: 0.5s;
+  -webkit-text-stroke: 0.5px var(--animation-color);
+}
+
+/* hover */
+.buttonname:hover .hover-text {
+  width: 100%;
+  filter: drop-shadow(0 0 10px var(--animation-color)); /* Adjust shadow */
+}
+.containerprofiles {
+  display: flex;
+  align-items: center; /* Align items vertically */
+}
+.buttoncontact {
+  height: 32px;
+  background-color: #330867;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  justify-content: space-between;
+  transition: all 0.3s;
+}
+
+.buttoncontact:hover {
+  opacity: 300;
+  transform: translateY(-4px);
+}
+
+.buttoncontact .label {
+  font-size: 12px;
+  line-height: 32px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 0 auto;
+}
+
+::-moz-selection {
+  background-color: #C3CFE2;
+}
+
+::selection {
+  background-color: #C3CFE2;
+}
+
+.titlecompany {
+  text-transform: uppercase;
+  background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2vw;
+  font-family: "Poppins", sans-serif;
+}
