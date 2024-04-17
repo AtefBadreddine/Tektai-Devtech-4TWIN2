@@ -211,37 +211,36 @@ img {
   height: 100%;
   -o-object-fit: cover;
      object-fit: cover;
-  -o-object-position: center;
-     object-position: center;
+  -o-object-position: bottom;
+     object-position: bottom;
   border-radius: 4px 4px 6px 6px;
 }
 
 .profile-menu {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--header-bg-color);
-    width: 100%;
-    box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.1);
-    border-radius: 0 0 4px 4px;
-    padding: 0 25px;
-    z-index: 2;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--header-bg-color);
+  width: 100%;
+  box-shadow: -1px 3px 8px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 4px 4px;
+  padding: 0 25px;
+  z-index: 2;
+ }
   
-  .profile-avatar {
-    width: 100%;
-    text-align: center;
-  }
+ .profile-avatar {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+ }
   
   .profile-img {
     border-radius: 50%;
-    width: 70px;
-    -o-object-fit: cover;
+    width: 42px;
+    height: 42px;
     object-fit: cover;
-    max-width: 100%; /* Ensures the image doesn't exceed the width of its container */
-    height: auto; /* Maintains the aspect ratio */
-    margin: auto; /* Centers the image horizontally */
-  }
+    margin-right: 15px;
+   }
   
 .profile-name {
   white-space: nowrap;
@@ -301,7 +300,7 @@ img {
   display: flex;
   align-items: center;
   color: #141313;
-  padding: 20px 30px;
+  padding: 10px 0px;
   white-space: nowrap;
 }
 
@@ -334,6 +333,8 @@ margin-right: 10px;
 
 .follow-buttons {
   display: flex;
+  padding: 26px 16px;
+
 }
 
 .follow {
@@ -351,7 +352,7 @@ margin-right: 10px;
 }
 
 .follow-option {
-  border-radius: 0 25px 25px 0;
+  border-radius: 25px 25px 25px 25px;
   margin-left: -2px;
 }
 
@@ -911,6 +912,22 @@ margin-right: 10px;
     /* box-shadow: 0px 1px 4px rgba(0,0,0, 0.10); */
 
   }
+  .cardprofilechallenger {
+    width: 100%;
+    margin: 15px auto;
+    position: relative; /* Add this */
+  border-radius: 8px;
+    overflow: hidden;
+    padding-left: 20px;
+    background-color: #fff
+    /* box-shadow: 0px 1px 4px rgba(0,0,0, 0.10); */
+
+  }
+
+
+
+  
+
 
   .cardcompany {
     width: 95%;
@@ -1422,6 +1439,7 @@ input {
     height: 0;
     background-color: #000;
     transition: all 0.3s ease-in-out;
+    color: #4D4D4D;
   }
   .example-2 .icon-content a:hover .filled {
     height: 100%;
@@ -1529,152 +1547,6 @@ margin: 20px;
       margin-bottom: 40px;
     }
   }
-  .button {
-    position: relative;
-    width: 150px;
-    height: 40px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    border: 1px solid #cc0000;
-    background-color: #e50000;
-    overflow: hidden;
-  }
-  
-  .button, .button__icon, .button__text {
-    transition: all 0.3s;
-  }
-  
-  .button .button__text {
-    color: #fff;
-    font-weight: 600;
-  }
-  
-  .button .button__icon {
-    position: absolute;
-    transform: translateX(109px);
-    height: 100%;
-    width: 39px;
-    background-color: #cc0000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  .button .svg {
-    width: 20px;
-  }
-  
-  .button:hover {
-    background: #cc0000;
-  }
-  
-  .button:hover .button__text {
-    color: transparent;
-  }
-  
-  .button:hover .button__icon {
-    width: 148px;
-    transform: translateX(0);
-  }
-  
-  .button:active .button__icon {
-    background-color: #b20000;
-  }
-  
-  .button:active {
-    border: 1px solid #b20000;
-  }
-
-
-  button {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-    outline: none;
-    border: 0;
-    vertical-align: middle;
-    text-decoration: none;
-    background: transparent;
-    font-size: inherit;
-    font-family: inherit;
-
-   }
-  
-   
-   button.learn-more {
-    width: 12rem;
-    height: auto;
-    
-   }
-   
-   button.learn-more .circle {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: relative;
-    display: block;
-    width: 3rem;
-    height: 3rem;
-    background: #282936;
-    border-radius: 1.625rem;
-   }
-   
-   button.learn-more .circle .icon {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    background: #fff;
-   }
-   
-   button.learn-more .circle .icon.arrow {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    left: 0.625rem;
-    width: 1.125rem;
-    height: 0.125rem;
-    background: none;
-   }
-   
-   button.learn-more .circle .icon.arrow::before {
-    position: absolute;
-    content: "";
-    top: -0.29rem;
-    right: 0.0625rem;
-    width: 0.625rem;
-    height: 0.625rem;
-    border-top: 0.125rem solid #fff;
-    border-right: 0.125rem solid #fff;
-    transform: rotate(45deg);
-   }
-   
-   button.learn-more .button-text {
-    transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    padding: 0.75rem 0;
-    margin: 0 0 0 1.85rem;
-    color: #282936;
-    font-weight: 700;
-    line-height: 1.6;
-    text-align: center;
-    text-transform: uppercase;
-   }
-   
-   button:hover .circle {
-    width: 100%;
-   }
-   
-   button:hover .circle .icon.arrow {
-    background: #fff;
-    transform: translate(1rem, 0);
-   }
-   
-   button:hover .button-text {
-    color: #fff;
-   }
 
    /* === removing default button style ===*/
 
@@ -1759,4 +1631,124 @@ margin: 20px;
   -webkit-text-fill-color: transparent;
   font-size: 2vw;
   font-family: "Poppins", sans-serif;
+}
+
+.Challengertitle {
+
+  font-weight: 600;
+  font-size: large;
+  color: #ffffff;
+  text-transform: uppercase;
+  background: linear-gradient(to right, #30CFD0 0%, #330867 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 2vw;
+  font-family: "Poppins", sans-serif;
+
+
+}
+.cardsocial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+/* for all social containers*/
+.socialContainer {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: rgb(44, 44, 44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition-duration: .3s;
+}
+/* instagram*/
+.containerOne:hover {
+  background-color: #d62976;
+  transition-duration: .3s;
+}
+/* twitter*/
+.containerTwo:hover {
+  background-color: #00acee;
+  transition-duration: .3s;
+}
+/* linkdin*/
+.containerThree:hover {
+  background-color: #0072b1;
+  transition-duration: .3s;
+}
+/* Whatsapp*/
+.containerFour:hover {
+  background-color: #128C7E;
+  transition-duration: .3s;
+}
+
+.socialContainer:active {
+  transform: scale(0.9);
+  transition-duration: .3s;
+}
+
+.socialSvg {
+  width: 17px;
+}
+
+.socialSvg path {
+  fill: rgb(255, 255, 255);
+}
+
+.socialContainer:hover .socialSvg {
+  animation: slide-in-top 0.3s both;
+}
+
+@keyframes slide-in-top {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+
+
+
+
+.skill {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.skill-name {
+  width: 120px;
+  font-size: 16px;
+}
+
+
+
+.skill-level {
+  width: 160px;
+  height: 10px;
+  background-color: #eee;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-left: 20px;
+}
+
+.skill-percent {
+  background-color: #333;
+  height: 100%;
+}
+
+.skill-percent-number {
+  margin-left: 20px;
+  font-size: 16px;
 }

@@ -42,7 +42,7 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
-import ProfileCompany from './components/profileCompany';
+import ProfileCompany from './components/Challengerprofile';
 
 import MapComponent from './pages/Localisation/MapComponent'; 
 
@@ -64,6 +64,7 @@ import CompanyProfile from './components/companyprofile';
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
+import Challengerprofile from './components/Challengerprofile';
 
 
 
@@ -128,7 +129,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="profileCompany" element={<ProfileCompany />} />
+            <Route path="/Challengerprofile" element={<Challengerprofile />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
           {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
