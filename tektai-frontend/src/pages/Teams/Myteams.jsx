@@ -6,6 +6,8 @@ import { faCrown, faUser, faCog, faTrash, faPlus } from '@fortawesome/free-solid
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 import { Alert, AlertIcon, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
+import InviteMembers from './InviteMembers';
+import PendingInvitations from './pedning';
 function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -37,7 +39,7 @@ function MyTeams() {
       try {
         const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
         const allTeams = await TeamsService.getAllTeams();
-        const userTeams = allTeams.filter(team => team.leader.username === loggedInUser.username);
+        const userTeams = allTeams.filter(team => team.leader?.username === loggedInUser.username);
         setTeams(userTeams);
       } catch (error) {
         console.error('Error fetching teams:', error);
@@ -66,10 +68,14 @@ function MyTeams() {
   // Function to handle creating a new team
   const handleCreateTeam = async () => {
     try {
+      const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
+
       // Call the create team API endpoint
-      const newTeam = await TeamsService.createTeam({ name: newTeamName, members: selectedMembers });
+      const newTeam = await TeamsService.createTeam({ name: newTeamName, members: selectedMembers,leader:loggedInUser._id });
+      
       // Add the newly created team to the state
       setTeams([...teams, newTeam]);
+
       // Close the modal
       setShowModal(false);
       // Reset the new team name and selected members
@@ -149,7 +155,11 @@ function MyTeams() {
       // Handle error
     }
   }
-  
+  const [showInviteMembers, setShowInviteMembers] = useState(false);
+
+  const toggleInviteMembers = () => {
+    setShowInviteMembers(!showInviteMembers);
+  };
   return (
     // add condition to display only teams that belong to the current user
     <div>       <div className='pb-16'><Header/></div> 
@@ -169,7 +179,7 @@ function MyTeams() {
     <div className="bg-white rounded-lg p-8 w-full max-w-md">
       <h2 className="text-xl font-semibold mb-4">Create New Team</h2>
       <input type="text" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Enter Team Name" className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
-      <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
+      {/* <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Search members..." className="border border-gray-300 rounded-lg px-4 py-2 mb-4 w-full" />
       <div className="overflow-y-auto max-h-60">
   {filteredUsers && filteredUsers.map((user) => (
     <div key={user._id} className="flex items-center mb-2">
@@ -177,7 +187,7 @@ function MyTeams() {
       <label htmlFor={user._id} className="ml-2">{user.username}</label>
     </div>
   ))}
-</div>
+</div> */}
 
       <div className="flex justify-end">
         <button className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 mr-2" onClick={handleCreateTeam}>Create</button>
@@ -228,7 +238,7 @@ function MyTeams() {
         <button
                 className='btn bg-green-300 m-2 w-10 text-sm h-4'
                 disabled={invitationSent[user._id]}
-                onClick={() => sendInvitation(selectedTeam?.teamId, user._id)}
+                onClick={() => sendInvitation(selectedTeam?._id, user._id)}
               >
                 {invitationSent[user._id] ? 'Invited' : 'Invite'}
               </button>        
@@ -294,9 +304,17 @@ function MyTeams() {
     <div className="grid grid-cols-2 gap-4">
   {teams.map((team) => (
     <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
-       
+        <button className=" bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600"         onClick={toggleInviteMembers}
+>
+        Invite Members
+      </button>
+      {showInviteMembers && <InviteMembers teamId={team._id} onClose={() => setShowInviteMembers(false)} />}
+      <div>  <PendingInvitations teamId={team._id} />
+</div>
        <div className="mt-4 grid gap-4 md:flex md:flex-row md:overflow-x-auto">
+        
   <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
+
   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
     {team.members
       .map(member => ({
@@ -325,7 +343,9 @@ function MyTeams() {
         </div>
       ))
     }
+     
   </div>
+
 </div>
 
 
@@ -345,8 +365,8 @@ function MyTeams() {
       <div className="mb-2 flex items-center">
         <div className="text-gray-600 mr-2">Leader:</div>
         <div className="text-gray-600 mb-2 flex items-center  dark:text-white hover:text-blue-500">
-          <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader.username} src={`http://localhost:3000/uploads/${team.leader.image}`} /></div>
-          {team.leader.username}  {/*<FontAwesomeIcon icon={faCrown} className="mx-2" /> */}
+          <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} /></div>
+          {team.leader?.username}  {/*<FontAwesomeIcon icon={faCrown} className="mx-2" /> */}
         </div>
       </div>
       <div className="text-gray-600 mb-2">Members:</div>
@@ -356,9 +376,9 @@ function MyTeams() {
       <ul className="list-disc list-inside">  
         {team.members.map((member) => (
           <div key={member._id} className="ml-4">
-            <a href={`/profile/${member.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-            <div> <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
-              {member.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
+            <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
+            <div> <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
+              {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
             </a>
           </div>
         ))}

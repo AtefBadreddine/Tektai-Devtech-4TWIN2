@@ -10,7 +10,7 @@ import {
     InternalServerErrorException,
     Put,
     Body,
-    Request,
+   
 
     UseInterceptors,
     UploadedFile,
@@ -30,16 +30,15 @@ export class UserController {
     constructor(private  userService: UsersService) {}
 
 
-    // @UseGuards(JwtAuthGuard)
-    @Get('profile/:userId')
+   
+       @Get('profile/:userId')
     async getProfile(@Param('userId') userId: string) {
+        if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+            throw new NotFoundException('User not found');
+        }
         return await this.userService.findById(userId);
     }
     
-    @Get('getById/:userId') // Define the route for getById endpoint
-    async getUserById(@Param('userId') userId: string): Promise<User> { // Define the method to handle getById logic
-        return await this.userService.findById(userId); // Call the findById method of UsersService
-    }
 
     @UseGuards(JwtAuthGuard)
     @Get('getall')
@@ -106,5 +105,19 @@ async searchUsers(@Query() query: any): Promise<User[]> {
   const users = await this.userService.searchUsers(query);
   return users || [];
 }
+
+
+@Get(':userId')
+    async getUserById(@Param('userId') userId: string): Promise<User> {
+        if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
+            throw new NotFoundException('User not found');
+        }
+        const user = await this.userService.findById(userId);
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return user;
+    }
+
 
 }

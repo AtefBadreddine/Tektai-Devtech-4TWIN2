@@ -2,9 +2,13 @@ import React, { useEffect, useState, useRef } from "react";
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
+
 import { useParams } from "react-router-dom";
 import './likes.css';
 import Comments from "./comments";
+
+import { useParams,useNavigate } from "react-router-dom";
+
 
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
@@ -21,6 +25,7 @@ function ChallengeDetails() {
   const [image, setImage] = useState('');
   const [loadingCompany, setLoadingCompany] = useState(true);
   const { id } = useParams();
+
   const [comments, setComments] = useState([]);
   const [commentText, setCommentText] = useState('');
   const commentSectionRef = useRef(null); // Ref for comments section
@@ -34,6 +39,8 @@ function ChallengeDetails() {
   });
 
   // Fetch challenge details
+
+   const navigate = useNavigate();// Utilisez useNavigate pour la navigation
   useEffect(() => {
     const fetchChallenge = async () => {
       try {
@@ -135,6 +142,13 @@ function ChallengeDetails() {
       commentSectionRef.current.scrollTop = commentSectionRef.current.scrollHeight;
     }
   }, [comments.length]);
+  
+  useEffect( () => {
+    const handleParticipateClick = () => {
+  navigate(`/file-upload/${id}`);
+    }
+  }, [challenge]);
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -276,7 +290,7 @@ function ChallengeDetails() {
                               Completed
                             </button>
                           ) : (
-                            <button className="btn-smm" >
+                            <button className="btn-smm"  onClick={handleParticipateClick} >
                               Participate now!
                               <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

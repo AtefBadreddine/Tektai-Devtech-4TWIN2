@@ -93,9 +93,17 @@ export class ChallengesService {
     }
     return challenge.dataset;
   }
+
   async getChallengeCountByUser(userId: string): Promise<number> {
     const count = await this.challengesModel.countDocuments({ company_id: userId });
     return count;
+
+  async findByIdo(id: string): Promise<ChallengesDocument> {
+    const challenge = await this.challengesModel.findById(id).exec();
+    if (!challenge) {
+      throw new NotFoundException(`Challenge with ID ${id} not found`);
+    }
+    return challenge;
   }
 
   async getCompletedChallengeCountByUser(userId: string): Promise<number> {
@@ -111,4 +119,6 @@ export class ChallengesService {
     return count;
   }
   
+
 }
+

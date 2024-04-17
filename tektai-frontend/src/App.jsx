@@ -30,6 +30,8 @@
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
+  import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+  import SubmissionList from './pages/SubmitSolution/SubmissionList'
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -41,6 +43,9 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
 import ProfileCompany from './components/profileCompany';
+
+import MapComponent from './pages/Localisation/MapComponent'; 
+
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
 import SearchResult from './pages/usersearch/SearchResult';
@@ -51,8 +56,14 @@ import UserList from './components/User/Userlist';
 import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+
 import CompanyProfile from './components/companyprofile';
 
+
+
+// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
+import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
 
@@ -87,6 +98,10 @@ import CompanyProfile from './components/companyprofile';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
+          <Route path="/Map" element={<MapComponent />} />
+          <Route path="/file-upload/:id" element={<FileUploadForm />} />
+          <Route path="/submissionslist" element={<SubmissionList/>} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
@@ -116,7 +131,7 @@ import CompanyProfile from './components/companyprofile';
             <Route path="profileCompany" element={<ProfileCompany />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
-          <Route path="/historychallenges" element={<HistoryChallenges/>} />
+          {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />

@@ -44,6 +44,13 @@ export class ChallengesController {
     return this.challengesService.getFilteredChallenges(status, startDateFilter, deadlineFilter);
   }
 
+  // @Get('company/:companyId')
+  // @UseGuards(JwtAuthGuard) 
+  // async getChallengesByCompanyId(@Param('companyId') companyId: string): Promise<Challenges[]> {
+  //   return this.challengesService.getChallengesByCompanyId(companyId);
+  // }
+
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Challenges> {
     return this.challengesService.findById(id);
