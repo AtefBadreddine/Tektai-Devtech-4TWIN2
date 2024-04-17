@@ -3,7 +3,7 @@
 import {Inject, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import { TeamDto } from './dto/team.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import {Model, Types} from 'mongoose';
+import {Model, ObjectId, Types} from 'mongoose';
 import { Team, TeamDocument } from '../schemas/team.schema';
 
 import { Invitation, InvitationDocument } from '../schemas/invitation.schema';
@@ -251,4 +251,12 @@ async remove(id: string): Promise<TeamDocument> {
 //   return this.teamModel.findByIdAndDelete(id);
 
 //  }
+async findOneById(id: ObjectId): Promise<TeamDocument> {
+  const team = await this.teamModel.findById(id).exec();
+  if (!team) {
+    throw new NotFoundException(`Team with ID ${id} not found`);
+  }
+  return team;
+}
+
 }

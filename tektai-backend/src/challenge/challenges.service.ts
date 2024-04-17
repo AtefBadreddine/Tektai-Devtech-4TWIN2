@@ -96,6 +96,13 @@ export class ChallengesService {
     }
     return challenge.dataset;
   }
+  async findByIdo(id: string): Promise<ChallengesDocument> {
+    const challenge = await this.challengesModel.findById(id).exec();
+    if (!challenge) {
+      throw new NotFoundException(`Challenge with ID ${id} not found`);
+    }
+    return challenge;
+  }
 
   
 

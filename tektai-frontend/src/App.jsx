@@ -30,7 +30,8 @@
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
-  
+  import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+  import SubmissionList from './pages/SubmitSolution/SubmissionList'
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -40,7 +41,7 @@ import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
-
+import MapComponent from './pages/Localisation/MapComponent'; 
 
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
@@ -55,7 +56,7 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
-
+import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
 
@@ -90,6 +91,10 @@ import UpdateChallenge from './pages/challenges/updateChallenge';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
+          <Route path="/Map" element={<MapComponent />} />
+          <Route path="/file-upload/:id" element={<FileUploadForm />} />
+          <Route path="/submissionslist" element={<SubmissionList/>} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />

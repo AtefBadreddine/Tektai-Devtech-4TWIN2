@@ -1,29 +1,28 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
-import { TeamsModule } from './teams/teams.module';
 import * as process from 'process';
+import { AuthModule } from './auth/auth.module';
+ // Importez UsersModule
+import { TeamsModule } from './teams/teams.module';
 import { ContactModule } from './contact/contact.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
-
+import { SubmissionModule } from './submission/submission.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URI),
     AuthModule,
-    UsersModule,
+    UsersModule, // Ajoutez UsersModule ici
     SettingsModule,
     TermModule,
-
+    SubmissionModule,
     ContactModule,
     ChallengesModule,
     ServeStaticModule.forRoot({
@@ -32,7 +31,7 @@ import { TermModule } from './termOfUse/term.module';
     }),
     TeamsModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
