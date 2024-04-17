@@ -145,11 +145,11 @@ const [userData, setUserData] = useState(null);
       <button className="buttoncontact absolute top-0 right-0 mt-4 mr-4"> 
         <span className="label">See All Challenges</span>
       </button>
-      <img className="shadow-xl border  border-gray-300" src={`http://localhost:3000/uploads/${userData?.image ?? '/fallback-image-url'}`} />
-      <h2 class="titlecompany pt-5">{userData?.companyName ?? 'Loading...'} .</h2>
+      <img className="shadow-xl border  border-gray-300" src={`http://localhost:3000/uploads/${user?.image ?? '/fallback-image-url'}`} />
+      <h2 class="titlecompany pt-5">{user?.companyName ?? 'Loading...'} .</h2>
         <div className="containerprofiles">
           <p className="text-gray-600 pr-20 text-m">Headquarters </p>
-          <span className="text-gray-600 font-bold text-m">{userData?.adresse ?? 'Loading...'}</span>
+          <span className="text-gray-600 font-bold text-m">{user?.adresse ?? 'Loading...'}</span>
         </div>
         <div className="containerprofiles">
           <p className="text-gray-700 pr-20 text-m">Company Size </p>
@@ -219,7 +219,7 @@ const [userData, setUserData] = useState(null);
 
 <div className="cardprofile" >
   <h3 className="font-bold text-gray-900">About us</h3>
-    <p className="bio text-gray-600">{userData?.bio ?? 'Loading...'} </p>
+    <p className="bio text-gray-600">{user?.bio ?? 'Loading...'} </p>
 
 <h3 className="font-bold text-gray-900">Specialities</h3>
 <p className="bio text-gray-600">search, ads, mobile, androind, machine learning, apps </p>
@@ -282,7 +282,8 @@ const [userData, setUserData] = useState(null);
  
 <Stats  ></Stats>
 
- </div> </div>
+                </div>
+              </div>
             
     
     </div>

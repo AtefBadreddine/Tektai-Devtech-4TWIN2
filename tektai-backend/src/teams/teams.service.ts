@@ -47,7 +47,7 @@ export class TeamsService {
 
 
   async findAll(): Promise<TeamDocument[]> {
-    return this.teamModel.find().populate('leader members ').exec();
+    return this.teamModel.find().populate('leader').exec();
   }
   async findAllWithLeader(): Promise<TeamDocument[]> {
     try {

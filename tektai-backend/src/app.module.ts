@@ -19,6 +19,8 @@ import { ReviewModule } from './review/review.module';
 
 import { SubmissionModule } from './submission/submission.module';
 import { UsersModule } from './users/users.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 
 @Module({

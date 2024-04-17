@@ -97,7 +97,7 @@ export class ChallengesService {
   async getChallengeCountByUser(userId: string): Promise<number> {
     const count = await this.challengesModel.countDocuments({ company_id: userId });
     return count;
-
+  }
   async findByIdo(id: string): Promise<ChallengesDocument> {
     const challenge = await this.challengesModel.findById(id).exec();
     if (!challenge) {

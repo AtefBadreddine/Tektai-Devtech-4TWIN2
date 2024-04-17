@@ -2,8 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
-
-import { useParams } from "react-router-dom";
 import './likes.css';
 import Comments from "./comments";
 
@@ -143,11 +141,11 @@ function ChallengeDetails() {
     }
   }, [comments.length]);
   
-  useEffect( () => {
+
     const handleParticipateClick = () => {
   navigate(`/file-upload/${id}`);
     }
-  }, [challenge]);
+
 
 
   const formatDate = (dateString) => {

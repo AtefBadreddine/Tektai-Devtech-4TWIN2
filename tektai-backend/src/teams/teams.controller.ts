@@ -34,7 +34,10 @@ export class TeamsController {
 
   @Get()
   async findAll() {
-    return this.teamsService.findAllWithLeader();
+
+    const teams =await this.teamsService.findAll();
+    this.logger.log(teams);
+    return teams;
   }
 
   @UseGuards(JwtAuthGuard)
