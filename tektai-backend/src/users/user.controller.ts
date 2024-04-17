@@ -106,6 +106,7 @@ async searchUsers(@Query() query: any): Promise<User[]> {
   return users || [];
 }
 
+
 @Get(':userId')
     async getUserById(@Param('userId') userId: string): Promise<User> {
         if (!userId.match(/^[0-9a-fA-F]{24}$/)) {

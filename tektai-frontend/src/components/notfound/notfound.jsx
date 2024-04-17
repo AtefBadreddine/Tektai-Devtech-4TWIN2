@@ -1,31 +1,18 @@
 import React from 'react'
 import Header from '../../layout/Header'
 import "./n.css"
-import {NotFoundView} from "../../sections/error";
-import ThemeProvider from "../../theme";
-import Footer from "../../layout/Footer";
+import {Link} from "react-router-dom";
 export default function NotFound() {
   return (
-      <div className="flex flex-col min-h-screen overflow-hidden">
-          {/*  Site header */}
-
-          <Header />
-
-          {/*  Page content */}
-          <main className="flex-grow">
-
-              <ThemeProvider>
-                  <NotFoundView />
-              </ThemeProvider>
-          </main>
-
-          {/*  Site footer */}
-          <Footer />
-
-      </div>
-
-
-
-
+    <div className='dbody'>
+       <div className="noised"></div>
+<div className="overlayf"></div>
+<div className="terminal">
+  <h1>Error <span className="errorcode">404</span></h1>
+  <p className="output">The page you are looking for might have been removed, had its name changed or is temporarily unavailable.</p>
+  <p className="output">Please try to <Link to="/" className="bg-blue-600">go back</Link> or <Link to="/" className="bg-blue-700">return to the homepage</Link>.</p>
+  <p className="output">Good luck.</p>
+</div>
+    </div>
   )
 }

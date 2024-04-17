@@ -11,8 +11,15 @@ import { join } from 'path';
 import { ChallengesModule } from './challenge/challenges.module';
 import { SettingsModule } from './settings/settings/settings.module';
 import { TermModule } from './termOfUse/term.module';
+import { CommentsModule } from './comments/comments.module';
+import { ReviewController } from './review/review.controller';
+import { ReviewService } from './review/review.service';
+import { ReviewModule } from './review/review.module';
+
+
 import { SubmissionModule } from './submission/submission.module';
 import { UsersModule } from './users/users.module';
+
 
 @Module({
   imports: [
@@ -30,8 +37,11 @@ import { UsersModule } from './users/users.module';
       serveRoot: '/uploads', // Base URL path to serve the files from
     }),
     TeamsModule,
+    CommentsModule,
+    ReviewModule,
   ],
-  controllers: [],
-  providers: [],
+  controllers: [AppController, ReviewController],
+  providers: [AppService, ReviewService],
+
 })
 export class AppModule {}

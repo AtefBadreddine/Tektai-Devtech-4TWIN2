@@ -124,6 +124,7 @@ export class TeamsController {
 
 
 
+
   // @UseGuards(JwtAuthGuard)
   @Post(':teamId/members/:memberId')
   async addMember(@Param('teamId') teamId: string, @Param('memberId') memberId: string) {
@@ -206,6 +207,4 @@ export class TeamsController {
     // Return the updated team
     return updatedTeam;
   }
-  
-  
 }

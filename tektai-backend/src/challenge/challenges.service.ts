@@ -12,6 +12,7 @@ import { extname } from 'path';
 export class ChallengesService {
   constructor(
     @InjectModel(Challenges.name) private readonly challengesModel: Model<ChallengesDocument>,  
+
   ) {}
 
   async findAll(): Promise<Challenges[]> {
@@ -25,10 +26,6 @@ export class ChallengesService {
   async create(challengeDto: ChallengeDto): Promise<Challenges> {
     const createdChallenge = new this.challengesModel(challengeDto);
     return createdChallenge.save();
-  }
-
-  async updateChallenge(_id: string, challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesModel.findByIdAndUpdate(_id, challengeDto, { new: true });
   }
 
   async update(id: string, challengeDto: ChallengeDto): Promise<Challenges> {
@@ -56,8 +53,8 @@ export class ChallengesService {
     return this.challengesModel.find(query).exec();
   }
 
-  async findByTitle(title: string): Promise<Challenges[]> {
 
+  async findByTitle(title: string): Promise<Challenges[]> {
     const regex = new RegExp(title, 'i'); // Case-insensitive search
     return this.challengesModel.find({ title: { $regex: regex } }).exec();
   }
@@ -96,6 +93,11 @@ export class ChallengesService {
     }
     return challenge.dataset;
   }
+
+  async getChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId });
+    return count;
+
   async findByIdo(id: string): Promise<ChallengesDocument> {
     const challenge = await this.challengesModel.findById(id).exec();
     if (!challenge) {
@@ -104,6 +106,19 @@ export class ChallengesService {
     return challenge;
   }
 
+  async getCompletedChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Completed' });
+    return count;
+  }
+  async getongoingChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Ongoing' });
+    return count;
+  }
+  async getupcomingChallengeCountByUser(userId: string): Promise<number> {
+    const count = await this.challengesModel.countDocuments({ company_id: userId, status: 'Upcoming' });
+    return count;
+  }
   
 
 }
+

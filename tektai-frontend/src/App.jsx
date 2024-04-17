@@ -41,6 +41,9 @@ import NotFound from './components/notfound/notfound';
 import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
+
+import ProfileCompany from './components/profileCompany';
+
 import MapComponent from './pages/Localisation/MapComponent'; 
 
 import CrmForm from './pages/crm/crmpage';
@@ -53,6 +56,10 @@ import UserList from './components/User/Userlist';
 import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+
+import CompanyProfile from './components/companyprofile';
+
+
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import UpdateChallenge from './pages/challenges/updateChallenge';
@@ -104,8 +111,6 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
-          <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
-
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
@@ -114,6 +119,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/UserSearchF" element={<UserSearchF/>} />
           <Route path="/Teams" element={<Teams/>} />
           <Route path="/MyTeams" element={<MyTeams/>} />
+          <Route path="/companyprofile" element={<CompanyProfile/>} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
@@ -122,9 +128,8 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="profileCompany" element={<ProfileCompany />} />
             <Route path="/pages/settings" element={<Settings />} />
-            <Route path="/historychallenges" element={<HistoryChallenges/>} />
-
           </Route>
           {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
 
@@ -133,6 +138,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
+
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>

@@ -1,6 +1,6 @@
+// challenges.controller.ts
 
 import { Controller, Get, Post, Put, Delete, Param, Body, UseInterceptors, UploadedFile, Query, UseGuards, Res, HttpStatus, NotFoundException } from '@nestjs/common';
-
 import { ChallengesService } from './challenges.service';
 import { Challenges } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
@@ -50,6 +50,7 @@ export class ChallengesController {
   //   return this.challengesService.getChallengesByCompanyId(companyId);
   // }
 
+
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Challenges> {
     return this.challengesService.findById(id);
@@ -62,18 +63,31 @@ export class ChallengesController {
     return this.challengesService.getChallengesByCompanyId(companyId);
   }
 
+  @Get('count/:userId')
+  async getChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getChallengeCountByUser(userId);
+  }
 
+
+  @Get('completed/:userId')
+  async getCompletedChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getCompletedChallengeCountByUser(userId);
+  }
+  @Get('upcoming/:userId')
+  async getupcomingChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getupcomingChallengeCountByUser(userId);
+  }
+
+  @Get('ongoing/:userId')
+  async getongoingChallengeCountByUser(@Param('userId') userId: string): Promise<number> {
+    return this.challengesService.getongoingChallengeCountByUser(userId);
+  }
 
 
   @UseGuards(JwtAuthGuard) 
   @Post()
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
-  }
-
-    @Put('setting/:id')
-  async updateChallenge(@Param('id') id: string, @Body() challengeDto: ChallengeDto): Promise<Challenges> {
-    return this.challengesService.updateChallenge(id, challengeDto);
   }
 
   @Put(':id')

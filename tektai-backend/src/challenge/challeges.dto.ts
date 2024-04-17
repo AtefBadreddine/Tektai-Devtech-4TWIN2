@@ -4,6 +4,8 @@ export class ChallengeDto {
     image: string;
     company_id: string;
     prize: string;
+    visibility:'Public' |  'Private';
+    eligible_participants:'Anyone' |  'Invitation-only';
     status: 'Ongoing' | 'Completed' | 'Upcoming';
     description: string;
     start_date: Date; // Date with hours and minutes

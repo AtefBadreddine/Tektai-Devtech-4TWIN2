@@ -17,6 +17,13 @@ export class Challenges {
   @Prop()
   prize: string;
 
+@Prop({ enum: ['Anyone', 'Invitation-only'], default: 'Anyone' })
+eligible_participants:string;
+
+@Prop({ enum: ['Public', 'Private'], default: 'Public' })
+visibility:string;
+
+
   @Prop({ enum: ['Ongoing', 'Completed', 'Upcoming'], default: 'Upcoming' })
   status: string;
 

@@ -142,6 +142,7 @@ export class TeamsService {
   }
 
 
+
  
   async addMember(teamId: string, memberId: string): Promise<TeamDocument> {
     const team = await this.findOne(teamId);
@@ -212,7 +213,6 @@ async remove(id: string): Promise<TeamDocument> {
     if (!recipient || !team ) {
       throw new NotFoundException(`member or team not found`);
 
-
     }
     const invitation = new this.invitationModel({  recipient: recipient, team: team });
     return invitation.save();
@@ -233,7 +233,6 @@ async remove(id: string): Promise<TeamDocument> {
     invitation.save();
     return team.save();
   }
-
 
   async declineInvitation(invitationId: string): Promise<InvitationDocument> {
     return this.invitationModel.findByIdAndDelete(invitationId);
