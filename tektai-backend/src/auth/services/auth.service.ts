@@ -72,7 +72,73 @@ export class AuthService {
       sender: { email: 'alaedineibrahim@gmail.com' },
       to: [{ email }],
       subject: 'Reset Your Password',
-      htmlContent: `<p>Please click <a href="${resetPasswordLink}">here</a> to reset your password.</p>`,
+      htmlContent: `
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Template</title>
+        <style>
+          /* Reset CSS */
+          body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+          }
+          /* Container styles */
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+          /* Logo styles */
+          .logo {
+            margin-bottom: 20px;
+          }
+          /* Heading styles */
+          h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+          }
+          /* Paragraph styles */
+          p {
+            font-size: 16px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+          }
+          /* Button styles */
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0091ff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <!-- Logo -->
+          <div class="logo">
+       <img src="./image.png" alt="">
+          </div>
+          <!-- Heading -->
+          <h1>Reset Your Password</h1>
+          <!-- Content -->
+          <p>Please click the button below to reset your password.</p>
+          <!-- Button -->
+          <a href="${resetPasswordLink}" class="button">Reset Password</a>
+      </div>
+      </body>
+      </html>
+      `,
     };
 
     // Envoyer l'e-mail
