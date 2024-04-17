@@ -1,3 +1,5 @@
+import { faBiohazard } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -20,7 +22,11 @@ function SecurityQuestionComponent({ onSubmit }) {
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center z-50 bg-black bg-opacity-50 backdrop-filter">
       <div className="bg-white p-8 rounded-lg shadow-md backdrop-filter">
-        <h2 className="text-xl font-semibold mb-4">Please write "TEKTAI" correctly</h2>
+      <FontAwesomeIcon icon={faBiohazard} className="text-red-500 mr-2" />
+
+      <h1 className="text-xl font-semibold mb-4 text-red-500">3 Failed login attempts</h1>
+
+        <h2 className="text-md font-semibold mb-4">Please write "TEKTAI" correctly</h2>
         <form onSubmit={handleSubmit} className="flex flex-col">
           <input
             type="text"
