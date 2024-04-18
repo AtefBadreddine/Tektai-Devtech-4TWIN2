@@ -38,7 +38,7 @@ export class UserController {
         return await this.userService.findById(userId);
     }
 
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Get('getall')
     async getAllUsers(): Promise<any[]> {
         return this.userService.getAllUsers();
