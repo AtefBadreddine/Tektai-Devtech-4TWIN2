@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
-import { useParams } from "react-router-dom";
 import './likes.css';
 import './likes.css';
 import Comments from "./comments";
@@ -92,6 +91,7 @@ function ChallengeDetails() {
    fetchUserData();
 
   }, []);
+
   const handleDelete = async () => {
     try {
       if (challenge.status === 'Upcoming' || challenge.status === 'Completed') {
@@ -464,9 +464,6 @@ function ChallengeDetails() {
   </form>
 </div>
   </div>
-
-
-
               </div>
             </div>
           </main>

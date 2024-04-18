@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import submissionService from "../../services/submissionService"; // Service pour gérer les soumissions
 import teamsService from "../../services/teamServices"; // Service pour gérer les équipes
 import { useParams ,useNavigate } from "react-router-dom";
+import Header from '../../layout/Header';
+import Footer from '../../layout/Footer';
 
 function FileUploadForm() {
   const [teamId, setTeamId] = useState(''); // État pour stocker l'ID de l'équipe sélectionnée
@@ -77,8 +79,27 @@ const { id: challengeId } = useParams();
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <form onSubmit={handleFormSubmit} className="w-full max-w-md p-8 bg-white shadow-md rounded-lg">
+  <>
+    <Header/>
+
+    <section className="p-40 bg-gray-100  bg-opacity-50 h-screen">
+      <div className="mx-auto container max-w-2xl md:w-3/4 shadow-md">
+{/* section1      */}
+        <div className="bg-gray-100 p-4 border-t-2 bg-opacity-5 border-indigo-400 rounded-t">
+          <div className="max-w-sm mx-auto md:w-full md:mx-0">
+            <div className="inline-flex items-center space-x-4">
+              <h1 className="text-gray-600">Submit solution</h1>
+            </div>
+          </div>
+        </div>
+
+
+        <div className="bg-white space-y-6">
+{/* section2     */}
+          <hr />
+
+    <div className="">
+      <form onSubmit={handleFormSubmit} className="p-8">
         <div className="mb-4">
           <label htmlFor="teamId" className="block text-gray-800 text-sm font-medium mb-1">Team:</label>
           <select id="teamId" value={teamId} onChange={handleTeamChange} className="form-select w-full text-gray-800">
@@ -99,6 +120,15 @@ const { id: challengeId } = useParams();
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded w-full">Submit</button>
       </form>
     </div>
+
+
+    </div>
+      </div>
+    </section>
+<div className="pt-3">
+    <Footer/>
+</div>
+  </>
   );
 }
 
