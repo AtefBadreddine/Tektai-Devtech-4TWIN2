@@ -78,7 +78,8 @@ const DropdownNotification = () => {
         to="#"
         className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0.5px] border-stroke bg-gray hover:text-primary dark:border-strokedark dark:bg-meta-4 dark:text-white"
       >
-        {setInvitations.length}
+         <svg xmlns="http://www.w3.org/2000/svg"  width="20px" height="20px" viewBox="0 0 24 24" fill="#fff" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" /></svg>
       </Link>
 
       <div

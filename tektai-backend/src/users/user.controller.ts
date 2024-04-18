@@ -49,6 +49,10 @@ export class UserController {
     }
 
 
+    @Get('getById/:userId') // Define the route for getById endpoint
+    async getUsersById(@Param('userId') userId: string): Promise<User> { // Define the method to handle getById logic
+        return await this.userService.findById(userId); // Call the findById method of UsersService
+    }
 
     @Get('get/:username')
     // @UseGuards(JwtAuthGuard)
