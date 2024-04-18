@@ -207,7 +207,7 @@ function SignUp() {
             </main>
 
 
-            {/* <Footer/> */}
+            <Footer/>
         </div>
     );
 }

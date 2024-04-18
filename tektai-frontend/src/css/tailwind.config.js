@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme');
+const flowbite = require("flowbite-react/tailwind");
 
 module.exports = {
   darkMode: 'class',
@@ -434,5 +435,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+      flowbite.plugin()
   ],
 };

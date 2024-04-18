@@ -4,7 +4,8 @@ import {
   Prop
 } from "@nestjs/mongoose";
 import mongoose, {
-  Document
+  Document,
+  Types
 } from 'mongoose';
 
 
@@ -57,8 +58,8 @@ export class User {
   @Prop({ nullable: true, default: null }) 
   image?: string;
 
-
-
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Challenges' }], default: [] })
+  favoriteChallenges: Types.ObjectId[];
 
 }
 

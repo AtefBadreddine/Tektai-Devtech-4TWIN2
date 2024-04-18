@@ -14,6 +14,7 @@ import {
 
     UseInterceptors,
     UploadedFile,
+    Post,
 
 
 } from "@nestjs/common";
@@ -23,6 +24,7 @@ import { UsersService } from "src/users/users.service";
 import {User} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller('users')
 export class UserController {
@@ -40,7 +42,7 @@ export class UserController {
     }
     
 
-    @UseGuards(JwtAuthGuard)
+    //@UseGuards(JwtAuthGuard)
     @Get('getall')
     async getAllUsers(): Promise<any[]> {
         return this.userService.getAllUsers();
@@ -117,7 +119,41 @@ async searchUsers(@Query() query: any): Promise<User[]> {
             throw new NotFoundException('User not found');
         }
         return user;
-    }
+    
+    return user;
+}
+
+
+///Favorite Liste///////////////////
+
+//@UseGuards(AuthGuard('jwt'))
+//@UseGuards(JwtAuthGuard)
+@Post(':id/favorites/add/:challengeId')
+async addFavoriteChallenge(@Param('id') userId: string, @Param('challengeId') challengeId: string) {
+  return this.userService.addFavoriteChallenge(userId, challengeId);
+}
+
+@Delete(':userId/favorites/remove/:challengeId')
+async removeFavoriteChallenge(
+  @Param('userId') userId: string,
+  @Param('challengeId') challengeId: string,
+): Promise<void> {
+  await this.userService.removeFavoriteChallenge(userId, challengeId);
+}
+
+//Checking if a Challenge is in Favorites
+@Get(':userId/favorites/check/:challengeId')
+  async checkFavoriteChallenge(
+    @Param('userId') userId: string,
+    @Param('challengeId') challengeId: string,
+  ): Promise<{ isFavorite: boolean }> {
+    return await this.userService.checkFavoriteChallenge(userId, challengeId);
+  }
+
+  @Get(':userId/favorites')
+  async getUserFavorites(@Param('userId') userId: string): Promise<string[]> {
+    return await this.userService.getUserFavorites(userId);
+  }
 
 
 }

@@ -57,6 +57,10 @@ import Teams from './pages/Teams/Teams';
 import MyTeams from './pages/Teams/Myteams';
 import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 
+// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
+import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
+
 import CompanyProfile from './components/companyprofile';
 
 
@@ -119,6 +123,8 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/UserSearchF" element={<UserSearchF/>} />
           <Route path="/Teams" element={<Teams/>} />
           <Route path="/MyTeams" element={<MyTeams/>} />
+          <Route path="/favoriteChallenges" element={<FavoriteChallenges/>} />
+
           <Route path="/companyprofile" element={<CompanyProfile/>} />
 
           <Route path="/results" element={<SearchResult />} />
@@ -138,7 +144,6 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
-
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
