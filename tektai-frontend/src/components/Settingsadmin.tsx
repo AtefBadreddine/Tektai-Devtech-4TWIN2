@@ -3,6 +3,8 @@ import Breadcrumb from './Breadcrumbs/Breadcrumb';
 import DefaultLayout from '../layout/DefaultLayout';
 import Header from '../layout/Header';
 import userService from "../services/userService";
+import './profilecompany.css';
+
 interface UserData {
   _id : string;
   username: string;

@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Link, useNavigate, useSearchParams} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import Header from '../../layout/Header';
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
@@ -7,28 +7,28 @@ import StepOnePartOne from './StepOnePartOne';
 import StepOnePartTwo from './StepOnePartTwo';
 import Footer from "../../layout/Footer"; // Import eye icons
 
-function SignUp( ) {
-    const [step,setStep] = useState(0);
+function SignUp() {
+    const [step, setStep] = useState(0);
     const [input, setInput] = useState({
-        username : "",
+        username: "",
         email: "",
         password: "",
-        tel : "",
-        birthday : "",
-        companyName : "",
-        adresse : "",
-        role : "challenger"
+        tel: "",
+        birthday: "",
+        companyName: "",
+        adresse: "",
+        role: "challenger"
 
     });
 
-    const [fromAuth,setFromAuth] = useState({
-        username : '',
-        email : ''
+    const [fromAuth, setFromAuth] = useState({
+        username: '',
+        email: ''
     });
     /*    const searchParams = new URLSearchParams(window.location.search);*/
     const [searchParams, setSearchParams] = useSearchParams();
 
-    useEffect(()=>{
+    useEffect(() => {
         const email = searchParams.get('email');
         const username = searchParams.get('username')
         if (username) {
@@ -46,7 +46,7 @@ function SignUp( ) {
 
 
 
-    },[])
+    }, [])
 
 
     const handleInput = (e) => {
@@ -86,35 +86,35 @@ function SignUp( ) {
 
 
                                 <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500 dark:text-gray-400 sm:text-base">
-                                    <li className={` ${ step === 1 || step === 0 ? 'text-blue-600' : 'text-gray-500'} flex md:w-full items-center   sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}>
-            <span
-                className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-           { step === 1 || step === 0 ?
-               <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    fill="currentColor" viewBox="0 0 20 20">
-                   <path
-                       d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-               </svg> : <span className="me-2">1</span> }
-                Personal <span className="hidden sm:inline-flex sm:ms-2">Info</span>
-        </span>
+                                    <li className={` ${step === 1 || step === 0 ? 'text-blue-600' : 'text-gray-500'} flex md:w-full items-center   sm:after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}>
+                                        <span
+                                            className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
+                                            {step === 1 || step === 0 ?
+                                                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                    fill="currentColor" viewBox="0 0 20 20">
+                                                    <path
+                                                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                                                </svg> : <span className="me-2">1</span>}
+                                            Personal <span className="hidden sm:inline-flex sm:ms-2">Info</span>
+                                        </span>
                                     </li>
-                                    <li className={` ${ step === 2 ? 'text-blue-600' : 'text-gray-500'} flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}>
-        <span
-            className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
-            { step === 2 ?  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                 fill="currentColor" viewBox="0 0 20 20">
-                <path
-                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-            </svg> : <span className="me-2">2</span> }
-            Account <span className="hidden sm:inline-flex sm:ms-2">Type</span>
-        </span>
+                                    <li className={` ${step === 2 ? 'text-blue-600' : 'text-gray-500'} flex md:w-full items-center after:content-[''] after:w-full after:h-1 after:border-b after:border-gray-200 after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10 dark:after:border-gray-700`}>
+                                        <span
+                                            className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200 ">
+                                            {step === 2 ? <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                                            </svg> : <span className="me-2">2</span>}
+                                            Account <span className="hidden sm:inline-flex sm:ms-2">Type</span>
+                                        </span>
                                     </li>
-                                    <li className={` ${ step === 3 ? 'text-blue-600' : 'text-gray-500'} flex items-center`}>
-                                        { step === 3 ?  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                                             fill="currentColor" viewBox="0 0 20 20">
+                                    <li className={` ${step === 3 ? 'text-blue-600' : 'text-gray-500'} flex items-center`}>
+                                        {step === 3 ? <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                            fill="currentColor" viewBox="0 0 20 20">
                                             <path
-                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
-                                        </svg> : <span className="me-2">3</span> }
+                                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+                                        </svg> : <span className="me-2">3</span>}
                                         Finalizing
                                     </li>
                                 </ol>
@@ -123,9 +123,9 @@ function SignUp( ) {
 
                             {/* Form */}
                             <div className=" max-w-2xl mx-auto">
-                                { fromAuth.username.length ? <h2 className="mb-4">Welcome <span className="font-bold text-blue-600">{fromAuth.username}</span> ,Please continue the sign up process !</h2> : '' }
+                                {fromAuth.username.length ? <h2 className="mb-4">Welcome <span className="font-bold text-blue-600">{fromAuth.username}</span> ,Please continue the sign up process !</h2> : ''}
                                 {step === 0 && (
-                                    <div    className="mx-auto max-w-xl">
+                                    <div className="mx-auto max-w-xl">
                                         <div>
                                             <StepOnePartOne
                                                 step={step}
@@ -136,7 +136,7 @@ function SignUp( ) {
                                             />
 
                                         </div>
-                                        { !fromAuth.email.length ? <>
+                                        {!fromAuth.email.length ? <>
                                             <div className="flex items-center my-6">
                                                 <div className="border-t border-gray-300 flex-grow mr-3" aria-hidden="true"></div>
                                                 <div className="text-gray-600 italic">Or</div>
@@ -145,7 +145,7 @@ function SignUp( ) {
                                             <form>
                                                 <div className="flex flex-wrap -mx-3 mb-3">
                                                     <div className="w-full px-3">
-                                                        <a href="http://localhost:3000/auth/github" rel='noopener noreferrer' target="_self"  className="btn px-0 text-white text-center bg-gray-900 hover:bg-gray-800 w-full relative flex items-center">
+                                                        <a href="http://localhost:3000/auth/github" rel='noopener noreferrer' target="_self" className="btn px-0 text-white text-center bg-gray-900 hover:bg-gray-800 w-full relative flex items-center">
                                                             <svg className="w-4 h-4 fill-current text-white opacity-75 flex-shrink-0 mx-4" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                                                                 <path d="M7.95 0C3.578 0 0 3.578 0 7.95c0 3.479 2.286 6.46 5.466 7.553.397.1.497-.199.497-.397v-1.392c-2.187.497-2.683-.993-2.683-.993-.398-.895-.895-1.193-.895-1.193-.696-.497.1-.497.1-.497.795.1 1.192.795 1.192.795.696 1.292 1.888.895 2.286.696.1-.497.298-.895.497-1.093-1.79-.2-3.578-.895-3.578-3.975 0-.895.298-1.59.795-2.087-.1-.2-.397-.994.1-2.087 0 0 .695-.2 2.186.795a6.408 6.408 0 011.987-.299c.696 0 1.392.1 1.988.299 1.49-.994 2.186-.795 2.186-.795.398 1.093.199 1.888.1 2.087.496.596.795 1.291.795 2.087 0 3.08-1.889 3.677-3.677 3.875.298.398.596.895.596 1.59v2.187c0 .198.1.497.596.397C13.714 14.41 16 11.43 16 7.95 15.9 3.578 12.323 0 7.95 0z" />
                                                             </svg>
@@ -164,7 +164,7 @@ function SignUp( ) {
                                                     </div>
                                                 </div>
                                             </form>
-                                        </> : '' }
+                                        </> : ''}
 
                                         <div className="text-gray-600 text-center mt-6">
                                             Already using Tektai? <Link to="/signin" className="text-blue-600 hover:underline transition duration-150 ease-in-out">Sign in</Link>

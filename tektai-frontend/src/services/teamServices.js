@@ -136,6 +136,31 @@ const TeamsService = {
       throw error;
     }
   },
+  // Ajoutez cette fonction pour obtenir les équipes d'un utilisateur par son ID
+  getTeamsByUserId: async (userId) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE_URL}/teams/user/${userId}/joined`
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user teams:", error);
+      throw error;
+    }
+  },
+  getTeamsByToken: async (token) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/teams/user/joined`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching user teams by token:", error);
+      throw error;
+    }
+  },
 };
 
 export default TeamsService;

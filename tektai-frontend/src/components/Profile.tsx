@@ -43,6 +43,8 @@ const Profile: React.FC = () => {
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
+        console.log('Image path:', `/uploads/${userData.image}`); // Add this console log statement
+
       } catch (error) {
         console.error('Error fetching user data:', error);
       }

@@ -3,7 +3,7 @@
 import {Inject, Injectable, Logger, NotFoundException} from '@nestjs/common';
 import { TeamDto } from './dto/team.dto';
 import { InjectModel } from '@nestjs/mongoose';
-import {Model, Types} from 'mongoose';
+import {Model, ObjectId, Types} from 'mongoose';
 import { Team, TeamDocument } from '../schemas/team.schema';
 
 import { Invitation, InvitationDocument } from '../schemas/invitation.schema';
@@ -47,7 +47,7 @@ export class TeamsService {
 
 
   async findAll(): Promise<TeamDocument[]> {
-    return this.teamModel.find().populate('leader members ').exec();
+    return this.teamModel.find().populate('leader').exec();
   }
   async findAllWithLeader(): Promise<TeamDocument[]> {
     try {
@@ -62,6 +62,7 @@ export class TeamsService {
   
 
   async findOne(id: string): Promise<TeamDocument> {
+    this.logger.log(id);
     const team = await this.teamModel.findById(id).populate('leader members').exec();
 
     if (!team) {
@@ -141,6 +142,7 @@ export class TeamsService {
   }
 
 
+
  
   async addMember(teamId: string, memberId: string): Promise<TeamDocument> {
     const team = await this.findOne(teamId);
@@ -211,7 +213,6 @@ async remove(id: string): Promise<TeamDocument> {
     if (!recipient || !team ) {
       throw new NotFoundException(`member or team not found`);
 
-
     }
     const invitation = new this.invitationModel({  recipient: recipient, team: team });
     return invitation.save();
@@ -233,7 +234,6 @@ async remove(id: string): Promise<TeamDocument> {
     return team.save();
   }
 
-
   async declineInvitation(invitationId: string): Promise<InvitationDocument> {
     return this.invitationModel.findByIdAndDelete(invitationId);
   }
@@ -251,4 +251,12 @@ async remove(id: string): Promise<TeamDocument> {
 //   return this.teamModel.findByIdAndDelete(id);
 
 //  }
+async findOneById(id: ObjectId): Promise<TeamDocument> {
+  const team = await this.teamModel.findById(id).exec();
+  if (!team) {
+    throw new NotFoundException(`Team with ID ${id} not found`);
+  }
+  return team;
+}
+
 }

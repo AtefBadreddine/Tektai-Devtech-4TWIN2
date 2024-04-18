@@ -30,7 +30,8 @@
   import Dashhome from './pages/dashboard/dashhome';
   import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
-  
+  import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+  import SubmissionList from './pages/SubmitSolution/SubmissionList'
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -41,6 +42,9 @@ import NotAdmin from './components/NotAdmin/NotAdmin';
   import Forgetpassword from "./pages/resetPassword/ForgetPassword";
   import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
+import ProfileCompany from './components/profileCompany';
+
+import MapComponent from './pages/Localisation/MapComponent'; 
 
 import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
@@ -57,6 +61,13 @@ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChall
 import UpdateChallenge from './pages/challenges/updateChallenge';
 import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
+import CompanyProfile from './components/companyprofile';
+
+
+
+// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import UpdateChallenge from './pages/challenges/updateChallenge';
+import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
 
@@ -91,6 +102,10 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
           <SpinnerWithBackground />
         ) : (
         <Routes>
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
+          <Route path="/Map" element={<MapComponent />} />
+          <Route path="/file-upload/:id" element={<FileUploadForm />} />
+          <Route path="/submissionslist" element={<SubmissionList/>} />
           <Route exact path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
@@ -100,8 +115,6 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
           <Route path="/challenges" element={<ListChallenges />} />
           <Route path="/challenges/new" element={<CreateChallenge />} />
           <Route path="/challenges/:id" element={<ChallengeDetails />} />
-          <Route path="/challenge/setting/:id" element={<UpdateChallenge/>} />
-
           <Route path="/ranking" element={<Ranking />} />
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
@@ -112,6 +125,7 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
           <Route path="/MyTeams" element={<MyTeams/>} />
           <Route path="/favoriteChallenges" element={<FavoriteChallenges/>} />
 
+          <Route path="/companyprofile" element={<CompanyProfile/>} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
@@ -120,9 +134,8 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
+            <Route path="profileCompany" element={<ProfileCompany />} />
             <Route path="/pages/settings" element={<Settings />} />
-            <Route path="/historychallenges" element={<HistoryChallenges/>} />
-
           </Route>
           {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
 
