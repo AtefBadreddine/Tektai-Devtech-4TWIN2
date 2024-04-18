@@ -31,7 +31,10 @@
   import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
   import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
-  import SubmissionList from './pages/SubmitSolution/SubmissionList'
+  import SubmissionList from './pages/SubmitSolution/SubmissionList';
+
+  import CompanySubmissions from './pages/SubmitSolution/CompanySubmissions';
+
   import Settings from './components/Settings';
 import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
@@ -98,7 +101,11 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <SpinnerWithBackground />
         ) : (
         <Routes>
-        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
+        <Route path="/companysubmissions" element={<CompanySubmissions />} />
+ 
+      
+
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} />
           <Route path="/Map" element={<MapComponent />} />
           <Route path="/file-upload/:id" element={<FileUploadForm />} />
           <Route path="/submissionslist" element={<SubmissionList/>} />
@@ -130,8 +137,9 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
             <Route path="/profile" element={<Profile />} />
             <Route path="profileCompany" element={<ProfileCompany />} />
             <Route path="/pages/settings" element={<Settings />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} /> 
           </Route>
-          {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
+          
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />

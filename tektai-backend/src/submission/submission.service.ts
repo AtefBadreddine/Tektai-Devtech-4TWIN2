@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Submission, SubmissionDocument } from 'src/schemas/submission.schema';
@@ -70,6 +70,33 @@ async saveSubmission(teamId: ObjectId, challengeId: string, pdf: string, noteboo
       throw error;
     }
   }
+ async getSubmissionsByCompanyId(companyId: string): Promise<Submission[]> {
+    try {
+      const submissions = await this.submissionModel
+        .find({ 'team.company_id': companyId }) // Filtrer les soumissions par l'ID de l'entreprise
+        .populate('team') // Populer l'objet équipe pour obtenir les détails de l'entreprise
+        .populate('challenge') // Populer l'objet défi pour obtenir les détails du défi
+        .exec();
+        this.logger.log("submissions",submissions);
+      return submissions;
 
+    } catch (error) {
+      this.logger.error(`Error getting submissions by company ID: ${error.message}`);
+      throw error;
+    }
+  }
+
+  // Méthode pour récupérer les soumissions pour les défis appartenant à l'entreprise de l'utilisateur connecté
+  async getSubmissionsForChallengesOwnedByCompany(companyId: string): Promise<Submission[]> {
+    try {
+      // Rechercher les soumissions où l'ID de l'entreprise du défi correspond à l'ID de l'entreprise de l'utilisateur connecté
+      const submissions = await this.submissionModel.find({ 'challenge.company_id': companyId }).exec();
+      return submissions;
+    } catch (error) {
+      throw new NotFoundException('Failed to fetch submissions for challenges owned by the company.');
+    }
+  }
+
+  
 
 }
