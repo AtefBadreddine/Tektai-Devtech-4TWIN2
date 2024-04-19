@@ -181,28 +181,28 @@ function ProfileCompany() {
      <div class="profile-item">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 469.33 469.33" fill="currentColor">
        <path d="M320 213.33c35.3 0 63.79-28.69 63.79-64 0-35.3-28.48-64-63.79-64-35.3 0-64 28.7-64 64 0 35.31 28.7 64 64 64zM149.33 213.33c35.31 0 63.79-28.69 63.79-64 0-35.3-28.48-64-63.79-64-35.3 0-64 28.7-64 64 0 35.31 28.7 64 64 64zM149.33 256C99.52 256 0 280.96 0 330.67V384h298.67v-53.33c0-49.71-99.52-74.67-149.34-74.67zM320 256c-6.19 0-13.12.43-20.59 1.17 24.75 17.82 41.92 41.82 41.92 73.5V384h128v-53.33c0-49.71-99.52-74.67-149.33-74.67z" /></svg>
-       {userData?.bpts ?? 'Loading...'}
+       {user?.bpts ?? 'Loading...'}
      </div>
      <div class="profile-item">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 469.33 469.33">
        <path d="M234.67 170.67c-35.31 0-64 28.69-64 64s28.69 64 64 64 64-28.7 64-64-28.7-64-64-64z" />
        <path d="M234.67 74.67C128 74.67 36.9 141 0 234.67c36.9 93.65 128 160 234.67 160 106.77 0 197.76-66.35 234.66-160-36.9-93.66-127.89-160-234.66-160zm0 266.66c-58.88 0-106.67-47.78-106.67-106.66S175.79 128 234.67 128s106.66 47.79 106.66 106.67-47.78 106.66-106.66 106.66z" /></svg>
-       {userData?.gpts ?? 'Loading...'}
+       {user?.gpts ?? 'Loading...'}
      </div>
      <div class="profile-item">
       <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 475.43 475.43">
        <path d="M306.9 164.57l78.9-86.2a7.83 7.83 0 001.56-8.36 8.36 8.36 0 00-7.3-4.7h-253.4s-3.13 0-3.13.52v-9.4a26.12 26.12 0 0021.94-27.7A28.73 28.73 0 00117.26 0a29.78 29.78 0 00-29.78 28.73 30.82 30.82 0 0020.37 27.7v411.16a7.84 7.84 0 0015.68 0V263.84h256.52c3.2.2 6.17-1.7 7.31-4.7a8.36 8.36 0 00-1.56-8.36l-78.9-86.2z" /></svg>
-       {userData?.spts ?? 'Loading...'}
+       {user?.spts ?? 'Loading...'}
      </div>
     
     </div>
     <div class="profile-menu">
      <div class="profile-avatar">
-      <img class="profile-img shadow-xl " src={`http://localhost:3000/uploads/${userData?.image ?? '/fallback-image-url'}`}
+      <img class="profile-img shadow-xl " src={`http://localhost:3000/uploads/${user?.image ?? '/fallback-image-url'}`}
  />
      <div class="profile-name">
-  <div class="role">{userData?.role ?? 'Loading...'}:</div>
-  <div class="company-name">{userData?.companyName ?? 'Loading...'} </div>
+  <div class="role">{user?.role ?? 'Loading...'}:</div>
+  <div class="company-name">{user?.companyName ?? 'Loading...'} </div>
 </div>
 
      </div>
@@ -216,8 +216,8 @@ function ProfileCompany() {
  <div className="grid grid-cols-3 gap-6">
   <div className="cardprofile" style={{ gridColumn: 'span 2' }}>
     <h1>Bio</h1>
-    <img className="shadow-xl" src={`http://localhost:3000/uploads/${userData?.image ?? '/fallback-image-url'}`} />
-    <p className="bio">{userData?.bio ?? 'Loading...'} </p>
+    <img className="shadow-xl" src={`http://localhost:3000/uploads/${user?.image ?? '/fallback-image-url'}`} />
+    <p className="bio">{user?.bio ?? 'Loading...'} </p>
 
     
 
@@ -287,7 +287,7 @@ function ProfileCompany() {
   <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM7.005 9C7.005 8.45 7.45 8 8 8H16C16.55 8 17 8.45 17 9V15C17 15.55 16.55 16 16 16H8C7.45 16 7 15.55 7 15L7.005 9ZM12 12.5L8.00001 9.99997V15H16V9.99997L12 12.5ZM12 11.5L8.00001 9.00001H16L12 11.5Z" fill="#000000"/>
 </svg>
-{userData?.email ?? 'Loading...'}
+{user?.email ?? 'Loading...'}
      </div>
 
      <div class="profile-itemcolor">
@@ -306,7 +306,7 @@ function ProfileCompany() {
         </g>
     </g>
 </svg>
-{userData?.phoneNumber ?? 'Loading...'}
+{user?.phoneNumber ?? 'Loading...'}
      </div>
   
 
@@ -319,7 +319,7 @@ function ProfileCompany() {
 	C29.414,63.332,30.664,64,32,64s2.586-0.668,3.328-1.781l16-24c0.059-0.09,0.066-0.195,0.117-0.289C54.289,34.008,56,29.219,56,24
 	C56,10.746,45.254,0,32,0z M32,32c-4.418,0-8-3.582-8-8s3.582-8,8-8s8,3.582,8,8S36.418,32,32,32z"/>
 </svg>
-{userData?.adresse ?? 'Loading...'}
+{user?.adresse ?? 'Loading...'}
      </div>
 
 

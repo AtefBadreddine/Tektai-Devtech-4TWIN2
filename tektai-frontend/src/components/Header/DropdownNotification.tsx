@@ -18,7 +18,7 @@ const DropdownNotification = () => {
     const fetchInvitations = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const loggedInUserId = user ? user._id : null;
+        const loggedInUserId =  user._id ;
   
         const response = await axios.get(`http://localhost:3000/teams/invitations`);
         console.log('Response:', response.data); // Log the response to inspect its structure
