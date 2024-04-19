@@ -53,13 +53,15 @@ import SearchResultF from './pages/usersearch/SearchResultF';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 
-// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+ import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
 import CompanyProfile from './components/companyprofile';
 
 
-import Challengerprofile from './components/Challengerprofile';
+
+// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+// import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
