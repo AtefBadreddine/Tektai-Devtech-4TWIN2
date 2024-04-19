@@ -1,71 +1,65 @@
   import React, { useEffect, useState } from 'react';
-  import {
-    Routes,
-    Route,
-    useLocation
-  } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  useLocation
+} from 'react-router-dom';
 
-  import 'aos/dist/aos.css';
-  import './css/style.css';
-  import './css/additional-styles/satoshi.css'; // Import the CSS file
-  import { library } from '@fortawesome/fontawesome-svg-core'
+  import { library } from '@fortawesome/fontawesome-svg-core';
+import 'aos/dist/aos.css';
+import './css/additional-styles/satoshi.css'; // Import the CSS file
+import './css/style.css';
 
   // import your icons
-  import { fab } from '@fortawesome/free-brands-svg-icons'
-  import { fas } from '@fortawesome/free-solid-svg-icons'
-  import { far } from '@fortawesome/free-regular-svg-icons'
+  import { fab } from '@fortawesome/free-brands-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
   import AOS from 'aos';
 
-  import Home from './pages/home/Home';
-  import SignIn from './pages/signin/SignIn';
-  import SignUp from './pages/signup/SignUp';
-  import ResetPassword from './pages/resetPassword/ResetPassword';
-  import AuthProvider from "./auth/AuthProvider";
-  import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
-  import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
-  import Ranking from "./pages/ranking/ranking ";
-  import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
-  import DefaultLayout from './layout/DefaultLayout';
-  import Dashhome from './pages/dashboard/dashhome';
-  import Profile from './components/Profile';
-  import ProfileAll from './components/ProfileAll';
-  import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
-  import SubmissionList from './pages/SubmitSolution/SubmissionList'
-  import Settings from './components/Settings';
-import TermsAndConditions from './components/terms/terms';
-import Spinner from './components/spinner/spinner';
-import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
-import NotFound from './components/notfound/notfound';
+import AuthProvider from "./auth/AuthProvider";
 import NotAdmin from './components/NotAdmin/NotAdmin';
-  import Forgetpassword from "./pages/resetPassword/ForgetPassword";
-  import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
+import Profile from './components/Profile';
+import ProfileAll from './components/ProfileAll';
+import Settings from './components/Settings';
+import NotFound from './components/notfound/notfound';
+import SpinnerWithBackground from './components/spinner/spinner';
+import TermsAndConditions from './components/terms/terms';
+import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+import SubmissionList from './pages/SubmitSolution/SubmissionList';
+import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
+import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
+import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
+import Dashhome from './pages/dashboard/dashhome';
+import Home from './pages/home/Home';
+import Ranking from "./pages/ranking/ranking ";
+import Forgetpassword from "./pages/resetPassword/ForgetPassword";
+import ResetPassword from './pages/resetPassword/ResetPassword';
+import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
+import SignIn from './pages/signin/SignIn';
+import SignUp from './pages/signup/SignUp';
 
-import ProfileCompany from './components/profileCompany';
 
-import MapComponent from './pages/Localisation/MapComponent'; 
+import MapComponent from './pages/Localisation/MapComponent';
 
-import CrmForm from './pages/crm/crmpage';
 import Settingsadmin from './components/Settingsadmin';
+import UserList from './components/User/Userlist';
+import MyTeams from './pages/Teams/Myteams';
+import Teams from './pages/Teams/Teams';
+import CrmForm from './pages/crm/crmpage';
 import SearchResult from './pages/usersearch/SearchResult';
+import SearchResultF from './pages/usersearch/SearchResultF';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
-import SearchResultF from './pages/usersearch/SearchResultF';
-import UserList from './components/User/Userlist';
-import Teams from './pages/Teams/Teams';
-import MyTeams from './pages/Teams/Myteams';
-import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
-import UpdateChallenge from './pages/challenges/updateChallenge';
 import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
 import CompanyProfile from './components/companyprofile';
 
 
-
-// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import Challengerprofile from './components/Challengerprofile';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 
@@ -133,7 +127,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
           <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<Profile />} />
-            <Route path="profileCompany" element={<ProfileCompany />} />
+            <Route path="/Challengerprofile" element={<Challengerprofile />} />
             <Route path="/pages/settings" element={<Settings />} />
           </Route>
           {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
