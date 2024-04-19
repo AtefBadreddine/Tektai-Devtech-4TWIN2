@@ -7,6 +7,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path'; // Import extname from path module
 import { Request } from 'express';
+import { ChallengesModule } from 'src/challenge/challenges.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { Request } from 'express';
         },
       }),
     }),
+    ChallengesModule,
   ],
   providers: [UsersService],
   controllers: [UserController],

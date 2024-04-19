@@ -1,7 +1,7 @@
 
 import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Challenges, ChallengesDocument } from 'src/schemas/challenges.schema';
 import { ChallengeDto } from './challeges.dto';
 import { User, UserDocument } from 'src/schemas/user.schema'; // Import User and UserDocument from the user schema
@@ -12,7 +12,6 @@ import { extname } from 'path';
 export class ChallengesService {
   constructor(
     @InjectModel(Challenges.name) private readonly challengesModel: Model<ChallengesDocument>,  
-
   ) {}
 
   async findAll(): Promise<Challenges[]> {
