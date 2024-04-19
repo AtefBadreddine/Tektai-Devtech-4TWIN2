@@ -13,18 +13,23 @@ import {
   Put, Logger, NotFoundException, ForbiddenException
 } from '@nestjs/common';
 
+import * as SibApiV3Sdk from 'sib-api-v3-sdk';
 
 import { TeamsService } from './teams.service';
 import { TeamDto } from './dto/team.dto';
 import { Request } from 'express';
 import {JwtAuthGuard} from "../auth/guards/jwt-auth.guard";
 import axios from "axios";
+import { UsersService } from 'src/users/users.service';
 
 @Controller('teams')
 export class TeamsController {
   private readonly logger = new Logger();
 
-  constructor(private readonly teamsService: TeamsService) {}
+  constructor(private readonly teamsService: TeamsService,
+    private usersService: UsersService
+
+  ) {}
 
   @Get('invitations')
   async getAll() {
@@ -169,11 +174,91 @@ export class TeamsController {
     // to do make it unique on table invitation
     this.logger.log('controller', memberId);
       this.logger.log('controller', teamId);
+      const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
+      const apiKey = process.env.SENDINBLUE;
+      const defaultClient = SibApiV3Sdk.ApiClient.instance;
+      const apiKeyV3 = defaultClient.authentications['api-key'];
+      apiKeyV3.apiKey = apiKey;
+     
     const team = await this.teamsService.findOne(teamId);
+    this.logger.log('controller', memberId);
+    const user= await this.usersService.findById(memberId);
+    const emailParams = {
+      sender: { email: 'alaedineibrahim@gmail.com' },
+      to: [{ email:user.email }],
+      subject: 'Invitation received',
+      htmlContent: `
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Email Template</title>
+        <style>
+          /* Reset CSS */
+          body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+          }
+          /* Container styles */
+          .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          }
+          /* Logo styles */
+          .logo {
+            margin-bottom: 20px;
+          }
+          /* Heading styles */
+          h1 {
+            font-size: 24px;
+            color: #333333;
+            margin-bottom: 10px;
+          }
+          /* Paragraph styles */
+          p {
+            font-size: 16px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+          }
+          /* Button styles */
+          .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0091ff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <!-- Logo -->
+          <div class="logo">
+       <img src="./image.png" alt="">
+          </div>
+          <!-- Heading -->
+          <h1>invite received</h1>
+          <!-- Content -->
+          <p>Hello ${user.username},</p>
+          <p>You have been invited to join the team "${team.name}".</p>
+          <p>Please check ur teektai profile to accept the invitation:</p>      </div>
+      </body>
+      </html>
+      `,
+    };
     // const userId = req.user['_id'];
     if (! team.leader) {
       throw new ConflictException(`Current user is not authorized to send invitation`);
     }
+    await sendinblue.sendTransacEmail(emailParams);
      return this.teamsService.sendInvitation(memberId,teamId);
   }
 
