@@ -10,11 +10,11 @@ import {
     InternalServerErrorException,
     Put,
     Body,
-   
+
 
     UseInterceptors,
     UploadedFile,
-    Post,
+    Post, Req,
 
 
 } from "@nestjs/common";
@@ -25,6 +25,7 @@ import {User} from "../schemas/user.schema";
 import {UserDto} from "./user.dto";
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from "@nestjs/passport";
+import {Request} from "express";
 
 @Controller('users')
 export class UserController {
@@ -32,8 +33,17 @@ export class UserController {
     constructor(private  userService: UsersService) {}
 
 
+
+    @UseGuards(JwtAuthGuard)
+    @Get('connectedUser')
+    async getConnectedUser(@Req() req: Request) {
    
-       @Get('profile/:userId')
+        return this.userService.findById(req.user['_id']);
+    }
+
+
+   
+   @Get('profile/:userId')
     async getProfile(@Param('userId') userId: string) {
         if (!userId.match(/^[0-9a-fA-F]{24}$/)) {
             throw new NotFoundException('User not found');
