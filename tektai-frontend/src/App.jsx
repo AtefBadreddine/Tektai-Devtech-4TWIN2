@@ -66,7 +66,7 @@ import CompanyProfile from './components/companyprofile';
 
 
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
-import UpdateChallenge from './pages/challenges/updateChallenge';
+// import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 import Challengerprofile from './components/Challengerprofile';
 

@@ -18,12 +18,12 @@ const DropdownNotification = () => {
     const fetchInvitations = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
-        const loggedInUserId =  user._id ;
+        const loggedInUserId =  user.username ;
   
         const response = await axios.get(`http://localhost:3000/teams/invitations`);
         console.log('Response:', response.data); // Log the response to inspect its structure
         const sortedInvitations = response.data
-        .filter(invitation => invitation.recipient._id === loggedInUserId)
+        .filter(invitation => invitation.recipient?.username === loggedInUserId)
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Sort by createdAt in descending order
           .map(invitation => ({
             ...invitation,
