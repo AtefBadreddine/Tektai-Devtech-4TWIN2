@@ -28,7 +28,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
   import DefaultLayout from './layout/DefaultLayout';
   import Dashhome from './pages/dashboard/dashhome';
-  import Profile from './components/Profile';
   import ProfileAll from './components/ProfileAll';
   import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
   import SubmissionList from './pages/SubmitSolution/SubmissionList';
@@ -40,27 +39,12 @@ import TermsAndConditions from './components/terms/terms';
 import Spinner from './components/spinner/spinner';
 import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
-import AuthProvider from "./auth/AuthProvider";
 import NotAdmin from './components/NotAdmin/NotAdmin';
 import Profile from './components/Profile';
-import ProfileAll from './components/ProfileAll';
-import Settings from './components/Settings';
+
 import NotFound from './components/notfound/notfound';
-import SpinnerWithBackground from './components/spinner/spinner';
-import TermsAndConditions from './components/terms/terms';
-import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
-import SubmissionList from './pages/SubmitSolution/SubmissionList';
-import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
-import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
-import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
-import Dashhome from './pages/dashboard/dashhome';
-import Home from './pages/home/Home';
-import Ranking from "./pages/ranking/ranking ";
 import Forgetpassword from "./pages/resetPassword/ForgetPassword";
-import ResetPassword from './pages/resetPassword/ResetPassword';
 import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
-import SignIn from './pages/signin/SignIn';
-import SignUp from './pages/signup/SignUp';
 
 
 import MapComponent from './pages/Localisation/MapComponent';
@@ -75,7 +59,7 @@ import SearchResultF from './pages/usersearch/SearchResultF';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 
-// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
 import CompanyProfile from './components/companyprofile';
