@@ -42,7 +42,20 @@ const UserService = {
       return { error: "failed to get user details" };
     }
   },
+  getConnectedUser: async (access_token) => {
+    try {
+      const response = await axios.get(`${url}/users/connectedUser`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
 
+      return response.data;
+    } catch (error) {
+      console.error("Error getting user:", error);
+      return { error: "failed to get user details" };
+    }
+  },
   getUser: async (access_token, email) => {
     try {
       const response = await axios.get(
