@@ -58,6 +58,7 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
 
 import CompanyProfile from './components/companyprofile';
 
+
 import Challengerprofile from './components/Challengerprofile';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 

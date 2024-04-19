@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMedal } from '@fortawesome/free-solid-svg-icons';
 import Stats from './stats/stats';
 import axios from 'axios';
+import SubmissionList from '../pages/SubmitSolution/SubmissionList';
 
 interface UserData {
   username: string;
@@ -216,6 +217,16 @@ const Profile: React.FC = () => {
                     </div>
                   </div>
                 </div> 
+
+                <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
+                  <div className="flex flex-wrap justify-center">                  
+                    <div className="w-full lg:w-9/12 px-4">
+                      <div className="mb-4 text-lg leading-relaxed text-blueGray-700">
+                      <SubmissionList/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
 <div className="flex flex-wrap justify-center">
   
