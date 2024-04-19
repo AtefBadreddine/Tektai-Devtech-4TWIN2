@@ -184,7 +184,8 @@ export class TeamsController {
     this.logger.log('controller', memberId);
     const user= await this.usersService.findById(memberId);
     const emailParams = {
-      sender: { email: 'alaedineibrahim@gmail.com' },
+      
+      sender: { name:'TektAi',email: 'alaedineibrahim@gmail.com' },
       to: [{ email:user.email }],
       subject: 'Invitation received',
       htmlContent: `
