@@ -40,7 +40,7 @@ import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 import SignIn from './pages/signin/SignIn';
 import SignUp from './pages/signup/SignUp';
 
-
+import Challengerprofile from './components/Challengerprofile';
 import MapComponent from './pages/Localisation/MapComponent';
 
 import Settingsadmin from './components/Settingsadmin';
