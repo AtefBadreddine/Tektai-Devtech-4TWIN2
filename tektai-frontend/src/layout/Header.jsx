@@ -1,26 +1,24 @@
-  import React, { useState, useEffect, useContext } from 'react';
-  import { Link } from 'react-router-dom';
-  import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext
-  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
   import {
-  faHome,
   faChartBar,
-  faDatabase,
-  faMedal,
-  faAngleDown,
   faCog,
-  faUser,
-  faSignIn, faSignInAlt
-  } from '@fortawesome/free-solid-svg-icons';
-  import DropdownUser from '../components/Header/DropdownUser';
-  import DropdownNotification from '../components/Header/DropdownNotification';
+  faHome,
+  faMedal,
+  faSignIn, faSignInAlt,
+  faUser
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext
+import DropdownNotification from '../components/Header/DropdownNotification';
+import DropdownUser from '../components/Header/DropdownUser';
   
-  import './Header.css'; // Import CSS file for Header styles
-  import { Tooltip } from '@chakra-ui/react'
-  import {useAuth} from "../auth/useAuth";
-import UserSearchF from '../pages/usersearch/UsersearchF';
+  import { Tooltip } from '@chakra-ui/react';
+import { useAuth } from "../auth/useAuth";
 import LanguagePopover from '../components/language-popover';
-  import ThemeProvider from "../theme";
+import UserSearchF from '../pages/usersearch/UsersearchF';
+import ThemeProvider from "../theme";
+import './Header.css'; // Import CSS file for Header styles
   function Header() {
     const { login, logout } = useContext(AuthContext); // Access authentication context
     const [top, setTop] = useState(true);

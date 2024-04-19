@@ -96,7 +96,7 @@ const FavoriteChallenges = () => {
         <div className="pt-36 mx-auto px-6 max-w-6xl text-gray-500">
             <div className="text-center">
                 <h2 className="text-3xl text-gray-950 dark:text-white font-semibold">Favorite challenges</h2>
-                <p className="mt-6 text-gray-700 dark:text-gray-300">Harum quae dolore inventore repudiandae? orrupti aut temporibus ariatur.</p>
+                <p className="mt-6 text-gray-700 dark:text-gray-300">Explore your favorite challenges !</p>
             </div>
         <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
         {/* challenge upcoming */}
