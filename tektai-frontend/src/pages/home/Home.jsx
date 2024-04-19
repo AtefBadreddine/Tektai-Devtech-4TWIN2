@@ -15,6 +15,7 @@ import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import { Tabs } from '@chakra-ui/tabs';
 import Transition from '../../utils/Transition'; // Assuming Transition component file location
+import StatsCompare from '../../components/stats/statsCompare';
 
 function Home() {
   const products = [
@@ -118,7 +119,9 @@ function Home() {
 
         <HeroHome />
         </Transition>
+
         <FeaturesHome/>
+
 
        <FeaturesBlocks />
 
@@ -138,7 +141,7 @@ function Home() {
             </div>
             </Transition>
 
-            <InfiniteMovingCards items={data} />
+       <InfiniteMovingCards items={data} />
 
         <ContactUs></ContactUs>
 

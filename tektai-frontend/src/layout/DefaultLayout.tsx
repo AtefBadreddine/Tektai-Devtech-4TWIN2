@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useState, ReactNode } from 'react';
 import Header from '../components/Header/index';
 import Sidebar from '../components/Sidebar/Sidebar';

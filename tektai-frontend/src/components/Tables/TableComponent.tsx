@@ -1,3 +1,4 @@
+// @ts-ignore
 import React, { useEffect, useState } from 'react';
 import {
   Modal,
@@ -6,22 +7,23 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
-  ModalCloseButton, Button, useDisclosure, Tooltip,
+  ModalCloseButton, Button, useDisclosure, Tooltip, Table, Tbody, Tr, Td, Thead, Th,
 } from '@chakra-ui/react'
 
 import userService from "../../services/userService";
-import { FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp,FaBan, FaCheck } from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
+import {FaArrowDown, FaArrowUp, FaEdit, FaEnvelope, FaLink, FaWhatsapp, FaBan, FaCheck, FaUser} from 'react-icons/fa'; // Import WhatsApp icon from react-icons/fa
 import Updatedraw from './updatedrawer';
 import ExportToExcel from './xlx';
 import ExportToPDF from './pdf';
 import {FaTrashCan} from "react-icons/fa6";
+import {Pagination} from "flowbite-react";
 
 
 const TableComponent = () => {
   const [userToDelete, setUserToDelete] = useState(null);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(5); // Set 
+  const [usersPerPage] = useState(5); // Set
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
 
@@ -87,6 +89,10 @@ const TableComponent = () => {
   const indexOfFirstUser = indexOfLastUser - usersPerPage;
   const currentUsers = sortedData.slice(indexOfFirstUser, indexOfLastUser);
 
+
+  const onPageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
   // @ts-ignore
   // @ts-ignore
   return (
@@ -96,177 +102,107 @@ const TableComponent = () => {
           <ExportToExcel users={data}/>
           <ExportToPDF users={data}/>
         </div>
+        <div className="overflow-x-auto w-full">
+          <Table variant="simple" className="w-full">
+            <Thead>
+              <Tr>
+                <Th>User</Th> {/* Combine Email and Username */}
+                <Th className="hidden md:table-cell">Phone Number</Th> {/* Hide on small devices */}
+                <Th>Role</Th>
+                <Th>Actions</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {currentUsers?.map((packageItem, key) => (
+                  <Tr key={key}>
+                    <Td>
+                      <Tooltip label="Send an Email">
+                        <div className="inline-flex gap-x-1 justify-center items-center">
 
-        <table className="w-230 table-auto">
-          <thead>
-
-          <tr className="bg-gray-2 text-left dark:bg-meta-4">
-          <th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('email')}
->
-  Email
-  {sortColumn === 'email' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-<th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('username')}
->
-Username
-  {sortColumn === 'username' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-<th
-  className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11 cursor-pointer"
-  onClick={() => sortData('phoneNumber')}
->
-Phone Number
-  {sortColumn === 'phoneNumber' && (
-    <span className="ml-1">
-      {sortDirection === 'asc' ? (
-        <FaArrowUp />
-      ) : (
-        <FaArrowDown />
-      )}
-    </span>
-  )}
-</th>
-       
-
-              <th
-                className="py-4 px-4 font-medium text-black dark:text-white cursor-pointer"
-                onClick={() => sortData('role')}
-              >
-                Role
-              </th>
-              <th className="py-4 px-4 font-medium text-black dark:text-white">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-
-            {currentUsers?.map((packageItem, key) => (
-              <tr key={key}>
-                <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <h5 className="inline-flex justify-center items-center font-medium text-black dark:text-white">
-  <span className="mr-2">
-    <FaEnvelope size={16} /> {/* Adjust size as needed */}
-  </span>
-  <button
-  className="text-black dark:text-white hover:text-orange-500"
-  onClick={() => openGmail(packageItem.email)}
-  >  
-     <Tooltip label='Send an Email '>
-
-  {packageItem.email}</Tooltip>
-</button>
-</h5>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white">
-                <Tooltip label='Visit profile '>
-  <a href={`/profile/${packageItem.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-    <span className="mr-2">
-      <FaLink size={16} /> {/* Adjust size as needed */}
-    </span>
-    {packageItem.username}
-  </a></Tooltip> 
-</p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                <p className="text-black dark:text-white"><Tooltip label='Contact on Whatsapp '>
-  <a href={`https://wa.me/${packageItem.phoneNumber}`} className="text-black dark:text-white relative flex items-center">
-    <span className="mr-2">
-      <FaWhatsapp size={32} color="green" />
-    </span>
-    <span className="text-black dark:text-white hover:text-green-500">
-      {packageItem.phoneNumber}
-    </span>
-  </a></Tooltip>
-</p>
-
-                </td>
-
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <p
-                    className={`inline-flex rounded-full bg-opacity-10 py-1 px-3 text-sm font-medium ${packageItem.role === 'admin'
-                        ? 'bg-success text-success'
-                        : packageItem.role === 'challenger'
-                          ? 'bg-danger text-danger'
+                          <button onClick={() => openGmail(packageItem.email)} className="flex flex-col gap-1">
+                            <div  className="inline-flex gap-x-1 items-center">
+                              <FaUser size={16} color="darkblue" />
+                              {packageItem.username}
+                            </div>
+                            <div className="inline-flex gap-x-1 items-center">
+                              <FaEnvelope size={16} color="darkblue" />
+                              {packageItem.email}
+                            </div>
+                          </button>
+                        </div>
+                      </Tooltip>
+                    </Td>
+                    <Td className="hidden md:table-cell"> {/* Hide on small devices */}
+                      <Tooltip label="Contact on Whatsapp">
+                        <div className="inline-flex gap-x-1 justify-center items-center">
+                          <FaWhatsapp size={32} color="green" />
+                          <a href={`https://wa.me/${packageItem.phoneNumber}`}>
+                            {packageItem.phoneNumber}
+                          </a>
+                        </div>
+                      </Tooltip>
+                    </Td>
+                    <Td>
+          <span
+              className={`rounded-full py-1 px-3 text-sm font-medium text-white ${
+                  packageItem.role === 'admin'
+                      ? 'bg-success'
+                      : packageItem.role === 'challenger'
+                          ? 'bg-danger'
                           : packageItem.role === 'company'
-                            ? 'bg-purple-500 text-purple-500'
-                            : 'bg-warning text-warning'
-                      }`}
-                  >
-                    {packageItem.role}
-                  </p>
-                </td>
-                <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
-                  <div className="flex items-center space-x-3.5">
-                    <div className="flex items-center space-x-3.5">
-                      <Updatedraw user={packageItem}  RefreshUsersList={fetchUsers} />
-                    </div>
+                              ? 'bg-purple-500'
+                              : 'bg-warning text-warning'
+              }`}
+          >
+            {packageItem.role}
+          </span>
+                    </Td>
+                    <Td>
+                      <div className="flex items-center space-x-3.5">
+                        <Updatedraw user={packageItem} RefreshUsersList={fetchUsers} />
+                        <button
+                            className="inline-flex justify-center items-center gap-x-0.5 text-red-600 hover:text-red-800"
+                            onClick={() => setUserToDelete(packageItem)}
+                        >
+                          <FaTrashCan />
+                          Delete
+                        </button>
+                        {packageItem?.isBlocked ? (
+                            <button
+                                color="green"
+                                className="inline-flex text-green-600 justify-center items-center gap-x-1 hover:text-primary"
+                                onClick={() => blockUser(packageItem)}
+                            >
+                              <FaCheck color="green" />
+                              Unban
+                            </button>
+                        ) : (
+                            <button
+                                color="black"
+                                className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary"
+                                onClick={() => blockUser(packageItem)}
+                            >
+                              <FaBan color="black" />
+                              Ban
+                            </button>
+                        )}
+                      </div>
+                    </Td>
+                  </Tr>
+              ))}
+            </Tbody>
+          </Table>
 
-                    <button className="inline-flex justify-center items-center gap-x-0.5  text-red-600 hover:text-red-800" onClick={() => setUserToDelete(packageItem)}>
-
-                      <FaTrashCan/>
-                      Delete
-                    </button>
-
-                    { packageItem?.isBlocked ? <button color="green"  className="inline-flex  text-green-600 justify-center items-center gap-x-1  hover:text-primary" onClick={() => blockUser(packageItem)}>
-                          <FaCheck color="green" />
-                          Unban
-                        </button>   :
-                          <button color="black" className="inline-flex text-black-600 justify-center items-center gap-x-1 hover:text-primary" onClick={() => blockUser(packageItem)}>
-                    <FaBan  color="black" />
-                    Ban
-                  </button>}
+        </div>
 
 
-
-
-                  </div>
-
-                </td>
-
-
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-center my-4">
-  <button
-    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''}`}
-    onClick={() => setCurrentPage(currentPage - 1)}
-    disabled={currentPage === 1}
-  >
-    Previous
-  </button>
-  <button
-    className={`mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 ${indexOfLastUser >= data.length ? 'cursor-not-allowed opacity-50' : ''}`}
-    onClick={() => setCurrentPage(currentPage + 1)}
-    disabled={indexOfLastUser >= data.length}
-  >
-    Next
-  </button>
-</div>
+        <div className="flex overflow-x-auto justify-center">
+          <Pagination
+              currentPage={currentPage}
+              totalPages={Math.ceil(sortedData.length / usersPerPage)}
+              onPageChange={onPageChange}
+          />
+        </div>
 
         <Modal finalFocusRef={finalRef} isOpen={userToDelete !== null} onClose={() => setUserToDelete(null)}>
           <ModalOverlay />
