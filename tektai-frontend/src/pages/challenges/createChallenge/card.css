@@ -741,18 +741,24 @@ color: #ab1992;
   width: 15px;
   height: 15px;
 }
-
+/* Set default styles for .icon-box */
 .icon-box {
   margin-top: 15px;
   width: 60%;
   padding: 10px;
   margin-right: 20px;
-  background-color: #e3fff9;
+  background-color: rgb(240 253 244); /* Default background color */
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: left;
 }
+
+/* Apply pink background color when visibility is private */
+.icon-box.private {
+  background-color: rgb(254 242 242);
+}
+
 
 .icon-box svg {
   width: 17px;
@@ -790,11 +796,18 @@ color: #ab1992;
 }
 .icon-box .span {
   margin-left: 10px;
-  font-family: 'Lucida Sans' sans-serif;
+  font-family: 'Lucida Sans', sans-serif;
   font-size: 13px;
-  font-weight: 500;
-  color: #9198e5;
+  font-weight: 400;
+  /* Set default text color */
+  color: rgb(21 128 61);
 }
+
+/* Apply red color when visibility is private */
+.icon-box .span.private {
+  color: #B91C1C;
+}
+
 
 .card:hover {
   cursor: pointer;
@@ -1157,4 +1170,3 @@ padding-top: 15px;
     transform: scale(1.09);
   }
 }
-

@@ -247,6 +247,31 @@ function ChallengeDetails() {
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
                         <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
+                        <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {/* Debugging - log the visibility */}
+  <svg
+    height="10px"
+    width="10px"
+    version="1.1"
+    id="Capa_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 451.827 451.827"
+    xml:space="preserve"
+  >
+    <g>
+      <path
+        style={{ fill: challenge.visibility.toLowerCase() === 'private' ? '#F87171' : 'rgb(74 222 128)' }}
+        d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
+        c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"
+      />
+    </g>
+  </svg>
+  <p className={`span ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {challenge.visibility}
+</p>
+</div>
+
                       </div>
                       <img src={`http://localhost:3000/uploads/${image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
                     </div>
@@ -286,17 +311,18 @@ function ChallengeDetails() {
                             <li><p className="text-xs font-normal text-gray-400">The competition concludes on this date. Submit your final work before the deadline.</p></li>
                           </ul>
                           {challenge && challenge.status === 'Completed' ? (
-                            <button className="bg-[#6fc5ff] text-white font-bold py-2 px-4 rounded" disabled>
-                              Completed
-                            </button>
-                          ) : (
-                            <button className="btn-smm"  onClick={handleParticipateClick} >
-                              Participate now!
-                              <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                              </svg>
-                            </button>
-                          )}
+  <button className="bg-[#6fc5ff] text-white font-bold py-2 px-4 rounded" disabled>
+    Completed
+  </button>
+) : (
+  <button className={`btn-smm ${challenge.visibility.toLowerCase() === 'private' ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={handleParticipateClick} disabled={challenge.visibility.toLowerCase() === 'private'}>
+    {challenge.visibility.toLowerCase() === 'private' ? 'Private Challenge' : 'Participate now!'}
+    <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+    </svg>
+  </button>
+)}
+
                         </li>
                       </ol>
                     </div>

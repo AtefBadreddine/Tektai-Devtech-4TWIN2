@@ -179,23 +179,35 @@ const Challenges = ({ status }) => {
 </div>
 
 <div className="aline">
-  <div className="icon-box">
+<div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {/* Debugging - log the visibility */}
+  <svg
+    height="10px"
+    width="10px"
+    version="1.1"
+    id="Capa_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 451.827 451.827"
+    xml:space="preserve"
+  >
+    <g>
+      <path
+        style={{ fill: challenge.visibility.toLowerCase() === 'private' ? '#F87171' : 'rgb(74 222 128)' }}
+        d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
+        c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"
+      />
+    </g>
+  </svg>
+  <p className={`span ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {challenge.visibility}
+</p>
+</div>
 
-<svg height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 451.827 451.827" xml:space="preserve">
-<g>
-	<g>
-		<path style={{ fill: "#9198e5" }}  d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
-			c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"/>
-	</g>
-</g>
-</svg>
-      <p className="span">{challenge.status}</p>
-      
-    </div>
+
     <div class="btn-conteiner">
     <Link to={`/challenges/${challenge._id}`} >
-  <a href="#" class="btn-content">
+ {/*  <a href="#" class="btn-content">
     <span class="icon-arrow">
       <svg
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -230,7 +242,16 @@ const Challenges = ({ status }) => {
         </g>
       </svg>
     </span>
-  </a>
+  </a> */}
+
+<button
+  class="inline-block py-1 px-4 rounded-l-xl rounded-t-xl bg-[#338CF5] hover:bg-white hover:text-[#338CF5] focus:text-[#338CF5] focus:bg-gray-200 text-gray-50 font-bold leading-loose transition duration-200"
+>
+  View
+</button>
+
+
+
   </Link>
 </div>
 </div>
