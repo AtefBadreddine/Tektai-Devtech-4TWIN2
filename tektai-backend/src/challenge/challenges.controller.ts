@@ -84,7 +84,7 @@ export class ChallengesController {
   }
 
 
-  @UseGuards(JwtAuthGuard) 
+  // @UseGuards(JwtAuthGuard) 
   @Post()
   async create(@Body() challengeDto: ChallengeDto): Promise<Challenges> {
     return this.challengesService.create(challengeDto);
@@ -101,7 +101,7 @@ export class ChallengesController {
   }
 
 
-
+/* 
   @Post('/upload/:challengeId')
   @UseInterceptors(FileInterceptor('dataset')) // Use FileInterceptor for handling file uploads
   async uploadDatasetToChallenge(
@@ -111,8 +111,34 @@ export class ChallengesController {
   ) {
       return await this.challengesService.uploadDatasetToChallenge(challengeId, challengeDto, file);
   }
+   */
+
+
+    //@UseGuards(JwtAuthGuard)
+    @Post('/uploadfile/:challengeId')
+    @UseInterceptors(FileInterceptor('dataset')) // Use FileInterceptor for handling image uploads
+    async uploadDatasetToChallenge(
+      @Param('challengeId') challengeId: string,
+        @Body() challengeDto: ChallengeDto,
+        @UploadedFile() dataset: Express.Multer.File,
+        ) {
+        return await this.challengesService.uploadfile(challengeId, challengeDto, dataset);
+    }
+
+    @Get('/datasetdownload/:challengeId')
+    async downloadFile(@Param('challengeId') challengeId: string, @Res() res: Response) {
+      try {
+        const filePath = await this.challengesService.downloadFile(challengeId);
+        // Assuming filePath is the URL to the file
+        res.download(filePath); // Serve the file for download
+      } catch (error) {
+        // Handle errors
+        res.status(500).send('Failed to download file');
+      }
+    }
+
   
-  @Get('download/dataset/:challengeId')
+/*   @Get('download/dataset/:challengeId')
   async downloadDataset(@Param('challengeId') challengeId: string, @Res() res: Response) {
     try {
       // Get the dataset from the service
@@ -135,7 +161,7 @@ export class ChallengesController {
   } 
   
 
-}
+} */
 
   /*@Post('upload')
   @UseInterceptors(FileInterceptor('image'))
@@ -161,3 +187,4 @@ export class ChallengesController {
     }
   }}*/
 
+}

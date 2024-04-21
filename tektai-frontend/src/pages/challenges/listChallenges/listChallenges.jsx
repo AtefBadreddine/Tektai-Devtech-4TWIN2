@@ -8,13 +8,13 @@ import '../createChallenge/card.css'
 
 function ListChallenges() {
     const [activeTab, setActiveTab] = useState('Ongoing');
-    
+    const storedUser = localStorage.getItem('user');
+    const user = storedUser ? JSON.parse(storedUser) : null;
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
 
     // Mock user role and login status
-    const userRole = "company"; // Assume user role is "company"
     const isLoggedIn = () => {
         const storedToken = localStorage.getItem('token');
         return !!storedToken;
@@ -54,7 +54,7 @@ function ListChallenges() {
                                 </form>
                             </div>
                             {/* Button to create challenge */}
-                            {isLoggedIn() && userRole === "Company" && (
+                            {isLoggedIn() && user.role === "company" && (
     <div className="flex items-center mb-4">
         <Link to="/challenges/new" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
             <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +66,7 @@ function ListChallenges() {
 )}
 
                             {/* Button to view history challenges */}
-                            {isLoggedIn() && userRole === "Company" && (
+                            {isLoggedIn() && user.role  === "company" && (
                            <div className="flex items-center">
                            <Link to="/historychallenges" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
                              <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 mr-2">

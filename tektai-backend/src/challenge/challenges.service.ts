@@ -120,5 +120,48 @@ export class ChallengesService {
   }
   
 
+
+  async uploadfile(challengeId: string, challengeDto: ChallengeDto, file: Express.Multer.File): Promise<Challenges> {
+    try {
+      // Check if the challenge exists
+      const existingchallenge = await this.challengesModel.findById(challengeId).exec();
+      if (!existingchallenge) {
+        throw new NotFoundException('Challenge not found');
+      }
+
+      if (file) {
+        const fileExt = extname(file.originalname);
+        const uniqueSuffix = `${challengeId}`; 
+        const randomFileName = `${uniqueSuffix}${fileExt}`;
+
+        existingchallenge.dataset = randomFileName;
+      }
+
+      // Save the updated challenge
+      const updatedchallenge = await existingchallenge.save();
+      return updatedchallenge;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update challenge');
+    }
+  }
+
+
+  async downloadFile(challengeId: string): Promise<string> {
+    try {
+      // Find the challenge by ID
+      const challenge = await this.challengesModel.findById(challengeId).exec();
+      if (!challenge) {
+        throw new NotFoundException('Challenge not found');
+      }
+
+      // Assuming `dataset` contains the filename
+      const filePath = `./uploads/${challenge.dataset}`;
+      return filePath; // Return the path to the file
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to download file');
+    }
+  }
+
+
 }
 

@@ -274,7 +274,10 @@ function ChallengeDetails() {
 
                       </div>
                       <img src={`http://localhost:3000/uploads/${image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+                   
+ 
                     </div>
+                    
                     <h2 className="h4">Description :</h2>
                     <p className="text-gray-600 mb-4">{challenge.description}</p>
                     <h2 className="h4">Dataset Description:</h2>
