@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { fetchLocalisations } from '../../services/LocalisationService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot } from '@fortawesome/free-solid-svg-icons';
-
+import "leaflet/dist/leaflet.css";
 const MapComponent = () => {
   const [localisations, setLocalisations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -30,8 +30,9 @@ const MapComponent = () => {
   // Créer une icône personnalisée en utilisant Font Awesome avec L.divIcon
   const customIcon = L.divIcon({
     className: 'custom-icon',
-    html: `<div style="color: red;"><FontAwesomeIcon icon={faLocationDot} /></div>`, // Utiliser Font Awesome dans le HTML de l'icône
+    html: `<div style="color: red;">             a      </div>`, // Utiliser Font Awesome dans le HTML de l'icône
   });
+   /*<FontAwesomeIcon icon={faLocationDot} />*/
 
   return (
     <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -49,6 +50,7 @@ const MapComponent = () => {
               </Marker>
             ))}
           </MapContainer>
+          // <FontAwesomeIcon icon={faLocationDot} /></div>
         )}
       </div>
     </div>
