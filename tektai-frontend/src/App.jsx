@@ -46,7 +46,7 @@ import NotFound from './components/notfound/notfound';
 import Forgetpassword from "./pages/resetPassword/ForgetPassword";
 import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
 
-
+import Challengerprofile from './components/Challengerprofile';
 import MapComponent from './pages/Localisation/MapComponent';
 
 import Settingsadmin from './components/Settingsadmin';
@@ -65,7 +65,9 @@ import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChalle
 import CompanyProfile from './components/companyprofile';
 
 
-import Challengerprofile from './components/Challengerprofile';
+
+// import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+// import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 
 

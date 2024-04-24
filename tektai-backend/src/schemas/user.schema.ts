@@ -49,6 +49,12 @@ export class User {
   @Prop({ default: "challenger" })
   role: string;
 
+  @Prop({ default: 0 })
+  bpts: number;
+  @Prop({ default: 0 })
+  spts: number;
+  @Prop({ default: 0 })
+  gpts: number;
 
   @Prop({ nullable: true, default: null }) 
   image?: string;

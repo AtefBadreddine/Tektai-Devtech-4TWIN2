@@ -3,7 +3,6 @@ import Header from "../../../layout/Header";
 import Footer from "../../../layout/Footer";
 import axios from 'axios';
 
-
 import './likes.css';
 import Comments from "./comments";
 
@@ -18,7 +17,7 @@ function ChallengeDetails() {
   const user = storedUser ? JSON.parse(storedUser) : null;
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
- 
+
 
   const [userName, setUserName] = useState('');
   const defaultusername = user ? user._id : ""; // Set default company_id to user._id
