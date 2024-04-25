@@ -12,8 +12,7 @@ import { Link } from 'react-router-dom';
 import { AuthContext } from "../auth/AuthProvider"; // Import AuthContext
 import DropdownNotification from '../components/Header/DropdownNotification';
 import DropdownUser from '../components/Header/DropdownUser';
-  
-  import { Tooltip } from '@chakra-ui/react';
+
 import { useAuth } from "../auth/useAuth";
 import LanguagePopover from '../components/language-popover';
 import UserSearchF from '../pages/usersearch/UsersearchF';
@@ -97,12 +96,12 @@ import './Header.css'; // Import CSS file for Header styles
                 <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Home
                 </Link>
-                <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">  <Tooltip label='Partake in a coding challenge for glory or money too xoxo'>
+                <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Challenges              
-                  </Tooltip>
+
                 </Link>
-                <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4"><Tooltip label='Check all our users scores'>
-                  Rankings</Tooltip>
+                <Link to="/ranking" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                  Rankings
                 </Link>
               
                 {user?.role === 'admin' && (

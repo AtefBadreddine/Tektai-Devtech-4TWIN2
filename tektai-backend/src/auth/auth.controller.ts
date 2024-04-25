@@ -16,11 +16,13 @@ import {ResetPasswordDto} from "../schemas/reset-password.dto";
 import {GoogleAuthGuard} from "./guards/google-auth.guard";
 import {GithubAuthGuard} from "./guards/github-auth.guard";
 import {JwtAuthGuard} from "./guards/jwt-auth.guard";
+import {EmailConfirmationService} from "../mails/EmailConfirmationService";
 
 @Controller('auth')
 export class AuthController {
   private readonly logger = new Logger();
-  constructor(private authService: AuthService,private  userService: UsersService) {}
+  constructor(private authService: AuthService,private  userService: UsersService
+     , private emailConfirmationService: EmailConfirmationService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -40,6 +42,7 @@ export class AuthController {
     }
     try {
       const user = await this.authService.signup(signUpDto);
+      await this.emailConfirmationService.sendVerificationLink(user.email);
       return {
         statusCode : 201,
         message: 'User registered successfully!',

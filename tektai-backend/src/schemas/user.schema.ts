@@ -34,6 +34,9 @@ export class User {
   @Prop({ default: false })
   isBlocked: boolean;
 
+  @Prop({ default: false })
+  mailConfirmed: boolean;
+
   @Prop({ default: "" })
   bio: string;
 
