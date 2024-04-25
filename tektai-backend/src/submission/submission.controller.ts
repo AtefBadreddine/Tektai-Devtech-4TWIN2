@@ -42,10 +42,15 @@ export class SubmissionController {
 
      const pdfPath = `uploads/${files[0].originalname}`;
     const notebookPath = `uploads/${files[1].originalname}`;
+    const presentationPath = `uploads/${files[2].originalname}`;
+        const excelPath = `uploads/${files[3].originalname}`;
+        const archivePath = `uploads/${files[4].originalname}`;
 
  this.logger.log('Receive files:', );
       // Enregistrer la soumission avec les IDs comme ObjectId
-      await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath);
+      await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath, presentationPath,
+            excelPath,
+            archivePath);
 
       return { message: 'Files uploaded successfully.' };
     } catch (error) {
