@@ -124,6 +124,32 @@ export class ChallengesController {
         ) {
         return await this.challengesService.uploadfile(challengeId, challengeDto, dataset);
     }
+    
+   //@UseGuards(JwtAuthGuard)
+    @Post('/uploadimage/:challengeId')
+    @UseInterceptors(FileInterceptor('image')) // Use FileInterceptor for handling image uploads
+    async uploadImageToChallenge(
+      @Param('challengeId') challengeId: string,
+        @Body() challengeDto: ChallengeDto,
+        @UploadedFile() image: Express.Multer.File,
+        ) {
+        return await this.challengesService.uploadImage(challengeId, challengeDto,image);
+    }
+
+
+ 
+
+/*     @Post('uploadimage')
+    @UseInterceptors(FileInterceptor('image'))
+    async uploadImage(@UploadedFile() image: Express.Multer.File, @Body() challengeDto: ChallengeDto) {
+        try {
+            const createdChallenge = await this.challengesService.uploadImage(challengeDto, image);
+            return { success: true, data: createdChallenge };
+        } catch (error) {
+            return { success: false, message: 'Failed to upload image for new challenge' };
+        }
+    }
+     */
 
     @Get('/datasetdownload/:challengeId')
     async downloadFile(@Param('challengeId') challengeId: string, @Res() res: Response) {

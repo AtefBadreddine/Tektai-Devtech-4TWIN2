@@ -245,35 +245,46 @@ function ChallengeDetails() {
 
                         <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize: <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
+                        <p className="text-gray-600 mb-2">Prize(TDN): <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
-  {/* Debugging - log the visibility */}
-  <svg
-    height="10px"
-    width="10px"
-    version="1.1"
-    id="Capa_1"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-    viewBox="0 0 451.827 451.827"
-    xml:space="preserve"
-  >
-    <g>
-      <path
-        style={{ fill: challenge.visibility.toLowerCase() === 'private' ? '#F87171' : 'rgb(74 222 128)' }}
-        d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
+                        <p className="text-gray-600 mb-2">Max teams to participate: <span className="font-bold text-green-600">{challenge.maxTeam}</span></p>
+
+                        <div className="flex items-center">
+  <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+    {/* Debugging - log the visibility */}
+    <svg
+      height="10px"
+      width="10px"
+      version="1.1"
+      id="Capa_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      viewBox="0 0 451.827 451.827"
+      xml:space="preserve"
+    >
+      <g>
+        <path
+          style={{ fill: challenge.visibility.toLowerCase() === 'private' ? '#F87171' : 'rgb(74 222 128)' }}
+          d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
         c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"
-      />
-    </g>
-  </svg>
-  <p className={`span ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
-  {challenge.visibility}
-</p>
+        />
+      </g>
+    </svg>
+    <p className={`span ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+      {challenge.visibility}
+    </p>
+  </div>
+  {challenge.visibility.toLowerCase() === 'private' && (
+  <button className="bg-[#338cf5] text-white font-bold py-2 mt-3 px-4 rounded ml-4 w-full">
+    Send request
+  </button>
+)}
+
 </div>
 
+
                       </div>
-                      <img src={`http://localhost:3000/uploads/${image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+                      <img src={`http://localhost:3000/uploads/${challenge.image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
                    
  
                     </div>

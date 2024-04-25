@@ -65,6 +65,7 @@ import CompanyProfile from './components/companyprofile';
 import UpdateChallenge from './pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 import Challengerprofile from './components/Challengerprofile';
+import Create from './pages/challenges/createChallenge/create';
 
 
 
@@ -121,6 +122,7 @@ import Challengerprofile from './components/Challengerprofile';
           <Route path="/Teams" element={<Teams/>} />
           <Route path="/MyTeams" element={<MyTeams/>} />
           <Route path="/companyprofile" element={<CompanyProfile/>} />
+          <Route path="/challenges/create" element={<Create />} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />

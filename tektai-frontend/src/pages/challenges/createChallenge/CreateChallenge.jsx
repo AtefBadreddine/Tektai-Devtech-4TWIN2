@@ -14,7 +14,14 @@ function CreateChallenge() {
     const [dataSetFileUrl, setdataSetFile] = useState('');
     const [termsAgreed, setTermsAgreed] = useState(false); // State to track if terms are agreed
     const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
-
+    const [file, setFile] = useState(null);
+    const [error, setError] = useState('');
+  
+    const handleFileChange = (e) => {
+      setFile(e.target.files[0]);
+      setError('');
+    };
+  
     const [formData, setFormData] = useState({
         title: "",
         image: "",
@@ -112,6 +119,40 @@ function CreateChallenge() {
             }));
         }
     };
+
+
+    const handleSubmitFile = async (e) => {
+        e.preventDefault();
+    
+        if (!challengeId) {
+            setError('Challenge ID is required.');
+            return;
+        }
+    
+        if (!file) {
+            setError('Please select a file to upload.');
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('dataset', file); // Use the correct name here
+    
+        try {
+            const response = await axios.post(`http://localhost:3000/challenges/uploadfile/${challengeId}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            console.log('File uploaded successfully:', response.data);
+            // Provide feedback to the user, e.g., display a success message
+        } catch (error) {
+            console.error('Failed to upload file:', error);
+            setError('Failed to upload file. Please try again later.');
+            // Provide feedback to the user, e.g., display an error message
+        }
+    };
+    
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -125,6 +166,15 @@ function CreateChallenge() {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
+
+
+        setTimeout(() => {
+        
+              navigate('/challenges/${challengeId}');
+            }
+          , 2000);
+
+
         if (!termsAgreed) {
             alert("Please agree to the terms of agreement.");
             return;
@@ -163,6 +213,8 @@ function CreateChallenge() {
                 const data = response.data;
                 setChallengeId(data._id);
                 setShowSuccessCard(true);
+                await handleSubmitFile(e);
+
             } else {
                 throw new Error('Failed to add challenge');
             }
@@ -342,11 +394,19 @@ function CreateChallenge() {
     </div>
                                 
 
+    <div className="mb-4">
+    <label htmlFor="dataset" className="block mb-2 font-bold">
+        Upload Dataset <span className="text-red-600">*</span>
+    </label>
+    <input 
+        type="file" 
+        id="dataset" 
+        className="w-full p-2 border border-gray-300 rounded"
+        onChange={(e) => handleFileChange(e)} // Add onChange event handler
+    />
+    {errors.dataset && <p className="text-red-500">{errors.dataset}</p>} {/* Display error message if any */}
+</div>
 
-                <div className="mb-4">
-                    <label htmlFor="dataset" className="block mb-2 font-bold">Upload Dataset <span className="text-red-600">*</span></label>
-                    <input type="file" id="dataset" className="w-full p-2 border border-gray-300 rounded"/>
-                </div>
                 <div className="mb-4">
                     <h5 className="mb-2 font-bold">Privacy, Access & Resources</h5>
                
