@@ -103,6 +103,14 @@ function Create() {
           }
 
           
+          if (name === "teamType") {
+            // Clear prize value when prize type changes
+            setFormData((prevData) => ({
+              ...prevData,
+              maxTeam: "",
+            }));
+          }
+
           const updatedPrize = formData.prizeType === "money" ? value + " DT" : value;
 
         // Input validation for each field
@@ -477,16 +485,16 @@ function Create() {
                 const value = e.target.value;
                 setFormData((prevData) => ({
                     ...prevData,
-                    prizeType: value,
-                    maxTeam: value === "money" ? "" : "" // Clear prize value if changing to "Not Money" type
+                    teamType: value,
+                    maxTeam: value === "undefined" ? "" : "defined" // Clear prize value if changing to "Not Money" type
                 }));
             }}
         >
-            <option value="money">Undefined</option>
-            <option value="not_money">Defined</option>
+            <option value="undefined">Undefined</option>
+            <option value="defined">Defined</option>
         </select>
 
-        {formData.prizeType === "money" && (
+        {formData.teamType === "undefined" && (
          
                     <input
                        type="hidden"
@@ -497,11 +505,11 @@ function Create() {
                     />
            
         )}
-        {formData.prizeType === "not_money" && (
+        {formData.teamType === "defined" && (
             <input
                 type="number"
                 name="maxTeam"
-                placeholder="Enter prize description"
+                placeholder="Enter max team number"
                 className="inputfiled w-full p-2 border border-gray-300 rounded mb-4"
                 value={formData.maxTeam}
                 onChange={handleChange}
@@ -630,55 +638,57 @@ function Create() {
         {errors.deadline && <p className="text-red-500">{errors.deadline}</p>}
     </div>
 </div>
-                            <select
-            className="w-full p-2 border border-gray-300 rounded mb-4"
-            value={formData.prizeType}
-            onChange={(e) => {
-                const value = e.target.value;
+<select
+    className="w-full p-2 border border-gray-300 rounded mb-4"
+    value={formData.prizeType}
+    onChange={(e) => {
+        const value = e.target.value;
+        setFormData((prevData) => ({
+            ...prevData,
+            prizeType: value,
+            prize: value === "not_money" ? "" : prevData.prize // Clear prize value if changing to "Not Money" type
+        }));
+    }}
+>
+    <option value="">Select Prize Type</option>
+    <option value="money">Money</option>
+    <option value="not_money">Not Money</option>
+</select>
+{formData.prizeType === "money" && (
+    <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr", alignItems: "center", gap: "10px" }}>
+        <div className="flex items-center">
+            <input
+                type="number"
+                name="prize"
+                placeholder="Enter prize amount"
+                className="inputfiled w-full p-2 border border-gray-300 rounded mb-0"
+                value={formData.prize}
+                onChange={handleChange}
+            />
+        </div>
+        <div className="carddt flex items-center justify-center">DT</div>
+    </div>
+)}
+{formData.prizeType === "not_money" && (
+    <input
+        type="text"
+        name="prize"
+        placeholder="Enter prize description"
+        className="inputfiled w-full p-2 border border-gray-300 rounded mb-4"
+        value={formData.prize}
+        onChange={(e) => {
+            const value = e.target.value;
+            if (/^[a-zA-Z\s]*$/.test(value)) { // Validate input to only accept letters and whitespace
                 setFormData((prevData) => ({
                     ...prevData,
-                    prizeType: value,
-                    prize: value === "money" ? "" : "" // Clear prize value if changing to "Not Money" type
+                    prize: value
                 }));
-            }}
-        >
-            <option value="">Select Prize Type</option>
-            <option value="money">Money</option>
-            <option value="not_money">Not Money</option>
-        </select>
-        {formData.prizeType === "money" && (
-            <div style={{ display: "grid", gridTemplateColumns: "5fr 1fr", alignItems: "center", gap: "10px" }}>
-                <div className="flex items-center">
-                    <input
-                        type="number"
-                        name="prize"
-                        placeholder="Enter prize amount"
-                        className="inputfiled w-full p-2 border border-gray-300 rounded mb-0"
-                        value={formData.prize}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div className="carddt flex items-center justify-center">DT</div>
-            </div>
-        )}
-        {formData.prizeType === "not_money" && (
-            <input
-                type="text"
-                name="prize"
-                placeholder="Enter prize description"
-                className="inputfiled w-full p-2 border border-gray-300 rounded mb-4"
-                value={formData.prize}
-                onChange={(e) => {
-                    const value = e.target.value;
-                    if (/^[a-zA-Z\s]*$/.test(value)) { // Validate input to only accept letters and whitespace
-                        setFormData((prevData) => ({
-                            ...prevData,
-                            prize: value
-                        }));
-                    }
-                }}
-            />
-        )}
+            }
+        }}
+    />
+)}
+
+     
                   <ReCAPTCHA
     sitekey="6LcGCJ0pAAAAAPHo1K4WnSoMZE4e_mTplFnd4Uc9"
     onChange={handleCaptchaVerify}

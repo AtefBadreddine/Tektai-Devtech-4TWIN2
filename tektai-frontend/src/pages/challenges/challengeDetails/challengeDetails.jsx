@@ -245,9 +245,15 @@ function ChallengeDetails() {
 
                         <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
                         <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize(TDN): <span className="font-bold text-blue-600">{challenge.prize}</span> </p>
+                        <p className="text-gray-600 mb-2">Prize(TDN): <span className="font-bold text-blue-600">{challenge.prize}</span></p>
                         <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        <p className="text-gray-600 mb-2">Max teams to participate: <span className="font-bold text-green-600">{challenge.maxTeam}</span></p>
+                        <p className="text-gray-600 mb-2">Max teams to participate: <span className="font-bold text-red-600">{challenge.maxTeam}</span></p>
+                        <p className="text-gray-600 mb-2">
+    Solution type:{" "}
+    <span className="font-bold  ">
+        {challenge.barem.join(", ")}
+    </span>
+</p>
 
                         <div className="flex items-center">
   <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
