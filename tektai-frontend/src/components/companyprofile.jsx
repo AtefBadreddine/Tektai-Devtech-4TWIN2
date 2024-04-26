@@ -22,8 +22,6 @@ const [userData, setUserData] = useState(null);
         const response = await axios.get(`http://localhost:3000/users/profile/${id}`);
         const userData = response.data;
         setUserData(userData);
-        console.log('User data:', userData);
-        console.log('Image path:', `http://localhost:3000/uploads/${userData.image}`);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -36,88 +34,69 @@ const [userData, setUserData] = useState(null);
     }
   }, [id]);
 
+    const fetchChallengeCounts = async (id) => {
+        try {
+            const path = `http://localhost:3000/challenges/count/${id}`;
+            const response = await axios.get(path);
+            return  response.data;
+        } catch (error) {
+            console.error('Error fetching challenge counts:', error);
+            return 0;
+        }
+    };
+    const fetchcompletedCounts = async (id) => {
+        try {
+            const path = `http://localhost:3000/challenges/completed/${id}`;
+            const response = await axios.get(path);
+            return  response.data;
+
+        } catch (error) {
+            console.error('Error fetching challenge counts:', error);
+            return 0;
+        }
+    };
+    const fetchongoingCounts = async (id) => {
+        try {
+            const path = `http://localhost:3000/challenges/ongoing/${id}`;
+            const response = await axios.get(path);
+            return response.data;
+
+        } catch (error) {
+            console.error('Error fetching challenge counts:', error);
+            return 0;
+        }
+    };
+    const fetchupcomingCounts = async (id) => {
+        try {
+            const path = `http://localhost:3000/challenges/upcoming/${id}`;
+
+            const response = await axios.get(path);
+            return  response.data;
+
+        } catch (error) {
+            console.error('Error fetching challenge counts:', error);
+            return 0;
+        }
+    };
 
 
   useEffect(() => {
-    const fetchChallengeCounts = async () => {
-      try {
-        const path = `http://localhost:3000/challenges/count/${id}`;
-        console.log('Request Path:', path); // Log the request path
-        const response = await axios.get(path);
-        const count = response.data;
-        console.log('Counts:', count); // Log the entire response data
-        setCount(count); // Update count with fetched data
-      } catch (error) {
-        console.error('Error fetching challenge counts:', error);
+
+      const getStats =  async () => {
+          const all = await fetchChallengeCounts(id);
+          setCount(all);
+          const completed = await fetchcompletedCounts(id);
+          setCompletedChallengesCount(completed);
+          const ongoing = await fetchongoingCounts(id);
+          setOngoingChallengesCount(ongoing);
+          const upcoming = await fetchupcomingCounts(id);
+          setUpcomingChallengesCount(upcoming);
       }
-    };
-  
-    fetchChallengeCounts();
+        getStats();
   }, [id]);
 
 
 
-  useEffect(() => {
-    const fetchcompletedCounts = async () => {
-      try {
-        const path = `http://localhost:3000/challenges/completed/${id}`;
-        console.log('Request Path:', path); // Log the request path
-        const response = await axios.get(path);
-        const completedChallengesCount = response.data;
-    
-        console.log('Counts:', completedChallengesCount); // Log the entire response data
-        setCompletedChallengesCount(completedChallengesCount); // Update count with fetched data
-      } catch (error) {
-        console.error('Error fetching challenge counts:', error);
-      }
-    };
-  
-    fetchcompletedCounts();
-  }, [id]);
-
-
-
-
-
-  useEffect(() => {
-    const fetchongoingCounts = async () => {
-      try {
-        const path = `http://localhost:3000/challenges/ongoing/${id}`;
-        console.log('Request Path:', path); // Log the request path
-        const response = await axios.get(path);
-        const ongoingChallengesCount = response.data;
-        console.log('Counts:', ongoingChallengesCount); // Log the entire response data
-        setOngoingChallengesCount(ongoingChallengesCount); // Update count with fetched data
-      } catch (error) {
-        console.error('Error fetching challenge counts:', error);
-      }
-    };
-  
-    fetchongoingCounts();
-  }, [id]);
-
-
-
-
- 
-  useEffect(() => {
-    const fetchupcomingCounts = async () => {
-      try {
-        const path = `http://localhost:3000/challenges/upcoming/${id}`;
-        console.log('Request Path:', path); // Log the request path
-        const response = await axios.get(path);
-        const upcomingChallengesCount = response.data;
-        console.log('Counts:', upcomingChallengesCount); // Log the entire response data
-        setUpcomingChallengesCount(upcomingChallengesCount); // Update count with fetched data
-      } catch (error) {
-        console.error('Error fetching challenge counts:', error);
-      }
-    };
-  
-    fetchupcomingCounts();
-  }, [id]);
-
-  
   return (
     <>
     <link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css" />
@@ -145,8 +124,9 @@ const [userData, setUserData] = useState(null);
       <button className="buttoncontact absolute top-0 right-0 mt-4 mr-4"> 
         <span className="label">See All Challenges</span>
       </button>
-      <img className="shadow-xl border  border-gray-300" src={`http://localhost:3000/uploads/${userData?.image ?? '/fallback-image-url'}`} />
-      <h2 class="titlecompany pt-5">{userData?.companyName ?? 'Loading...'} .</h2>
+      <img className="shadow-xl border  border-gray-300" src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}
+      />
+      <h2 className="titlecompany pt-5">{userData?.companyName ?? 'Loading...'} .</h2>
         <div className="containerprofiles">
           <p className="text-gray-600 pr-20 text-m">Headquarters </p>
           <span className="text-gray-600 font-bold text-m">{userData?.adresse ?? 'Loading...'}</span>
@@ -290,4 +270,6 @@ const [userData, setUserData] = useState(null);
     </>
   );
 }
+
+
 export default CompanyProfile;

@@ -147,7 +147,7 @@ const Settings = () => {
         />
     ) : (
       <img
-        src="../../public/default-profile-picture.png" // path to the static default image
+        src="/default-profile-picture.png" // path to the static default image
         alt="Default Profile"
         className="w-10 h-10 object-cover rounded-full"
       />

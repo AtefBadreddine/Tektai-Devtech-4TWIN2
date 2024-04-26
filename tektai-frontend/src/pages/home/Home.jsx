@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Header from '../../layout/Header';
 import HeroHome from './partials/HeroHome';
@@ -16,50 +16,11 @@ import { Slider } from '@chakra-ui/slider';
 import { Tabs } from '@chakra-ui/tabs';
 import Transition from '../../utils/Transition'; // Assuming Transition component file location
 import StatsCompare from '../../components/stats/statsCompare';
+import {Alert} from "@chakra-ui/react";
+import AlertMsg from "../../sections/AlertMsg";
 
 function Home() {
-  const products = [
-    {
-      title: "T-shirt",
-      link: "/t-shirt",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Sneakers",
-      link: "/sneakers",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Watch",
-      link: "/watch",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-  ];
+
   const data = [
     {
       name: "Atef Badreddine",
@@ -100,10 +61,33 @@ function Home() {
     },
     // Add more data objects as needed
   ];
+  const [alert,setAlert] = useState({
+    title : '',
+    desc : '',
+    status : ''
+  })
     // Add more items as needed
-
+  const searchParams = new URLSearchParams(window.location.search);
   const localStorageData = localStorage.getItem('user');
+  useEffect(() => {
+    const alert = searchParams.get("mail-confirmed");
 
+    if (alert) {
+      if (alert === 'true') {
+        setAlert({
+          title : 'Email Confirmed succesfully',
+          desc : 'Welcome to TEKTAI',
+          status : "success"
+        })
+      }
+      else  setAlert({
+        title : 'Error confirming your Email',
+        desc : 'please retry again in few minutes',
+        status : "error"
+      })
+    }
+
+  }, []);
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
       {/*  Site header */}
@@ -115,11 +99,10 @@ function Home() {
 
         {/*  Page sections */}
         <Transition show appear>
-
+          { alert.title.length ?  <AlertMsg title={alert.title} desc={alert.desc} status={alert.status} /> : '' }
 
         <HeroHome />
         </Transition>
-
         <FeaturesHome/>
 
 

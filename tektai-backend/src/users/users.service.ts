@@ -230,5 +230,13 @@ export class UsersService {
     return user.favoriteChallenges.map(challengeId => challengeId.toString());
   }
 
+  async markEmailAsConfirmed(mail: string) {
+    const user = await this.userModel.findOne({ email: mail }).exec();
+    if (user) {
+      user.mailConfirmed = true;
+      await user.save();
+    }
+  }
+
 
 }

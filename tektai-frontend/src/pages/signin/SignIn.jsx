@@ -75,15 +75,15 @@ function SignIn() {
           setLoginAttemptFailed(false); // Reset login attempt status
   
           setTimeout(() => {
-            if (user && user.role === 'admin') {
-              navigate('/admin');
-            } else if  (user && user.role === 'challenger') {
-              navigate('/homechallenger');
-            }else if  (user && user.role === 'company') {
-              navigate('/homecompany');
-            }else {
-              navigate('/');
+
+            if (user) {
+              if (user.role === 'admin')
+                navigate('/admin');
+              else if (user.role === 'company')
+                navigate('/company');
+              else  navigate('/homechallenger');
             }
+
           }, 2000);
   
           setFailedAttempts(0); // Reset failed attempts counter

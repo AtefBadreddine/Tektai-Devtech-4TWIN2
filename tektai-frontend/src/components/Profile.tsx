@@ -100,7 +100,7 @@ const Profile: React.FC = () => {
       />
     ) : (
       <img
-        src="../../public/default-profile-picture.png" // path to the static default image
+        src="/default-profile-picture.png" // path to the static default image
         alt="Default Profile"
         className="shadow-xl rounded-full h-35 w-35 object-cover  align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />

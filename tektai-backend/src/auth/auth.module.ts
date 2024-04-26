@@ -11,6 +11,7 @@ import * as process from 'process';
 import { ConfigModule } from "@nestjs/config";
 import { GithubStrategy } from './strategies/github.strategy';
 import {GoogleStrategy} from "./strategies/google.strategy";
+import {EmailConfirmationService} from "../mails/EmailConfirmationService";
 
 @Module({
   imports: [
@@ -24,6 +25,6 @@ import {GoogleStrategy} from "./strategies/google.strategy";
     })
   ],
   controllers: [AuthController],
-  providers: [AuthService,LocalStrategy,JwtStrategy,HashService,GithubStrategy,GoogleStrategy]
+  providers: [AuthService,LocalStrategy,JwtStrategy,HashService,GithubStrategy,GoogleStrategy,EmailConfirmationService]
 })
 export class AuthModule {}

@@ -21,7 +21,11 @@ import { SubmissionModule } from './submission/submission.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
+import {MailsModule} from "./mails/mails.module";
+
 import { LocalisationModule } from './localisation/localisation.module';
+
 
 
 @Module({
@@ -43,6 +47,7 @@ import { LocalisationModule } from './localisation/localisation.module';
     TeamsModule,
     CommentsModule,
     ReviewModule,
+      MailsModule
   ],
   controllers: [AppController, ReviewController],
   providers: [AppService, ReviewService],
