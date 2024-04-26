@@ -69,7 +69,11 @@ import CompanyProfile from './components/companyprofile';
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 // import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
+import Challengerprofile from './components/Challengerprofile';
+import Create from './pages/challenges/createChallenge/create';
+
 import Homechallenger from './pages/home/Homechallenger';
+
 
 
 
@@ -132,6 +136,7 @@ import Homechallenger from './pages/home/Homechallenger';
           <Route path="/favoriteChallenges" element={<FavoriteChallenges/>} />
 
           <Route path="/companyprofile" element={<CompanyProfile/>} />
+          <Route path="/challenges/create" element={<Create />} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
