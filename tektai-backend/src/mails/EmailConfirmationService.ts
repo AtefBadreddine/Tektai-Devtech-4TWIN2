@@ -58,7 +58,7 @@ export class EmailConfirmationService {
     public async decodeConfirmationToken(token: string) {
         try {
             const payload = await this.jwtService.verify(token);
-
+            this.logger.log(payload,'mail service')
             if (typeof payload === 'object' && 'email' in payload) {
                 return payload.email;
             }

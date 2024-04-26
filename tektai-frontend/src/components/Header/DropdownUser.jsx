@@ -83,13 +83,17 @@ const DropdownUser = () => {
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          {userData && userData.image && (
+          {userData && userData.image ? (
             <Avatar
               className="mx-2 transition duration-300 ease-in-out transform hover:scale-110"
               size="md"
               src={`http://localhost:3000/uploads/${userData.image}`}
             />
-          )}
+          ) : <Avatar
+              className="mx-2 transition duration-300 ease-in-out transform hover:scale-110"
+              size="md"
+              src={'default-profile-picture'}
+          />}
         </span>
 
         <svg

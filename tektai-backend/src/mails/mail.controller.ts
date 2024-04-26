@@ -3,10 +3,11 @@ import {
 
     Logger,
     Get,
-    Req, Render, Post, Body, HttpException, HttpStatus,
+    Req, Render, Post, Body, HttpException, HttpStatus, Res,
 
 
 } from "@nestjs/common";
+import { Response } from 'express';
 
 
 
@@ -22,24 +23,27 @@ export class MailController {
 
 
 
-    @Get('send/confirm-mail')
-    async sendConfirmEmail() {
-        return this.emailConfirmationService.sendVerificationLink('atefbadreddine05@gmail.com');
-    }
-
     @Post('confirm-mail')
-    async confirmEmail(@Body() token: string) {
+    async confirmEmail(@Body('token') token: string, @Res() res: Response) {
         try {
+            this.logger.log(token)
             const mail = await this.emailConfirmationService.decodeConfirmationToken(token);
+            this.logger.log(mail,'CONFIRM MAIL')
             if (mail) {
                 await this.userService.markEmailAsConfirmed(mail);
-                return { message: 'Email confirmed successfully' };
+                return res.status(HttpStatus.OK).json({
+                    message: 'Email confirmed successfully'
+                });
             } else {
-                throw new HttpException('Invalid or expired token', HttpStatus.BAD_REQUEST);
+                return res.status(HttpStatus.BAD_REQUEST).json({
+                    message: 'Invalid or expired token'
+                });
             }
         } catch (error) {
-            throw new HttpException('An error occurred while confirming email', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            this.logger.log(error.message,'CONFIRM MAIL error')
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                message: 'Invalid or expired token'
+            });        }
     }
 
 }

@@ -63,6 +63,7 @@ import CompanyProfile from './components/companyprofile';
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 // import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
+  import MailConfirmation from "./pages/signup/MailConfirmation";
 
 
 
@@ -114,6 +115,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/TermsAndConditions" element={<TermsAndConditions />} />
           <Route path="/NotAdmin" element={<NotAdmin />} />
           <Route path="/forgetpawd" element={<Forgetpassword />} />
+          <Route path="/confirm-mail" element={<MailConfirmation />} />
           <Route path="/profile/:id" element={<ProfileAll/>} />
           <Route path="/UserSearchF" element={<UserSearchF/>} />
           <Route path="/Teams" element={<Teams/>} />
