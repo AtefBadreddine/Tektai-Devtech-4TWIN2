@@ -18,6 +18,15 @@ export class Submission {
 
   @Prop({ required: false }) // Type modifié pour stocker le chemin du fichier
   notebook: string;
+   // Ajout des nouvelles propriétés pour les fichiers supplémentaires
+    @Prop()
+    presentation: string; // Chemin vers le fichier .mp4
+
+    @Prop()
+    excel: string; // Chemin vers le fichier .excel
+
+    @Prop()
+    archive: string;
 }
 
 export const SubmissionSchema = SchemaFactory.createForClass(Submission);
