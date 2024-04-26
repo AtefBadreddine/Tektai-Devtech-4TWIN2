@@ -73,7 +73,7 @@ import './Header.css'; // Import CSS file for Header styles
     }, [top]);
 
     return (
-      <header className={` z-99999	 fixed w-full md:bg-opacity-90 bg-white transition duration-300 ease-in-out backdrop-blur ${!top && 'bg-white backdrop-blur-sm shadow-lg'}`}>
+      <header className={` z-99	 fixed w-full md:bg-opacity-90 bg-white transition duration-300 ease-in-out backdrop-blur ${!top && 'bg-white backdrop-blur-sm shadow-lg'}`}>
         <div className="max-w-6xl mx-auto px-5 sm:px-6">
           <div className="flex items-center justify-between h-16 md:h-20">
             <div className="flex-shrink-0 mr-4">
@@ -97,7 +97,7 @@ import './Header.css'; // Import CSS file for Header styles
                 <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Home
                 </Link>
-                <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">  <Tooltip label='Partake in a coding challenge for glory or money too xoxo'>
+                <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4 ">  <Tooltip  label='Partake in a coding challenge for glory or money too xoxo'>
                   Challenges              
                   </Tooltip>
                 </Link>

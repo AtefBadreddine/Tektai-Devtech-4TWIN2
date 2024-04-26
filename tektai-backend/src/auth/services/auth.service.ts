@@ -66,10 +66,11 @@ export class AuthService {
     const defaultClient = SibApiV3Sdk.ApiClient.instance;
     const apiKeyV3 = defaultClient.authentications['api-key'];
     apiKeyV3.apiKey = apiKey;
+    
 
     // Créer le corps de l'e-mail
     const emailParams = {
-      sender: { email: 'alaedineibrahim@gmail.com' },
+      sender: {name:'TektAi', email: 'alaedineibrahim@gmail.com' },
       to: [{ email }],
       subject: 'Reset Your Password',
       htmlContent: `
