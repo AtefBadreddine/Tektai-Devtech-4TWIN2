@@ -93,9 +93,17 @@ import './Header.css'; // Import CSS file for Header styles
 
             <nav className="hidden lg:flex lg:items-center lg:w-auto">
               <div className="text-sm lg:flex-grow">
-                <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                { user ? (user.role === 'company' ?
+                    <Link to="/company" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                      Home
+                    </Link> :
+                    <Link to="/homechallenger" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
+                      Home
+                    </Link>)  :
+                    <Link to="/" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
                   Home
-                </Link>
+                </Link>}
+
 
                 <Link to="/challenges" className="block mt-4 lg:inline-block lg:mt-0 text-gray-700 hover:text-gray-900 mr-4">
 

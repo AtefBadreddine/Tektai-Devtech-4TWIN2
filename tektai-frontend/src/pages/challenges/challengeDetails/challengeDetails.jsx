@@ -418,7 +418,7 @@ function ChallengeDetails() {
 
 
                       </div>
-                      <img src={`http://localhost:3000/uploads/${challenge.image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+                      <img src={ challenge?.image ? `http://localhost:3000/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
                    
  
                     </div>

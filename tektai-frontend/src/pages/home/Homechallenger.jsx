@@ -22,48 +22,7 @@ import ListChallengesH from '../challenges/listChallenges/listChallengesH';
 import HistoryChallenges from '../challenges/ChallengesHistory/HistoryChallenges';
 
 function Homechallenger() {
-  const products = [
-    {
-      title: "T-shirt",
-      link: "/t-shirt",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Sneakers",
-      link: "/sneakers",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Watch",
-      link: "/watch",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-    {
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },{
-      title: "Handbag",
-      link: "/handbag",
-      thumbnail: "https://i5.walmartimages.com/seo/New-Spring-Fashion-Fresh-Trends-Styles-POROPL-Plus-Size-Summer-Hawaiian-Print-Turndown-Button-Shirt-for-Men-Clearance-White-Size-16_8d50b036-9865-4634-b9cb-f91dd088c64a.753c606ee702969c6423fd18fa4d7601.jpeg",
-    },
-  ];
+
   const data = [
     {
       name: "Atef Badreddine",
@@ -124,7 +83,7 @@ function Homechallenger() {
 
         <HeroHome />
         </Transition> */}
-          <div className=" mt-11 flex justify-center items-center gap-x-2 text-[32px] sm:text-[64px] lg:text-[72px]">Welcome back   
+          <div className=" mt-16 flex justify-center font-bold items-center gap-x-2 text-[32px] sm:text-[64px] lg:text-[48px]">Welcome back
                 <TypeAnimation
 
                     sequence={[
@@ -142,7 +101,7 @@ function Homechallenger() {
                 />
             </div>
 
-<ThreeTierPricing></ThreeTierPricing>
+<ThreeTierPricing/>
         <FeaturesHome/>
 
 

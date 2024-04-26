@@ -73,7 +73,6 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
   import MailConfirmation from "./pages/signup/MailConfirmation";
   import CompanyHome from "./pages/home/CompanyHome";
 
-import Challengerprofile from './components/Challengerprofile';
 import Create from './pages/challenges/createChallenge/create';
 
 import Homechallenger from './pages/home/Homechallenger';

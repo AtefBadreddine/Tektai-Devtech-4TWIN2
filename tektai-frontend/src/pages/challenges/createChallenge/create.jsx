@@ -390,8 +390,8 @@ function Create() {
         onChange={handleChange}
     ></textarea>
     {errors.description && <p className="text-red-500">{errors.description}</p>}
-    <div className="flex gap-6 mb-6">
-<div className="w-1/2">
+    <div className="flex flex-col gap-6 mb-6">
+<div className="w-full">
 <label htmlFor="image" className="block mb-2 font-bold">Upload Image</label>
      <input type="file" onChange={handleFileChange}  id="image" className="w-full p-2 border border-gray-300 rounded"/>
      <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
@@ -403,7 +403,7 @@ function Create() {
                 value={defaultCompanyId}
             />
     </div>
-    <div className="w-1/2">
+    <div className="w-full">
     <label htmlFor="dataset" className="block mb-2 font-bold">
         Upload Dataset <span className="text-red-600">*</span>
     </label>
@@ -474,7 +474,7 @@ function Create() {
     </div>
 
 
-    <div className="grid grid-cols-2 gap-4">
+    <div className="flex flex-col gap-4">
       <div className="mb-4">
           <p className="mb-2 font-bold">Team number <span className="text-red-600">*</span></p>
 
@@ -529,10 +529,10 @@ function Create() {
       <div className="mb-4">
           <p className="mb-2 font-bold">Bareme <span className="text-red-600">*</span></p>
         
-          <div className="grid grid-cols-2 gap-4">
-  <label >
-    <div   style={{ marginRight: '32px' }}>
-    <input
+          <div className="grid grid-cols-4 gap-4">
+        <label >
+         <div   style={{ marginRight: '32px' }}>
+         <input
       type="checkbox"
       name="File"
       checked={checkedItems.option1 || false || formData.barem.includes("File")}
@@ -557,34 +557,33 @@ function Create() {
     <p className="text-sm text-gray-500">(.pdf,.mp4)</p>
 
   </label>
+              <label >
+                  <input
+                      type="checkbox"
+                      name="Dataset"
+                      checked={checkedItems.option3 || false|| formData.barem.includes("Dataset")}
+                      onChange={handleOnChange}
+                  />
+                  Dataset
+                  <p className="text-sm text-gray-500 ">(.xlsx,.rar,.zip)</p>
+
+              </label>
+              <label>
+                  <input
+                      type="checkbox"
+                      name=" Source Code"
+                      checked={checkedItems.option4 || true || formData.barem.includes("Source Code")}
+                      onChange={handleOnChange}
+                      disabled
+                      className="disabled-checkbox" // Apply the disabled-checkbox class
+                  />
+                  Source Code
+                  <p className="text-sm text-gray-500">(pdf or mp4)</p>
+
+              </label>
 
 </div>
-<div className="grid grid-cols-2 gap-4">
-  <label >
-    <input
-      type="checkbox"
-      name="Dataset"
-      checked={checkedItems.option3 || false|| formData.barem.includes("Dataset")}
-      onChange={handleOnChange}
-    />
-    Dataset
-    <p className="text-sm text-gray-500 ">(.xlsx,.rar,.zip)</p>
 
-  </label>
-  <label>
-    <input
-      type="checkbox"
-      name=" Source Code"
-      checked={checkedItems.option4 || true || formData.barem.includes("Source Code")}
-      onChange={handleOnChange}
-      disabled
-      className="disabled-checkbox" // Apply the disabled-checkbox class
-    />
-    Source Code
-    <p className="text-sm text-gray-500">(pdf or mp4)</p>
-
-  </label>
-</div>
 
       </div>
     </div>

@@ -15,7 +15,8 @@ import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import Transition from '../../utils/Transition';
 import Stats from "./company/Stats";
-import CreateChallengeBlock from "./company/CreateChallengeBlock"; // Assuming Transition component file location
+import CreateChallengeBlock from "./company/CreateChallengeBlock";
+import ThreeTierPricing from "./partials/pricing"; // Assuming Transition component file location
 
 
 function CompanyHome() {
@@ -72,7 +73,7 @@ function CompanyHome() {
                 <Stats/>
 
                 <CreateChallengeBlock/>
-
+                <ThreeTierPricing/>
                 {/* <HeroParallax products={products} /> */}
                 <Slider userData={data} />
                 <div className="container">
