@@ -1,6 +1,7 @@
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { SubmissionService } from './submission.service';
-import { Controller, Post, UploadedFiles, BadRequestException, UseInterceptors, Logger, Req, Put, Body, Delete, Get, Param } from '@nestjs/common';
+
+import { Controller, Post, UploadedFiles, BadRequestException, UseInterceptors, Logger, Req, Put, Body, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import * as path from 'path';
 import { Request } from 'express'; // Import des types Request et Response depuis Express
 import { TeamsService } from 'src/teams/teams.service';
@@ -8,6 +9,7 @@ import { ChallengesService } from 'src/challenge/challenges.service';
 import { Submission } from 'src/schemas/submission.schema';
 import { Types } from 'mongoose';
 import { ObjectId } from 'mongoose';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 @Controller('submissions')
 export class SubmissionController {
   constructor(
@@ -40,10 +42,15 @@ export class SubmissionController {
 
      const pdfPath = `uploads/${files[0].originalname}`;
     const notebookPath = `uploads/${files[1].originalname}`;
+    const presentationPath = `uploads/${files[2].originalname}`;
+        const excelPath = `uploads/${files[3].originalname}`;
+        const archivePath = `uploads/${files[4].originalname}`;
 
  this.logger.log('Receive files:', );
       // Enregistrer la soumission avec les IDs comme ObjectId
-      await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath);
+      await this.submissionService.saveSubmission(teamId, challengeId, pdfPath, notebookPath, presentationPath,
+            excelPath,
+            archivePath);
 
       return { message: 'Files uploaded successfully.' };
     } catch (error) {
@@ -90,6 +97,22 @@ export class SubmissionController {
       this.logger.error(error);
       throw error;
     }
+  }
+ @Get('company/:companyId') // Utiliser 'companyId' au lieu de 'id' pour récupérer le paramètre
+async getSubmissionsByCompanyId(@Param('companyId') companyId: string) {
+  this.logger.log('Fetching submissions for company:', companyId);
+  return this.submissionService.getSubmissionsByCompanyId(companyId);
+}
+
+  // Endpoint pour obtenir les soumissions pour les défis appartenant à l'entreprise de l'utilisateur connecté
+  @UseGuards(JwtAuthGuard)
+  @Get('companysubmissions')
+  async getCompanySubmissionsForChallenges(@Req() req): Promise<Submission[]> {
+    // Ici, vous devez obtenir l'ID de l'entreprise de l'utilisateur connecté à partir du contexte d'authentification
+    const companyId = req.user._id; // Assurez-vous que la clé companyId correspond à celle dans les données utilisateur
+    this.logger.log('Fetching company submissions for company:', companyId); // Log pour suivre l'ID de l'entreprise pour laquelle les soumissions sont récupérées
+    const submissions = await this.submissionService.getSubmissionsForChallengesOwnedByCompany(companyId);
+    return submissions;
   }
   
 }

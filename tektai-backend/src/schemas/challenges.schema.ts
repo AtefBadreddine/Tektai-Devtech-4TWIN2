@@ -17,6 +17,14 @@ export class Challenges {
   @Prop()
   prize: string;
 
+
+  @Prop()
+  maxTeam:string;
+  
+  @Prop()
+  barem: string[]; // Declaring barem as an array of strings
+  
+
 @Prop({ enum: ['Anyone', 'Invitation-only'], default: 'Anyone' })
 eligible_participants:string;
 

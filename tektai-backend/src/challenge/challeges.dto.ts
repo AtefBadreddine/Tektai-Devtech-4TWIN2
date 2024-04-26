@@ -11,4 +11,8 @@ export class ChallengeDto {
     start_date: Date; // Date with hours and minutes
     deadline: Date; // Date with hours and minutes
     dataset: string;
+    maxTeam: string;
+    barem: string[]; // assuming barem is a list of strings, adjust the type accordingly
+
+
 }

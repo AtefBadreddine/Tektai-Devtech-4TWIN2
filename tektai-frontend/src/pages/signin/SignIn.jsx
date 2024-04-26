@@ -75,12 +75,13 @@ function SignIn() {
           setLoginAttemptFailed(false); // Reset login attempt status
   
           setTimeout(() => {
+
             if (user) {
               if (user.role === 'admin')
                 navigate('/admin');
               else if (user.role === 'company')
                 navigate('/company');
-              else  navigate('/');
+              else  navigate('/homechallenger');
             }
 
           }, 2000);

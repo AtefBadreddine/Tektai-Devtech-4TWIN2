@@ -13,6 +13,7 @@
   overflow: hidden;
   box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.062);
 } */
+@import url(https://fonts.googleapis.com/css?family=Montserrat);
 
 #cookieSvg {
   width: 50px;
@@ -330,8 +331,9 @@ opacity: 1;
 }
 .carddt {
 width: 100%; /* Match the width of the input */
-height: 2.5rem; /* Set a fixed height */
+height: 3.5rem; /* Set a fixed height */
 border-radius: 0.25rem; /* Adjust the border radius as needed */
+margin-bottom: 10px;
 background: #e0e0e0;
 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 display: flex;
@@ -740,18 +742,24 @@ color: #ab1992;
   width: 15px;
   height: 15px;
 }
-
+/* Set default styles for .icon-box */
 .icon-box {
   margin-top: 15px;
   width: 60%;
   padding: 10px;
   margin-right: 20px;
-  background-color: #e3fff9;
+  background-color: rgb(240 253 244); /* Default background color */
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: left;
 }
+
+/* Apply pink background color when visibility is private */
+.icon-box.private {
+  background-color: rgb(254 242 242);
+}
+
 
 .icon-box svg {
   width: 17px;
@@ -789,11 +797,18 @@ color: #ab1992;
 }
 .icon-box .span {
   margin-left: 10px;
-  font-family: 'Lucida Sans' sans-serif;
+  font-family: 'Lucida Sans', sans-serif;
   font-size: 13px;
-  font-weight: 500;
-  color: #9198e5;
+  font-weight: 400;
+  /* Set default text color */
+  color: rgb(21 128 61);
 }
+
+/* Apply red color when visibility is private */
+.icon-box .span.private {
+  color: #B91C1C;
+}
+
 
 .card:hover {
   cursor: pointer;
@@ -1209,4 +1224,164 @@ padding-top: 15px;
     transform: scale(1.09);
   }
 }
+/*custom font*/
 
+/*form styles*/
+#msform {
+  width: 80%;
+  margin: 50px auto;
+  text-align: center;
+  position: relative;
+}
+#msform fieldset {
+  background: white;
+  border: 0 none;
+  border-radius: 3px;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.4);
+  padding: 20px 30px;
+  box-sizing: border-box;
+  width: 100%;
+
+  /*stacking fieldsets above each other*/
+  position: relative;
+}
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+  display: none;
+}
+/*inputs*/
+
+.inputfiled{
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: montserrat;
+  color: #2c3e50;
+  font-size: 13px;
+}
+
+#msform textarea {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: montserrat;
+  color: #2c3e50;
+  font-size: 13px;
+}
+/*buttons*/
+#msform .action-button {
+  width: 100px;
+  background: #338cf5;
+  font-weight: bold;
+  color: white;
+  border: 0 none;
+  border-radius: 1px;
+  cursor: pointer;
+  padding: 10px;
+  margin: 10px 5px;
+  text-decoration: none;
+  font-size: 14px;
+}
+#msform .action-button:hover,
+#msform .action-button:focus {
+  box-shadow: 0 0 0 2px white, 0 0 0 3px #338cf5;
+}
+/*headings*/
+.fs-title {
+  font-size: 15px;
+  text-transform: uppercase;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+.fs-subtitle {
+  font-weight: normal;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 20px;
+}
+/*progressbar*/
+#progressbar {
+  margin-bottom: 30px;
+  overflow: hidden;
+  /*CSS counters to number the steps*/
+  counter-reset: step;
+}
+#progressbar li {
+  list-style-type: none;
+  color: rgb(24, 30, 53);
+  text-transform: uppercase;
+  font-size: 9px;
+  width: 33.33%;
+  float: left;
+  position: relative;
+}
+#progressbar li:before {
+  content: counter(step);
+  counter-increment: step;
+  width: 20px;
+  line-height: 20px;
+  display: block;
+  font-size: 10px;
+  color: #333;
+  background: #d7e8fb;
+  border-radius: 3px;
+  margin: 0 auto 5px auto;
+}
+/*progressbar connectors*/
+#progressbar li:after {
+  content: "";
+  width: 100%;
+  height: 2px;
+  background:  rgb(212, 210, 210);
+  position: absolute;
+  left: -50%;
+  top: 9px;
+  z-index: -1; /*put it behind the numbers*/
+}
+#progressbar li:first-child:after {
+  /*connector not needed before the first step*/
+  content: none;
+}
+/*marking active/completed steps green*/
+/*The number of the step and the connector before it = green*/
+#progressbar li.active:before,
+#progressbar li.active:after {
+  background: #338cf5;
+  color: white;
+}
+
+.disabled-checkbox {
+  opacity: 0.5; /* Adjust opacity to make the checkboxes appear grayed out */
+  cursor: not-allowed; /* Change cursor to indicate that the checkboxes are disabled */
+}
+
+.disabled-checkbox:checked {
+  opacity: 1; /* Ensure that the checked disabled checkboxes remain visible */
+}
+input[type="checkbox"]:disabled {
+  /* Hide the default checkbox appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Use a custom checkbox style */
+  width: 16px; /* Adjust width and height as needed */
+  height: 16px;
+  border-radius: 3px; /* Rounded corners */
+  background-color: #fff; /* White background */
+}
+
+/* Style for checked disabled checkboxes */
+input[type="checkbox"]:disabled:checked {
+  /* Change color of the checkbox when checked */
+  background-color: #666; /* Gray background */
+}
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

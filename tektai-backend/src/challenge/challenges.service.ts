@@ -119,5 +119,105 @@ export class ChallengesService {
   }
   
 
+
+  async uploadfile(challengeId: string, challengeDto: ChallengeDto, file: Express.Multer.File): Promise<Challenges> {
+    try {
+      // Check if the challenge exists
+      const existingchallenge = await this.challengesModel.findById(challengeId).exec();
+      if (!existingchallenge) {
+        throw new NotFoundException('Challenge not found');
+      }
+
+      if (file) {
+        const fileExt = extname(file.originalname);
+        const uniqueSuffix = `${challengeId}`; 
+        const randomFileName = `${uniqueSuffix}${fileExt}`;
+
+        existingchallenge.dataset = randomFileName;
+      }
+
+      // Save the updated challenge
+      const updatedchallenge = await existingchallenge.save();
+      return updatedchallenge;
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to update challenge');
+    }
+  }
+
+
+  async downloadFile(challengeId: string): Promise<string> {
+    try {
+      // Find the challenge by ID
+      const challenge = await this.challengesModel.findById(challengeId).exec();
+      if (!challenge) {
+        throw new NotFoundException('Challenge not found');
+      }
+
+      // Assuming `dataset` contains the filename
+      const filePath = `./uploads/${challenge.dataset}`;
+      return filePath; // Return the path to the file
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to download file');
+    }
+  }
+
+
+
+
+  async uploadImage (challengeId: string, challengeDto: ChallengeDto, image: Express.Multer.File): Promise<Challenges> {
+    try {
+      // Check if the user exists
+      const existingchallenge = await this.challengesModel.findById(challengeId).exec();
+      if (!existingchallenge) {
+        throw new NotFoundException('User not found');
+      }
+
+      // Update user properties
+      existingchallenge.image = challengeDto.image || existingchallenge.image;
+
+      // Update the profile image if provided in the DTO
+      if (image) {
+        const fileExt = extname(image.originalname);
+        const uniqueSuffix = `${challengeId}`; // Generate unique filename with user ID
+        const randomFileName = `${uniqueSuffix}${fileExt}`;
+
+        existingchallenge.image = randomFileName;
+
+      }
+
+     // Save the updated challenge
+     const updatedchallenge = await existingchallenge.save();
+     return updatedchallenge;
+   } catch (error) {
+     throw new InternalServerErrorException('Failed to update challenge');
+   }
+ }
+}
+/* 
+ async uploadImage(challengeDto: ChallengeDto, image: Express.Multer.File): Promise<Challenges> {
+  try {
+      // Create a new challenge instance
+      const newChallenge = new this.challengesModel(challengeDto);
+
+      // Set the challenge image if provided
+      if (image) {
+          const fileExt = extname(image.originalname);
+          const randomFileName = `${uuidv4()}${fileExt}`; // Generate a unique filename
+          newChallenge.image = randomFileName;
+      }
+
+      // Save the new challenge
+      const savedChallenge = await newChallenge.save();
+      return savedChallenge;
+  } catch (error) {
+      throw new InternalServerErrorException('Failed to create new challenge');
+  }
 }
 
+}
+
+function uuidv4() {
+  throw new Error('Function not implemented.');
+}
+
+ */

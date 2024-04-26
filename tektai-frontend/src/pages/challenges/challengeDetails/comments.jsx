@@ -129,13 +129,13 @@ function Comments() {
             return `${Math.floor(diff / 3600)} h`;
         } else if (diff < 604800) {
             const days = Math.floor(diff / 86400);
-            return `${days} d${days > 1 ? 's' : ''} `;
+            return `${days} d${days > 1 ? '' : ''} `;
         } else if (diff < 31536000) {
             const weeks = Math.floor(diff / 604800);
-            return `${weeks} w${weeks > 1 ? 's' : ''} `;
+            return `${weeks} w${weeks > 1 ? '' : ''} `;
         } else {
             const years = Math.floor(diff / 31536000);
-            return `${years} y${years > 1 ? 's' : ''} `;
+            return `${years} y${years > 1 ? '' : ''} `;
         }
     }
 

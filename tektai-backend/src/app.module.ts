@@ -21,7 +21,11 @@ import { SubmissionModule } from './submission/submission.module';
 import { UsersModule } from './users/users.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+
 import {MailsModule} from "./mails/mails.module";
+
+import { LocalisationModule } from './localisation/localisation.module';
+
 
 
 @Module({
@@ -35,6 +39,7 @@ import {MailsModule} from "./mails/mails.module";
     SubmissionModule,
     ContactModule,
     ChallengesModule,
+    LocalisationModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'), // relative path to uploads directory
       serveRoot: '/uploads', // Base URL path to serve the files from

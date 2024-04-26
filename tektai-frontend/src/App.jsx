@@ -17,28 +17,34 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
   import AOS from 'aos';
 
+  import Home from './pages/home/Home';
+  import SignIn from './pages/signin/SignIn';
+  import SignUp from './pages/signup/SignUp';
+  import ResetPassword from './pages/resetPassword/ResetPassword';
+  import AuthProvider from "./auth/AuthProvider";
+  import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
+  import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
+  import Ranking from "./pages/ranking/ranking ";
+  import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
+  import DefaultLayout from './layout/DefaultLayout';
+  import Dashhome from './pages/dashboard/dashhome';
+  import ProfileAll from './components/ProfileAll';
+  import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
+  import SubmissionList from './pages/SubmitSolution/SubmissionList';
+
+  import CompanySubmissions from './pages/SubmitSolution/CompanySubmissions';
+
+  import Settings from './components/Settings';
+import TermsAndConditions from './components/terms/terms';
+import Spinner from './components/spinner/spinner';
+import SpinnerWithBackground from './components/spinner/spinner';
   import ProtectedRoute from "./ProtectedRoute";
-import AuthProvider from "./auth/AuthProvider";
 import NotAdmin from './components/NotAdmin/NotAdmin';
 import Profile from './components/Profile';
-import ProfileAll from './components/ProfileAll';
-import Settings from './components/Settings';
+
 import NotFound from './components/notfound/notfound';
-import SpinnerWithBackground from './components/spinner/spinner';
-import TermsAndConditions from './components/terms/terms';
-import FileUploadForm from './pages/SubmitSolution/FileUploadForm';
-import SubmissionList from './pages/SubmitSolution/SubmissionList';
-import ChallengeDetails from "./pages/challenges/challengeDetails/challengeDetails";
-import CreateChallenge from "./pages/challenges/createChallenge/CreateChallenge";
-import ListChallenges from "./pages/challenges/listChallenges/listChallenges";
-import Dashhome from './pages/dashboard/dashhome';
-import Home from './pages/home/Home';
-import Ranking from "./pages/ranking/ranking ";
 import Forgetpassword from "./pages/resetPassword/ForgetPassword";
-import ResetPassword from './pages/resetPassword/ResetPassword';
 import AuthSuccessRedirect from "./pages/signin/AuthSuccessRedirect";
-import SignIn from './pages/signin/SignIn';
-import SignUp from './pages/signup/SignUp';
 
 import Challengerprofile from './components/Challengerprofile';
 import MapComponent from './pages/Localisation/MapComponent';
@@ -53,7 +59,7 @@ import SearchResultF from './pages/usersearch/SearchResultF';
 import UserSearch from './pages/usersearch/UserSearch';
 import UserSearchF from './pages/usersearch/UsersearchF';
 
- import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
+import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 import FavoriteChallenges from './pages/challenges/listChallenges/favoriteChallenges';
 
 import CompanyProfile from './components/companyprofile';
@@ -63,8 +69,15 @@ import CompanyProfile from './components/companyprofile';
 // import HistoryChallenges from './pages/challenges/ChallengesHistory/HistoryChallenges';
 // import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
+
   import MailConfirmation from "./pages/signup/MailConfirmation";
   import CompanyHome from "./pages/home/CompanyHome";
+
+import Challengerprofile from './components/Challengerprofile';
+import Create from './pages/challenges/createChallenge/create';
+
+import Homechallenger from './pages/home/Homechallenger';
+
 
 
 
@@ -99,7 +112,11 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <SpinnerWithBackground />
         ) : (
         <Routes>
-        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} /> {/* Ajoutez ce chemin */}
+        <Route path="/companysubmissions" element={<CompanySubmissions />} />
+ 
+      
+
+        <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} />
           <Route path="/Map" element={<MapComponent />} />
           <Route path="/file-upload/:id" element={<FileUploadForm />} />
           <Route path="/submissionslist" element={<SubmissionList/>} />
@@ -125,9 +142,11 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/favoriteChallenges" element={<FavoriteChallenges/>} />
 
           <Route path="/companyprofile" element={<CompanyProfile/>} />
+          <Route path="/challenges/create" element={<Create />} />
 
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
+          <Route path="/homechallenger" element={<Homechallenger />} />
 
           <Route path="*" element={<NotFound />} />
 
@@ -135,8 +154,9 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
             <Route path="/profile" element={<Profile />} />
             <Route path="/Challengerprofile" element={<Challengerprofile />} />
             <Route path="/pages/settings" element={<Settings />} />
+            <Route path="/historychallenges" element={<HistoryChallenges/>} /> 
           </Route>
-          {/* <Route path="/historychallenges" element={<HistoryChallenges/>} /> */}
+          
 
           <Route element={<ProtectedRoute adminOnly />}>
             <Route path="/admin" element={<Dashhome />}    />
