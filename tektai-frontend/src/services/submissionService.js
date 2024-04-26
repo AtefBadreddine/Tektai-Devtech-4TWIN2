@@ -50,6 +50,20 @@ const submissionService = {
     }
   },
 
+
+   getCompanySubmissionsForChallenges: async () => {
+    try {
+      const response = await axios.get(`${API_URL}/submissions/companysubmissions`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`, // Vous devrez peut-être ajuster cela en fonction de la façon dont vous gérez le token JWT dans votre application React
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  
   
 };
 

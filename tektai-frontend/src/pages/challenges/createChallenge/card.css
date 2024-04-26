@@ -348,7 +348,7 @@ background-color: pink; /* Change background color */
   cursor: pointer;
   overflow: visible;
   width: 60px;
-  margin: 20px;
+  margin-top: 2em;
 }
 
 svg #heart {
@@ -687,7 +687,7 @@ color: #ab1992;
 }
 
 .card {
-  width: 302px;
+  width: 100%;
   height: 350px;
   background: rgb(255, 255, 255);
   border-radius: 10px;
@@ -695,7 +695,6 @@ color: #ab1992;
 
   margin-right: 20px; /* Adjust as needed */
 
-  transition: 0.2s ease-in-out;
 }
 
 .cards-container {
@@ -824,12 +823,12 @@ color: #ab1992;
   fill: #ced8de;
 }
 .cardfav {
-  width: 232px;
+  width: 100%;
   height: 350px;
-  background-color: #e3e3e3dd;
+  background-color: #cce3f8dd;
   border-radius: 10px;
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.24);
-  border: 2px solid rgba(7, 7, 7, 0.12);
+  box-shadow: 0px 2px 10px rgba(0, 162, 255, 0.24);
+  border: 2px solid rgba(0, 110, 255, 0.12);
   font-size: 16px;
   transition: all 0.3s ease;
   position: relative;
@@ -846,7 +845,7 @@ color: #ab1992;
   width: 100%;
   height: 80px;
   max-width: 80px;
-  background: linear-gradient(90deg, #2f2e2e 0%, #2f2e2e 40%, rgba(0, 0, 0, 0.28) 60%);
+  background: linear-gradient(90deg, #fc9d9d 0%, #90d4fc 40%, rgb(255, 255, 255) 60%);
   border-radius: 100%;
   display: flex;
   justify-content: center;
@@ -1022,8 +1021,8 @@ padding-top: 15px;
 
 .card__avatar {
   position: absolute;
-  width: 114px;
-  height: 114px;
+  width: 280px;
+  height: 204px;
   background: var(--bg-color);
   display: flex;
   justify-content: center;
@@ -1032,6 +1031,59 @@ padding-top: 15px;
   transform: translateX(-50%);
   border-radius: 50%; /* This will make the image circular */
 }
+.card__avatar {
+  position: absolute;
+  width: 180px; /* Default width */
+  height: 204px;
+  background: var(--bg-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 210px;
+  transform: translateX(-50%);
+  border-radius: 50%; /* This will make the image circular */
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 1399px) { /* Large screens */
+  .card__avatar {
+    width: 160px;
+    padding-top: 208px; /* Adjust padding for vertical centering */
+  }
+}
+@media (max-width: 1299px) { /* Large screens */
+  .card__avatar {
+    width: 120px;
+    padding-top: 208px; /* Adjust padding for vertical centering */
+  }
+}
+@media (max-width: 1199px) { /* Large screens */
+  .card__avatar {
+    width: 120px;
+    padding-top: 208px; /* Adjust padding for vertical centering */
+  }
+}
+
+@media (max-width: 991px) { /* Medium screens */
+  .card__avatar {
+    width: 350px;
+    padding-top: 210px; /* Adjust padding for vertical centering */
+  }
+}
+@media (max-width: 691px) { /* Medium screens */
+  .card__avatar {
+    width: 260px;
+    padding-top: 210px; /* Adjust padding for vertical centering */
+  }
+}
+
+@media (max-width: 575px) { /* Extra small screens */
+  .card__avatar {
+    width: 190px; /* Adjust width as needed */
+    padding-top: 210px; /* Adjust padding for vertical centering */
+  }
+}
+
 
 
 

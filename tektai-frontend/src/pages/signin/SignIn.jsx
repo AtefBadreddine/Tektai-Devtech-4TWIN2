@@ -77,7 +77,11 @@ function SignIn() {
           setTimeout(() => {
             if (user && user.role === 'admin') {
               navigate('/admin');
-            } else {
+            } else if  (user && user.role === 'challenger') {
+              navigate('/homechallenger');
+            }else if  (user && user.role === 'company') {
+              navigate('/homecompany');
+            }else {
               navigate('/');
             }
           }, 2000);
