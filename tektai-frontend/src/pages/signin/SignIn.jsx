@@ -75,11 +75,14 @@ function SignIn() {
           setLoginAttemptFailed(false); // Reset login attempt status
   
           setTimeout(() => {
-            if (user && user.role === 'admin') {
-              navigate('/admin');
-            } else {
-              navigate('/');
+            if (user) {
+              if (user.role === 'admin')
+                navigate('/admin');
+              else if (user.role === 'company')
+                navigate('/company');
+              else  navigate('/');
             }
+
           }, 2000);
   
           setFailedAttempts(0); // Reset failed attempts counter

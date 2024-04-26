@@ -64,6 +64,7 @@ import CompanyProfile from './components/companyprofile';
 // import UpdateChallenge from '../src/pages/challenges/updateChallenge';
 import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
   import MailConfirmation from "./pages/signup/MailConfirmation";
+  import CompanyHome from "./pages/home/CompanyHome";
 
 
 
@@ -103,6 +104,7 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
           <Route path="/file-upload/:id" element={<FileUploadForm />} />
           <Route path="/submissionslist" element={<SubmissionList/>} />
           <Route exact path="/" element={<Home />} />
+          <Route path="/company" element={<CompanyHome />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/auth/success-redirect" element={<AuthSuccessRedirect />} />
           <Route path="/signup" element={<SignUp />} />

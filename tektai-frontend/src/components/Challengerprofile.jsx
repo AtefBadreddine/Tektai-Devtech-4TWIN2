@@ -216,7 +216,7 @@ function Challengerprofile() {
     </div>
     <div class="profile-menu">
      <div class="profile-avatar">
-           <img class="profile-img shadow-xl " src={`http://localhost:3000/uploads/${user?.image ?? '/fallback-image-url'}`}/>
+           <img class="profile-img shadow-xl " src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}/>
   <div class="role">{user?.role ?? 'Loading...'}:</div>
       <div class="profile-name">{user?.username ?? 'Loading...'}</div>
      </div>
