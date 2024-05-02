@@ -27,6 +27,9 @@ export class Submission {
 
     @Prop()
     archive: string;
+    @Prop()
+    evaluation: number;
+    
 }
 
 export const SubmissionSchema = SchemaFactory.createForClass(Submission);

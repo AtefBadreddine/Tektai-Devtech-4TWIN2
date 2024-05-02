@@ -32,7 +32,16 @@ const TeamsService = {
       throw error;
     }
   },
-
+  findAllJoinedTeams: async (teamId) => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/teams/findAllJoinedTeams/${teamId}`);
+      return response.data;
+    } catch (error) {    
+      console.error("Error fetching teams:", error);
+      throw error;
+    }
+  },
+ 
   updateTeam: async (teamId, updatedTeamData) => {
     try {
       const response = await axios.put(

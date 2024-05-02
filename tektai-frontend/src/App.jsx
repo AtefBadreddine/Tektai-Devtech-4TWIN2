@@ -76,6 +76,8 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 import Create from './pages/challenges/createChallenge/create';
 
 import Homechallenger from './pages/home/Homechallenger';
+import Evaluate from './pages/evaluate/evaluate';
+import CompanySubmissionsn from './pages/evaluate/evaluate';
 
 
 
@@ -154,6 +156,8 @@ import Homechallenger from './pages/home/Homechallenger';
             <Route path="/Challengerprofile" element={<Challengerprofile />} />
             <Route path="/pages/settings" element={<Settings />} />
             <Route path="/historychallenges" element={<HistoryChallenges/>} /> 
+            <Route path="/evaluate" element={<CompanySubmissionsn/>} /> 
+          
           </Route>
           
 
