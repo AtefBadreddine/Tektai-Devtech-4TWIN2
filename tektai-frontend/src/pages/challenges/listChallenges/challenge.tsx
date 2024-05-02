@@ -4,6 +4,11 @@ import axios from 'axios';
 import '../createChallenge/card.css'
 
 
+// Define a function to retrieve stored favorites from local storage
+const getStoredFavorites = () => {
+  const storedFavorites = localStorage.getItem('favorites');
+  return storedFavorites ? JSON.parse(storedFavorites) : {};
+};
 interface UserData {
   username: string;
   image: string;
@@ -20,6 +25,19 @@ const Challenges = ({ status }) => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [challengesPerPage] = useState(8);
+
+    // Retrieve stored favorites from local storage
+    const [favorites, setFavorites] = useState(getStoredFavorites());
+
+    const toggleFavorite = (challengeId) => {
+    setFavorites((prevFavorites) => {
+      const updatedFavorites = { ...prevFavorites };
+      updatedFavorites[challengeId] = !prevFavorites[challengeId];
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      return updatedFavorites;
+    });
+  };
+
   const truncateText = (text, maxLength) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + '...';
@@ -27,7 +45,6 @@ const Challenges = ({ status }) => {
       return text;
     }
   };
-
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
@@ -38,8 +55,12 @@ const Challenges = ({ status }) => {
         console.error('Error fetching challenges:', error);
       }
     };
+  
     fetchChallenges();
   }, [status, currentPage, challengesPerPage]);
+
+
+
 
   const indexOfLastChallenge = currentPage * challengesPerPage;
   const indexOfFirstChallenge = indexOfLastChallenge - challengesPerPage;
@@ -71,6 +92,27 @@ const Challenge = ({ challenge, index}) => {
       ];
       return imgs[index % imgs.length];
     }
+
+
+    useEffect(() => {
+      const fetchCompany = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/users/getById/${challenge.company_id}`);
+          const { companyName, image } = response.data; // Assuming the image URL is provided in the response data
+          
+          setCompanyName(companyName);
+          setImage(`${image}`); // Set the correct image path received from API
+          setLoadingCompany(false);
+        } catch (error) {
+          console.error('Error fetching company:', error);
+        }
+      };
+    
+      fetchCompany(); // Call the fetchCompany function
+    }, [challenge.company_id]); // Make sure to include challenge.company_id in the dependency array to re-fetch data when it changes
+    
+    const imageSrc = challenge.image ? challenge.image : defaultImagePath;
+ 
 
    useEffect(() => {
     const fetchUserData = async (username) => {
@@ -154,6 +196,9 @@ const Challenge = ({ challenge, index}) => {
         // Handle potential errors during the API request
       }
     };
+
+
+ 
   
     return (
 <div className="relative group overflow-hidden rounded-xl bg-white border border-gray-200 dark:border-gray-800 dark:bg-gray-900">
@@ -172,15 +217,15 @@ const Challenge = ({ challenge, index}) => {
 
 {/* like */}
 <div className="save">
-<input 
-type="checkbox" 
-className="checkbox" 
-id={`checkbox-${challenge._id}`} 
-checked={isFavorite}
-onChange={() => handleClickAddFavorite(challenge._id)}
-/>
+              <input 
+                type="checkbox" 
+                className="checkbox" 
+                id={`checkbox-${challenge._id}`} 
+                checked={favorites[challenge._id]} // Set checked state based on favorites
+                onChange={handleClickAddFavorite}
+              />
+              <label htmlFor={`checkbox-${challenge._id}`}>
 
-<label htmlFor={`checkbox-${challenge._id}`}>
       <svg id="heart-svg" viewBox="467 420 58 57" width="35" height="35" xmlns="http://www.w3.org/2000/svg">
         <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
           <path id="heart" d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" fill="#AAB8C2"/>
@@ -225,17 +270,17 @@ onChange={() => handleClickAddFavorite(challenge._id)}
 </label>
 </div>
 {/* profile img */}
-    <div className="card__avatar">
-    {image ? (
+<div className="card__avatar">
+  {image ? (
     <img src={`http://localhost:3000/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
-    ) : (
+  ) : (
     <img src="https://cdn4.vectorstock.com/i/1000x1000/09/33/company-icon-for-graphic-and-web-design-vector-31970933.jpg" height="45px" width="45px" alt="Default Logo" className='rounded-full shadow-lg' />
-    )}
-    </div>
+  )}
 </div>
+
+  </div>
   
-{/* block 2 */}
-{/* info */}
+  
   <div className="text">
     <p className="h3">{truncateText(challenge.title, 15)}</p>
     <div className="flex items-center">
@@ -246,24 +291,36 @@ onChange={() => handleClickAddFavorite(challenge._id)}
 </div>
 
 <div className="aline">
-  <div className="icon-box">
+<div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {/* Debugging - log the visibility */}
+  <svg
+    height="10px"
+    width="10px"
+    version="1.1"
+    id="Capa_1"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    viewBox="0 0 451.827 451.827"
+    xml:space="preserve"
+  >
+    <g>
+      <path
+        style={{ fill: challenge.visibility.toLowerCase() === 'private' ? '#F87171' : 'rgb(74 222 128)' }}
+        d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
+        c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"
+      />
+    </g>
+  </svg>
+  <p className={`span ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
+  {challenge.visibility}
+</p>
+</div>
 
-<svg height="10px" width="10px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-	 viewBox="0 0 451.827 451.827" xml:space="preserve">
-<g>
-	<g>
-		<path style={{ fill: "#9198e5" }}  d="M225.922,0C101.351,0,0.004,101.347,0.004,225.917s101.347,225.909,225.917,225.909
-			c124.554,0,225.901-101.347,225.901-225.909C451.823,101.347,350.476,0,225.922,0z"/>
-	</g>
-</g>
-</svg>
-      <p className="span">{challenge.status}</p>
-      
-    </div>
-    <div className="btn-conteiner">
+
+    <div class="btn-conteiner">
     <Link to={`/challenges/${challenge._id}`} >
-  <a href="#" className="btn-content">
-    <span className="icon-arrow">
+ {/*  <a href="#" class="btn-content">
+    <span class="icon-arrow">
       <svg
         xmlns:xlink="http://www.w3.org/1999/xlink"
         xmlns="http://www.w3.org/2000/svg"
@@ -297,10 +354,19 @@ onChange={() => handleClickAddFavorite(challenge._id)}
         </g>
       </svg>
     </span>
-  </a>
+  </a> */}
+
+<button
+  className="inline-block py-1 px-4 rounded-l-xl rounded-t-xl bg-[#338CF5] hover:bg-white hover:text-[#338CF5] focus:text-[#338CF5] focus:bg-gray-200 text-gray-50 font-bold leading-loose transition duration-200"
+>
+  View
+</button>
+
+
+
   </Link>
-</div>
-</div>
+  </div>
+  </div>
 
   </div>
 
@@ -323,7 +389,7 @@ onChange={() => handleClickAddFavorite(challenge._id)}
           <div className="icon">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       height="38px"
       width="38px"
       version="1.1"

@@ -8,6 +8,9 @@ import Comments from "./comments";
 
 import { useParams,useNavigate } from "react-router-dom";
 
+import { FaMoneyBill, FaUsers , FaInfoCircle } from 'react-icons/fa';
+import { AiOutlineSolution } from "react-icons/ai";
+import { PiUsersFourFill } from "react-icons/pi";
 
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
@@ -17,6 +20,12 @@ function ChallengeDetails() {
   const user = storedUser ? JSON.parse(storedUser) : null;
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [countdownExpired, setCountdownExpired] = useState(false); // Initialize countdownExpired state
+  const [challengeCompleted, setChallengeCompleted] = useState(false); // Initialize challengeCompleted state
 
 
   const [userName, setUserName] = useState('');
@@ -45,7 +54,15 @@ function ChallengeDetails() {
     challengeId: challengeId
   });
 
-  // Fetch challenge details
+
+
+ useEffect(() => {
+  if (challenge && challenge.status === 'Completed') {
+    setChallengeCompleted(true);
+    setCountdownExpired(false); // Reset countdownExpired if challenge is completed
+  }
+}, [challenge]);
+
 
    const navigate = useNavigate();// Utilisez useNavigate pour la navigation
   useEffect(() => {
@@ -63,7 +80,72 @@ function ChallengeDetails() {
   }, [id]);
 
   
-    
+
+  
+  useEffect(() => {
+    if (challenge && challenge.start_date && challenge.deadline) {
+        const countDownDate = new Date(challenge.deadline).getTime();
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            if (distance <= 0) {
+                clearInterval(interval);
+                setDays(0);
+                setHours(0);
+                setMinutes(0);
+                setSeconds(0);
+                setCountdownExpired(true); // Update state to indicate countdown expiration
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                setDays(days);
+                setHours(hours);
+                setMinutes(minutes);
+                setSeconds(seconds);
+                setCountdownExpired(false); // Update state to indicate countdown is still active
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }
+}, [challenge]);
+
+  /* useEffect(() => {
+    if (challenge && challenge.start_date && challenge.deadline) {
+      const countDownDate = new Date(challenge.deadline).getTime();
+
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        if (distance <= 0) {
+          clearInterval(interval);
+          setCountDown("EXPIRED");
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          setCountDown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [challenge]);
+ */
+
+
+
+
+
+
   useEffect(() => {
     const localStorageData = localStorage.getItem('user');
 
@@ -314,74 +396,49 @@ function ChallengeDetails() {
                     <div className="flex items-center mb-4">
        
                       <div>
- {user && challenge && user._id === challenge.company_id && (
 
-    <div class="button-container">
-  <button class="bin-button ">
+                      <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
+                        <p className="text-gray-600 mb-2">Created by: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
+                        <p className="flex items-center text-gray-600  "><strong className="m-2 text-blue-500 text-xl "><FaMoneyBill /></strong> Prize: {challenge.prize} DT</p>
+
+                        <p className="flex items-center text-gray-600 "><strong className="m-2 text-gray-500 text-xl"><FaInfoCircle /></strong> Status: <span className="font-bold text-green-600 pl-1"> {challenge.status}</span></p>
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-green-500 text-xl"><FaUsers /></strong> Eligible Participants: {challenge.eligible_participants}</p>
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-orange-300 text-xl"><PiUsersFourFill /></strong>Max teams to participate: <span className="font-bold text-red-600">{challenge.maxTeam}</span></p>
+        
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-blue-700 text-xl"><AiOutlineSolution /></strong>Solution type:{" "}<span className="font-bold  ">    {challenge.barem.join(", ")} </span></p>
+ 
+
+                        <input
+  value="favorite-button"
+  name="favorite-checkbox"
+  id="favorite"
+  checked="checked"
+  type="checkbox"
+/>
+<label class="containerfav" for="favorite">
   <svg
-    class="bin-top"
-    viewBox="0 0 39 7"
+    class="feather feather-heart"
+    stroke-linejoin="round"
+    stroke-linecap="round"
+    stroke-width="2"
+    stroke="currentColor"
     fill="none"
+    viewBox="0 0 24 24"
+    height="24"
+    width="24"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
-    <line
-      x1="12"
-      y1="1.5"
-      x2="26.0357"
-      y2="1.5"
-      stroke="white"
-      stroke-width="3"
-    ></line>
-  </svg>
-  <svg
-    class="bin-bottom"
-    viewBox="0 0 33 39"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <mask id="path-1-inside-1_8_19" fill="white">
-      <path
-        d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"
-      ></path>
-    </mask>
     <path
-      d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
-      fill="white"
-      mask="url(#path-1-inside-1_8_19)"
-    ></path>
-    <path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
-    <path d="M21 6V29" stroke="white" stroke-width="4"></path>
-  </svg>
-</button>
-
-
-<button class="editBtn">
-  <svg height="1em" viewBox="0 0 512 512">
-    <path
-      d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"
+      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
     ></path>
   </svg>
-</button>
+  <div class="action">
+    <span class="option-1">Add to Favorites</span>
+    <span class="option-2">Added to Favorites</span>
+  </div>
+</label>
 
 
-
-</div>
-
-)}
-
-
-                        <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
-                        <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize(TDN): <span className="font-bold text-blue-600">{challenge.prize}</span></p>
-                        <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        <p className="text-gray-600 mb-2">Max teams to participate: <span className="font-bold text-red-600">{challenge.maxTeam}</span></p>
-                        <p className="text-gray-600 mb-2">
-    Solution type:{" "}
-    <span className="font-bold  ">
-        {challenge.barem.join(", ")}
-    </span>
-</p>
 
                         <div className="flex items-center">
   <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
@@ -408,24 +465,111 @@ function ChallengeDetails() {
       {challenge.visibility}
     </p>
   </div>
+  
   {challenge.visibility.toLowerCase() === 'private' && (
   <button className="bg-[#338cf5] text-white font-bold py-2 mt-3 px-4 rounded ml-4 w-full">
     Send request
   </button>
+  
 )}
 
 </div>
 
 
+
                       </div>
-                      <img src={ challenge?.image ? `http://localhost:3000/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+
+                      
+                      <img src={`http://localhost:3000/uploads/${challenge.image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
                    
  
                     </div>
+
+
+
+
+
+
+
+
+
+
+                    <section id="statistic" className="statistic-section one-page-section">
+  {!(countdownExpired || challengeCompleted) && (
+    <h2 className={`countdown-text text-center text-4xl font-bold mb-8 ${countdownExpired || challengeCompleted ? 'expired' : ''}`}>
+      deadline
+    </h2>
+  )}
+  <div className="flex justify-center">
+    {countdownExpired || challengeCompleted ? (
+      <div className="flex flex-col items-center mr-8">
+        <div className="counter">
+          <h2 className="timer count-title count-number">Expired!</h2>
+
+
+          <div class="emoji">
+    <div class="emoji__wrap">
+    <div class="emoji_eye1 eyes"></div>
+        <div class="emoji_eye2 eyes"></div>
+        <div class="emoji__smile"></div>
+        <div class="emoji__tough"></div>
+    </div>
+</div>
+
+
+
+
+
+
+          <div className="stats-line-black"></div>
+        </div>
+      </div>
+    ) : (
+      <>
+       <div class="flex justify-center">
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{days}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Days</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{hours}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Hours</p>
+                </div>     
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{minutes}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Minutes</p>
+                </div>     
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{seconds}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Seconds</p>
+                </div>
+            </div>
+        </div>
+        </>
+        )}
+      </div>
+    </section>
+
+
+
+
                     
-                    <h2 className="h4">Description :</h2>
+                    <h2 className=" h4 flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Description: </h2>
+
                     <p className="text-gray-600 mb-4">{challenge.description}</p>
-                    <h2 className="h4">Dataset Description:</h2>
+                    <p className="flex items-center"><strong className="m-2 text-gray-500 text-xl"><FaInfoCircle /></strong> Dataset Description: </p>
+
                     <p className=" mb-4 mt-2 text-sm   text-gray-400 dark:text-white">The dataset for this competition (both train and test) was generated from a deep learning model trained on the Steel Plates Faults dataset from UCI. Feature distributions are close to, but not exactly the same, as the original. Feel free to use the original dataset as part of this competition, both to explore differences as well as to see whether incorporating the original in training improves model performance.</p>
             
                     <button class="download-button mb-5">
