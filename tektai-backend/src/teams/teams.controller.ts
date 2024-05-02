@@ -169,6 +169,10 @@ export class TeamsController {
         return this.teamsService.findInvitation(id);
   }
 
+  @Get('findAllJoinedTeams/:id')
+  async findAllJoinedTeams(@Param('id') id: string) {
+      return this.teamsService.findAllJoinedTeams(id);
+}
 
   @Post('invitations/:teamId/send')
 async sendInvitation(@Req() req: Request, @Param('teamId') teamId: string, @Body('memberId') memberId: string) {

@@ -8,6 +8,7 @@ import Footer from '../../layout/Footer';
 import { Alert, AlertIcon, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
 import InviteMembers from './InviteMembers';
 import PendingInvitations from './pedning';
+import JoinedTeams from './joine';
 function MyTeams() {
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -162,7 +163,7 @@ function MyTeams() {
   };
   const handleLeaveTeam = (teamId) => {
 
-    const memberId = JSON.parse(localStorage.getItem('user'))._id; // Assuming you have currentUser stored somewhere
+    const memberId = JSON.parse(localStorage.getItem('user')).id; // Assuming you have currentUser stored somewhere
     const url = `http://localhost:3000/teams/${teamId}/members/${memberId}`;
 
     // Sending a DELETE request to the API endpoint
@@ -422,7 +423,7 @@ function MyTeams() {
     </div>
   ))}
 </div>
-
+<JoinedTeams></JoinedTeams>
     </div>
   ))}
 </div>
