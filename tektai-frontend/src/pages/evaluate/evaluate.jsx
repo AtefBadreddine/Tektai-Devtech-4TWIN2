@@ -3,6 +3,7 @@ import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 import { FaFilePdf, FaFileVideo, FaDatabase } from 'react-icons/fa';
 import { Box, Button, Text } from '@chakra-ui/react';
+import { FaMoneyBill, FaUsers, FaEye, FaInfoCircle, FaCalendarAlt } from 'react-icons/fa';
 
 function CompanySubmissionsn() {
   const [submissions, setSubmissions] = useState([]);
@@ -82,20 +83,20 @@ function CompanySubmissionsn() {
     <div>
       <Header />
       <div className="p-18 pt-64">
-        <h1>Challenges </h1>
+        <h1 className='text-6xl font-bold'>Challenges </h1>
         {submissions.map(submission => (
           (submission.challenge.status === 'Ongoing' || submission.challenge.status === 'Completed') &&
           <div key={submission._id} className="border border-gray-300 rounded-lg p-4 mb-8">
             <h2 className="text-2xl font-semibold mb-4">{submission.challenge.title}</h2>
             <div className="mb-4">
-              <p><strong>Prize:</strong> {submission.challenge.prize} DT</p>
-              <p><strong>Eligible Participants:</strong> {submission.challenge.eligible_participants}</p>
-              <p><strong>Visibility:</strong> {submission.challenge.visibility}</p>
-              <p><strong>Status:</strong> {submission.challenge.status}</p>
-              <p><strong>Description:</strong> {submission.challenge.description}</p>
-              <p><strong>Start Date:</strong> {new Date(submission.challenge.start_date).toLocaleDateString()}</p>
-              <p><strong>Deadline:</strong> {new Date(submission.challenge.deadline).toLocaleDateString()}</p>
-            </div>
+  <p className="flex items-center"><strong className="m-2 text-blue-500 text-3xl"><FaMoneyBill /></strong> Prize: {submission.challenge.prize} DT</p>
+  <p className="flex items-center"><strong className="m-2 text-green-500 text-3xl"><FaUsers /></strong> Eligible Participants: {submission.challenge.eligible_participants}</p>
+  <p className="flex items-center"><strong className="m-2 text-yellow-500 text-3xl"><FaEye /></strong> Visibility: {submission.challenge.visibility}</p>
+  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Status: {submission.challenge.status}</p>
+  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Description: {submission.challenge.description}</p>
+  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Start Date: {new Date(submission.challenge.start_date).toLocaleDateString()}</p>
+  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Deadline: {new Date(submission.challenge.deadline).toLocaleDateString()}</p>
+</div>
             <table className="table-auto w-full">
               <thead>
                 <tr>
