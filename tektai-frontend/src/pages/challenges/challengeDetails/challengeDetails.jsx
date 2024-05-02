@@ -408,36 +408,7 @@ function ChallengeDetails() {
                         <p className="flex items-center  text-gray-600"><strong className="m-2 text-blue-700 text-xl"><AiOutlineSolution /></strong>Solution type:{" "}<span className="font-bold  ">    {challenge.barem.join(", ")} </span></p>
  
 
-                        <input
-  value="favorite-button"
-  name="favorite-checkbox"
-  id="favorite"
-  checked="checked"
-  type="checkbox"
-/>
-<label class="containerfav" for="favorite">
-  <svg
-    class="feather feather-heart"
-    stroke-linejoin="round"
-    stroke-linecap="round"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    viewBox="0 0 24 24"
-    height="24"
-    width="24"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"
-    ></path>
-  </svg>
-  <div class="action">
-    <span class="option-1">Add to Favorites</span>
-    <span class="option-2">Added to Favorites</span>
-  </div>
-</label>
-
+                    
 
 
                         <div className="flex items-center">
