@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TeamsService from '../../services/teamServices';
 import UsersService from '../../services/userService';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCrown, faUser, faCog, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
+import { faCrown, faUser, faCog, faTrash, faPlus, faSignOutAlt } from '@fortawesome/free-solid-svg-icons'; // Import FontAwesome icons
 import Header from '../../layout/Header';
 import Footer from '../../layout/Footer';
 import { Alert, AlertIcon, Avatar, AvatarBadge, AvatarGroup } from '@chakra-ui/react'
@@ -160,6 +160,43 @@ function MyTeams() {
   const toggleInviteMembers = () => {
     setShowInviteMembers(!showInviteMembers);
   };
+  const handleLeaveTeam = (teamId) => {
+
+    const memberId = JSON.parse(localStorage.getItem('user'))._id; // Assuming you have currentUser stored somewhere
+    const url = `http://localhost:3000/teams/${teamId}/members/${memberId}`;
+
+    // Sending a DELETE request to the API endpoint
+    fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            // Add any other required headers like authorization token
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            // Remove the member from the team in the frontend
+            setTeams(teams.map(team => {
+                if (team._id === teamId) {
+                    return {
+                        ...team,
+                        members: team.members.filter(member => member._id !== memberId)
+                    };
+                }
+                return team;
+            }));
+            console.log("Left team successfully");
+        } else {
+            throw new Error('Failed to leave the team');
+        }
+    })
+    .catch((error) => {
+        // Handle errors
+        console.error("Error leaving team:", error);
+        // Optionally, show an error message
+    });
+};
+
   return (
     // add condition to display only teams that belong to the current user
     <div>       <div className='pb-16'><Header/></div> 
@@ -205,6 +242,7 @@ function MyTeams() {
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50"></div>
     
     {/* Modal content */}
+    
     <div className="bg-white rounded-lg p-8 relative z-10 w-full max-w-md">
     <h2 className="text-xl font-semibold mb-4">Manage Team</h2>
 {/* Input field for team name */}
@@ -316,35 +354,33 @@ function MyTeams() {
   <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
 
   <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-    {team.members
-      .map(member => ({
-        ...member,
-        totalScore: parseInt(member.gpts) * 3 + parseInt(member.spts) * 2 + parseInt(member.bpts)
-      }))
-      .sort((a, b) => b.totalScore - a.totalScore)
-      .slice(0, 3)
-      .map((member, index) => (
-        <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''} sm:flex sm:flex-col sm:items-center`}>
-          {/* Render crown icon for the top member */}
-          {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mb-2 sm:mb-0" />}
-          <div className="flex items-center mb-2">
-            {/* Conditionally apply classes based on the index */}
-            <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
-              {index + 1}
-           
-              <div>
-              <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
-  <span className="text-gray-600">{member.username} </span>
-</div>
- </span>
-            
+  {team.members
+    .map(member => ({
+      ...member,
+      totalScore: parseInt(member.gpts) * 3 + parseInt(member.spts) * 2 + parseInt(member.bpts)
+    }))
+    .sort((a, b) => b.totalScore - a.totalScore)
+    .slice(0, 3)
+    .map((member, index) => (
+      <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''} sm:flex sm:flex-col sm:items-center`}>
+        {/* Render crown icon for the top member */}
+        {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mb-2 sm:mb-0" />}
+        <div className="flex items-center mb-2">
+          {/* Conditionally apply classes based on the index */}
+          <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
+            {index + 1}
+          </span>
+          <div>
+            <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
+            <span className="text-gray-600">{member.username} </span>
           </div>
-          <div><FontAwesomeIcon icon="fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</div>
         </div>
-      ))
-    }
-     
-  </div>
+        <div><FontAwesomeIcon icon="fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</div>
+      </div>
+    ))
+  }
+</div>
+
 
 </div>
 
@@ -360,6 +396,9 @@ function MyTeams() {
           <button className="text-2xl text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}>
             <FontAwesomeIcon icon={faCog} />
           </button>
+          <button className="text-2xl text-red-500 mr-2 hover:text-red-700" onClick={() => handleLeaveTeam(team._id)}> leave
+                <FontAwesomeIcon icon={faSignOutAlt} />
+            </button>
         </div>
       </div>
       <div className="mb-2 flex items-center">
@@ -373,16 +412,17 @@ function MyTeams() {
       <div className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</div>
 
 
-      <ul className="list-disc list-inside">  
-        {team.members.map((member) => (
-          <div key={member._id} className="ml-4">
-            <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-            <div> <Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
-              {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
-            </a>
-          </div>
-        ))}
-      </ul>
+      <div className="list-disc list-inside">  
+  {team.members.map((member) => (
+    <div key={member._id} className="ml-4">
+      <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
+        <div><Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
+        {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
+      </a>
+    </div>
+  ))}
+</div>
+
     </div>
   ))}
 </div>
