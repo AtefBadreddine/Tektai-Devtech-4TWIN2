@@ -7,6 +7,9 @@ import Header from '../../layout/Header';
 const ModifySubmissionForm = () => {
   const [pdfFile, setPdfFile] = useState(null);
   const [notebookFile, setNotebookFile] = useState(null);
+  const [excelFile, setExcelFile] = useState(null);
+const [archiveFile, setArchiveFile] = useState(null);
+
   const navigate = useNavigate();
   const { submissionId } = useParams();
 
@@ -17,6 +20,13 @@ const ModifySubmissionForm = () => {
   const handleNotebookChange = (e) => {
     setNotebookFile(e.target.files[0]);
   };
+const handleExcelChange = (e) => {
+    setExcelFile(e.target.files[0]);
+};
+
+const handleArchiveChange = (e) => {
+    setArchiveFile(e.target.files[0]);
+};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,6 +74,15 @@ const ModifySubmissionForm = () => {
           <label htmlFor="notebook" className="block text-gray-700">Upload New Notebook:</label>
           <input type="file" id="notebook" accept=".ipynb" onChange={handleNotebookChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
         </div>
+
+         <div className="mb-4">
+        <label htmlFor="excel" className="block text-gray-700">Upload New Excel:</label>
+        <input type="file" id="excel" accept=".xlsx, .xls" onChange={handleExcelChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+    </div>
+    <div className="mb-4">
+        <label htmlFor="archive" className="block text-gray-700">Upload New Archive:</label>
+        <input type="file" id="archive" accept=".zip, .rar" onChange={handleArchiveChange} className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+    </div>
         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
       </form>
 

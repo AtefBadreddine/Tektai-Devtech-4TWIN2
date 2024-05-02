@@ -36,9 +36,7 @@ export class SubmissionController {
         throw new BadRequestException('Team or challenge not found');
       }
 
-      if (!files || files.length !== 2) {
-        throw new BadRequestException('Two files are required!');
-      }
+     
 
      const pdfPath = `uploads/${files[0].originalname}`;
     const notebookPath = `uploads/${files[1].originalname}`;
