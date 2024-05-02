@@ -79,7 +79,14 @@ export class SubmissionController {
       throw error;
     }
   }
-
+  @Put('evaluation/:id')
+  async updateEvaluation(@Param('id') id: string, @Body() updateDto: { evaluation: number }): Promise<Submission> {
+    try {
+      return await this.submissionService.updateEvaluation(id, updateDto.evaluation);
+    } catch (error) {
+      throw error;
+    }
+  }
   @Delete('DeleteSubmition/:id')
   async deleteSubmission(@Param('id') id: string): Promise<void> {
     try {

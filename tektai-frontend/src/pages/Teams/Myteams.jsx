@@ -427,9 +427,9 @@ function MyTeams() {
     </div>
   </div>
 ))}
+        <JoinedTeams></JoinedTeams>
 
         </div>
-        <JoinedTeams></JoinedTeams>
 
       </div>
       <Footer />
