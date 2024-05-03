@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 import axios from 'axios';
 import '../createChallenge/card.css'
-
+import UserService from '../../../services/userService';
 
 interface UserData {
   username: string;
@@ -100,21 +100,28 @@ const Challenge = ({ challenge, index}) => {
     
     useEffect(() => {
   
+      // @ts-ignore
       const fetchUserData = async () => {
         try {
           // Fetch user data from the backend
-          const response = await axios.get(`http://localhost:3000/users/get/${challenge.company_id}`);
-          const { companyName, image } = response.data; // Assuming the image URL is provided in the response data
-          setCompanyName(companyName);
-          setImage(`${image}`); // Set the correct image path received from API
-          setLoadingCompany(false);
+
+          console.log(challenge.company_id);
+          const response =  await UserService.getUserById(challenge.company_id).then((res) => {
+            const { companyName, image } = res; // Assuming the image URL is provided in the response data
+            setCompanyName(companyName);
+            setImage(`${image}`); // Set the correct image path received from API
+            setLoadingCompany(false);
 
 
-          const userData = response.data;
-          setUserData(userData);
-          // Check if the challenge is in the user's favorites list
-          const isFavoriteResponse = await axios.get(`http://localhost:3000/users/${userData._id}/favorites/check/${challenge._id}`);
-          setIsFavorite(isFavoriteResponse.data.isFavorite);        
+            setUserData(res);
+            // Check if the challenge is in the user's favorites list
+
+          }).then( async () => {
+            const isFavoriteResponse = await axios.get(`http://localhost:3000/users/${userData._id}/favorites/check/${challenge._id}`);
+            setIsFavorite(isFavoriteResponse.data.isFavorite);
+          });
+
+
 
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -140,8 +147,7 @@ const Challenge = ({ challenge, index}) => {
       const isAlreadyFavorite = favorites.some(favorite => favorite._id === challenge._id);
       if (!isAlreadyFavorite) {
 
-        await axios.post(`http://localhost:3000/users/${userId}/favorites/add/${challengeId}`);
-        console.log('User ID:', userId);
+        await axios.post(`http://localhost:3000/users/${user._id}/favorites/add/${challengeId}`);
         console.log('Challenge ID:', challengeId);
         setIsFavorite(true);
         }else {
@@ -323,17 +329,17 @@ onChange={() => handleClickAddFavorite(challenge._id)}
           <div className="icon">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      xmlns:xlink="http://www.w3.org/1999/xlink"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
       height="38px"
       width="38px"
       version="1.1"
       id="heart"
       viewBox="0 0 471.701 471.701"
-      xml:space="preserve"
+      xmlSpace="preserve"
     >
       <linearGradient id="gradientColor">
-        <stop offset="5%" stop-color="#7eaaff"></stop>
-        <stop offset="95%" stop-color="#ff48fb"></stop>
+        <stop offset="5%" stopColor="#7eaaff"></stop>
+        <stop offset="95%" stopColor="#ff48fb"></stop>
       </linearGradient>
       <g>
         <path

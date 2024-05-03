@@ -4,6 +4,7 @@ import axios from 'axios'; // Import Axios
 import './profilecompany.css';
 import Stats from './stats/stats';
 import Footer from '../layout/Footer';
+import {Link} from "react-router-dom";
 
 function CompanyProfile() {
 const [userData, setUserData] = useState(null);
@@ -121,9 +122,9 @@ const [userData, setUserData] = useState(null);
             <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl  -mt-64">
   <div className="px-6">
     <div className="cardprofile relative">
-      <button className="buttoncontact absolute top-0 right-0 mt-4 mr-4"> 
+      <Link to="/challenges" className="buttoncontact absolute top-0 right-0 mt-4 mr-4">
         <span className="label">See All Challenges</span>
-      </button>
+      </Link>
       <img className="shadow-xl border  border-gray-300" src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}
       />
       <h2 className="titlecompany pt-5">{userData?.companyName ?? 'Loading...'} .</h2>

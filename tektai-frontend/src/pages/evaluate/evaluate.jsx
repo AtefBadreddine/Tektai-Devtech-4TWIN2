@@ -4,6 +4,7 @@ import Footer from '../../layout/Footer';
 import { FaFilePdf, FaFileVideo, FaDatabase } from 'react-icons/fa';
 import { Box, Button, Text } from '@chakra-ui/react';
 import { FaMoneyBill, FaUsers, FaEye, FaInfoCircle, FaCalendarAlt } from 'react-icons/fa';
+import {FaNoteSticky, FaRegNoteSticky} from "react-icons/fa6";
 
 function CompanySubmissionsn() {
   const [submissions, setSubmissions] = useState([]);
@@ -18,6 +19,7 @@ function CompanySubmissionsn() {
       try {
         const response = await fetch('http://localhost:3000/submissions/Allsubmition');
         const data = await response.json();
+        console.log(data)
         setSubmissions(data);
       } catch (error) {
         console.error('Error fetching submissions:', error);
@@ -82,21 +84,29 @@ function CompanySubmissionsn() {
   return (
     <div>
       <Header />
-      <div className="p-18 pt-64">
-        <h1 className='text-6xl font-bold'>Challenges </h1>
+      <div className="p-32">
         {submissions.map(submission => (
           (submission.challenge.status === 'Ongoing' || submission.challenge.status === 'Completed') &&
           <div key={submission._id} className="border border-gray-300 rounded-lg p-4 mb-8">
-            <h2 className="text-2xl font-semibold mb-4">{submission.challenge.title}</h2>
+            <h2 className="text-2xl font-semibold mb-4">Challenge : {submission.challenge.title}</h2>
             <div className="mb-4">
-  <p className="flex items-center"><strong className="m-2 text-blue-500 text-3xl"><FaMoneyBill /></strong> Prize: {submission.challenge.prize} DT</p>
-  <p className="flex items-center"><strong className="m-2 text-green-500 text-3xl"><FaUsers /></strong> Eligible Participants: {submission.challenge.eligible_participants}</p>
-  <p className="flex items-center"><strong className="m-2 text-yellow-500 text-3xl"><FaEye /></strong> Visibility: {submission.challenge.visibility}</p>
-  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Status: {submission.challenge.status}</p>
-  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Description: {submission.challenge.description}</p>
-  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Start Date: {new Date(submission.challenge.start_date).toLocaleDateString()}</p>
-  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Deadline: {new Date(submission.challenge.deadline).toLocaleDateString()}</p>
-</div>
+              <div className="flex gap-4">
+                <p className="flex items-center"><strong className="m-2 text-blue-500 text-3xl"><FaMoneyBill /></strong> Prize: {submission.challenge.prize} DT</p>
+                <p className="flex items-center"><strong className="m-2 text-green-500 text-3xl"><FaUsers /></strong> Eligible Participants: {submission.challenge.eligible_participants}</p>
+                <div className="flex gap-2 flex-1 justify-end">
+                  <p className="flex items-center"><strong className="m-2 text-yellow-500 text-3xl"><FaEye /></strong> Visibility: {submission.challenge.visibility}</p>
+                  <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Status: {submission.challenge.status}</p>
+                </div>
+
+              </div>
+              <div className="flex gap-4">
+
+                <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Start Date: {new Date(submission.challenge.start_date).toLocaleDateString()}</p>
+                <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaCalendarAlt /></strong> Deadline: {new Date(submission.challenge.deadline).toLocaleDateString()}</p>
+              </div>
+              <p className="flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaRegNoteSticky /></strong> Description: {submission.challenge.description}</p>
+
+          </div>
             <table className="table-auto w-full">
               <thead>
                 <tr>

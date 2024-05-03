@@ -37,7 +37,7 @@ export class ChallengesService {
   async getFilteredChallenges(status: string, startDate: Date, deadline: Date): Promise<Challenges[]> {
     const query: any = {};
 
-    if (status) {
+    if (status && status !== 'all') {
       query.status = status;
     }
 
@@ -49,7 +49,8 @@ export class ChallengesService {
       query.deadline = { $lte: deadline };
     }
 
-    return this.challengesModel.find(query).exec();
+    return this.challengesModel.find({ ...query, approved: true }).exec();
+
   }
 
 
@@ -192,6 +193,17 @@ export class ChallengesService {
      throw new InternalServerErrorException('Failed to update challenge');
    }
  }
+  async approveChallenge(challengeId: string): Promise<ChallengesDocument> {
+    const challenge = await this.challengesModel.findById(challengeId);
+    if (!challenge) {
+      return null;
+    }
+
+    challenge.approved = ! challenge.approved;
+
+    return  await challenge.save();
+
+  }
 }
 /* 
  async uploadImage(challengeDto: ChallengeDto, image: Express.Multer.File): Promise<Challenges> {

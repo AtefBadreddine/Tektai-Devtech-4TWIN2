@@ -347,90 +347,55 @@ function MyTeams() {
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-4">
-        {teams.map((team) => (
-  <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
-    <button className={`bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 ${team.members.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => team.members.length < 5 && toggleInviteMembers()}>
-      Invite Members
-    </button>
-
-    {showInviteMembers && <InviteMembers teamId={team._id} onClose={() => setShowInviteMembers(false)} />}
-    <div><PendingInvitations teamId={team._id} /></div>
-
-    <div className="mt-4 grid gap-4 md:flex md:flex-row md:overflow-x-auto">
-      <h3 className="text-lg font-semibold mb-2">Most Valued Member</h3>
-
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {team.members
-          .map(member => ({
-            ...member,
-            totalScore: parseInt(member.gpts) * 3 + parseInt(member.spts) * 2 + parseInt(member.bpts)
-          }))
-          .sort((a, b) => b.totalScore - a.totalScore)
-          .slice(0, 3)
-          .map((member, index) => (
-            <div key={index} className={`bg-white rounded-lg shadow-md p-4 ${index === 0 ? 'bg-yellow-100' : ''} sm:flex sm:flex-col sm:items-center`}>
-              {index === 0 && <FontAwesomeIcon icon={faCrown} className="text-yellow-500 mb-2 sm:mb-0" />}
-              <div className="flex items-center mb-2">
-                <span className={`text-gray-600 mr-2 ${index === 0 ? 'text-yellow-500' : index === 1 ? 'text-gray-400' : index === 2 ? 'text-orange-600' : ''}`}>
-                  {index + 1}
-                </span>
-                <div>
-                  <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member.username} src={`http://localhost:3000/uploads/${member.image}`} /></div>
-                  <span className="text-gray-600">{member.username} </span>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {teams.map((team) => (
+              <div key={team._id} className="bg-white rounded-lg shadow overflow-hidden">
+                <div className="p-4 bg-gray-50">
+                  <h2 className="text-xl font-semibold mb-3">Team : {team.name}</h2>
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center space-x-2">
+                      <Avatar className='w-10 h-10' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} />
+                      <span className="font-medium">{team.leader?.username}</span>
+                    </div>
+                    <span className="px-3 py-1 text-sm text-white bg-green-500 rounded-full">{team.members.length} Members</span>
+                  </div>
+                </div>
+                <div className="px-4 py-2">
+                  {team.members.length >= 5 && (
+                      <div className="text-red-500 text-sm mb-2">Warning: Maximum number of members exceeded (5 members allowed).</div>
+                  )}
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {team.members.map((member) => (
+                        <a key={member._id} href={`/profile/${member?.username}`} className="flex items-center space-x-2 hover:text-blue-500">
+                          <Avatar className='w-8 h-8' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} />
+                          <span>{member?.username}</span>
+                        </a>
+                    ))}
+                  </div>
+                </div>
+                <div className="bg-gray-100 p-4">
+                  <button className={`bg-blue-500 flex  ml-auto  text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 ${team.members.length >= 5 ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={() => team.members.length < 5 && toggleInviteMembers()}>
+                    Invite Members
+                  </button>
+                  {showInviteMembers && <InviteMembers teamId={team._id} onClose={() => setShowInviteMembers(false)} />}
+                  <PendingInvitations teamId={team._id} />
+                  <div className="flex justify-end space-x-2 mt-3">
+                    <button className="text-2xl text-red-500 hover:text-red-700" onClick={() => handleDeleteTeam(team._id)}>
+                      <FontAwesomeIcon icon={faTrash} />
+                    </button>
+                    <button className="text-2xl text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}>
+                      <FontAwesomeIcon icon={faCog} />
+                    </button>
+                    <button className="text-2xl text-red-500 hover:text-red-700" onClick={() => handleLeaveTeam(team._id)}>
+                      Leave <FontAwesomeIcon icon={faSignOutAlt} />
+                    </button>
+                  </div>
                 </div>
               </div>
-              <div><FontAwesomeIcon icon="fa-solid fa-award" className='text-green-500' /> {member.totalScore} Points</div>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-
-    <div className="flex justify-between items-center mb-2">
-      <h2 className="my-4 text-xl font-semibold">{team.name}</h2>
-      <div>
-        <button className="text-2xl text-red-500 mr-2 hover:text-red-700" onClick={() => handleDeleteTeam(team._id)}>
-          <FontAwesomeIcon icon={faTrash} />
-        </button>
-        <button className="text-2xl text-purple-500 hover:text-purple-700" onClick={() => handleManageTeam(team)}>
-          <FontAwesomeIcon icon={faCog} />
-        </button>
-        <button className="text-2xl text-red-500 mr-2 hover:text-red-700" onClick={() => handleLeaveTeam(team._id)}> leave
-          <FontAwesomeIcon icon={faSignOutAlt} />
-        </button>
-      </div>
-    </div>
-    <div className="mb-2 flex items-center">
-      <div className="text-gray-600 mr-2">Leader:</div>
-      <div className="text-gray-600 mb-2 flex items-center  dark:text-white hover:text-blue-500">
-        <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} /></div>
-        {team.leader?.username}
-      </div>
-    </div>
-    <div className="text-gray-600 mb-2">Members:</div>
-    <div className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</div>
-
-    {team.members.length >= 5 && (
-      <div className="text-red-500">Warning: Maximum number of members exceeded (5 members allowed).</div>
-    )}
-
-    <div className="list-disc list-inside">
-      {team.members.map((member) => (
-        <div key={member._id} className="ml-4">
-          <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-            <div><Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
-            {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
-          </a>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-))}
+
         <JoinedTeams></JoinedTeams>
-
-        </div>
-
       </div>
       <Footer />
     </div>

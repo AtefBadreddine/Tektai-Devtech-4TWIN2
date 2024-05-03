@@ -10,7 +10,7 @@ const CreateChallengeBlock = () => {
             <p className="text-xl text-gray-600">Inspire creativity, foster innovation, and drive change by launching your challenge on our platform !
             </p>
             {/* Button */}
-            <Link to="/challenges/new" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
+            <Link to="/challenges/create" className="btn-smm inline-flex items-center font-bold py-2 px-4 rounded-md mt-4 focus:outline-none">
                 Create challenge <FaArrowRight className="ml-2" />
             </Link>
         </div>

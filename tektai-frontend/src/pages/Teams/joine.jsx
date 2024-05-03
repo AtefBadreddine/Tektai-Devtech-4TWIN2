@@ -38,7 +38,7 @@ function JoinedTeams() {
         {loading ? (
           <div>Loading...</div>
         ) : (
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {joinedTeams.length === 0 ? (
               <div className="bg-white rounded-lg shadow-md p-4">
                 <Alert status="warning">
@@ -50,29 +50,31 @@ function JoinedTeams() {
               joinedTeams.map((team) => (
                 <div key={team._id} className="bg-white rounded-lg shadow-md p-4">
                   <div className="flex justify-between items-center mb-2">
-                    <h2 className="my-4 text-xl font-semibold">{team.name}</h2>
+                    <h2 className="my-4 text-xl font-semibold">Team : {team.name}</h2>
                     <div>
-                      <button className="text-2xl text-red-500 mr-2 hover:text-red-700" onClick={() => handleLeaveTeam(team._id)}> leave
+                      <button className="text-2xl text-red-500 mr-2 hover:text-red-700 inline-flex gap-x-1 items-center" onClick={() => handleLeaveTeam(team._id)}> Leave
                         <FontAwesomeIcon icon={faSignOutAlt} />
                       </button>
                     </div>
                   </div>
                   <div className="mb-2 flex items-center">
-                    <div className="text-gray-600 mr-2">Leader:</div>
+                    <div className=" mr-2 font-bold">Leader :</div>
                     <div className="text-gray-600 mb-2 flex items-center hover:text-blue-500">
                       <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} /></div>
                       {team.leader?.username}
                     </div>
                   </div>
-                  <div className="text-gray-600 mb-2">Members:</div>
-                  <div className="text-gray-600 mb-2 ml-auto">Number of Members: {team.members.length}</div>
+                  <div className="flex justify-end">
+                    <span className="px-3 py-1   text-sm text-white bg-green-500 rounded-full">{team.members.length} Members</span>
+
+                  </div>
 
                   <div className="list-disc list-inside">
                     {team.members.map((member) => (
                       <div key={member._id} className="ml-4">
                         <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
                           <div><Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
-                          {member?.username} <FontAwesomeIcon icon={faUser} className="mx-2" />
+                          {member?.username}
                         </a>
                       </div>
                     ))}
