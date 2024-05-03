@@ -755,3 +755,145 @@
   left: 0px;
   transform-origin: right;
 }
+
+
+.emoji__wrap {
+  height: 90px;
+  width: 90px;
+  background: #ffcc4d;
+  border-radius: 50%;
+  position: relative;
+  margin: 0 auto;
+}
+.emoji {
+  padding: 10px;
+  text-align: center;
+}
+.emoji_eye1 {
+  left: 29px;
+}
+.emoji_eye1,
+.emoji_eye2 {
+  height: 18px;
+  width: 10px;
+  background: #664500;
+  border-radius: 50%;
+  position: absolute;
+  top: 20px;
+}
+.emoji_eye2 {
+  right: 29px;
+}
+
+.emoji__smile {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-top: 9px solid #664500;
+  -webkit-border-radius: 100px;
+  border-radius: 100px;
+  height: 20px;
+  width: 35px;
+  margin: 0px auto 0;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 15px;
+  transition: 0.3s linear all;
+}
+.emoji__wrap:hover .emoji__smile {
+  border-bottom: 9px solid #664500;
+  transition: 0.3s linear all;
+  border-top: 0;
+  bottom: 25px;
+}
+.eyes:after {
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  background: #ffffff;
+  content: "";
+  border-radius: 50%;
+  bottom: 0px;
+  left: 2px;
+  transition: 0.3s linear all;
+}
+
+.emoji__wrap:hover .eyes:after {
+  height: 13px;
+  width: 10px;
+  transition: 0.3s linear all;
+}
+
+.emoji__tough {
+  height: 0px;
+  width: 15px;
+  background: #c30d0d;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  transition: 0.3s linear all;
+  top: 60px;
+}
+.emoji__wrap:hover .emoji__tough {
+  height: 20px;
+  transition: 0.3s linear all;
+}
+
+
+
+
+
+
+
+
+
+#favorite {
+  display: none;
+}
+
+#favorite:checked + .containerfav svg {
+  fill: hsl(0deg 100% 50%);
+  stroke: hsl(0deg 100% 50%);
+  animation: heartButton 1s;
+}
+
+@keyframes heartButton {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.3);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.3);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+#favorite + .containerfav .action {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+}
+
+#favorite + .containerfav .action span {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 1;
+  grid-row-end: 1;
+  transition: all 0.5s;
+}
+

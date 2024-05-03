@@ -8,6 +8,9 @@ import Comments from "./comments";
 
 import { useParams,useNavigate } from "react-router-dom";
 
+import { FaMoneyBill, FaUsers , FaInfoCircle } from 'react-icons/fa';
+import { AiOutlineSolution } from "react-icons/ai";
+import { PiUsersFourFill } from "react-icons/pi";
 
 // Default image path
 const defaultImagePath = 'https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000';
@@ -17,6 +20,12 @@ function ChallengeDetails() {
   const user = storedUser ? JSON.parse(storedUser) : null;
   const [challenge, setChallenge] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [days, setDays] = useState(0);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [countdownExpired, setCountdownExpired] = useState(false); // Initialize countdownExpired state
+  const [challengeCompleted, setChallengeCompleted] = useState(false); // Initialize challengeCompleted state
 
 
   const [userName, setUserName] = useState('');
@@ -45,7 +54,15 @@ function ChallengeDetails() {
     challengeId: challengeId
   });
 
-  // Fetch challenge details
+
+
+ useEffect(() => {
+  if (challenge && challenge.status === 'Completed') {
+    setChallengeCompleted(true);
+    setCountdownExpired(false); // Reset countdownExpired if challenge is completed
+  }
+}, [challenge]);
+
 
    const navigate = useNavigate();// Utilisez useNavigate pour la navigation
   useEffect(() => {
@@ -63,7 +80,72 @@ function ChallengeDetails() {
   }, [id]);
 
   
-    
+
+  
+  useEffect(() => {
+    if (challenge && challenge.start_date && challenge.deadline) {
+        const countDownDate = new Date(challenge.deadline).getTime();
+
+        const interval = setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            if (distance <= 0) {
+                clearInterval(interval);
+                setDays(0);
+                setHours(0);
+                setMinutes(0);
+                setSeconds(0);
+                setCountdownExpired(true); // Update state to indicate countdown expiration
+            } else {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                setDays(days);
+                setHours(hours);
+                setMinutes(minutes);
+                setSeconds(seconds);
+                setCountdownExpired(false); // Update state to indicate countdown is still active
+            }
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }
+}, [challenge]);
+
+  /* useEffect(() => {
+    if (challenge && challenge.start_date && challenge.deadline) {
+      const countDownDate = new Date(challenge.deadline).getTime();
+
+      const interval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = countDownDate - now;
+
+        if (distance <= 0) {
+          clearInterval(interval);
+          setCountDown("EXPIRED");
+        } else {
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          setCountDown(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [challenge]);
+ */
+
+
+
+
+
+
   useEffect(() => {
     const localStorageData = localStorage.getItem('user');
 
@@ -318,18 +400,20 @@ function ChallengeDetails() {
                       <div>
 
 
+                      <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
+                        <p className="text-gray-600 mb-2">Created by: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
+                        <p className="flex items-center text-gray-600  "><strong className="m-2 text-blue-500 text-xl "><FaMoneyBill /></strong> Prize: {challenge.prize} DT</p>
 
-                        <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
-                        <p className="text-gray-600 mb-2">Company: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
-                        <p className="text-gray-600 mb-2">Prize(TDN): <span className="font-bold text-blue-600">{challenge.prize}</span></p>
-                        <p className="text-gray-600 mb-2">Status: <span className="font-bold text-green-600">{challenge.status}</span></p>
-                        <p className="text-gray-600 mb-2">Max teams to participate: <span className="font-bold text-red-600">{challenge.maxTeam}</span></p>
-                        <p className="text-gray-600 mb-2">
-    Solution type:{" "}
-    <span className="font-bold  ">
-        {challenge.barem.join(", ")}
-    </span>
-</p>
+                        <p className="flex items-center text-gray-600 "><strong className="m-2 text-gray-500 text-xl"><FaInfoCircle /></strong> Status: <span className="font-bold text-green-600 pl-1"> {challenge.status}</span></p>
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-green-500 text-xl"><FaUsers /></strong> Eligible Participants: {challenge.eligible_participants}</p>
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-orange-300 text-xl"><PiUsersFourFill /></strong>Max teams to participate: <span className="font-bold text-red-600">{challenge.maxTeam}</span></p>
+        
+                        <p className="flex items-center  text-gray-600"><strong className="m-2 text-blue-700 text-xl"><AiOutlineSolution /></strong>Solution type:{" "}<span className="font-bold  ">    {challenge.barem.join(", ")} </span></p>
+ 
+
+                    
+
+
 
                         <div className="flex items-center">
   <div className={`icon-box ${challenge.visibility.toLowerCase() === 'private' ? 'private' : ''}`}>
@@ -356,6 +440,7 @@ function ChallengeDetails() {
       {challenge.visibility}
     </p>
   </div>
+  
   {challenge.visibility.toLowerCase() === 'private' && (
   <button className="bg-[#338cf5] text-white font-bold py-2 mt-3 px-4 rounded ml-4 w-full">
     Send request
@@ -367,7 +452,9 @@ function ChallengeDetails() {
 </div>
 
 
+
                       </div>
+
                         <div>
                             <img src={ challenge?.image ? `http://localhost:3000/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
 
@@ -389,10 +476,92 @@ function ChallengeDetails() {
 
  
                     </div>
+
+
+
+
+
+
+
+
+
+
+                    <section id="statistic" className="statistic-section one-page-section">
+  {!(countdownExpired || challengeCompleted) && (
+    <h2 className={`countdown-text text-center text-4xl font-bold mb-8 ${countdownExpired || challengeCompleted ? 'expired' : ''}`}>
+      deadline
+    </h2>
+  )}
+  <div className="flex justify-center">
+    {countdownExpired || challengeCompleted ? (
+      <div className="flex flex-col items-center mr-8">
+        <div className="counter">
+          <h2 className="timer count-title count-number">Expired!</h2>
+
+
+          <div class="emoji">
+    <div class="emoji__wrap">
+    <div class="emoji_eye1 eyes"></div>
+        <div class="emoji_eye2 eyes"></div>
+        <div class="emoji__smile"></div>
+        <div class="emoji__tough"></div>
+    </div>
+</div>
+
+
+
+
+
+
+          <div className="stats-line-black"></div>
+        </div>
+      </div>
+    ) : (
+      <>
+       <div class="flex justify-center">
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{days}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Days</p>
+                </div>
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{hours}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Hours</p>
+                </div>     
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{minutes}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Minutes</p>
+                </div>     
+            </div>
+            <div class="flex flex-col items-center mr-8">
+                <div class="counter">
+                    <h2 class="timer count-title count-number">{seconds}</h2>
+                    <div class="stats-line-black"></div>
+                    <p class="stats-text">Seconds</p>
+                </div>
+            </div>
+        </div>
+        </>
+        )}
+      </div>
+    </section>
+
+
+
+
                     
-                    <h2 className="h4">Description :</h2>
+                    <h2 className=" h4 flex items-center"><strong className="m-2 text-gray-500 text-3xl"><FaInfoCircle /></strong> Description: </h2>
+
                     <p className="text-gray-600 mb-4">{challenge.description}</p>
-                    <h2 className="h4">Dataset Description:</h2>
+                    <p className="flex items-center"><strong className="m-2 text-gray-500 text-xl"><FaInfoCircle /></strong> Dataset Description: </p>
+
                     <p className=" mb-4 mt-2 text-sm   text-gray-400 dark:text-white">The dataset for this competition (both train and test) was generated from a deep learning model trained on the Steel Plates Faults dataset from UCI. Feature distributions are close to, but not exactly the same, as the original. Feel free to use the original dataset as part of this competition, both to explore differences as well as to see whether incorporating the original in training improves model performance.</p>
             
                     <button class="download-button mb-5">
