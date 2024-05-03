@@ -36,15 +36,13 @@ export class SubmissionController {
         throw new BadRequestException('Team or challenge not found');
       }
 
-      if (!files || files.length !== 2) {
-        throw new BadRequestException('Two files are required!');
-      }
+     
 
-     const pdfPath = `uploads/${files[0].originalname}`;
-    const notebookPath = `uploads/${files[1].originalname}`;
-    const presentationPath = `uploads/${files[2].originalname}`;
-        const excelPath = `uploads/${files[3].originalname}`;
-        const archivePath = `uploads/${files[4].originalname}`;
+     const pdfPath = `uploads/${files[0]?.originalname}`;
+    const notebookPath = `uploads/${files[1]?.originalname}`;
+    const presentationPath = `uploads/${files[2]?.originalname}`;
+        const excelPath = `uploads/${files[3]?.originalname}`;
+        const archivePath = `uploads/${files[4]?.originalname}`;
 
  this.logger.log('Receive files:', );
       // Enregistrer la soumission avec les IDs comme ObjectId
@@ -79,7 +77,14 @@ export class SubmissionController {
       throw error;
     }
   }
-
+  @Put('evaluation/:id')
+  async updateEvaluation(@Param('id') id: string, @Body() updateDto: { evaluation: number }): Promise<Submission> {
+    try {
+      return await this.submissionService.updateEvaluation(id, updateDto.evaluation);
+    } catch (error) {
+      throw error;
+    }
+  }
   @Delete('DeleteSubmition/:id')
   async deleteSubmission(@Param('id') id: string): Promise<void> {
     try {

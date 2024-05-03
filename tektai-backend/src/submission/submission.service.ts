@@ -10,7 +10,19 @@ export class SubmissionService {
   constructor(
     @InjectModel(Submission.name) private readonly submissionModel: Model<SubmissionDocument>,
   ) {}
-
+  async updateEvaluation(id: string, evaluation: number): Promise<Submission> {
+    try {
+      // Find the submission by ID and update the evaluation value
+      const updatedSubmission = await this.submissionModel.findByIdAndUpdate(
+        id,
+        { evaluation },
+        { new: true } // Return the updated document
+      );
+      return updatedSubmission;
+    } catch (error) {
+      throw error;
+    }
+  }
 async saveSubmission(teamId: ObjectId, challengeId: string, pdf: string, notebook: string,presentation: string,
     excel: string,
     archive: string):Promise<Submission> {

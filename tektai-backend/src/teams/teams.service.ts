@@ -59,6 +59,16 @@ export class TeamsService {
       throw new Error(`Failed to fetch teams with leaders and members: ${error.message}`);
     }
   }
+  async findAllJoinedTeams(userId: string): Promise<TeamDocument[]> {
+    try {
+      return await this.teamModel.find({ members: userId })
+        .populate('leader')
+        .populate('members')
+        .exec();
+    } catch (error) {
+      throw new Error(`Failed to fetch joined teams for user ${userId}: ${error.message}`);
+    }
+  }
   
 
   async findOne(id: string): Promise<TeamDocument> {

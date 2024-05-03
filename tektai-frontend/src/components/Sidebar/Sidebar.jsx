@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {FaRegRectangleList} from "react-icons/fa6";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
@@ -87,7 +88,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <NavLink
                       to="/admin"
                       className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname == '/admin' &&
+                          pathname === '/admin' &&
                           'bg-graydark dark:bg-meta-4'
                       }`}
                   >
@@ -99,12 +100,24 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <NavLink
                       to="/adminuser"
                       className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname == '/adminuser' &&
+                          pathname === '/adminuser' &&
                           'bg-graydark dark:bg-meta-4'
                       }`}
                   >
                     <FontAwesomeIcon icon="fa-solid fa-users" />
                     Users
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                      to="/approve-challenges"
+                      className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                          pathname === '/approve-challenges' &&
+                          'bg-graydark dark:bg-meta-4'
+                      }`}
+                  >
+                    <FaRegRectangleList/>
+                    Challenges
                   </NavLink>
                 </li>
                 {/* <!-- Menu Item Calendar --> */}
@@ -113,7 +126,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <NavLink
                       to="/profileadmin"
                       className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname == 'profile' && 'bg-graydark dark:bg-meta-4'
+                          pathname === 'profile' && 'bg-graydark dark:bg-meta-4'
                       }`}
                   >
                     <FontAwesomeIcon icon="fa-solid fa-user" />
@@ -125,7 +138,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                   <NavLink
                       to="/crm"
                       className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                          pathname == '/crm' && 'bg-graydark dark:bg-meta-4'
+                          pathname === '/crm' && 'bg-graydark dark:bg-meta-4'
                       }`}
                   >
                     <FontAwesomeIcon icon="fa-solid fa-pen-to-square" />

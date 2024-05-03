@@ -292,7 +292,9 @@ function ChallengeDetails() {
   navigate(`/file-upload/${id}`);
     }
 
-
+   /* const handleParticipateClick = () => {
+        navigate(`/file-upload/${id}`);
+    }*/
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -327,15 +329,15 @@ function ChallengeDetails() {
               ) : (
                 challenge ? (
                   <div className="col-span-2 rounded-lg shadow-xl p-6">
-                        {userData?.role === 'company' && (
+                        {user && challenge && user._id === challenge.company_id  && (
                           <div className="flex justify-end gap-4.5">
                           {flashMessage && <p className="text-red-500">{flashMessage}</p>}
-                          <div class="button-container">
+                          <div className="button-container">
 
 
-       
-        <button 
-        class="editBtn" 
+
+        <button
+        className="editBtn"
         type="button"
         onClick={handleEditClick}>
         <svg height="1em" viewBox="0 0 512 512">
@@ -343,12 +345,12 @@ function ChallengeDetails() {
         </svg>
         </button>
                           </div>
-                            
+
                           <div>
                             {deleted ? (
                              <p>Deleted successfully!</p>
                              ) : (
-                             <button 
+                             <button
                               onClick={handleDelete}
                               class="bin-button ">
   <svg
@@ -393,9 +395,10 @@ function ChallengeDetails() {
                         )}
 
 
-                    <div className="flex items-center mb-4">
+                    <div className="flex items-center justify-between mb-4">
        
                       <div>
+
 
                       <h2 className="text-xl font-semibold mb-2 pt-4">{challenge.title}</h2>
                         <p className="text-gray-600 mb-2">Created by: <span className="font-bold text-blue-600"> {loadingCompany ? 'Loading...' : companyName}</span></p>
@@ -409,6 +412,7 @@ function ChallengeDetails() {
  
 
                     
+
 
 
                         <div className="flex items-center">
@@ -441,8 +445,9 @@ function ChallengeDetails() {
   <button className="bg-[#338cf5] text-white font-bold py-2 mt-3 px-4 rounded ml-4 w-full">
     Send request
   </button>
-  
+
 )}
+
 
 </div>
 
@@ -450,9 +455,25 @@ function ChallengeDetails() {
 
                       </div>
 
-                      
-                      <img src={`http://localhost:3000/uploads/${challenge.image}`} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
-                   
+                        <div>
+                            <img src={ challenge?.image ? `http://localhost:3000/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+
+                            <div className="flex justify-center">
+                                {challenge && challenge.status === 'Completed' ? (
+                                    <button className="bg-[#6fc5ff] text-white font-bold py-2 mt-3 px-4 rounded" disabled>
+                                        Completed
+                                    </button>
+                                ) : (
+                                    <button className={`btn-smm font-bold py-2 mt-3 px-4 rounded  ${challenge.visibility.toLowerCase() === 'private' ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={handleParticipateClick} disabled={challenge.visibility.toLowerCase() === 'private'}>
+                                        {challenge.visibility.toLowerCase() === 'private' ? 'Private Challenge' : 'Participate now!'}
+                                        <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                        </svg>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+
  
                     </div>
 
@@ -573,18 +594,7 @@ function ChallengeDetails() {
                             <li><p className="text-xs font-normal text-gray-400">Form your team before this date to compete together.</p></li>
                             <li><p className="text-xs font-normal text-gray-400">The competition concludes on this date. Submit your final work before the deadline.</p></li>
                           </ul>
-                          {challenge && challenge.status === 'Completed' ? (
-  <button className="bg-[#6fc5ff] text-white font-bold py-2 px-4 rounded" disabled>
-    Completed
-  </button>
-) : (
-  <button className={`btn-smm ${challenge.visibility.toLowerCase() === 'private' ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={handleParticipateClick} disabled={challenge.visibility.toLowerCase() === 'private'}>
-    {challenge.visibility.toLowerCase() === 'private' ? 'Private Challenge' : 'Participate now!'}
-    <svg className="w-3 h-3 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-    </svg>
-  </button>
-)}
+
 
                         </li>
                       </ol>

@@ -76,6 +76,9 @@ import ModifySubmissionForm from './pages/SubmitSolution/ModifySubmissionForm';
 import Create from './pages/challenges/createChallenge/create';
 
 import Homechallenger from './pages/home/Homechallenger';
+import Evaluate from './pages/evaluate/evaluate';
+import CompanySubmissionsn from './pages/evaluate/evaluate';
+  import ApproveChallenges from "./pages/dashboard/challenges/ApproveChallenges";
 
 
 
@@ -154,6 +157,8 @@ import Homechallenger from './pages/home/Homechallenger';
             <Route path="/Challengerprofile" element={<Challengerprofile />} />
             <Route path="/pages/settings" element={<Settings />} />
             <Route path="/historychallenges" element={<HistoryChallenges/>} /> 
+            <Route path="/evaluate" element={<CompanySubmissionsn/>} /> 
+          
           </Route>
           
 
@@ -162,6 +167,7 @@ import Homechallenger from './pages/home/Homechallenger';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
+            <Route path="/approve-challenges" element={<ApproveChallenges />} />
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>
