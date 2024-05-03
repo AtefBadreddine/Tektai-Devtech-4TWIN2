@@ -140,7 +140,7 @@ function Create() {
 
         if (new Date(formData.start_date) >= new Date(formData.deadline)) {
             setErrors({ ...errors, deadline: "Deadline must be after the start date" });
-            return;
+          /*  return;*/
         }
 
         setFormData((prevData) => ({

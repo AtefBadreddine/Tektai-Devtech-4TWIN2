@@ -50,6 +50,8 @@ visibility:string;
   @Prop({ default: false })
   isFavorite: boolean;
 
+  @Prop({ default: false })
+  approved: boolean;
 }
 
 export const ChallengesSchema = SchemaFactory.createForClass(Challenges);

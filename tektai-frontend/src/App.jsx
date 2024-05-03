@@ -78,6 +78,7 @@ import Create from './pages/challenges/createChallenge/create';
 import Homechallenger from './pages/home/Homechallenger';
 import Evaluate from './pages/evaluate/evaluate';
 import CompanySubmissionsn from './pages/evaluate/evaluate';
+  import ApproveChallenges from "./pages/dashboard/challenges/ApproveChallenges";
 
 
 
@@ -166,6 +167,7 @@ import CompanySubmissionsn from './pages/evaluate/evaluate';
             <Route path="/crm" element={<CrmForm/>} />
             <Route path="/search" element={<UserSearch />} />
             <Route path="/adminuser" element={<UserList />} />
+            <Route path="/approve-challenges" element={<ApproveChallenges />} />
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
           </Route>

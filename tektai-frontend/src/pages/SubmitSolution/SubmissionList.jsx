@@ -28,7 +28,6 @@ const SubmissionList = () => {
       return;
     }
 
-    console.log('Token found in local storage:', token); // Afficher le jeton s'il est trouvé
     fetchUserTeams(token); // Récupérer les équipes de l'utilisateur
     fetchUserChallenges(token); // Récupérer les challenges soumis par l'utilisateur
     fetchSubmissions(); // Fetch submissions once user is logged in
@@ -170,7 +169,7 @@ const SubmissionList = () => {
             <FiDownload size={16} />
         </button>
     </td>
-    <td className="border px-2 py-1">
+    <td className="border px-2 py-1 inline-flex items-center gap-x-2">
         <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mx-2 rounded" onClick={() => handleDeleteSubmission(submission._id)}>
             <FiTrash size={16} />
         </button>

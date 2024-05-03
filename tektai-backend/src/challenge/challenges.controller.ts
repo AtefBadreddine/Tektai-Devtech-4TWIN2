@@ -23,6 +23,11 @@ export class ChallengesController {
     return this.challengesService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Put('/approve/:challengeId')
+  async approveChallenge(@Param('challengeId') challengeId: string) {
+    return await this.challengesService.approveChallenge(challengeId);
+  }
 
   @Get('search')
   findByTitle(@Query('title') title: string): Promise<Challenges[]> {

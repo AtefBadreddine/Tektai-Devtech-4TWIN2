@@ -26,7 +26,7 @@ function FileUploadForm() {
       console.log('Token not found in local storage');
       return;
     }
-    console.log('Token found in local storage:', token);
+
     fetchUserTeams(token);
   };
 
@@ -54,10 +54,10 @@ function FileUploadForm() {
         return;
       }
 
-      if (!pdf || !notebook || !presentation || !excel || !archive) {
+   /*   if (!pdf || !notebook || !presentation || !excel || !archive) {
         console.error('Error: All files (PDF, Notebook, Presentation, Excel, and Archive) are required');
         return;
-      }
+      }*/
 
       const formData = new FormData();
       formData.append('teamId', teamId);

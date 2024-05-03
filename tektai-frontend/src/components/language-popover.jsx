@@ -11,7 +11,7 @@ const LANGS = [
 
   {
     value: 'tn',
-    label: 'Tunisia',
+    label: 'Arabic',
     icon: '/assets/icons/ic_flag_tn.svg',
   },
     {
@@ -49,6 +49,7 @@ const [selectedItem, setSelectedItem] = useState('tn'); // Corrected state varia
     <>
       <IconButton
         onClick={handleOpen}
+        className="z-60"
         sx={{
           width: 40,
           height: 40,

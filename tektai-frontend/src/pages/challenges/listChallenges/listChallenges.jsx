@@ -8,7 +8,7 @@ import '../createChallenge/card.css'
 
 function ListChallenges() {
     
-    const [activeTab, setActiveTab] = useState('Ongoing');
+    const [activeTab, setActiveTab] = useState('all');
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
     const handleTabClick = (tab) => {
@@ -95,6 +95,12 @@ function ListChallenges() {
                 <div>
                     <div className="flex space-x-4 mb-4">
                         <button
+                            className={`px-4 py-2 rounded-md focus:outline-none ${activeTab === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
+                            onClick={() => handleTabClick('all')}
+                        >
+                            All
+                        </button>
+                        <button
                             className={`px-4 py-2 rounded-md focus:outline-none ${activeTab === 'Ongoing' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
                             onClick={() => handleTabClick('Ongoing')}
                         >
@@ -115,7 +121,8 @@ function ListChallenges() {
                     </div>
 
                     <div>
-                   {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
+                        {activeTab === 'all' && <div><h1 className="text-xl font-bold my-4">All Challenges</h1> <Challenges status="all" /></div>}
+                        {activeTab === 'Ongoing' && <div><h1 className="text-xl font-bold my-4">Ongoing Challenges</h1> <Challenges status="Ongoing" /></div>}
                         {activeTab === 'Completed' && <div><h1 className="text-xl font-bold my-4">Completed Challenges</h1> <Challenges status="Completed" /></div>}
                         {activeTab === 'Upcoming' && <div><h1 className="text-xl font-bold my-4">Upcoming Challenges</h1> <Challenges status="Upcoming" /></div>}
                     </div>

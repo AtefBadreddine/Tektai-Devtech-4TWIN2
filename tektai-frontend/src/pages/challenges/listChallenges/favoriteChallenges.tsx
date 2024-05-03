@@ -35,7 +35,7 @@ const FavoriteChallenges = () => {
       try {
           if (userId) {
               const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
-              console.log('user id: ' + userId);
+              console.log(response.data);
               const favoriteChallengeIds: string[] = response.data; // Assuming the response data is an array of favorite challenge IDs
               setFavoriteChallenges(favoriteChallengeIds); // Assuming the response data is an array of favorite challenge IDs
           }
