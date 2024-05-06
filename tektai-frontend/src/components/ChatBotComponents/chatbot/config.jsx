@@ -11,11 +11,13 @@ const getStoredUser = () => {
 }
 
 const storedUser = getStoredUser();
+const storedUserImage = JSON.parse(localStorage.getItem('user')).image; // Get user image from localStorage
 
 const config = {
   storedUser: storedUser,
 
   botName: "TEKTAI",
+  botAvatar: import("./image.png"), // Import bot avatar image
   initialMessages: [
     createChatBotMessage(`Hello ${storedUser}. How can I assist you?`, {
       widget: "options",

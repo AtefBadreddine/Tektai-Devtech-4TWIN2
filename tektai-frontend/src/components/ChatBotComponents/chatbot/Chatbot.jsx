@@ -5,6 +5,7 @@ import ActionProvider from "../chatbot/ActionProvider";
 import MessageParser from "../chatbot/MessageParser";
 import "react-chatbot-kit/build/main.css";
 import gif from "./gif.gif"; // Import the GIF
+import './cha.css'; // Import the CSS file
 
 function Chatbotco() {
     const [isChatOpen, setIsChatOpen] = useState(false);
@@ -33,10 +34,13 @@ function Chatbotco() {
     <div
       style={{
         position: "fixed",
-        bottom: "20px",
+        bottom: "78px",
         left: "20px",
         cursor: "pointer",
         zIndex: "1001",
+        width: "157px",
+        height: "62px",
+        
       }}
       onClick={toggleChat}
     >
@@ -45,8 +49,8 @@ function Chatbotco() {
             src={gif}
           alt="Close Chat"
           style={{
-            width: "50px",
-            height: "50px",
+            width: "70px",
+            height: "60px",
             position: "fixed",
             bottom: "490px",
             left: "260px",
