@@ -79,6 +79,9 @@ import Homechallenger from './pages/home/Homechallenger';
 import Evaluate from './pages/evaluate/evaluate';
 import CompanySubmissionsn from './pages/evaluate/evaluate';
   import ApproveChallenges from "./pages/dashboard/challenges/ApproveChallenges";
+import Chatbot from 'react-chatbot-kit';
+import Chatbotco from './components/ChatBotComponents/chatbot/Chatbot';
+import Layout from './Layout';
 
 
 
@@ -114,9 +117,11 @@ import CompanySubmissionsn from './pages/evaluate/evaluate';
           <SpinnerWithBackground />
         ) : (
         <Routes>
+
         <Route path="/companysubmissions" element={<CompanySubmissions />} />
  
       
+        <Route element={<Layout />}>
 
         <Route path="/modify-submission/:submissionId" element={<ModifySubmissionForm />} />
           <Route path="/Map" element={<MapComponent />} />
@@ -149,6 +154,7 @@ import CompanySubmissionsn from './pages/evaluate/evaluate';
           <Route path="/results" element={<SearchResult />} />
           <Route path="/resultsf" element={<SearchResultF />} />
           <Route path="/homechallenger" element={<Homechallenger />} />
+          <Route path="/chatbot" element={<Chatbotco />} />
 
           <Route path="*" element={<NotFound />} />
 
@@ -170,6 +176,7 @@ import CompanySubmissionsn from './pages/evaluate/evaluate';
             <Route path="/approve-challenges" element={<ApproveChallenges />} />
             <Route path="/profileadmin" element={<Settingsadmin/>} />
 
+          </Route>
           </Route>
 
         </Routes>)

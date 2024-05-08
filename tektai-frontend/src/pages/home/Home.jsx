@@ -18,6 +18,7 @@ import Transition from '../../utils/Transition'; // Assuming Transition componen
 import StatsCompare from '../../components/stats/statsCompare';
 import {Alert} from "@chakra-ui/react";
 import AlertMsg from "../../sections/AlertMsg";
+import Chatbotco from '../../components/ChatBotComponents/chatbot/Chatbot';
 
 function Home() {
 
@@ -100,7 +101,6 @@ function Home() {
         {/*  Page sections */}
         <Transition show appear>
           { alert.title.length ?  <AlertMsg title={alert.title} desc={alert.desc} status={alert.status} /> : '' }
-
         <HeroHome />
         </Transition>
         <FeaturesHome/>
