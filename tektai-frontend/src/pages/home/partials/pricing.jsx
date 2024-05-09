@@ -34,13 +34,13 @@ function PriceWrapper({ children }) {
 }
 
 export default function ThreeTierPricing() {
-  const createCheckout = async () => {
+  const createCheckout = async (plantype) => {
     try {
       const token = localStorage.getItem('token');
       console.log('token' , token);
       const response = await axios.post(
           'http://localhost:3000/payment/stripe/checkout',
-          null,
+          { plan : plantype},
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -123,7 +123,7 @@ export default function ThreeTierPricing() {
                 </ListItem>
               </List>
               <Box w="80%" pt={7}>
-                <Button w="full" colorScheme="blue" onClick={createCheckout} >
+                <Button w="full" colorScheme="blue" onClick={ () =>  createCheckout('premium')} >
                   Enroll Now
                 </Button>
               </Box>
@@ -133,7 +133,7 @@ export default function ThreeTierPricing() {
         <PriceWrapper>
           <Box py={4} px={12}>
             <Text fontWeight="500" fontSize="2xl">
-              Platinum plan
+              Platinium plan
             </Text>
             <HStack justifyContent="center">
               <Text fontSize="5xl" fontWeight="900">
@@ -166,7 +166,7 @@ export default function ThreeTierPricing() {
               </ListItem>
             </List>
             <Box w="80%" pt={7}>
-              <Button w="full" colorScheme="blue" variant="outline">
+              <Button w="full" colorScheme="blue" variant="outline" onClick={ () => createCheckout('platinium') }>
                 Enroll Now
               </Button>
             </Box>

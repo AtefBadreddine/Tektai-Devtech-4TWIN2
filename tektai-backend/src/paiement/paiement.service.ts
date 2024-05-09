@@ -12,9 +12,9 @@ export class PaiementService {
     constructor(
         @InjectModel(User.name) private userModel: Model<User>,
     ) {}
-    async onPaymentSuccess(user_id : string) {
+    async onPaymentSuccess(user_id : string,type : string) {
         const user = await this.userModel.findById(user_id).exec();
-        user.subscription = 'premium';
+        user.subscription = type;
         return user.save();
     }
 }

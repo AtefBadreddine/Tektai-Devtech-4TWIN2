@@ -138,7 +138,7 @@ const [userData, setUserData] = useState(null);
         </div>
         <div className="containerprofiles">
             <p className="text-gray-700 pr-20 text-m">Subscription Type </p>
-            <span className="text-gray-700 font-bold text-m">{userData?.subscription === 'premium' ? 'Premium plan' : 'Free plan'}</span>
+            <span className="text-gray-700 font-bold text-m">{ (userData?.subscription.toString().toUpperCase() ?? 'Free') + ' Plan'}</span>
         </div>
       
   
