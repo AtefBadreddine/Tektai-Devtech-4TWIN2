@@ -1,25 +1,50 @@
 import React, {useEffect, useState} from 'react';
 
 import Header from '../../layout/Header';
-import HeroHome from './partials/HeroHome';
-import FeaturesHome from './partials/Features';
-import FeaturesBlocks from './partials/FeaturesBlocks';
-import Testimonials from './partials/Testimonials';
-import Newsletter from './partials/Newsletter';
 import Footer from '../../layout/Footer';
-import PopupAd from '../../components/premium/premium';
-import { HeroParallax } from './partials/whyus';
-import { LampContainer, LampDemo } from './partials/lamp';
 import { InfiniteMovingCards } from './partials/team';
 import ContactUs from '../../components/ContactUs/ContactUs';
 import { Slider } from '@chakra-ui/slider';
 import Transition from '../../utils/Transition';
 import Stats from "./company/Stats";
 import CreateChallengeBlock from "./company/CreateChallengeBlock";
-import ThreeTierPricing from "./partials/pricing"; // Assuming Transition component file location
+import ThreeTierPricing from "./partials/pricing";
+import AlertMsg from "../../sections/AlertMsg";
+import {useAuth} from "../../auth/useAuth"; // Assuming Transition component file location
 
 
 function CompanyHome() {
+
+    const [alert,setAlert] = useState({
+        title : '',
+        desc : '',
+        status : ''
+    })
+
+    const [user,setUser] = useState(null);
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const paymentStatus = params.get('payment');
+
+        if (paymentStatus === 'success') {
+            setAlert({
+                title : 'Payment Confirmed Successfully',
+                desc : 'Welcome to TEKTAI PREMIUM',
+                status : "success"
+            })
+        } else if (paymentStatus === 'failure') {
+            setAlert({
+                title : 'Error processing your payment',
+                desc : 'please retry again in few minutes',
+                status : "error"
+            })
+        }
+    }, []);
+    const auth  = useAuth();
+    useEffect(() => {
+        const storedUser =  auth.user ||  localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+        setUser(storedUser);
+    },[]);
 
     const data = [
         {
@@ -70,10 +95,15 @@ function CompanyHome() {
 
             {/*  Page content */}
             <main className="flex-grow">
+                { alert.title.length ?  <AlertMsg title={alert.title} desc={alert.desc} status={alert.status}  /> : '' }
+
                 <Stats/>
 
                 <CreateChallengeBlock/>
-                <ThreeTierPricing/>
+                {
+                    user?.subscription !== 'premium' &&      <ThreeTierPricing/>
+                }
+
                 {/* <HeroParallax products={products} /> */}
                 <Slider userData={data} />
                 <div className="container">

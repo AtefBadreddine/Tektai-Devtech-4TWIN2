@@ -101,7 +101,6 @@ function Homechallenger() {
                 />
             </div>
 
-<ThreeTierPricing/>
         <FeaturesHome/>
 
 
@@ -120,15 +119,17 @@ function Homechallenger() {
         {/* <Newsletter /> */}
         {/* <Transition show appear>
 
-        <div className="py-32 max-w-3xl mx-auto text-center pb-12 md:pb-20">
-          <div className=''></div>
-              <h2 className="h2 mb-4">About <span className="px-2 text-white bg-blue-600 rounded ">Us</span> </h2>
-              <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> is a collaborative platform for data science enthusiasts. Companies submit challenges, developers innovate. With transparent processes and community engagement, TektAI is a hub for pushing the boundaries of data. Join us to revolutionize data science, one challenge at a time.</p>
-            </div>
-            </Transition> */}
+       */}
+          <Transition show appear>
 
-       {/* <InfiniteMovingCards items={data} /> */}
+              <div className="py-32 max-w-3xl mx-auto text-center pb-12 md:pb-20">
+                  <div className=''></div>
+                  <h2 className="h2 mb-4">About <span className="px-2 text-white bg-blue-600 rounded ">Us</span> </h2>
+                  <p className="text-xl text-gray-600"><span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">TektAI</span> is a collaborative platform for data science enthusiasts. Companies submit challenges, developers innovate. With transparent processes and community engagement, TektAI is a hub for pushing the boundaries of data. Join us to revolutionize data science, one challenge at a time.</p>
+              </div>
+          </Transition>
 
+          <InfiniteMovingCards items={data} />
         <ContactUs></ContactUs>
 
       </main>

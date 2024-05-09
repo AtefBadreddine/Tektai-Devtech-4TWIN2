@@ -11,7 +11,7 @@ const getStoredUser = () => {
 }
 
 const storedUser = getStoredUser();
-const storedUserImage = JSON.parse(localStorage.getItem('user')).image; // Get user image from localStorage
+const storedUserImage = JSON.parse(localStorage.getItem('user'))?.image; // Get user image from localStorage
 
 const config = {
   storedUser: storedUser,

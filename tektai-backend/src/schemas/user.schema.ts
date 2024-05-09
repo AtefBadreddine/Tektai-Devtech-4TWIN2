@@ -40,6 +40,9 @@ export class User {
   @Prop({ default: "" })
   bio: string;
 
+  @Prop({ default: "free" })
+  subscription: string;
+
   @Prop({ default: "" })
   birthday: string;
 
