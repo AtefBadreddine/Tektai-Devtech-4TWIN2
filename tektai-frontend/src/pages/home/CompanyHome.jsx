@@ -100,9 +100,8 @@ function CompanyHome() {
                 <Stats/>
 
                 <CreateChallengeBlock/>
-                {
-                    user?.subscription === 'premium' &&      <ThreeTierPricing/>
-                }
+                 <ThreeTierPricing/>
+
 
                 {/* <HeroParallax products={products} /> */}
                 <Slider userData={data} />
