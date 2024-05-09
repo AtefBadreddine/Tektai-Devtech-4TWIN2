@@ -127,7 +127,7 @@ const [userData, setUserData] = useState(null);
       </Link>
       <img className="shadow-xl border  border-gray-300" src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}
       />
-      <h2 className="titlecompany pt-5">{userData?.companyName ?? 'Loading...'} .</h2>
+      <h2 className="titlecompany pt-5">{userData?.companyName ?? 'Loading...'}</h2>
         <div className="containerprofiles">
           <p className="text-gray-600 pr-20 text-m">Headquarters </p>
           <span className="text-gray-600 font-bold text-m">{userData?.adresse ?? 'Loading...'}</span>
@@ -136,12 +136,15 @@ const [userData, setUserData] = useState(null);
           <p className="text-gray-700 pr-20 text-m">Company Size </p>
           <span className="text-gray-700 font-bold text-m">100+ employees</span>
         </div>
+        <div className="containerprofiles">
+            <p className="text-gray-700 pr-20 text-m">Subscription Type </p>
+            <span className="text-gray-700 font-bold text-m">{userData?.subscription === 'premium' ? 'Premium plan' : 'Free plan'}</span>
+        </div>
       
   
     </div>
   </div>
-  <div class="example-2-container">
-  <p class="socials-title font-bold ">Socials</p>
+  <div className="example-2-container">
   <div className="cardsocial" >
     <a className="socialContainer containerOne" href="#">
       <svg viewBox="0 0 16 16" className="socialSvg instagramSvg">

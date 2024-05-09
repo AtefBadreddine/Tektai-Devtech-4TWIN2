@@ -25,6 +25,7 @@ import { AppService } from './app.service';
 import {MailsModule} from "./mails/mails.module";
 
 import { LocalisationModule } from './localisation/localisation.module';
+import {PaiementModule} from "./paiement/paiement.module";
 
 
 
@@ -32,6 +33,7 @@ import { LocalisationModule } from './localisation/localisation.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URI),
+    PaiementModule,
     AuthModule,
     UsersModule, // Ajoutez UsersModule ici
     SettingsModule,

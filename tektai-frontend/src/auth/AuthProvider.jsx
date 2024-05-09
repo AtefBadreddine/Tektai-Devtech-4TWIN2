@@ -1,6 +1,7 @@
 import React, {createContext, useEffect, useState} from 'react';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import userService from "../services/userService";
 
 export const AuthContext = createContext();
 
@@ -26,7 +27,20 @@ const AuthProvider = ({ children }) => {
     navigate('/signin');
   };
 
+  useEffect(() => {
 
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+       const loggedInUser =  await userService.getConnectedUser(token);
+        setUser(loggedInUser);
+        localStorage.setItem('user', JSON.stringify(loggedInUser));
+      }
+    }
+
+    fetchUser();
+
+  }, []);
 
   return (
     <AuthContext.Provider value={{ token, user, login, logout }}>

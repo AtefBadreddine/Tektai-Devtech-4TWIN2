@@ -8,7 +8,9 @@ import Testimonials from '../home/partials/Testimonials';
 import Newsletter from '../home/partials/Newsletter';
 import Footer from '../../layout/Footer';
 import RankingTable from './rankingtable';
+import {useAuth} from "../../auth/useAuth";
 function Home() {
+    const auth = useAuth();
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
 
