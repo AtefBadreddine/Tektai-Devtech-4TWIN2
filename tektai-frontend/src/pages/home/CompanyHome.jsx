@@ -101,7 +101,7 @@ function CompanyHome() {
 
                 <CreateChallengeBlock/>
                 {
-                    user?.subscription !== 'premium' &&      <ThreeTierPricing/>
+                    user?.subscription === 'premium' &&      <ThreeTierPricing/>
                 }
 
                 {/* <HeroParallax products={products} /> */}
