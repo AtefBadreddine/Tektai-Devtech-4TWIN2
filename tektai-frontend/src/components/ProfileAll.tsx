@@ -32,13 +32,14 @@ const Profile = () => {
   let bptss: number = 0;
   const [userData, setUserData] = useState<UserData | null>(null);
   const { id } = useParams();
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     // Retrieve data from local storage
     const fetchUserData = async () => {
       try {
         // Make an HTTP GET request to your API endpoint
-        const response = await fetch(`http://localhost:3000/users/get/${id}`);
+        const response = await fetch(`${API_URL}/users/get/${id}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch user data');

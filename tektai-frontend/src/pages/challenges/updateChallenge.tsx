@@ -17,11 +17,12 @@ const UpdateChallenge = () => {
       deadline: '',
       dataset: ''
   });
-  
-  useEffect(() => {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
+    useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/challenges/${id}`);
+        const response = await axios.get(`${API_URL}/challenges/${id}`);
         setInput(response.data);
       } catch (error) {
         console.error('Error fetching challenge:', error);
@@ -42,7 +43,7 @@ const UpdateChallenge = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put(`http://localhost:3000/challenges/setting/${id}`, input);
+      const response = await axios.put(`${API_URL}/challenges/setting/${id}`, input);
       setFlashMessage("Challenge updated successfully");
       window.location.href = '/historychallenges';
     } catch (error) {

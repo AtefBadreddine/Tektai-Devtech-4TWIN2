@@ -4,11 +4,12 @@ import { Tag,TagLabel } from '@chakra-ui/react';
 
 const PendingInvitations = ({ teamId }) => {
   const [invitations, setInvitations] = useState([]);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     const fetchInvitationsByTeamId = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/teams/invitations`);
+        const response = await axios.get(`${API_URL}/teams/invitations`);
         // Filter invitations where the team ID matches the teamId prop and accepted is true
         const filteredInvitations = response.data.filter(invitation => invitation.team._id === teamId && invitation.accepted);
         const uniqueInvitations = filterUniqueByUsername(filteredInvitations);
@@ -44,7 +45,7 @@ const PendingInvitations = ({ teamId }) => {
         <li key={invitation._id} className="flex items-center space-x-2 mb-2">
           {invitation.recipient.image && (
             <img
-              src={`http://localhost:3000/uploads/${invitation.recipient.image}`}
+              src={`${API_URL}/uploads/${invitation.recipient.image}`}
               alt={`${invitation.recipient.username}'s avatar`}
               className="w-8 h-8 rounded-full"
             />

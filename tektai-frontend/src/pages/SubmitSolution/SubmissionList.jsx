@@ -14,6 +14,7 @@ const SubmissionList = () => {
   const [userChallenges, setUserChallenges] = useState([]); // State to store the challenges submitted by the user
   const { id: challengeId } = useParams();
   const navigate = useNavigate(); // Initialisez useNavigate
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     checkUserLoggedIn(); // Vérifier si l'utilisateur est connecté au chargement du composant
@@ -61,7 +62,7 @@ const SubmissionList = () => {
   // Fonction pour récupérer toutes les soumissions
   const fetchSubmissions = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/submissions/Allsubmition');
+      const response = await axios.get(`${API_URL}/submissions/Allsubmition`);
       setSubmissions(response.data);
     } catch (error) {
       console.error('Error fetching submissions:', error);
@@ -145,27 +146,27 @@ const SubmissionList = () => {
     <td className="border px-2 py-1">{submission.team.name}</td>
     <td className="border px-2 py-1">{submission.challenge ? submission.challenge.title : 'No challenge assigned'}</td>
     <td className="border px-2 py-1">
-        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`http://localhost:3000/${submission.pdf}`)}>
+        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`${API_URL}/${submission.pdf}`)}>
             <FiDownload size={16} />
         </button>
     </td>
     <td className="border px-2 py-1">
-        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`http://localhost:3000/${submission.notebook}`)}>
+        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`${API_URL}/${submission.notebook}`)}>
             <FiDownload size={16} />
         </button>
     </td>
     <td className="border px-2 py-1">
-        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`http://localhost:3000/${submission.presentation}`)}>
+        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`${API_URL}/${submission.presentation}`)}>
             <FiDownload size={16} />
         </button>
     </td>
     <td className="border px-2 py-1">
-        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`http://localhost:3000/${submission.excel}`)}>
+        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`${API_URL}/${submission.excel}`)}>
             <FiDownload size={16} />
         </button>
     </td>
     <td className="border px-2 py-1">
-        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`http://localhost:3000/${submission.archive}`)}>
+        <button className="bg-blue-200 hover:bg-blue-300 text-white font-bold py-1 px-2 rounded" onClick={() => handleDownload(`${API_URL}/${submission.archive}`)}>
             <FiDownload size={16} />
         </button>
     </td>

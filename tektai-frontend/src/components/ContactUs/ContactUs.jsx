@@ -6,12 +6,13 @@ import { faPhone } from '@fortawesome/free-solid-svg-icons';
 function ContactUs() {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [disabled, setDisabled] = useState(false);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const onSubmit = async (data) => {
 
     setDisabled(true);
     try {
-      const response = await fetch('http://localhost:3000/contact', {
+      const response = await fetch(`${API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -9,6 +9,7 @@ import { Alert, AlertIcon, Avatar } from '@chakra-ui/react';
 function JoinedTeams() {
   const [joinedTeams, setJoinedTeams] = useState([]);
   const [loading, setLoading] = useState(true); // Add loading state
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     async function fetchJoinedTeams() {
@@ -60,7 +61,7 @@ function JoinedTeams() {
                   <div className="mb-2 flex items-center">
                     <div className=" mr-2 font-bold">Leader :</div>
                     <div className="text-gray-600 mb-2 flex items-center hover:text-blue-500">
-                      <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} /></div>
+                      <div><Avatar className='mx-2 transition duration-300 ease-in-out transform hover:scale-110' size='md' name={team.leader?.username} src={`${API_URL}/uploads/${team.leader?.image}`} /></div>
                       {team.leader?.username}
                     </div>
                   </div>
@@ -73,7 +74,7 @@ function JoinedTeams() {
                     {team.members.map((member) => (
                       <div key={member._id} className="ml-4">
                         <a href={`/profile/${member?.username}`} className="text-black dark:text-white flex items-center hover:text-blue-500">
-                          <div><Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} /></div>
+                          <div><Avatar className='m-2 transition duration-300 ease-in-out transform hover:scale-110' size='sm' name={member?.username} src={`${API_URL}/uploads/${member?.image}`} /></div>
                           {member?.username}
                         </a>
                       </div>

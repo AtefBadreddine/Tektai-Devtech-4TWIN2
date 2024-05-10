@@ -7,6 +7,7 @@ import SearchTableComponent from '../../components/Tables/Searchatble';
 const SearchResult = () => {
   const location = useLocation();
   const users = location.state?.users || []; // Access passed users or an empty array
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   return (
     <div>

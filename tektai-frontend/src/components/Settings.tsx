@@ -44,6 +44,7 @@ const Settings = () => {
 
   });
 
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 
   
@@ -141,7 +142,7 @@ const Settings = () => {
             <div className="inline-flex items-center space-x-4">
             {userData && userData.image ? (
       <img
-        src={`http://localhost:3000/uploads/${userData.image}`}
+        src={`${API_URL}/uploads/${userData.image}`}
         alt="Profile"
         className="w-10 h-10 object-cover rounded-full"
         />

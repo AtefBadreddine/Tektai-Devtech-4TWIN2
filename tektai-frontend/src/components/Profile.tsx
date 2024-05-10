@@ -33,14 +33,15 @@ const Profile: React.FC = () => {
    const [profileImageUrl, setProfileImageUrl] = useState('');
    const storedUser = localStorage.getItem('user');
    const user = storedUser ? JSON.parse(storedUser) : null;
-   
-   useEffect(() => {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
+    useEffect(() => {
     const localStorageData = localStorage.getItem('user');
 
     const fetchUserData = async (username) => {
       try {
         // Fetch user data from the backend
-        const response = await axios.get(`http://localhost:3000/users/get/${username}`);
+        const response = await axios.get(`${API_URL}/users/get/${username}`);
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
@@ -94,7 +95,7 @@ const Profile: React.FC = () => {
   <div className="relative">
     {userData && userData.image ? (
       <img
-        src={`http://localhost:3000/uploads/${userData.image}`}
+        src={`${API_URL}/uploads/${userData.image}`}
         alt="Profile"
         className="shadow-xl rounded-full h-35 w-35 object-cover align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
       />

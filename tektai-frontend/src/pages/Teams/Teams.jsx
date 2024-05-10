@@ -4,6 +4,7 @@ import UsersService from '../../services/userService';
 
 function Teams() {
   const [teams, setTeams] = useState([]);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     async function fetchTeams() {

@@ -15,6 +15,7 @@ function InviteMembers({ teamId, onClose }) {
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
 const toast = useToast()
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     // Fetch list of users that can be invited
@@ -90,7 +91,7 @@ const toast = useToast()
             
             {user.image && (
               <img
-                src={`http://localhost:3000/uploads/${user.image}`}
+                src={`${API_URL}/uploads/${user.image}`}
                 alt={`${user.username}'s avatar`}
                 className="w-8 h-8 rounded-full mr-2"
               />

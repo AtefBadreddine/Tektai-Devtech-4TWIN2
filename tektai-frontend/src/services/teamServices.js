@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000"; // Replace with your backend API base URL
+const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 const TeamsService = {
   createTeam: async (teamData) => {
     try {
-      const response = await axios.post(`${API_BASE_URL}/teams`, teamData);
+      const response = await axios.post(`${API_URL}/teams`, teamData);
       return response.data;
     } catch (error) {
       console.error("Error creating team:", error);
@@ -15,7 +15,7 @@ const TeamsService = {
 
   getAllTeams: async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/teams`);
+      const response = await axios.get(`${API_URL}/teams`);
       return response.data;
     } catch (error) {
       console.error("Error fetching teams:", error);
@@ -25,7 +25,7 @@ const TeamsService = {
 
   getTeamById: async (teamId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/teams/${teamId}`);
+      const response = await axios.get(`${API_URL}/teams/${teamId}`);
       return response.data;
     } catch (error) {
       console.error("Error fetching team:", error);
@@ -34,7 +34,7 @@ const TeamsService = {
   },
   findAllJoinedTeams: async (teamId) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/teams/findAllJoinedTeams/${teamId}`);
+      const response = await axios.get(`${API_URL}/teams/findAllJoinedTeams/${teamId}`);
       return response.data;
     } catch (error) {    
       console.error("Error fetching teams:", error);
@@ -45,7 +45,7 @@ const TeamsService = {
   updateTeam: async (teamId, updatedTeamData) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/teams/${teamId}`,
+        `${API_URL}/teams/${teamId}`,
         updatedTeamData
       );
       return response.data;
@@ -57,7 +57,7 @@ const TeamsService = {
 
   deleteTeam: async (teamId) => {
     try {
-      await axios.delete(`${API_BASE_URL}/teams/${teamId}`);
+      await axios.delete(`${API_URL}/teams/${teamId}`);
     } catch (error) {
       console.error("Error deleting team:", error);
       throw error;
@@ -66,7 +66,7 @@ const TeamsService = {
   addMember: async (teamId, memberId) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/teams/${teamId}/members/${memberId}`
+        `${API_URL}/teams/${teamId}/members/${memberId}`
       );
       return response.data;
     } catch (error) {
@@ -77,7 +77,7 @@ const TeamsService = {
   removeMember: async (teamId, memberId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/teams/${teamId}/members/${memberId}`
+        `${API_URL}/teams/${teamId}/members/${memberId}`
       );
       return response.data;
     } catch (error) {
@@ -87,7 +87,7 @@ const TeamsService = {
   updateTeamName: async (teamId, newName) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/teams/${teamId}/update-name`,
+        `${API_URL}/teams/${teamId}/update-name`,
         { name: newName }
       );
       return response.data;
@@ -100,7 +100,7 @@ const TeamsService = {
   changeTeamLeader: async (teamId, newLeaderId) => {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/teams/${teamId}/change-leader`,
+        `${API_URL}/teams/${teamId}/change-leader`,
         { newLeaderId: newLeaderId }
       );
       return response.data;
@@ -112,7 +112,7 @@ const TeamsService = {
   sendInvitation: async (teamId, memberId) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/teams/invitations/${teamId}/send`,
+        `${API_URL}/teams/invitations/${teamId}/send`,
         { memberId: memberId }
       );
       return response.data;
@@ -125,7 +125,7 @@ const TeamsService = {
   acceptInvitation: async (invitationId) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/teams/invitations/${invitationId}/accept`
+        `${API_URL}/teams/invitations/${invitationId}/accept`
       );
       return response.data;
     } catch (error) {
@@ -137,7 +137,7 @@ const TeamsService = {
   removeInvitation: async (invitationId) => {
     try {
       const response = await axios.delete(
-        `${API_BASE_URL}/teams/invitations/${invitationId}/remove`
+        `${API_URL}/teams/invitations/${invitationId}/remove`
       );
       return response.data;
     } catch (error) {
@@ -149,7 +149,7 @@ const TeamsService = {
   getTeamsByUserId: async (userId) => {
     try {
       const response = await axios.get(
-        `${API_BASE_URL}/teams/user/${userId}/joined`
+        `${API_URL}/teams/user/${userId}/joined`
       );
       return response.data;
     } catch (error) {
@@ -159,7 +159,7 @@ const TeamsService = {
   },
   getTeamsByToken: async (token) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/teams/user/joined`, {
+      const response = await axios.get(`${API_URL}/teams/user/joined`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

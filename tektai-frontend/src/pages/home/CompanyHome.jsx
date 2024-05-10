@@ -14,6 +14,7 @@ import {useAuth} from "../../auth/useAuth"; // Assuming Transition component fil
 
 
 function CompanyHome() {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
     const [alert,setAlert] = useState({
         title : '',

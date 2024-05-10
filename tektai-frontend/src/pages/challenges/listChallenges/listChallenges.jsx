@@ -11,6 +11,8 @@ function ListChallenges() {
     const [activeTab, setActiveTab] = useState('all');
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };

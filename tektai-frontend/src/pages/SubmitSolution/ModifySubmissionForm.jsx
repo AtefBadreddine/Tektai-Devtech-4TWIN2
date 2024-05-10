@@ -12,6 +12,7 @@ const [archiveFile, setArchiveFile] = useState(null);
 
   const navigate = useNavigate();
   const { submissionId } = useParams();
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const handlePdfChange = (e) => {
     setPdfFile(e.target.files[0]);

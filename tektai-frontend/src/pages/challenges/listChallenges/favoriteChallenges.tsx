@@ -17,6 +17,7 @@ const FavoriteChallenges = () => {
   const [challengesData, setChallengesData] = useState<Challenge[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isChecked, setIsChecked] = useState<boolean>(true);
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked); // Toggle the checked state
@@ -38,7 +39,7 @@ const FavoriteChallenges = () => {
     const fetchFavoriteChallenges = async () => {
       try {
           if (userId) {
-              const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
+              const response = await axios.get(`${API_URL}/users/${userId}/favorites`);
               console.log(response.data);
               const favoriteChallengeIds: string[] = response.data; // Assuming the response data is an array of favorite challenge IDs
               setFavoriteChallenges(favoriteChallengeIds); // Assuming the response data is an array of favorite challenge IDs
@@ -59,7 +60,7 @@ const FavoriteChallenges = () => {
       try {
         const challenges = await Promise.all(
           favoriteChallenges.map(async (challengeId) => {
-            const response = await axios.get(`http://localhost:3000/challenges/${challengeId}`);
+            const response = await axios.get(`${API_URL}/challenges/${challengeId}`);
             return response.data;
           })
         );
@@ -81,10 +82,10 @@ const FavoriteChallenges = () => {
     try {
         if (userId) {
             // Delete challenge from favorites
-            await axios.delete(`http://localhost:3000/users/${userId}/favorites/remove/${challengeId}`);
+            await axios.delete(`${API_URL}/users/${userId}/favorites/remove/${challengeId}`);
             console.log('Challenge with ID deleted:', challengeId);
             // Refresh favorite challenges
-            const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
+            const response = await axios.get(`${API_URL}/users/${userId}/favorites`);
             const favoriteChallengeIds: string[] = response.data;
             setFavoriteChallenges(favoriteChallengeIds);
         }

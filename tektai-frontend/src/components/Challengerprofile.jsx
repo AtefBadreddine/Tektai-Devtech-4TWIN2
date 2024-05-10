@@ -19,6 +19,8 @@ function Challengerprofile() {
     const [upcomingChallengesCount, setUpcomingChallengesCount] = useState('');
     const [ongoingChallengesCount, setOngoingChallengesCount] = useState('');
     const [count, setCount] = useState(0);
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     function BadgeDescriptions2() {
       return (
         <div className="flex flex-wrap justify-center mb-2">
@@ -62,11 +64,9 @@ function Challengerprofile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/users/profile/${id}`);
+        const response = await axios.get(`${API_URL}/users/profile/${id}`);
         const userData = response.data;
         setUserData(userData);
-        console.log('User data:', userData);
-        console.log('Image path:', `http://localhost:3000/uploads/${userData.image}`);
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
@@ -88,11 +88,11 @@ function Challengerprofile() {
   useEffect(() => {
     const fetchChallengeCounts = async () => {
       try {
-        const path = `http://localhost:3000/challenges/count/${id}`;
+        const path = `${API_URL}/challenges/count/${id}`;
         console.log('Request Path:', path); // Log the request path
         const response = await axios.get(path);
         const count = response.data;
-        console.log('Counts:', count); // Log the entire response data
+
         setCount(count); // Update count with fetched data
       } catch (error) {
         console.error('Error fetching challenge counts:', error);
@@ -107,12 +107,10 @@ function Challengerprofile() {
   useEffect(() => {
     const fetchcompletedCounts = async () => {
       try {
-        const path = `http://localhost:3000/challenges/completed/${id}`;
+        const path = `${API_URL}/challenges/completed/${id}`;
         console.log('Request Path:', path); // Log the request path
         const response = await axios.get(path);
         const completedChallengesCount = response.data;
-    
-        console.log('Counts:', completedChallengesCount); // Log the entire response data
         setCompletedChallengesCount(completedChallengesCount); // Update count with fetched data
       } catch (error) {
         console.error('Error fetching challenge counts:', error);
@@ -129,7 +127,7 @@ function Challengerprofile() {
   useEffect(() => {
     const fetchongoingCounts = async () => {
       try {
-        const path = `http://localhost:3000/challenges/ongoing/${id}`;
+        const path = `${API_URL}/challenges/ongoing/${id}`;
         console.log('Request Path:', path); // Log the request path
         const response = await axios.get(path);
         const ongoingChallengesCount = response.data;
@@ -150,7 +148,7 @@ function Challengerprofile() {
   useEffect(() => {
     const fetchupcomingCounts = async () => {
       try {
-        const path = `http://localhost:3000/challenges/upcoming/${id}`;
+        const path = `${API_URL}/challenges/upcoming/${id}`;
         console.log('Request Path:', path); // Log the request path
         const response = await axios.get(path);
         const upcomingChallengesCount = response.data;
@@ -217,7 +215,7 @@ function Challengerprofile() {
     </div>
     <div class="profile-menu">
      <div class="profile-avatar">
-           <img class="profile-img shadow-xl " src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}/>
+           <img class="profile-img shadow-xl " src={userData?.image ? `${API_URL}/uploads/${userData.image}` : '/default-profile-picture.png'}/>
   <div class="role">{user?.role ?? 'Loading...'}:</div>
       <div class="profile-name">{user?.username ?? 'Loading...'}</div>
      </div>

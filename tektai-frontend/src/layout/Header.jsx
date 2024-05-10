@@ -25,6 +25,7 @@ import './Header.css'; // Import CSS file for Header styles
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const auth = useAuth();
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
     const toggleMobileMenu = () => {
       setIsMobileMenuOpen(!isMobileMenuOpen);

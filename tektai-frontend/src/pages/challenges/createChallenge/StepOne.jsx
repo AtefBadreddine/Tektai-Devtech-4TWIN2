@@ -1,6 +1,8 @@
 import React from 'react';
 
 function StepOne({ formData, errors, handleChange, nextStep }) {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const handleSubmit = (e) => {
         e.preventDefault();
         // Perform any additional validation for Step 1 if needed

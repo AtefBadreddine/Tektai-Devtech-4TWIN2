@@ -54,6 +54,7 @@ function ChallengeDetails() {
     challengeId: challengeId
   });
 
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 
  useEffect(() => {
@@ -68,7 +69,7 @@ function ChallengeDetails() {
   useEffect(() => {
     const fetchChallenge = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/challenges/${id}`);
+        const response = await axios.get(`${API_URL}/challenges/${id}`);
         setChallenge(response.data);
         setLoading(false);
       } catch (error) {
@@ -163,7 +164,7 @@ function ChallengeDetails() {
     const fetchUserData = async () => {
      try {
        // Fetch user data from the backend
-       const response = await axios.get('http://localhost:3000/users/profile'); // Adjust the endpoint as per your backend route
+       const response = await axios.get('${API_URL}/users/profile'); // Adjust the endpoint as per your backend route
        const userData = response.data;
        setUserData(userData);
        setProfileImageUrl(`/uploads/${userData.image}`);
@@ -179,7 +180,7 @@ function ChallengeDetails() {
   const handleDelete = async () => {
     try {
       if (challenge.status === 'Upcoming' || challenge.status === 'Completed') {
-      await axios.delete(`http://localhost:3000/challenges/${id}`);
+      await axios.delete(`${API_URL}/challenges/${id}`);
       setDeleted(true);
       window.location.href = '/historychallenges';
     } else {
@@ -205,7 +206,7 @@ function ChallengeDetails() {
     const fetchUsernames = async () => {
         const usernamePromises = comments.map(async (comment) => {
             try {
-                const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
+                const response = await axios.get(`${API_URL}/users/getById/${comment.userName}`);
                 const user = response.data; // Assuming response.data contains the user document
                 return user.username; // Return username
             } catch (error) {
@@ -226,7 +227,7 @@ function ChallengeDetails() {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/users/getById/${challenge.company_id}`);
+        const response = await axios.get(`${API_URL}/users/getById/${challenge.company_id}`);
         const { companyName, image } = response.data; // Assuming the image URL is provided in the response data
         
         setCompanyName(companyName);
@@ -244,7 +245,7 @@ function ChallengeDetails() {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/comments`);
+        const response = await axios.get(`${API_URL}/comments`);
         setComments(response.data);
       } catch (error) {
         console.error('Error fetching comments:', error);
@@ -258,11 +259,11 @@ function ChallengeDetails() {
 
  const handleSubmit = async () => {
   try {
-    await axios.post(`http://localhost:3000/comments/${challengeId}`, {
+    await axios.post(`${API_URL}/comments/${challengeId}`, {
       description: commentText,
       userName: defaultusername, // Use the defaultusername state directly
     });
-    const response = await axios.get(`http://localhost:3000/comments/${challengeId}`);
+    const response = await axios.get(`${API_URL}/comments/${challengeId}`);
     setComments(response.data); // Update comments state with the new comment
     setCommentText(''); // Clear the comment input field
   } catch (error) {
@@ -456,7 +457,7 @@ function ChallengeDetails() {
                       </div>
 
                         <div>
-                            <img src={ challenge?.image ? `http://localhost:3000/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
+                            <img src={ challenge?.image ? `${API_URL}/uploads/${challenge.image}` : defaultImagePath} alt={challenge.title} className="h-48 w-72 object-cover ml-auto rounded-lg shadow-xl" />
 
                             <div className="flex justify-center">
                                 {challenge && challenge.status === 'Completed' ? (

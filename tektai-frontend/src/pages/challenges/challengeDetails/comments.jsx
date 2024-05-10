@@ -18,7 +18,8 @@ function Comments() {
     const [comment, setComment] = useState({ description: '' });
     const [companyName, setCompanyName] = useState('');
     const [image, setImage] = useState('');
-    
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const handleEditClick = () => {
       handleEditButtonClick();
       setIsChecked(false); // Uncheck the checkbox when Edit is clicked
@@ -63,7 +64,7 @@ function Comments() {
     const handleUpdate = async (id) => {
       try {
         // Make PUT request to update the comment
-        const response = await axios.put(`http://localhost:3000/comments/${id}`, updateCommentDto);
+        const response = await axios.put(`${API_URL}/comments/${id}`, updateCommentDto);
         console.log('Updated comment:', response.data);
         // Handle success, maybe show a success message to the user
       } catch (error) {
@@ -76,7 +77,7 @@ function Comments() {
       // Perform the delete action
       try {
         // Make a DELETE request to remove the comment
-        const response = await axios.delete(`http://localhost:3000/comments/${commentId}`);
+        const response = await axios.delete(`${API_URL}/comments/${commentId}`);
         console.log("Comment deleted:", response.data);
         // Handle the response as needed
   
@@ -145,7 +146,7 @@ function Comments() {
         try {
             const alreadyLiked = isCommentLiked(commentId);
             if (isChecked && !alreadyLiked) {
-                await axios.post(`http://localhost:3000/comments/${commentId}/increment-likes`);
+                await axios.post(`${API_URL}/comments/${commentId}/increment-likes`);
                 localStorage.setItem('likedComments', JSON.stringify({ ...likedComments, [commentId]: true }));
                 setLikedComments(prevLikedComments => ({ ...prevLikedComments, [commentId]: true }));
                 setComments(prevComments => {
@@ -157,7 +158,7 @@ function Comments() {
                     });
                 });
             } else if (!isChecked && alreadyLiked) {
-                await axios.post(`http://localhost:3000/comments/${commentId}/decrement-likes`);
+                await axios.post(`${API_URL}/comments/${commentId}/decrement-likes`);
                 const updatedLikedComments = { ...likedComments };
                 delete updatedLikedComments[commentId];
                 localStorage.setItem('likedComments', JSON.stringify(updatedLikedComments));
@@ -208,7 +209,7 @@ function Comments() {
     useEffect(() => {
         const fetchChallenge = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/challenges/${id}`);
+                const response = await axios.get(`${API_URL}/challenges/${id}`);
                 setChallenge(response.data);
                 setLoading(false);
             } catch (error) {
@@ -223,11 +224,11 @@ function Comments() {
       const fetchUsernames = async () => {
           const usernamePromises = comments.map(async (comment) => {
               try {
-                  const response = await axios.get(`http://localhost:3000/users/getById/${comment.userName}`);
+                  const response = await axios.get(`${API_URL}/users/getById/${comment.userName}`);
                   const user = response.data; 
                   const image = user.image; // Assuming the image URL is stored in user.image
                   console.log("Image URL testt:", image); 
-                  console.log(`http://localhost:3000/uploads/${image}`);
+                  console.log(`${API_URL}/uploads/${image}`);
 // Log the image URL
                   setImage(image); // Set the image state
                   return { username: user.username, role: user.role }; // Return username and role
@@ -262,7 +263,7 @@ function Comments() {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/comments`);
+                const response = await axios.get(`${API_URL}/comments`);
                 // Filter comments based on the challengeId
                 const filteredComments = response.data.filter(comment => comment.challengeId === id);
                 setComments(filteredComments);
@@ -302,7 +303,7 @@ function Comments() {
               <div className="flex-1" key={comment._id}>
                 <div className="flex gap-4 items-center">
                 {image ? (
-                        <img  src={`http://localhost:3000/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
+                        <img  src={`${API_URL}/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
 
                   ) : (
                     <img

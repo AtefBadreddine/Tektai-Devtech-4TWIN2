@@ -10,6 +10,7 @@ const DropdownNotification = () => {
   const [invitations, setInvitations] = useState([]);
   const [notifying, setNotifying] = useState(true);
   const loggedInUser = JSON.parse(localStorage.getItem('user')); // Get the logged-in user from local storage
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -20,7 +21,7 @@ const DropdownNotification = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         const loggedInUserId =  user.username ;
   
-        const response = await axios.get(`http://localhost:3000/teams/invitations`);
+        const response = await axios.get(`${API_URL}/teams/invitations`);
         console.log('Response:', response.data); // Log the response to inspect its structure
         const sortedInvitations = response.data
         .filter(invitation => invitation.recipient?.username === loggedInUserId)
@@ -43,7 +44,7 @@ const DropdownNotification = () => {
 
   const handleAccept = async (invitationId) => {
     try {
-      await axios.post(`http://localhost:3000/teams/invitations/${invitationId}/accept`);
+      await axios.post(`${API_URL}/teams/invitations/${invitationId}/accept`);
       // After accepting, fetch updated invitations
 
     } catch (error) {
@@ -53,7 +54,7 @@ const DropdownNotification = () => {
 
   const handleDecline = async (invitationId, userId) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/teams/invitations/${invitationId}/remove/${userId}`);
+      const response = await axios.delete(`${API_URL}/teams/invitations/${invitationId}/remove/${userId}`);
     
       // Log the response
       console.log('Response:', response);
@@ -120,7 +121,7 @@ const DropdownNotification = () => {
                 <li key={invitation._id}>
                   <div className="flex flex-col gap-2.5 border-t border-stroke px-4.5 py-3 hover:bg-gray-2 dark:border-strokedark dark:hover:bg-meta-4">
                     <div className="flex items-center">
-                      <Avatar className="mx-2 transition duration-300 ease-in-out transform hover:scale-110" size="md" name={invitation.team?.leader?.username} src={`http://localhost:3000/uploads/${invitation.team?.leader?.image}`} />
+                      <Avatar className="mx-2 transition duration-300 ease-in-out transform hover:scale-110" size="md" name={invitation.team?.leader?.username} src={`${API_URL}/uploads/${invitation.team?.leader?.image}`} />
                       <strong className="text-black dark:text-white">{invitation.team?.leader?.username}</strong>
                     </div>
                     <div className="flex items-center">

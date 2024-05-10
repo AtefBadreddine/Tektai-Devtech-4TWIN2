@@ -4,11 +4,12 @@ import axios from 'axios';
 
 function TermsOfUse() {
   const [terms, setTerms] = useState([]);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     const fetchTerms = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/term');
+        const response = await axios.get(`${API_URL}/term`);
         setTerms(response.data);
       } catch (error) {
         console.error('Error fetching terms:', error);

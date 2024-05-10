@@ -5,6 +5,7 @@ const CompanySubmissions = () => {
   const [submissions, setSubmissions] = useState([]);
   const [selectedChallenge, setSelectedChallenge] = useState('');
   const [challenges, setChallenges] = useState([]);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     const fetchChallenges = async () => {

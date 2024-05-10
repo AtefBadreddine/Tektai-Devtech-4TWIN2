@@ -6,6 +6,7 @@ import axios from 'axios';
 const UploadimageChallengeForm = ({ challengeId }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -29,7 +30,7 @@ const UploadimageChallengeForm = ({ challengeId }) => {
     formData.append('image', file);
 
     try {
-      const response = await axios.post(`http://localhost:3000/challenges/uploadimage/${challengeId}`, formData, {
+      const response = await axios.post(`${API_URL}/challenges/uploadimage/${challengeId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -45,10 +46,10 @@ const UploadimageChallengeForm = ({ challengeId }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-     
+
      <label htmlFor="image" className="block mb-2 font-bold">Upload Image</label>
      <input type="file" onChange={handleFileChange}  id="image" className="w-full p-2 border border-gray-300 rounded"/>
-     <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
+     <p className="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, JPG or GIF (MAX. 800x400px).</p>
 
 
       {error && <div style={{ color: 'red' }}>{error}</div>}

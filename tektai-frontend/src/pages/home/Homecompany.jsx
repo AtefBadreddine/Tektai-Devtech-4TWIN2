@@ -18,6 +18,8 @@ import Transition from '../../utils/Transition'; // Assuming Transition componen
 import StatsCompare from '../../components/stats/statsCompare';
 
 function Homecompany() {
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
   const products = [
     {
       title: "T-shirt",

@@ -1,11 +1,12 @@
 import axios from "axios";
 
-const url = "http://localhost:3000";
+const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
 
 const UserService = {
   getJWT: async (username, pwd, rememberMe = false) => {
     try {
-      const response = await axios.post(`${url}/auth/login`, {
+      const response = await axios.post(`${API_URL}/auth/login`, {
         username: username,
         password: pwd,
         rememberMe: rememberMe,
@@ -20,7 +21,7 @@ const UserService = {
   signup: async (userData) => {
     try {
       console.log(userData);
-      const response = await axios.post(`${url}/auth/signup`, userData);
+      const response = await axios.post(`${API_URL}/auth/signup`, userData);
 
       return response.data;
     } catch (error) {
@@ -30,7 +31,7 @@ const UserService = {
   },
   getProfile: async (userId, access_token) => {
     try {
-      const response = await axios.get(`${url}/users/profile/${userId}`, {
+      const response = await axios.get(`${API_URL}/users/profile/${userId}`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -44,7 +45,7 @@ const UserService = {
   },
   getConnectedUser: async (access_token) => {
     try {
-      const response = await axios.get(`${url}/users/connectedUser`, {
+      const response = await axios.get(`${API_URL}/users/connectedUser`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
@@ -59,7 +60,7 @@ const UserService = {
   getUser: async (access_token, email) => {
     try {
       const response = await axios.get(
-        `${url}/users/get/${encodeURIComponent(email)}`,
+        `${API_URL}/users/get/${encodeURIComponent(email)}`,
         {
           headers: {
             Authorization: `Bearer ${access_token}`,
@@ -77,7 +78,7 @@ const UserService = {
   getAll: async () => {
     let token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`${url}/users/getall`, {
+      const response = await axios.get(`${API_URL}/users/getall`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -92,7 +93,7 @@ const UserService = {
   deleteUser: async (userId) => {
     let token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(`${url}/users/${userId}`, {
+      const response = await axios.delete(`${API_URL}/users/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -108,7 +109,7 @@ const UserService = {
     let token = localStorage.getItem("token");
     try {
       const response = await axios.put(
-        `${url}/users/${userId}`,
+        `${API_URL}/users/${userId}`,
         userDataToUpdate,
         {
           headers: {
@@ -125,7 +126,7 @@ const UserService = {
   },
   resetPwd: async (email) => {
     try {
-      const response = await axios.post(`${url}/auth/forget-password`, email);
+      const response = await axios.post(`${API_URL}/auth/forget-password`, email);
 
       return response.data;
     } catch (error) {
@@ -138,7 +139,7 @@ const UserService = {
     console.log(token);
     try {
       const response = await axios.put(
-        `${url}/users/block/${userId}`,
+        `${API_URL}/users/block/${userId}`,
         {},
         {
           headers: {
@@ -155,7 +156,7 @@ const UserService = {
   },
   getUserById: async (id) => {
     try {
-      const response = await axios.get(`${url}/users/${id}`);
+      const response = await axios.get(`${API_URL}/users/${id}`);
       console.log(response.data)
       return response.data;
     } catch (error) {
@@ -165,7 +166,7 @@ const UserService = {
   },
   getUserTeams: async (userId) => {
     try {
-      const response = await axios.get(`${url}/teams/user/joined`);
+      const response = await axios.get(`${API_URL}/teams/user/joined`);
       return response.data;
     } catch (error) {
       console.error("Error fetching user teams:", error);

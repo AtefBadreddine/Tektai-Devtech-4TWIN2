@@ -10,6 +10,7 @@ import DropdownNotification from "./DropdownNotification";
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userData, setUserData] = useState(null);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const trigger = useRef(null);
   const dropdown = useRef(null);
@@ -87,7 +88,7 @@ const DropdownUser = () => {
             <Avatar
               className="mx-2 transition duration-300 ease-in-out transform hover:scale-110"
               size="md"
-              src={`http://localhost:3000/uploads/${userData.image}`}
+              src={`${API_URL}/uploads/${userData.image}`}
             />
           ) : <Avatar
               className="mx-2 transition duration-300 ease-in-out transform hover:scale-110"

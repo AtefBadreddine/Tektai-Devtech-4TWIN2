@@ -15,6 +15,7 @@ function FileUploadForm() {
   const [teams, setTeams] = useState([]);
   const { id: challengeId } = useParams();
   const navigate = useNavigate();
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     checkUserLoggedIn();

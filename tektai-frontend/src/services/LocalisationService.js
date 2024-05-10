@@ -2,7 +2,8 @@
 
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000';
+
+const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 const fetchLocalisations = async () => {
   const response = await axios.get(`${API_URL}/localisations/getlocalisation`);

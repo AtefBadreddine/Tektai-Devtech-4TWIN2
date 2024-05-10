@@ -6,6 +6,7 @@ import axios from 'axios';
 const UploadfileForm = ({ challengeId }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -29,7 +30,7 @@ const UploadfileForm = ({ challengeId }) => {
     formData.append('dataset', file);
 
     try {
-      const response = await axios.post(`http://localhost:3000/challenges/uploadfile/${challengeId}`, formData, {
+      const response = await axios.post(`${API_URL}/challenges/uploadfile/${challengeId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

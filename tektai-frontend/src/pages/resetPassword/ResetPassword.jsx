@@ -6,6 +6,8 @@ import {useTimeout} from "@chakra-ui/react";
 function ResetPassword() {
   const [email,setEmail] = useState('');
   const [sent,setSent] = useState(false);
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
   const handleInput = (e) => {
     const { name, value } = e.target;
     setEmail((prev) => ({

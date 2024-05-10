@@ -13,11 +13,12 @@ function CompanySubmissionsn() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const companyId = JSON.parse(localStorage.getItem('user')).id;
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     async function fetchSubmissions() {
       try {
-        const response = await fetch('http://localhost:3000/submissions/Allsubmition');
+        const response = await fetch(`${API_URL}/submissions/Allsubmition`);
         const data = await response.json();
         console.log(data)
         setSubmissions(data);
@@ -50,7 +51,7 @@ function CompanySubmissionsn() {
   // Function to submit evaluation
   const submitEvaluation = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/submissions/evaluation/${selectedSubmission._id}`, {
+      const response = await fetch(`${API_URL}/submissions/evaluation/${selectedSubmission._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -123,7 +124,7 @@ function CompanySubmissionsn() {
                   <td className="px-4 py-2">{submission.team.name || 'Not Required'}</td>
                   <td className="px-4 py-2">
                     {submission.pdf ? (
-                      <a href={`http://localhost:3000/${submission.pdf}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                      <a href={`${API_URL}/${submission.pdf}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                         <FaFilePdf /> PDF
                       </a>
                     ) : (
@@ -132,7 +133,7 @@ function CompanySubmissionsn() {
                   </td>
                   <td className="px-4 py-2">
                     {submission.notebook ? (
-                      <a href={`http://localhost:3000/${submission.notebook}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                      <a href={`${API_URL}/${submission.notebook}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                         Notebook
                       </a>
                     ) : (
@@ -141,7 +142,7 @@ function CompanySubmissionsn() {
                   </td>
                   <td className="px-4 py-2">
                     {submission.presentation ? (
-                      <a href={`http://localhost:3000/${submission.presentation}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                      <a href={`${API_URL}/${submission.presentation}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                         {submission.presentation.endsWith('.mp4') ? <FaFileVideo /> : <FaFilePdf />} Presentation
                       </a>
                     ) : (
@@ -150,7 +151,7 @@ function CompanySubmissionsn() {
                   </td>
                   <td className="px-4 py-2">
                     {submission.dataset ? (
-                      <a href={`http://localhost:3000/${submission.dataset}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+                      <a href={`${API_URL}/${submission.dataset}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
                         <FaDatabase /> Dataset
                       </a>
                     ) : (

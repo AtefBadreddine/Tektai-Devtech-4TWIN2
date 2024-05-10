@@ -13,9 +13,11 @@ function Footer() {
   });
 
   useEffect(() => {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const fetchSettings = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/settings/65f8a38e39a328e497879df2');
+        const response = await axios.get(`${API_URL}/settings/65f8a38e39a328e497879df2`);
         const { about, termsOfService,facebook, linkedin,twitter,github } = response.data;
         setCrmData({ about, termsOfService,facebook, linkedin,twitter,github});
       } catch (error) {

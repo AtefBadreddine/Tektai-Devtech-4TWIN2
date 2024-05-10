@@ -15,12 +15,13 @@ const [userData, setUserData] = useState(null);
     const [completedChallengesCount, setCompletedChallengesCount] = useState('');
     const [upcomingChallengesCount, setUpcomingChallengesCount] = useState('');
     const [ongoingChallengesCount, setOngoingChallengesCount] = useState('');
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/users/profile/${id}`);
+        const response = await axios.get(`${API_URL}/users/profile/${id}`);
         const userData = response.data;
         setUserData(userData);
       } catch (error) {
@@ -37,7 +38,7 @@ const [userData, setUserData] = useState(null);
 
     const fetchChallengeCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/count/${id}`;
+            const path = `${API_URL}/challenges/count/${id}`;
             const response = await axios.get(path);
             return  response.data;
         } catch (error) {
@@ -47,7 +48,7 @@ const [userData, setUserData] = useState(null);
     };
     const fetchcompletedCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/completed/${id}`;
+            const path = `${API_URL}/challenges/completed/${id}`;
             const response = await axios.get(path);
             return  response.data;
 
@@ -58,7 +59,7 @@ const [userData, setUserData] = useState(null);
     };
     const fetchongoingCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/ongoing/${id}`;
+            const path = `${API_URL}/challenges/ongoing/${id}`;
             const response = await axios.get(path);
             return response.data;
 
@@ -69,7 +70,7 @@ const [userData, setUserData] = useState(null);
     };
     const fetchupcomingCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/upcoming/${id}`;
+            const path = `${API_URL}/challenges/upcoming/${id}`;
 
             const response = await axios.get(path);
             return  response.data;
@@ -125,7 +126,7 @@ const [userData, setUserData] = useState(null);
       <Link to="/challenges" className="buttoncontact absolute top-0 right-0 mt-4 mr-4">
         <span className="label">See All Challenges</span>
       </Link>
-      <img className="shadow-xl border  border-gray-300" src={userData?.image ? `http://localhost:3000/uploads/${userData.image}` : '/default-profile-picture.png'}
+      <img className="shadow-xl border  border-gray-300" src={userData?.image ? `${API_URL}/uploads/${userData.image}` : '/default-profile-picture.png'}
       />
       <h2 className="titlecompany pt-5">{userData?.companyName ?? 'Loading...'}</h2>
         <div className="containerprofiles">

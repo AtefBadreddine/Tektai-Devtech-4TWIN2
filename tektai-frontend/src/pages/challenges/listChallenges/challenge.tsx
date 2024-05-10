@@ -4,6 +4,9 @@ import axios from 'axios';
 import '../createChallenge/card.css'
 import UserService from '../../../services/userService';
 
+
+const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
 // Define a function to retrieve stored favorites from local storage
 const getStoredFavorites = () => {
   const storedFavorites = localStorage.getItem('favorites');
@@ -48,7 +51,7 @@ const Challenges = ({ status }) => {
   useEffect(() => {
     const fetchChallenges = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/challenges/filter?status=${status}&page=${currentPage}&limit=${challengesPerPage}`);
+        const response = await axios.get(`${API_URL}/challenges/filter?status=${status}&page=${currentPage}&limit=${challengesPerPage}`);
         setChallenges(response.data.reverse()); // Reverse the array of challenges
         setLoading(false);
       } catch (error) {
@@ -97,7 +100,7 @@ const Challenge = ({ challenge, index}) => {
     useEffect(() => {
       const fetchCompany = async () => {
         try {
-          const response = await axios.get(`http://localhost:3000/users/getById/${challenge.company_id}`);
+          const response = await axios.get(`${API_URL}/users/getById/${challenge.company_id}`);
           const { companyName, image } = response.data; // Assuming the image URL is provided in the response data
           
           setCompanyName(companyName);
@@ -118,7 +121,7 @@ const Challenge = ({ challenge, index}) => {
     const fetchUserData = async (username) => {
       try {
         // Fetch user data from the backend
-        const response = await axios.get(`http://localhost:3000/users/get/${username}`);
+        const response = await axios.get(`${API_URL}/users/get/${username}`);
         const userData = response.data;
         setUserData(userData);
         setProfileImageUrl(`/uploads/${userData.image}`);
@@ -159,7 +162,7 @@ const Challenge = ({ challenge, index}) => {
             // Check if the challenge is in the user's favorites list
 
           }).then( async () => {
-            const isFavoriteResponse = await axios.get(`http://localhost:3000/users/${userData._id}/favorites/check/${challenge._id}`);
+            const isFavoriteResponse = await axios.get(`${API_URL}/users/${userData._id}/favorites/check/${challenge._id}`);
             setIsFavorite(isFavoriteResponse.data.isFavorite);
           });
 
@@ -178,18 +181,18 @@ const Challenge = ({ challenge, index}) => {
         setIsFavorite(prevIsFavorite => !prevIsFavorite);
 
         if (isFavorite) {
-          await axios.delete(`http://localhost:3000/users/${userId}/favorites/remove/${challenge._id}`);
+          await axios.delete(`${API_URL}/users/${userId}/favorites/remove/${challenge._id}`);
           console.log('Challenge with ID deleted :', challengeId);
           setIsFavorite(false);
         } else {
       // Fetch the user's favorites list
-      const response = await axios.get(`http://localhost:3000/users/${userId}/favorites`);
+      const response = await axios.get(`${API_URL}/users/${userId}/favorites`);
       const favorites = response.data;
       // Check if the challenge is already in favorites
       const isAlreadyFavorite = favorites.some(favorite => favorite._id === challenge._id);
       if (!isAlreadyFavorite) {
 
-        await axios.post(`http://localhost:3000/users/${user._id}/favorites/add/${challengeId}`);
+        await axios.post(`${API_URL}/users/${user._id}/favorites/add/${challengeId}`);
         console.log('Challenge ID:', challengeId);
         setIsFavorite(true);
         }else {
@@ -278,7 +281,7 @@ const Challenge = ({ challenge, index}) => {
 {/* profile img */}
 <div className="card__avatar">
   {image ? (
-    <img src={`http://localhost:3000/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
+    <img src={`${API_URL}/uploads/${image}`} height="45px" width="45px" alt="Logo" className='rounded-full shadow-lg' />
   ) : (
     <img src="https://cdn4.vectorstock.com/i/1000x1000/09/33/company-icon-for-graphic-and-web-design-vector-31970933.jpg" height="45px" width="45px" alt="Default Logo" className='rounded-full shadow-lg' />
   )}

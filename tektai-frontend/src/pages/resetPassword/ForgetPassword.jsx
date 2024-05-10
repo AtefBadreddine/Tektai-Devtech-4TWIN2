@@ -9,6 +9,7 @@ function Forgetpassword() {
   const [password,setPassword] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const [flashMessage, setFlashMessage] = useState(""); // State for flash message
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 
   const submit =async (e) => {
@@ -18,7 +19,7 @@ function Forgetpassword() {
          'token' : token,
          'newPassword' : password
     }
-    const response = await axios.post(`http://localhost:3000/auth/reset-password`, userData);
+    const response = await axios.post(`${API_URL}/auth/reset-password`, userData);
 
 
     setFlashMessage("Password updated !");

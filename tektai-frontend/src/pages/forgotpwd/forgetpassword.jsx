@@ -4,6 +4,8 @@ import Header from '../../layout/Header';
 
 
 function Forgetpassword() {
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
   return (
     <div className="flex flex-col min-h-screen overflow-hidden">
 

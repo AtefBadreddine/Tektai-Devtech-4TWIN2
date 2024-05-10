@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "vite",
-    "start": "nrun dev",
+    "start": "run dev",
     "build": "vite build",
     "preview": "vite preview"
   },

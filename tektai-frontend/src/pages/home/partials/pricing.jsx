@@ -39,7 +39,7 @@ export default function ThreeTierPricing() {
       const token = localStorage.getItem('token');
       console.log('token' , token);
       const response = await axios.post(
-          'http://localhost:3000/payment/stripe/checkout',
+          '${API_URL}/payment/stripe/checkout',
           { plan : plantype},
           {
             headers: {

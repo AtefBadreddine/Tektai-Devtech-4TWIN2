@@ -25,13 +25,14 @@ function Create() {
     const [captchaValid, setCaptchaValid] = useState(false); // State variable to track CAPTCHA validity
     const [file, setFile] = useState(null);
     const [error, setError] = useState('');
-  
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
 
 
 
 
-    
+
+
     const handleFileChange = (e) => {
       setFile(e.target.files[0]);
       setError('');
@@ -189,7 +190,7 @@ function Create() {
         formData.append('dataset', file); // Use the correct name here
     
         try {
-            const response = await axios.post(`http://localhost:3000/challenges/uploadfile/${challengeId}`, formData, {
+            const response = await axios.post(`${API_URL}/challenges/uploadfile/${challengeId}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -243,7 +244,7 @@ function Create() {
         }
     
         try {
-            const response = await axios.post('http://localhost:3000/challenges', formData, {
+            const response = await axios.post(`${API_URL}/challenges`, formData, {
                 headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
             });
     

@@ -11,6 +11,8 @@ import FeaturesElement from '../../../images/features-element.png';
 
 
   function Features() {
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const isLoggedIn = () => {
       const storedToken = localStorage.getItem('token');
       return !!storedToken;

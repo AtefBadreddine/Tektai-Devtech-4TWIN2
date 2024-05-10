@@ -6,6 +6,7 @@ const UserSearchF = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchBy, setSearchBy] = useState('username'); // Default search by username
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ const UserSearchF = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/users/searchusers?username=${searchTerm}`
+        `${API_URL}/users/searchusers?username=${searchTerm}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching users: ${response.status}`);

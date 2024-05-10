@@ -11,6 +11,8 @@ import PendingInvitations from './pedning';
 import JoinedTeams from './joine';
 
 function MyTeams() {
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
   const [teams, setTeams] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -170,7 +172,7 @@ function MyTeams() {
 
   const handleLeaveTeam = (teamId) => {
     const memberId = JSON.parse(localStorage.getItem('user')).id; // Assuming you have currentUser stored somewhere
-    const url = `http://localhost:3000/teams/${teamId}/members/${memberId}`;
+    const url = `${API_URL}/teams/${teamId}/members/${memberId}`;
 
     // Sending a DELETE request to the API endpoint
     fetch(url, {
@@ -354,7 +356,7 @@ function MyTeams() {
                   <h2 className="text-xl font-semibold mb-3">Team : {team.name}</h2>
                   <div className="flex justify-between items-center mb-4">
                     <div className="flex items-center space-x-2">
-                      <Avatar className='w-10 h-10' name={team.leader?.username} src={`http://localhost:3000/uploads/${team.leader?.image}`} />
+                      <Avatar className='w-10 h-10' name={team.leader?.username} src={`${API_URL}/uploads/${team.leader?.image}`} />
                       <span className="font-medium">{team.leader?.username}</span>
                     </div>
                     <span className="px-3 py-1 text-sm text-white bg-green-500 rounded-full">{team.members.length} Members</span>
@@ -367,7 +369,7 @@ function MyTeams() {
                   <div className="flex flex-wrap gap-2 mb-4">
                     {team.members.map((member) => (
                         <a key={member._id} href={`/profile/${member?.username}`} className="flex items-center space-x-2 hover:text-blue-500">
-                          <Avatar className='w-8 h-8' name={member?.username} src={`http://localhost:3000/uploads/${member?.image}`} />
+                          <Avatar className='w-8 h-8' name={member?.username} src={`${API_URL}/uploads/${member?.image}`} />
                           <span>{member?.username}</span>
                         </a>
                     ))}

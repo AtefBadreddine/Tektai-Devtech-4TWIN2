@@ -10,7 +10,8 @@ function HistoryChallenges() {
 
     const storedUser = localStorage.getItem('user');
     const user = storedUser ? JSON.parse(storedUser) : null;
-    
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
+
     const truncateText = (text, maxLength) => {
         if (text.length > maxLength) {
           return text.substring(0, maxLength) + '...';
@@ -21,7 +22,7 @@ function HistoryChallenges() {
     useEffect(() => {
         const fetchChallenges = async () => {
             try {
-                const response = await axios.get(`http://localhost:3000/challenges/company/${user._id}`, {
+                const response = await axios.get(`${API_URL}/challenges/company/${user._id}`, {
                     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
                   });
                                   setChallenges(response.data.reverse()); // Reverse the challenges array

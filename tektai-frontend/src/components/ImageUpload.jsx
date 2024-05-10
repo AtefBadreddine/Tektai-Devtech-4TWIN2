@@ -17,7 +17,7 @@
 //       if (!selectedFile || !userId) return;
 //       const formData = new FormData();
 //       formData.append('image', selectedFile);
-//       await axios.put(`http://localhost:3000/users/${userId}`, formData);
+//       await axios.put(`${API_URL}/users/${userId}`, formData);
 //       console.log('Image uploaded successfully');
 //     } catch (error) {
 //       console.error('Error uploading image:', error);
@@ -42,6 +42,7 @@ import axios from 'axios';
 const UploadImageForm = ({ userId }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState('');
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -65,7 +66,7 @@ const UploadImageForm = ({ userId }) => {
     formData.append('image', file);
 
     try {
-      const response = await axios.put(`http://localhost:3000/users/upload/${userId}`, formData, {
+      const response = await axios.put(`${API_URL}/users/upload/${userId}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

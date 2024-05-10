@@ -5,6 +5,7 @@ import userService from "../../../services/userService";
 
 const Stats = () => {
     const auth = useAuth();
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
     const [stats,setStats] = useState({
         all : 0,
         completed : 0,
@@ -13,7 +14,7 @@ const Stats = () => {
     });
     const fetchChallengeCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/count/${id}`;
+            const path = `${API_URL}/challenges/count/${id}`;
             const response = await axios.get(path);
             return  response.data;
         } catch (error) {
@@ -23,7 +24,7 @@ const Stats = () => {
     };
     const fetchcompletedCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/completed/${id}`;
+            const path = `${API_URL}/challenges/completed/${id}`;
             const response = await axios.get(path);
             return  response.data;
 
@@ -34,7 +35,7 @@ const Stats = () => {
     };
     const fetchongoingCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/ongoing/${id}`;
+            const path = `${API_URL}/challenges/ongoing/${id}`;
             const response = await axios.get(path);
             return response.data;
 
@@ -45,7 +46,7 @@ const Stats = () => {
     };
     const fetchupcomingCounts = async (id) => {
         try {
-            const path = `http://localhost:3000/challenges/upcoming/${id}`;
+            const path = `${API_URL}/challenges/upcoming/${id}`;
 
             const response = await axios.get(path);
             return  response.data;

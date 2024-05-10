@@ -37,13 +37,14 @@ const ApproveChallenges = () => {
         const newchallenges = challenges.slice(indexOfFirstChallenge,indexOfLastChallenge);
         setDisplayedChallenges(newchallenges);
     },[currentPage])
+    const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
     const fetchUser = async (userId) => {
         return  await UsersService.getUserById(userId);
     }
     const fetchChallenges = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/challenges`);
+            const response = await axios.get(`${API_URL}/challenges`);
             Promise.all(response.data.map(async (challenge) => {
                 const user = await fetchUser(challenge.company_id);
                 challenge['user'] = user._id ? user : null;
@@ -75,7 +76,7 @@ const ApproveChallenges = () => {
         let token = localStorage.getItem("token");
         try {
             const response = await axios.put(
-                `http://localhost:3000/challenges/approve/${challenge._id}`,
+                `${API_URL}/challenges/approve/${challenge._id}`,
                 {},
                 {
                     headers: {

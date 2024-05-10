@@ -18,11 +18,12 @@ const CrmForm = () => {
     title: '',
     content: '',
   });
+  const API_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://tektai-backend.vercel.app';
 
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/settings/65f8a38e39a328e497879df2');
+        const response = await axios.get('${API_URL}/settings/65f8a38e39a328e497879df2');
         const { about, termsOfService, facebook, linkedin, twitter, github } = response.data;
         setCrmData({ about, termsOfService, facebook, linkedin, twitter, github });
       } catch (error) {
@@ -32,7 +33,7 @@ const CrmForm = () => {
 
     const fetchTermTitles = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/term');
+        const response = await axios.get('${API_URL}/term');
         const titles = response.data.map(term => term.title);
         setTermTitles(titles);
       } catch (error) {
@@ -45,7 +46,7 @@ const CrmForm = () => {
   }, []);
   const handleTitleSelect = async (selectedTitle) => {
     try {
-      const response = await axios.get(`http://localhost:3000/term/title/${selectedTitle}`);
+      const response = await axios.get(`${API_URL}/term/title/${selectedTitle}`);
       if (response.data && response.data.content) {
         setTermData({ title: selectedTitle, content: response.data.content });
       }
@@ -63,10 +64,10 @@ const CrmForm = () => {
     event.preventDefault();
     try {
       // Update settings
-      await axios.put('http://localhost:3000/settings/65f8a38e39a328e497879df2', crmData);
+      await axios.put('${API_URL}/settings/65f8a38e39a328e497879df2', crmData);
   
       // Update term by title
-      await axios.put(`http://localhost:3000/term/title/${termData.title}`, termData);
+      await axios.put(`${API_URL}/term/title/${termData.title}`, termData);
   
       alert('Data updated successfully!');
     } catch (error) {
