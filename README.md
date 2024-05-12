@@ -12,15 +12,6 @@ mongoose: v8.1.3:![react: v18.2.0](https://skillicons.dev/icons?i=mongo,)
 React: v18.2.0 :![react: v18.2.0](https://skillicons.dev/icons?i=react,)
 
 
-
-
-## Acknowledgements
-
- - [Awesome Readme Templates](https://awesomeopensource.com/project/elangosundar/awesome-README-templates)
- - [Awesome README](https://github.com/matiassingers/awesome-readme)
- - [How to write a Good readme](https://bulldogjob.com/news/449-how-to-write-a-good-readme-for-your-github-project)
-
-
 ## Installations instructions :
 * Backend
 ```javascript
@@ -46,9 +37,7 @@ access the website through http://localhost:5173/
 ## Additional considerations :
 
  
-- We have used a cloud hosted Mongodb instance accessed through this [link](mongodb+srv://atef:atef@tektai.7tktrhv.mongodb.net/?retryWrites=true&w=majority&appName=tektai)
-
-- Admin account is : username: Armi64bit / password : 677KDu@KcqZpsje
+- We have used a cloud hosted Mongodb instance
 - The backend project depends on several third party services such as :
   - Google auth 
   - Github auth
