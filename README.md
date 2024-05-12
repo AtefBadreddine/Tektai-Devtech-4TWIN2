@@ -54,6 +54,6 @@ access the website through http://localhost:5173/
   - Github auth
   - Sendinblue ( email sending ) 
   - Stripe
-Please replace the existing API keys with your own credentials as they may expire soon.
+- Please replace the existing API keys with your own credentials as they may expire soon.
 
 
