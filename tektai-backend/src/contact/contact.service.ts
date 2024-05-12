@@ -17,7 +17,7 @@ export class ContactService {
      
     // Créer un objet Sendinblue
      const sendinblue = new SibApiV3Sdk.TransactionalEmailsApi();
-     const apiKey = process.env.CONTACTUS_SENDINBLUE;
+     const apiKey = process.env.SENDINBLUE;
      const defaultClient = SibApiV3Sdk.ApiClient.instance;
      const apiKeyV3 = defaultClient.authentications['api-key'];
      apiKeyV3.apiKey = apiKey;

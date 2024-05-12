@@ -24,6 +24,9 @@ export default defineConfig({
   build: {
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    rollupOptions: {
+      external: ['@google/generative-ai']
     }
   } 
 })
